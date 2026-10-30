@@ -16,8 +16,8 @@
   },
   {
     "file": "docs/ARCHITECTURE.md",
-    "sha256": "b291485dbff516ed8e1f102c43550b6d3397cc89df3267955fcd6e8a823e5fa1",
-    "bytes": 2362
+    "sha256": "f43c155a91f99e63cd66596a2fdd7c3896a29c24322ea6149ae4071d41462fc6",
+    "bytes": 2431
   },
   {
     "file": "docs/method-extension-plan.json",
@@ -71,8 +71,8 @@
   },
   {
     "file": "README.md",
-    "sha256": "22a680b2ebe420322026ca60efa763a60af0bb5095e4e69d699a3afcd4f7a0bd",
-    "bytes": 6753
+    "sha256": "af0b24148d5712b2ea86907e534822813a2cdb6f6664bd733fe4a4c7b76bed86",
+    "bytes": 6876
   },
   {
     "file": "requirements-runtime-win-py311.txt",
@@ -96,8 +96,8 @@
   },
   {
     "file": "SECURITY.md",
-    "sha256": "448bef45f8df12f49c3e0da399b430347ed0657b8d56beabdf49b55731a4825c",
-    "bytes": 564
+    "sha256": "8767be953e4374726698eecaa15e893843ce7f9155f1d6d7ce28dac7ca0b453f",
+    "bytes": 630
   },
   {
     "file": "src/causalops/__init__.py",
