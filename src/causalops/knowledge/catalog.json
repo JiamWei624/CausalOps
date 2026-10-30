@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-31.1",
+  "version": "2026-10-31.2",
   "sources": {
     "pandas": {
       "source_id": "pandas",
@@ -180,6 +180,66 @@
       "checked_on": "2026-10-31",
       "access_scope": "public_documentation",
       "reuse": "原创提炼，链接原始官方教程；本版未接入该R执行器"
+    },
+    "iv_official": {
+      "source_id": "iv_official",
+      "title": "linearmodels IV 官方示例与第一阶段诊断",
+      "url": "https://bashtage.github.io/linearmodels/iv/examples/advanced-examples.html",
+      "source_type": "official_documentation",
+      "locator": "Just identified 2SLS / covariance / first-stage diagnostics",
+      "checked_on": "2026-10-31",
+      "access_scope": "public_documentation",
+      "reuse": "原创简要方法提炼；链接与页码；不分发原始论文全文"
+    },
+    "rd_official": {
+      "source_id": "rd_official",
+      "title": "rdrobust 作者官方仓库与 Python 接口",
+      "url": "https://github.com/rdpackages/rdrobust",
+      "source_type": "official_documentation",
+      "locator": "Python rdrobust.py：Robust行、带宽、核与cluster参数",
+      "checked_on": "2026-10-31",
+      "access_scope": "public_documentation",
+      "reuse": "原创简要方法提炼；链接与页码；不分发原始论文全文"
+    },
+    "staggered_official": {
+      "source_id": "staggered_official",
+      "title": "differences 官方 ATTgt 文档",
+      "url": "https://bernardodionisi.github.io/differences/latest/",
+      "source_type": "official_documentation",
+      "locator": "ATTgt.fit / aggregate；与Callaway-Sant’Anna作者did文档交叉核对",
+      "checked_on": "2026-10-31",
+      "access_scope": "public_documentation",
+      "reuse": "原创简要方法提炼；链接与页码；不分发原始论文全文"
+    },
+    "jfe_baker_full": {
+      "source_id": "jfe_baker_full",
+      "title": "Baker, Larcker & Wang (2022), Journal of Financial Economics 144:370–395",
+      "url": "https://andrew-charles-baker.github.io/research/articles/staggered_did/did.pdf",
+      "source_type": "author_or_university_fulltext",
+      "locator": "PDF查看器第14–15、24–25页；第4节、第6节；已下载全文，核对所列完整页面",
+      "checked_on": "2026-10-31",
+      "access_scope": "full_text_selected_method_pages",
+      "reuse": "原创简要方法提炼；链接与页码；不分发原始论文全文"
+    },
+    "isr_caps_full": {
+      "source_id": "isr_caps_full",
+      "title": "Li & Wang (2024), Regulating Powerful Platforms, Information Systems Research",
+      "url": "https://udspace.udel.edu/server/api/core/bitstreams/e77c77fc-33e7-4159-8575-9c72d390f8b0/content",
+      "source_type": "author_or_university_fulltext",
+      "locator": "PDF查看器第6–7、9、13页；3.3节、4.3节、6节；不包括在线附录",
+      "checked_on": "2026-10-31",
+      "access_scope": "full_text_selected_method_pages",
+      "reuse": "原创简要方法提炼；链接与页码；不分发原始论文全文"
+    },
+    "csr_rd_full": {
+      "source_id": "csr_rd_full",
+      "title": "Flammer (2015), Does CSR Lead to Superior Financial Performance? Management Science 61:2549–2568",
+      "url": "https://sites.bu.edu/cflammer/files/2018/09/Flammer_MgtSci2015-1.pdf",
+      "source_type": "author_or_university_fulltext",
+      "locator": "PDF查看器第5–6、9页，视觉核对；3.2节、图2与表4；未声称复现论文",
+      "checked_on": "2026-10-31",
+      "access_scope": "full_text_selected_method_pages_visual",
+      "reuse": "原创简要方法提炼；链接与页码；不分发原始论文全文"
     }
   },
   "cards": [
@@ -586,6 +646,190 @@
         "失败情形": "技术更强未必在未适配流程中带来正收益。",
         "结果解释": "使用者任务成功与返工是本项目验收项；不能用脚本耗时代替人类收益。"
       }
+    },
+    {
+      "card_id": "iv_2sls",
+      "title": "工具变量2SLS：先论证排除限制，再看第一阶段",
+      "methods": [
+        "iv_2sls"
+      ],
+      "tags": [
+        "工具变量",
+        "iv_2sls",
+        "2sls",
+        "instrument",
+        "排除限制",
+        "弱工具"
+      ],
+      "source_ids": [
+        "iv_official"
+      ],
+      "scope": "method_rule",
+      "version": "2026-10-31.2",
+      "sections": {
+        "适用问题": "有可信外部工具解释内生处理的变化；不按相关性自动挑工具。",
+        "数据要求": "一个内生处理、数值结果、足够排除工具、事前控制和独立单位/簇。",
+        "识别条件": "相关性、工具外生性、排除限制；二元处理的局部解释还需单调性等条件。",
+        "诊断方法": "报告partial R²、第一阶段统计量及分布。稳健chi²不能直接套普通F阈值；不能证明无弱工具。",
+        "失败情形": "弱相关、共线、错误排除限制或干扰；未实现AR/CLR，常规区间可能失真。",
+        "结果解释": "线性IV参数或条件成立时的局部效应，不自动是全体ATE/ROI。"
+      },
+      "estimand": "线性结构方程内生处理参数",
+      "formula": "Y=Xβ+Dτ+ε；D由[X,Z]投影；2SLS在有效工具下识别τ。",
+      "implementation": "linearmodels.IV2SLS，robust或clustered covariance；保留官方第一阶段表。"
+    },
+    {
+      "card_id": "rd_sharp",
+      "title": "清晰RDD：预定阈值附近的局部效应",
+      "methods": [
+        "rd_sharp"
+      ],
+      "tags": [
+        "断点回归",
+        "RDD",
+        "rd_sharp",
+        "阈值",
+        "rdrobust",
+        "带宽"
+      ],
+      "source_ids": [
+        "rd_official"
+      ],
+      "scope": "method_rule",
+      "version": "2026-10-31.2",
+      "sections": {
+        "适用问题": "事先存在的阈值决定处理，比较阈值两侧局部结果。",
+        "数据要求": "连续运行变量、已知阈值、足够近阈值支持、明确处理规则。",
+        "识别条件": "潜在结果连续，无精确操纵，无同时跳变政策与不可忽略干扰。",
+        "诊断方法": "密度/堆积、协变量连续性、安慰剂阈值和带宽敏感性须预定；当前程序只计算主设定及带宽内数。",
+        "失败情形": "模糊处理不能套清晰RDD；离散支持稀少、阈值排序、按显著性挑带宽。",
+        "结果解释": "仅阈值附近局部跳跃；制度批准不必等于实际执行。"
+      },
+      "estimand": "阈值处的右左条件均值差",
+      "formula": "τ(c)=lim(x↓c)E[Y|X=x]−lim(x↑c)E[Y|X=x]。",
+      "implementation": "rdrobust==2.1.1，p=1,q=2,tri,mserd；用Robust行的偏差校正估计与稳健区间，不混用Conventional行。"
+    },
+    {
+      "card_id": "staggered_did",
+      "title": "交错DID：批次时间ATT与干净对照",
+      "methods": [
+        "staggered_did"
+      ],
+      "tags": [
+        "staggered_did",
+        "交错",
+        "ATT(g,t)",
+        "批次",
+        "多期",
+        "尚未处理"
+      ],
+      "source_ids": [
+        "staggered_official",
+        "jfe_baker_full"
+      ],
+      "scope": "method_rule",
+      "version": "2026-10-31.2",
+      "sections": {
+        "适用问题": "不同批次在不同期首次受到不可逆处理，效应随批次或暴露时间异质。",
+        "数据要求": "实体×整数期、首次处理期，空值明确为从未处理；本版平衡面板、足够批次样本。",
+        "识别条件": "批次条件平行趋势、无预期、共同支撑、无干扰；对照从未或尚未处理，排除已处理比较。",
+        "诊断方法": "批次时间分布、处理前伪ATT、事件期构成与对照敏感性。未拒绝联合检验不证明平行趋势。",
+        "失败情形": "处理反转、上层政策聚类、无处理前支持或面板缺失；这些不在本版支持范围。",
+        "结果解释": "总体聚合权重与事件期构成必须说明；逐点区间不是同时置信带。"
+      },
+      "estimand": "批次g在时间t的ATT，及明确权重下的聚合",
+      "formula": "ATT(g,t)=E[Y_t(g)−Y_t(0)|G=g]；比较g−1与t，使用合格未处理对照。",
+      "implementation": "differences==0.3.0 ATTgt；reg，universal基期g−1，实体聚类，analytic逐点区间。"
+    },
+    {
+      "card_id": "jfe_design_review",
+      "title": "UTD全文方法案例：交错TWFE的错误比较",
+      "methods": [
+        "staggered_did",
+        "did"
+      ],
+      "tags": [
+        "交错TWFE",
+        "Baker",
+        "JFE",
+        "异质效应",
+        "干净对照"
+      ],
+      "source_ids": [
+        "jfe_baker_full"
+      ],
+      "scope": "empirical_example",
+      "version": "2026-10-31.2",
+      "sections": {
+        "适用问题": "复核分批政策或平台功能上线的估计设计。",
+        "数据要求": "保留批次与处理时点，明确可用比较单位。",
+        "识别条件": "换估计器不能替代平行趋势与无预期论证。",
+        "诊断方法": "核对批次构成、基期、窗口；比较干净对照的批次ATT与原回归。",
+        "失败情形": "已处理单位充当对照，或随意合并事件期；静态与动态TWFE均可能受污染。",
+        "结果解释": "学习设计审计，不移植论文效应到当前业务，也不声称已复现。"
+      },
+      "full_text_reviewed": true,
+      "review_scope": "所列方法与结论相关完整页面，非所有附录或复现"
+    },
+    {
+      "card_id": "platform_policy_review",
+      "title": "UTD全文实证：平台政策的直接与溢出反应",
+      "methods": [
+        "staggered_did",
+        "psm"
+      ],
+      "tags": [
+        "平台政策",
+        "抽佣",
+        "餐厅",
+        "溢出",
+        "委托费",
+        "commercial"
+      ],
+      "source_ids": [
+        "isr_caps_full"
+      ],
+      "scope": "empirical_example",
+      "version": "2026-10-31.2",
+      "sections": {
+        "适用问题": "评估平台政策是否达到目标及其他群体的反应。",
+        "数据要求": "作者案例区分政策生效时点、餐厅类型与需求/净收入指标。",
+        "识别条件": "作者采用匹配与批次DID；当前数据仍须独立论证可比对照、无预期和干扰。",
+        "诊断方法": "方法页说明干净比较、动态聚合，稳健性页比较扩展样本与替代匹配。",
+        "失败情形": "只看直接群体收益，忽略平台行为调整；匹配不自动解决不可观测混杂。",
+        "结果解释": "商业报告应同时看目标指标、净指标和可能的溢出；没有本数据证据不量化收益。"
+      },
+      "full_text_reviewed": true,
+      "review_scope": "所列方法与结论相关完整页面，非所有附录或复现"
+    },
+    {
+      "card_id": "csr_threshold_review",
+      "title": "UTD全文实证：投票阈值与处理含义",
+      "methods": [
+        "rd_sharp"
+      ],
+      "tags": [
+        "CSR",
+        "Flammer",
+        "股东投票",
+        "局部随机",
+        "threshold"
+      ],
+      "source_ids": [
+        "csr_rd_full"
+      ],
+      "scope": "empirical_example",
+      "version": "2026-10-31.2",
+      "sections": {
+        "适用问题": "有预定规则阈值的管理决策局部评估。",
+        "数据要求": "作者以多数票阈值附近通过/未通过的CSR提案作比较。",
+        "识别条件": "近阈值可比性需论证，股东提案通过不等于实际实施。",
+        "诊断方法": "已核对页展示密度诊断和事前特征比较，并考虑公司内相关。",
+        "失败情形": "把通过提案的局部效应解释为实施CSR的总体效应。",
+        "结果解释": "只借鉴研究设计；现代执行器用局部线性稳健偏差校正，不照搬论文的全局高次多项式。"
+      },
+      "full_text_reviewed": true,
+      "review_scope": "所列方法与结论相关完整页面，非所有附录或复现"
     }
   ],
   "policy": "方法规则与实证案例分层；只索引已核实原创提炼，不含客户数据；检索失败明确拒答；期刊身份不是假设成立的证据。"

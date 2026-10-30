@@ -58,7 +58,7 @@ class FakeModel:
     def complete_json(self,**kwargs):self.calls+=1;return self.result
 
 def test_model_plan_permissions_and_unknown_tool(assistant):
-    a,sid,f=assistant;p=a.propose(sid,'先描述数据的整体分布');model=FakeModel(p['plan'])
+    a,sid,f=assistant;p=a.propose(sid,'先描述数据的整体分布');p['plan']['citations']=['describe'];model=FakeModel(p['plan'])
     with pytest.raises(DesignError):a.propose(sid,'分析一下数据与分布',model)
     assert model.calls==0;a.consent(sid,True);assert a.propose(sid,'分析一下数据与分布',model)['state']=='candidate'
     bad=copy.deepcopy(p['plan']);bad['steps'][0]['tool']='python_exec'
@@ -127,7 +127,7 @@ def test_negated_causal_claim_is_not_blocked(assistant):
     assert a.ask(sid,'解释本结果的局限',model)['source']=='DeepSeek官方模型+本地证据校验'
 
 def test_rag_unknown_method_does_not_substitute_ols():
-    assert MethodLibrary().search('断点回归RDD怎么做')['status']=='insufficient_evidence'
+    assert MethodLibrary().search('合成控制怎么做')['status']=='insufficient_evidence'
 
 
 def test_blocked_model_does_not_prevent_safe_sibling(assistant):

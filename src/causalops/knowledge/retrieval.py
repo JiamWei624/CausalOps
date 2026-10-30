@@ -13,7 +13,7 @@ class MethodLibrary:
     def search(self,question,*,method=None,k=4):
         if not isinstance(question,str) or not question.strip() or len(question)>3000:raise ValueError('检索问题须为1至3000字。')
         if not 1<=k<=8:raise ValueError('最多检索8条方法卡。')
-        if re.search(r'工具变量|断点回归|因果森林|合成控制|\brdd\b|\b2sls\b',question,re.I):
+        if re.search(r'因果森林|合成控制',question,re.I):
             return {'status':'insufficient_evidence','hits':[],'knowledge_version':self.catalog['version'],'knowledge_sha256':self.digest,'note':'当前知识库尚无该方法的已核实专门条目；不以相近关键词替代。'}
         scores=cosine_similarity(self.vectorizer.transform([question.lower()]),self.matrix)[0];hits=[]
         for i,c in enumerate(self.cards):
@@ -25,7 +25,7 @@ class MethodLibrary:
             hits.append(dict(**c,score=round(float(scores[i]),5),sources=sources,knowledge_sha256=self.digest))
         hits.sort(key=lambda h:(-h['score'],h['card_id']))
         if hits:hits=[h for h in hits if h['score']>=max(.07,hits[0]['score']*.4)]
-        return {'status':'found' if hits else 'insufficient_evidence','hits':hits[:k],'knowledge_version':self.catalog['version'],'knowledge_sha256':self.digest,'note':'原创方法提炼；实证例子不是当前数据的识别证明。' if hits else '知识库中没有足够相关的已核实依据，不生成论文或引用。'}
+        return {'status':'found' if hits else 'insufficient_evidence','hits':hits[:k],'knowledge_version':self.catalog['version'],'knowledge_sha256':self.digest,'note':'原创方法提炼；实证例子分摘要和已核对全文页，均不是当前数据的识别证明。' if hits else '知识库中没有足够相关的已核实依据，不生成论文或引用。'}
     def validate_citations(self,ids,hits):
         allowed={h['card_id'] for h in hits}
         if not ids or set(ids)-allowed:raise ValueError('引用必须来自本轮实际检索的知识卡。')

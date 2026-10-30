@@ -16,3 +16,13 @@
 ## 0.4.0 方法检索与工具接口
 
 MCP使用官方 Python SDK（https://github.com/modelcontextprotocol/python-sdk），本机验证版本2.3.0，遵循其MIT许可；通过依赖使用，未复制SDK源代码。Logit/Poisson通过statsmodels官方API调用。方法知识卡为原创简要提炼，来源、范围与核对日期见打包的causalops/knowledge/catalog.json。Management Science三篇论文仅按公开摘要提炼，并不随源码分发原始网页或PDF。UTD官方期刊清单只用于确认期刊范围，不证明方法或本项目效果。公开研究数据及其许可不由本项目MIT许可证代替。
+
+
+## 0.5.0 research and interoperability extensions
+
+- differences 0.3.0: GPLv3, https://github.com/bernardodionisi/differences.
+- rdrobust 2.1.1: GPL-3.0-only, https://github.com/rdpackages/rdrobust.
+- linearmodels 7.1: NCSA, https://github.com/bashtage/linearmodels.
+- a2a-sdk 1.3.0: Apache-2.0, https://github.com/a2aproject/a2a-python.
+
+The project LICENSE describes original CausalOps code, not a relicensing of dependencies. The complete offline bundle includes GPL dependencies and their exact-version upstream source distributions under third_party_sources, with original notices preserved inside distributions/wheels. Do not describe the combined bundle as unrestricted MIT-only software. Papers are linked and paraphrased in original short notes, not redistributed.

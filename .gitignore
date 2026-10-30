@@ -31,3 +31,7 @@ build/
 dist/
 *.egg-info/
 .venv*/
+
+# Machine-local host connections; generate per installation
+.codex/
+.mcp.json
