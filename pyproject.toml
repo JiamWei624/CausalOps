@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "causalops-agent"
-version = "0.3.0"
+version = "0.4.0"
 description = "Evidence-gated causal analytics and decision agent."
 readme = "README.md"
 license = "MIT"
@@ -25,6 +25,7 @@ dependencies = [
 
 [project.optional-dependencies]
 app = ["streamlit>=1.66,<2", "pyarrow>=20"]
+mcp = ["mcp==2.3.0"]
 research = ["dowhy>=0.14"]
 llm = ["openai>=3.39,<4"]
 dev = ["pytest>=9", "pytest-cov>=7", "pytest-asyncio>=1"]
@@ -41,3 +42,6 @@ pythonpath = ["src"]
 testpaths = ["tests"]
 addopts = "-q"
 
+
+[tool.setuptools.package-data]
+"causalops.knowledge" = ["catalog.json"]

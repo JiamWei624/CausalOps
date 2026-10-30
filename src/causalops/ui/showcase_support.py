@@ -8,6 +8,7 @@ from causalops.results.interpretation import interpret_run
 
 ROOT=Path(__file__).resolve().parents[3]
 ROUTES={
+ 'assistant':('分析助手 · 统一入口','上传、对话、方法检索、受控执行与证据解释。'),
  'analysis':('分析我的数据','上传自己的表、确认研究设计、执行并恢复分析。'),
  'home':('开始使用','选择一个问题，跟随提示完成一次分析。'),
  'experiment':('路线一 · 随机实验','营销邮件是否提高访问概率？读懂绝对变化、区间和实际意义。'),

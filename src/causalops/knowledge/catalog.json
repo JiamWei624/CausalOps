@@ -1,0 +1,592 @@
+{
+  "version": "2026-10-31.1",
+  "sources": {
+    "pandas": {
+      "source_id": "pandas",
+      "title": "DataFrame.describe",
+      "url": "https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.describe.html",
+      "source_type": "official_documentation",
+      "locator": "统计描述 API",
+      "checked_on": "2026-10-31",
+      "access_scope": "public_documentation",
+      "reuse": "原创简要提炼与来源链接；不分发论文全文或网页全文"
+    },
+    "pearson": {
+      "source_id": "pearson",
+      "title": "scipy.stats.pearsonr",
+      "url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.pearsonr.html",
+      "source_type": "official_documentation",
+      "locator": "Pearson 相关及常量输入限制",
+      "checked_on": "2026-10-31",
+      "access_scope": "public_documentation",
+      "reuse": "原创简要提炼与来源链接；不分发论文全文或网页全文"
+    },
+    "ols": {
+      "source_id": "ols",
+      "title": "statsmodels OLS",
+      "url": "https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.OLS.html",
+      "source_type": "official_documentation",
+      "locator": "线性模型，需自行加入截距",
+      "checked_on": "2026-10-31",
+      "access_scope": "public_documentation",
+      "reuse": "原创简要提炼与来源链接；不分发论文全文或网页全文"
+    },
+    "glm": {
+      "source_id": "glm",
+      "title": "statsmodels Generalized Linear Models",
+      "url": "https://www.statsmodels.org/stable/examples/notebooks/generated/glm.html",
+      "source_type": "official_documentation",
+      "locator": "Binomial/Poisson 建模实例",
+      "checked_on": "2026-10-31",
+      "access_scope": "public_documentation",
+      "reuse": "原创简要提炼与来源链接；不分发论文全文或网页全文"
+    },
+    "logit": {
+      "source_id": "logit",
+      "title": "statsmodels Logit",
+      "url": "https://www.statsmodels.org/stable/generated/statsmodels.discrete.discrete_model.Logit.html",
+      "source_type": "official_documentation",
+      "locator": "二元响应模型",
+      "checked_on": "2026-10-31",
+      "access_scope": "public_documentation",
+      "reuse": "原创简要提炼与来源链接；不分发论文全文或网页全文"
+    },
+    "welch": {
+      "source_id": "welch",
+      "title": "scipy.stats.ttest_ind",
+      "url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ttest_ind.html",
+      "source_type": "official_documentation",
+      "locator": "独立样本均值差",
+      "checked_on": "2026-10-31",
+      "access_scope": "public_documentation",
+      "reuse": "原创简要提炼与来源链接；不分发论文全文或网页全文"
+    },
+    "cuped": {
+      "source_id": "cuped",
+      "title": "Improving the Sensitivity of Online Controlled Experiments by Utilizing Pre-Experiment Data",
+      "url": "https://robotics.stanford.edu/~ronnyk/2013-02CUPEDImprovingSensitivityOfControlledExperiments.pdf",
+      "source_type": "method_paper",
+      "locator": "Deng, Xu, Kohavi, Walker; WSDM 2013; DOI 10.1145/2433396.2433413；不是 UTD 期刊",
+      "checked_on": "2026-10-31",
+      "access_scope": "public_documentation",
+      "reuse": "原创简要提炼与来源链接；不分发论文全文或网页全文"
+    },
+    "doubleml": {
+      "source_id": "doubleml",
+      "title": "DoubleML models",
+      "url": "https://docs.doubleml.org/stable/guide/models.html",
+      "source_type": "official_documentation",
+      "locator": "PLR 与 IRM 模型及识别条件",
+      "checked_on": "2026-10-31",
+      "access_scope": "public_documentation",
+      "reuse": "原创简要提炼与来源链接；不分发论文全文或网页全文"
+    },
+    "crossfit": {
+      "source_id": "crossfit",
+      "title": "DoubleML sample splitting",
+      "url": "https://docs.doubleml.org/stable/guide/resampling.html",
+      "source_type": "official_documentation",
+      "locator": "样本切分和交叉拟合",
+      "checked_on": "2026-10-31",
+      "access_scope": "public_documentation",
+      "reuse": "原创简要提炼与来源链接；不分发论文全文或网页全文"
+    },
+    "did": {
+      "source_id": "did",
+      "title": "linearmodels panel examples",
+      "url": "https://bashtage.github.io/linearmodels/panel/examples/examples.html",
+      "source_type": "official_documentation",
+      "locator": "固定效应与聚类推断；API 本身不证明 DID 识别",
+      "checked_on": "2026-10-31",
+      "access_scope": "public_documentation",
+      "reuse": "原创简要提炼与来源链接；不分发论文全文或网页全文"
+    },
+    "design": {
+      "source_id": "design",
+      "title": "Patterns of Trustworthy Experimentation: Pre-Experiment Stage",
+      "url": "https://www.microsoft.com/en-us/research/articles/patterns-of-trustworthy-experimentation-pre-experiment-stage/",
+      "source_type": "official_documentation",
+      "locator": "微软研究，实验设计与指标",
+      "checked_on": "2026-10-31",
+      "access_scope": "public_documentation",
+      "reuse": "原创简要提炼与来源链接；不分发论文全文或网页全文"
+    },
+    "airbnb": {
+      "source_id": "airbnb",
+      "title": "Reducing Interference Bias in Online Marketplace Experiments Using Cluster Randomization: Evidence from a Pricing Meta-experiment on Airbnb",
+      "url": "https://pubsonline.informs.org/doi/10.1287/mnsc.2020.01157",
+      "source_type": "utd_empirical_abstract",
+      "locator": "Management Science; online 2024-04-05; 摘要范围；DOI 10.1287/mnsc.2020.01157",
+      "checked_on": "2026-10-31",
+      "access_scope": "abstract_only",
+      "reuse": "原创简要提炼与来源链接；不分发论文全文或网页全文"
+    },
+    "chat": {
+      "source_id": "chat",
+      "title": "Engaging Customers with AI in Online Chats: Evidence from a Randomized Field Experiment",
+      "url": "https://pubsonline.informs.org/doi/10.1287/mnsc.2022.03920",
+      "source_type": "utd_empirical_abstract",
+      "locator": "Zhang & Narayandas; Management Science; online 2025-10-01；摘要范围",
+      "checked_on": "2026-10-31",
+      "access_scope": "abstract_only",
+      "reuse": "原创简要提炼与来源链接；不分发论文全文或网页全文"
+    },
+    "human": {
+      "source_id": "human",
+      "title": "Human-Centered Artificial Intelligence: A Field Experiment",
+      "url": "https://pubsonline.informs.org/doi/10.1287/mnsc.2022.03849",
+      "source_type": "utd_empirical_abstract",
+      "locator": "Management Science; online 2025-06-09；摘要范围",
+      "checked_on": "2026-10-31",
+      "access_scope": "abstract_only",
+      "reuse": "原创简要提炼与来源链接；不分发论文全文或网页全文"
+    },
+    "utd": {
+      "source_id": "utd",
+      "title": "UT Dallas List of Journals",
+      "url": "https://jsom.utdallas.edu/the-utd-top-100-business-school-research-rankings/list-of-journals",
+      "source_type": "journal_scope",
+      "locator": "仅用于核对 Management Science 属于该期刊清单，不作为方法证据",
+      "checked_on": "2026-10-31",
+      "access_scope": "public_documentation",
+      "reuse": "原创简要提炼与来源链接；不分发论文全文或网页全文"
+    },
+    "mcp": {
+      "source_id": "mcp",
+      "title": "Official MCP Python SDK",
+      "url": "https://github.com/modelcontextprotocol/python-sdk",
+      "source_type": "official_repository",
+      "locator": "可选只读 stdio 服务；实现以实际安装 SDK 为准",
+      "checked_on": "2026-10-31",
+      "access_scope": "public_documentation",
+      "reuse": "原创简要提炼与来源链接；不分发论文全文或网页全文"
+    },
+    "deepseek": {
+      "source_id": "deepseek",
+      "title": "DeepSeek JSON Output",
+      "url": "https://api-docs.deepseek.com/guides/json_mode/",
+      "source_type": "official_documentation",
+      "locator": "JSON 输出后仍须本地结构和权限检查",
+      "checked_on": "2026-10-31",
+      "access_scope": "public_documentation",
+      "reuse": "原创简要提炼与来源链接；不分发论文全文或网页全文"
+    },
+    "did-modern": {
+      "source_id": "did-modern",
+      "title": "did package: Getting Started with the did Package",
+      "url": "https://bcallaway11.github.io/did/articles/did-basics.html",
+      "source_type": "official_documentation",
+      "locator": "Callaway/SantAnna did 官方教程；组别-时间ATT与异质处理时点",
+      "checked_on": "2026-10-31",
+      "access_scope": "public_documentation",
+      "reuse": "原创提炼，链接原始官方教程；本版未接入该R执行器"
+    }
+  },
+  "cards": [
+    {
+      "card_id": "describe",
+      "title": "先了解数据质量与分布",
+      "methods": [
+        "descriptive"
+      ],
+      "tags": [
+        "描述",
+        "均值",
+        "缺失",
+        "分布",
+        "质量",
+        "overview",
+        "summary"
+      ],
+      "source_ids": [
+        "pandas"
+      ],
+      "scope": "method_rule",
+      "version": "2026-10-31.1",
+      "sections": {
+        "适用问题": "样本规模、缺失和分布是什么。",
+        "数据要求": "确认一行含义与数值单位；ID不应作为业务指标。",
+        "识别条件": "不作因果识别。",
+        "诊断方法": "分别记录有限值、缺失、无穷、分位数和重复；IQR只标记。",
+        "失败情形": "全缺失或常量不得伪造均值、方差。",
+        "结果解释": "分类比例说明分母；均值不等于典型个体。"
+      },
+      "estimand": "有限有效样本的经验分布",
+      "formula": "均值=sum(x)/n；样本方差=sum((x-mean)^2)/(n-1)。分类占比=本类行数/全表行数；缺失单列。",
+      "implementation": "pandas.Series / numpy；非有限值分别计数"
+    },
+    {
+      "card_id": "correlation",
+      "title": "相关分析的有效样本与边界",
+      "methods": [
+        "correlation"
+      ],
+      "tags": [
+        "相关",
+        "pearson",
+        "spearman",
+        "线性关系",
+        "correlation"
+      ],
+      "source_ids": [
+        "pearson"
+      ],
+      "scope": "method_rule",
+      "version": "2026-10-31.1",
+      "sections": {
+        "适用问题": "两个变量是否共同变化。",
+        "数据要求": "成对有限观测；保留每对有效数。",
+        "识别条件": "相关不识别方向或因果。",
+        "诊断方法": "检查常量、异常值、非线性、重复单位。",
+        "失败情形": "常量或样本不足时未计算；不同变量对样本可能不同。",
+        "结果解释": "Pearson描述线性相关；秩相关不等于因果，当前不批量显著性筛选。"
+      },
+      "estimand": "配对样本的线性/秩相关",
+      "formula": "Pearson r=sum((x-x̄)(y-ȳ))/sqrt(sum((x-x̄)^2)sum((y-ȳ)^2))；Spearman对秩应用相关。",
+      "implementation": "scipy.stats.pearsonr / spearmanr；常量和样本数检查"
+    },
+    {
+      "card_id": "ols",
+      "title": "连续结果的条件线性关联",
+      "methods": [
+        "ols",
+        "regression_adjustment"
+      ],
+      "tags": [
+        "回归",
+        "ols",
+        "连续",
+        "控制变量",
+        "聚类",
+        "hc3"
+      ],
+      "source_ids": [
+        "ols"
+      ],
+      "scope": "method_rule",
+      "version": "2026-10-31.1",
+      "sections": {
+        "适用问题": "在选定自变量下描述数值结果关系。",
+        "数据要求": "明确结果、自变量、独立/重复单位；不自动选控制。",
+        "识别条件": "未有识别依据时只作关联。",
+        "诊断方法": "满秩、残差、HC3或恰当聚类/HAC；时间序列另查趋势。",
+        "失败情形": "共线、数据泄漏、少聚类、伪回归。",
+        "结果解释": "系数是条件关联；R²非预测准确率。"
+      },
+      "estimand": "给定模型设定的条件线性关联",
+      "formula": "y=α+Xβ+ε；β的因果解释另需识别。重复观测使用适当聚类，而非仅异方差修正。",
+      "implementation": "statsmodels.OLS.fit；不默认HC3解决聚类"
+    },
+    {
+      "card_id": "logit",
+      "title": "二元结果的 Logit 关联模型",
+      "methods": [
+        "logit"
+      ],
+      "tags": [
+        "logit",
+        "二元",
+        "转化",
+        "概率",
+        "0/1",
+        "binary",
+        "logistic"
+      ],
+      "source_ids": [
+        "logit"
+      ],
+      "scope": "method_rule",
+      "version": "2026-10-31.1",
+      "sections": {
+        "适用问题": "分析0/1结果与特征的关联。",
+        "数据要求": "结果恰为0/1；足够的两类和有效样本。",
+        "识别条件": "没有干预识别时不称因果。",
+        "诊断方法": "收敛、完全分离、矩阵秩、极端概率和推断单位。",
+        "失败情形": "全零、全一、分离、无限系数、重复单位当独立。",
+        "结果解释": "系数是对数优势比；exp系数为优势比，不是概率提升百分点。"
+      },
+      "estimand": "条件概率模型中的对数优势关联",
+      "formula": "log(p/(1-p))=α+Xβ；OR=exp(β)。概率差取决于基线与X，不能用OR减一当百分点。",
+      "implementation": "statsmodels.GLM(family=Binomial).fit；有限系数、收敛与分离检查"
+    },
+    {
+      "card_id": "poisson",
+      "title": "等暴露口径的计数关联模型",
+      "methods": [
+        "poisson"
+      ],
+      "tags": [
+        "计数",
+        "poisson",
+        "次数",
+        "count",
+        "过度离散"
+      ],
+      "source_ids": [
+        "glm"
+      ],
+      "scope": "method_rule",
+      "version": "2026-10-31.1",
+      "sections": {
+        "适用问题": "分析非负整数次数与特征的关系。",
+        "数据要求": "计数口径及暴露时间可比；变暴露须另设计offset。",
+        "识别条件": "仅作条件均值关联。",
+        "诊断方法": "收敛、残差离散、有效样本、稳健标准误。",
+        "失败情形": "负数、非整数、暴露不可比、过度离散被忽略。",
+        "结果解释": "exp系数是条件均值比；不能等同实际干预收益。"
+      },
+      "estimand": "可比暴露口径下的条件计数均值",
+      "formula": "log(E[Y|X])=α+Xβ；exp(β)是条件均值比。变暴露须明确log(exposure)的offset。",
+      "implementation": "statsmodels.GLM(family=Poisson).fit；当前不开放变暴露offset"
+    },
+    {
+      "card_id": "ab",
+      "title": "真实随机实验的两组比较",
+      "methods": [
+        "ab_test"
+      ],
+      "tags": [
+        "ab",
+        "a/b",
+        "随机",
+        "randomized",
+        "实验",
+        "分流"
+      ],
+      "source_ids": [
+        "welch",
+        "design"
+      ],
+      "scope": "method_rule",
+      "version": "2026-10-31.1",
+      "sections": {
+        "适用问题": "随机提供策略后结果是否不同。",
+        "数据要求": "明确分配单位与结果窗口；重复观测需适当推断。",
+        "识别条件": "随机化来自设计事实，不能从平衡p值推断。",
+        "诊断方法": "样本与分配口径、缺失、污染、区间及实际意义。",
+        "失败情形": "选择性失访、干扰、多次窥探或单位错误。",
+        "结果解释": "报告绝对差、区间；收益需成本依据。"
+      },
+      "estimand": "已登记实验人群及结果窗口的两组均值差",
+      "formula": "Δ=mean(Y|T=1)-mean(Y|T=0)；SE来自适合分配/观测单位的推断。二元Δ乘100是百分点。",
+      "implementation": "scipy独立样本推断 / 既有实验执行器；不从数据平衡反推随机化"
+    },
+    {
+      "card_id": "cuped",
+      "title": "CUPED 用处理前信息改善精度",
+      "methods": [
+        "cuped"
+      ],
+      "tags": [
+        "cuped",
+        "方差",
+        "精度",
+        "处理前",
+        "pre-experiment"
+      ],
+      "source_ids": [
+        "cuped"
+      ],
+      "scope": "method_rule",
+      "version": "2026-10-31.1",
+      "sections": {
+        "适用问题": "已有真实随机实验且有合适处理前指标。",
+        "数据要求": "X须在处理前确定，与结果有合理关联。",
+        "识别条件": "随机实验识别条件仍需成立。",
+        "诊断方法": "比较调整前后精度，检查时间泄漏。",
+        "失败情形": "使用处理后X或组别相关缺失会污染调整。",
+        "结果解释": "不保证每次提高精度，更不将算法误认成因果识别。"
+      },
+      "estimand": "真实实验中的协变量调整差异",
+      "formula": "Y_adj=Y-θ(X-mean(X))，θ通常由协方差/方差估计；X必须是处理前信息。",
+      "implementation": "既有CUPED执行器与Deng等原文；估计与缺失规则需固定"
+    },
+    {
+      "card_id": "psm",
+      "title": "匹配和加权不能解决未测混杂",
+      "methods": [
+        "psm",
+        "ipw"
+      ],
+      "tags": [
+        "psm",
+        "匹配",
+        "ipw",
+        "加权",
+        "倾向",
+        "overlap"
+      ],
+      "source_ids": [
+        "doubleml"
+      ],
+      "scope": "method_rule",
+      "version": "2026-10-31.1",
+      "sections": {
+        "适用问题": "在可观测混杂假设下比较二元处理。",
+        "数据要求": "一实体一行、处理前协变量；处理与结果明确。",
+        "识别条件": "无未测混杂、共同支撑与处理定义需研究依据。",
+        "诊断方法": "倾向分布、平衡、极端权重、匹配损失。",
+        "失败情形": "缺乏重叠或混杂信息不足；不能靠p值证明无混杂。",
+        "结果解释": "匹配/加权只是估计步骤；须说明目标人群与ATT/ATE。"
+      },
+      "estimand": "按方法约定的匹配ATT或加权ATE",
+      "formula": "IPW-ATE用T·Y/e(X)-(1-T)·Y/(1-e(X))的样本平均；权重稳定化与归一化须报告。",
+      "implementation": "使用本地已经数值验收的PSM/IPW执行器；不自动更换目标量"
+    },
+    {
+      "card_id": "dml",
+      "title": "PLR 与 IRM/AIPW 的目标不同",
+      "methods": [
+        "double_ml",
+        "aipw"
+      ],
+      "tags": [
+        "dml",
+        "doubleml",
+        "aipw",
+        "irm",
+        "plr",
+        "异质",
+        "双重稳健"
+      ],
+      "source_ids": [
+        "doubleml",
+        "crossfit"
+      ],
+      "scope": "method_rule",
+      "version": "2026-10-31.1",
+      "sections": {
+        "适用问题": "使用灵活模型拟合干扰项并估计指定目标。",
+        "数据要求": "一独立单位一行；交叉拟合，处理前协变量。",
+        "识别条件": "IRM ATE需可交换性与重叠；PLR有额外结构。",
+        "诊断方法": "交叉拟合预测、倾向截断、支撑、目标量核对。",
+        "失败情形": "双重稳健不消除未测混杂；过拟合或不重叠。",
+        "结果解释": "PLR系数不自动等于异质处理总体ATE。"
+      },
+      "estimand": "本版IRM的ATE；PLR的部分线性系数",
+      "formula": "AIPW得分=m1(X)-m0(X)+T(Y-m1)/e(X)-(1-T)(Y-m0)/(1-e(X))；必须使用折外预测。",
+      "implementation": "DoubleMLIRM(score=ATE) / DoubleMLPLR；保存切分、倾向截断与诊断"
+    },
+    {
+      "card_id": "did",
+      "title": "日级 DID 与事件时间诊断",
+      "methods": [
+        "did"
+      ],
+      "tags": [
+        "did",
+        "平行趋势",
+        "双重差分",
+        "event study",
+        "事件研究",
+        "处理前"
+      ],
+      "source_ids": [
+        "did",
+        "did-modern"
+      ],
+      "scope": "method_rule",
+      "version": "2026-10-31.1",
+      "sections": {
+        "适用问题": "比较处理前后组间变化。",
+        "数据要求": "本版仅共同处理日、从未处理对照、完整日级面板。",
+        "识别条件": "平行趋势、无预期和干扰需设计论证。",
+        "诊断方法": "基期省略、前导系数联合检验、图形及窗口敏感性。",
+        "失败情形": "交错处理、错误基期、缺日或预趋势不能套用本版。",
+        "结果解释": "不显著前趋势不是平行趋势证明；时不变协变量被个体效应吸收。"
+      },
+      "estimand": "限定共同处理日设计下的组间变化差",
+      "formula": "两期DID=(处理组后-前)-(对照组后-前)。事件研究须省略基期；交错处理不能直接套本版。",
+      "implementation": "linearmodels.PanelOLS 与本地事件时间诊断；当前不是任意交错处理估计器"
+    },
+    {
+      "card_id": "interference",
+      "title": "平台实验中的干扰：Airbnb 实证启示",
+      "methods": [
+        "ab_test",
+        "did"
+      ],
+      "tags": [
+        "平台",
+        "干扰",
+        "sutva",
+        "airbnb",
+        "cluster",
+        "溢出"
+      ],
+      "source_ids": [
+        "airbnb"
+      ],
+      "scope": "empirical_example",
+      "version": "2026-10-31.1",
+      "sections": {
+        "适用问题": "用户或商家之间存在竞争、曝光或互动外溢。",
+        "数据要求": "论文在Airbnb比较个体与聚类随机化设计。",
+        "识别条件": "实验单位间影响需单独评估。",
+        "诊断方法": "先画影响路径并区分分配层级与推断聚类。",
+        "失败情形": "不能用本平台的显著性跳过干扰分析。",
+        "结果解释": "论文案例提示干扰可能改变估计；不搬用其数值作为当前平台效果。"
+      }
+    },
+    {
+      "card_id": "ai_chat",
+      "title": "AI客服实验：效率和质量同时评测",
+      "methods": [
+        "ab_test",
+        "descriptive"
+      ],
+      "tags": [
+        "ai",
+        "客服",
+        "效率",
+        "质量",
+        "异质性",
+        "新手",
+        "chat"
+      ],
+      "source_ids": [
+        "chat"
+      ],
+      "scope": "empirical_example",
+      "version": "2026-10-31.1",
+      "sections": {
+        "适用问题": "AI是否改善服务且适用于哪些任务。",
+        "数据要求": "该文是企业内随机提供AI建议的现场实验。",
+        "识别条件": "实验结果只支持其场景；不能自动外推本项目。",
+        "诊断方法": "同时记录速度、体验与任务类型，评估经验差异。",
+        "失败情形": "复杂投诉与先前理解失败可能限制收益。",
+        "结果解释": "本项目借鉴效率+质量双指标；尚无本项目人类提效数值。"
+      }
+    },
+    {
+      "card_id": "human_ai",
+      "title": "以人为中心的工作流程验收",
+      "methods": [
+        "ab_test",
+        "descriptive"
+      ],
+      "tags": [
+        "人机",
+        "可用性",
+        "工作流",
+        "认知",
+        "效率",
+        "human"
+      ],
+      "source_ids": [
+        "human"
+      ],
+      "scope": "empirical_example",
+      "version": "2026-10-31.1",
+      "sections": {
+        "适用问题": "工具能力如何落实到实际工作表现。",
+        "数据要求": "论文在药企现场考察与使用者偏好相适应的交互。",
+        "识别条件": "论文不是本工具效果证明。",
+        "诊断方法": "分开评测工作步骤、决策权、培训和使用表现。",
+        "失败情形": "技术更强未必在未适配流程中带来正收益。",
+        "结果解释": "使用者任务成功与返工是本项目验收项；不能用脚本耗时代替人类收益。"
+      }
+    }
+  ],
+  "policy": "方法规则与实证案例分层；只索引已核实原创提炼，不含客户数据；检索失败明确拒答；期刊身份不是假设成立的证据。"
+}

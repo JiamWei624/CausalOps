@@ -14,3 +14,6 @@ jobs:
         env:
           PYTHONDONTWRITEBYTECODE: '1'
           OMP_NUM_THREADS: '2'
+      - run: python scripts/verify_assistant_mcp.py --workspace mcp-test-workspace --out mcp-test-result.json
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'

@@ -100,7 +100,7 @@ def status():
 
 def main():
     st.set_page_config(page_title='CausalOps · 研究与决策作品集',page_icon='◈',layout='wide');style()
-    initial=checked_route(st.query_params.get('route','analysis'))
+    initial=checked_route(st.query_params.get('route','assistant'))
     if 'showcase_route' not in st.session_state:st.session_state['showcase_route']=initial
     with st.sidebar:
         st.markdown('## CausalOps');st.caption('有证据的分析 · 有边界的结论')
@@ -108,7 +108,10 @@ def main():
         st.divider();st.caption('主流程：上传自己的表 → 映射并保存 → 审核执行 → 读结论与证据。示例中心用于学习。')
         st.caption('个人本地工作台 · 数据不自动外发')
     try:
-        if route=='home':home()
+        if route=='assistant':
+            from causalops.ui.assistant_app import render_assistant
+            render_assistant()
+        elif route=='home':home()
         elif route=='analysis':
             options=['causal','descriptive','correlation','ols'];labels={'causal':'研究与效应分析','descriptive':'描述性统计分析','correlation':'相关分析','ols':'线性关联回归'}
             requested=st.query_params.get('mode','causal');kind=st.radio('分析任务类型',options,index=options.index(requested) if requested in options else 0,format_func=lambda x:labels[x],horizontal=True,key='analysis_kind')

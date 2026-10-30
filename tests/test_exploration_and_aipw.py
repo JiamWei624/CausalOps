@@ -108,7 +108,7 @@ def test_exploration_ui_save_opens_saved_record_and_preserves_group(tmp_path,mon
     from streamlit.testing.v1 import AppTest
     monkeypatch.setenv('CAUSALOPS_HOME',str(tmp_path/'home'))
     w=GeneralWorkspace(tmp_path/'home');uid=w.ingest(pd.DataFrame({'x':[1,2,3,4],'g':['a','a','b','b']}).to_csv(index=False).encode(),'small.csv')
-    app=AppTest.from_file(str(Path(__file__).parents[1]/'src/causalops/ui/workbench.py')).run(timeout=30)
+    app=AppTest.from_file(str(Path(__file__).parents[1]/'src/causalops/ui/workbench.py'));app.query_params['route']='analysis';app.run(timeout=30)
     next(r for r in app.radio if r.label=='分析任务类型').set_value('descriptive').run(timeout=30)
     next(x for x in app.selectbox if x.label=='或选择已导入的本地表').select(uid).run(timeout=30)
     next(x for x in app.text_area if x.label=='本次分析问题').input('这张小表的分组分布和均值是多少').run(timeout=30)
@@ -129,7 +129,7 @@ def test_same_title_records_have_distinct_ui_labels(tmp_path,monkeypatch):
     monkeypatch.setenv('CAUSALOPS_HOME',str(tmp_path/'home'));w=GeneralWorkspace(tmp_path/'home');ex=ExplorationWorkspace(w)
     uid=w.ingest(pd.DataFrame({'x':[1,2,3]}).to_csv(index=False).encode(),'same.csv');d=ExplorationDesign(question='相同标题也必须恢复到正确的分析记录',numeric=['x'])
     first,_=ex.save(uid,d);second,_=ex.save(uid,d)
-    app=AppTest.from_file(str(Path(__file__).parents[1]/'src/causalops/ui/workbench.py')).run(timeout=30)
+    app=AppTest.from_file(str(Path(__file__).parents[1]/'src/causalops/ui/workbench.py'));app.query_params['route']='analysis';app.run(timeout=30)
     next(r for r in app.radio if r.label=='分析任务类型').set_value('descriptive').run(timeout=30)
     next(r for r in app.radio if r.label=='分析记录').set_value('恢复已保存分析').run(timeout=30)
     selection=next(x for x in app.selectbox if x.label=='选择已保存分析')

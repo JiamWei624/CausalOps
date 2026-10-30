@@ -71,8 +71,8 @@
     "source": "https://github.com/rdpackages/rdrobust"
   },
   {
-    "method": "Logit / Poisson / predictive analysis",
-    "status": "planned_not_executable",
+    "method": "Logit / Poisson association",
+    "status": "implemented_association_only",
     "requirements": [
       "binary/count outcome contract",
       "separation/overdispersion checks",
@@ -84,6 +84,8 @@
       "degenerate outcome failures",
       "time leakage checks"
     ],
-    "source": "https://github.com/statsmodels/statsmodels"
+    "source": "https://github.com/statsmodels/statsmodels",
+    "validation": "statsmodels GLM reference; synthetic separation/outcome/review failures; RAND 20,190-row numerical reference",
+    "remaining": "Predictive held-out/time-split/calibration pipeline not implemented; varying exposure offset not opened"
   }
 ]

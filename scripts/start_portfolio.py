@@ -5,5 +5,5 @@ sys.path.insert(0,str(root/'src'))
 os.environ.setdefault('CAUSALOPS_HOME',str(root/'artifacts/general-workspace'))
 from causalops.launch import main
 if __name__=='__main__':
-    try:raise SystemExit(main(project_root=root))
+    try:raise SystemExit(main(["--port","8510",*sys.argv[1:]],project_root=root))
     except (OSError,RuntimeError) as e:raise SystemExit('启动未完成：'+str(e)) from None

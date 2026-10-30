@@ -12,11 +12,11 @@ from pydantic import BaseModel,ConfigDict,Field
 from causalops.general.service import GeneralWorkspace,DesignError
 from causalops.execution import _data_fingerprint
 
-LABELS={'descriptive':'描述性统计分析','correlation':'相关分析（探索性）','ols':'线性关联回归（非因果）'}
+LABELS={'descriptive':'描述性统计分析','correlation':'相关分析（探索性）','ols':'线性关联回归（非因果）','logit':'二元Logit关联（非因果）','poisson':'Poisson计数关联（非因果）'}
 class ExplorationDesign(BaseModel):
     model_config=ConfigDict(extra='forbid')
     question:str=Field(min_length=8,max_length=1000)
-    method:Literal['descriptive','correlation','ols']='descriptive'
+    method:Literal['descriptive','correlation','ols','logit','poisson']='descriptive'
     numeric:list[str]=Field(default_factory=list,max_length=20)
     categorical:list[str]=Field(default_factory=list,max_length=10)
     group:str|None=None
@@ -24,11 +24,12 @@ class ExplorationDesign(BaseModel):
     frequency:Literal['D','M','Q','Y']='M'
     outcome:str|None=None
     predictors:list[str]=Field(default_factory=list,max_length=20)
-    covariance:Literal['HC3','cluster','HAC']='HC3'
+    covariance:Literal['HC3','HC0','cluster','HAC']='HC3'
     cluster:str|None=None
     maxlags:int=Field(default=1,ge=1,le=30)
     independent_rows_reviewed:bool=False
     allow_complete_case:bool=False
+    comparable_exposure_reviewed:bool=False
 
 def clean_json(v):
     if isinstance(v,dict):return {str(k):clean_json(x) for k,x in v.items()}
@@ -55,7 +56,7 @@ def validate_frame(frame,d):
     if d.group and f[d.group].nunique(dropna=False)>50:raise DesignError('分组超过50类，请先制定合并规则。')
     if any(f[c].nunique(dropna=False)>1000 for c in d.categorical):raise DesignError('分类字段超过1000类，请勿将ID误作分类变量。')
     if d.method=='correlation' and len(d.numeric)<2:raise DesignError('相关分析至少选择两个数值字段。')
-    if d.method=='ols' and (not d.outcome or not d.predictors or d.outcome in d.predictors):raise DesignError('回归须指定不同的数值结果与自变量。')
+    if d.method in ('ols','logit','poisson') and (not d.outcome or not d.predictors or d.outcome in d.predictors):raise DesignError('回归须指定不同的数值结果与自变量。')
     if d.method=='descriptive' and not (d.numeric or d.categorical):raise DesignError('描述统计至少选择一个数值或分类字段。')
     return f
 
@@ -89,7 +90,7 @@ def describe(f,d):
 
 def linear_association(f,d):
     fields=list(dict.fromkeys([d.outcome,*d.predictors,*([d.cluster] if d.covariance=='cluster' and d.cluster else []),*([d.date] if d.covariance=='HAC' and d.date else [])]));part=f[fields].copy()
-    if d.covariance=='HC3' and not d.independent_rows_reviewed:raise DesignError('HC3不能修复重复实体/时间相关，请确认行独立或选择适当聚类/HAC。')
+    if d.covariance in ('HC3','HC0') and not d.independent_rows_reviewed:raise DesignError('HC3不能修复重复实体/时间相关，请确认行独立或选择适当聚类/HAC。')
     if d.covariance=='cluster' and not d.cluster:raise DesignError('聚类协方差需要聚类字段。')
     if d.covariance=='HAC' and not d.date:raise DesignError('HAC需要可排序、唯一的时间字段及明确滞后阶数。')
     for c in [d.outcome,*d.predictors]:
@@ -119,7 +120,7 @@ def linear_association(f,d):
 
 def compute(frame,d):
     f=validate_frame(frame,d);summary=describe(f,d)
-    bundle={'run_id':uuid.uuid4().hex,'created_at':datetime.now(timezone.utc).isoformat(),'method':d.method,'claim_level':'associational' if d.method in ('correlation','ols') else 'descriptive','design':d.model_dump(mode='json'),'data_fingerprint':_data_fingerprint(frame),'summary':summary,'regression':linear_association(f,d) if d.method=='ols' else None,'runtime':{'python':platform.python_version(),**{x:md.version(x) for x in ['pandas','numpy','scipy','statsmodels']}},'sources':['https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.describe.html','https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.pearsonr.html','https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.spearmanr.html','https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.OLS.html'],'warnings':['数值统计只使用有限有效值，并分别记录缺失和无穷值；IQR标记不删除数据。','分类比例的分母为全表行数，缺失单独记录；分组按有效值汇总，不默认等权总体外推。','描述与相关不能识别因果；未测量实际收益或平台上线提效。']}
+    bundle={'run_id':uuid.uuid4().hex,'created_at':datetime.now(timezone.utc).isoformat(),'method':d.method,'claim_level':'associational' if d.method in ('correlation','ols','logit','poisson') else 'descriptive','design':d.model_dump(mode='json'),'data_fingerprint':_data_fingerprint(frame),'summary':summary,'regression':(linear_association(f,d) if d.method=='ols' else __import__('causalops.general.glm',fromlist=['generalized_association']).generalized_association(f,d)) if d.method in ('ols','logit','poisson') else None,'runtime':{'python':platform.python_version(),**{x:md.version(x) for x in ['pandas','numpy','scipy','statsmodels']}},'sources':['https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.describe.html','https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.pearsonr.html','https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.spearmanr.html','https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.OLS.html'],'warnings':['数值统计只使用有限有效值，并分别记录缺失和无穷值；IQR标记不删除数据。','分类比例的分母为全表行数，缺失单独记录；分组按有效值汇总，不默认等权总体外推。','描述与相关不能识别因果；未测量实际收益或平台上线提效。']}
     bundle=clean_json(bundle);bundle['conclusions']=conclusions(bundle);return bundle
 
 def conclusions(b):
@@ -128,7 +129,7 @@ def conclusions(b):
         if row['finite_n']:lines.append(f"{row['field']}：有效数{row['finite_n']}，均值{row['mean']:.4g}，中位数{row['median']:.4g}，缺失{row['missing_n']}，无穷值{row['infinite_n']}。")
         else:lines.append(f"{row['field']}没有有限有效值，未补写均值或中位数。")
     if b['method']=='correlation':lines.append('相关系数按各变量对的完整有限观测计算，样本数可能不同；未自动筛选显著结果或进行因果解释。')
-    if b['regression']:lines.append(f"线性关联模型纳入{b['regression']['n']}行，协方差使用{b['regression']['covariance']}；系数用于条件关联解释，不代表干预收益。")
+    if b['regression']:lines.append(f"关联模型纳入{b['regression']['n']}行，协方差使用{b['regression']['covariance']}；系数用于条件关联解释，不代表干预收益。")
     lines.append('建议先核对缺失、字段单位、重复记录含义及观察窗口，再决定分组比较或正式研究设计。');return lines
 
 class ExplorationWorkspace:
