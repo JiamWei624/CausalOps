@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "causalops-agent"
+version = "0.3.0"
+description = "Evidence-gated causal analytics and decision agent."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.11,<3.12"
+dependencies = [
+  "pandas>=2.3,<3",
+  "numpy>=2,<3",
+  "duckdb>=1.4",
+  "sqlglot>=30",
+  "pydantic>=2.10,<3",
+  "statsmodels>=0.14",
+  "scikit-learn>=1.6",
+  "linearmodels>=7",
+  "doubleml>=0.11.4,<0.12",
+  "scipy>=1.15,<1.16",
+  "plotly>=6",
+]
+
+[project.optional-dependencies]
+app = ["streamlit>=1.66,<2", "pyarrow>=20"]
+research = ["dowhy>=0.14"]
+llm = ["openai>=3.39,<4"]
+dev = ["pytest>=9", "pytest-cov>=7", "pytest-asyncio>=1"]
+
+[project.scripts]
+causalops = "causalops.cli:main"
+causalops-workbench = "causalops.launch:entrypoint"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-q"
+

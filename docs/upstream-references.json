@@ -1,0 +1,23 @@
+[
+  {
+    "repository": "https://github.com/DoubleML/doubleml-for-py",
+    "commit": "b70cb25e90a24e84c01b575f5549cf257f0bd40b",
+    "download_url": "https://codeload.github.com/DoubleML/doubleml-for-py/zip/b70cb25e90a24e84c01b575f5549cf257f0bd40b",
+    "sha256": "7a60831a52faf94cefbada1a4fc4b70b264c3f3c21e43f78933061e3d3ad393f",
+    "bytes": 1525895
+  },
+  {
+    "repository": "https://github.com/statsmodels/statsmodels",
+    "commit": "e82bcf02f2cb7fd915264f6af79a51ca394965e8",
+    "download_url": "https://codeload.github.com/statsmodels/statsmodels/zip/e82bcf02f2cb7fd915264f6af79a51ca394965e8",
+    "sha256": "4fac80f6902123fb33428d501ac94cfbed2a4c014f18c7838bccdf9139ca821a",
+    "bytes": 17299840
+  },
+  {
+    "repository": "https://github.com/py-why/dowhy",
+    "commit": "eb34218ef73da76a5731cbe49ab4f699be69fbb3",
+    "download_url": "https://codeload.github.com/py-why/dowhy/zip/eb34218ef73da76a5731cbe49ab4f699be69fbb3",
+    "sha256": "f750d0e9e40177f13077f87c1c11fdacbdbf39a956a2c42d97a399f7c922f8e7",
+    "bytes": 14610577
+  }
+]

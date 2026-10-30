@@ -1,0 +1,23 @@
+[
+  {
+    "file": "penguins.csv",
+    "url": "https://raw.githubusercontent.com/allisonhorst/palmerpenguins/8957207b78d6ccd1b4654a9dd9c9041b657478ab/inst/extdata/penguins.csv",
+    "sha256": "f204db2c753b0937caac3cb35258562c14f073e4bbc76be24b4c51ce22767a93",
+    "source_documentation": "https://allisonhorst.github.io/palmerpenguins/",
+    "license_note": "CC0-1.0; cite Palmer LTER and dataset authors"
+  },
+  {
+    "file": "tips.csv",
+    "url": "https://raw.githubusercontent.com/mwaskom/seaborn-data/71e2436a092d714350de0fc409ca8a8714e7e78f/tips.csv",
+    "sha256": "e54cc4d2ce1bff65d32ca60b3e4b802e06bde1d7e7caf6f796f6bf7370e863b0",
+    "source_documentation": "https://github.com/mwaskom/seaborn-data",
+    "license_note": "Example dataset; source repository notes preserved, not redistributed in source package"
+  },
+  {
+    "file": "macrodata.csv",
+    "url": "https://raw.githubusercontent.com/statsmodels/statsmodels/e82bcf02f2cb7fd915264f6af79a51ca394965e8/statsmodels/datasets/macrodata/macrodata.csv",
+    "sha256": "d93c0d3a7a77ef83c3af14e46032bb1d02ae3a512b22ab94159a8ca226fcf708",
+    "source_documentation": "https://www.statsmodels.org/stable/datasets/generated/macrodata.html",
+    "license_note": "Official statsmodels dataset; see original sources and package terms"
+  }
+]

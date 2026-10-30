@@ -1,0 +1,89 @@
+[
+  {
+    "method": "AIPW / DoubleMLIRM ATE",
+    "status": "implemented",
+    "requirements": [
+      "binary treatment",
+      "one independent entity per row",
+      "pre-treatment numeric covariates",
+      "exchangeability/overlap justification"
+    ],
+    "validation": "cross-fitted score identity; known heterogeneous synthetic effect; missing-assumption block",
+    "source": "https://github.com/DoubleML/doubleml-for-py"
+  },
+  {
+    "method": "Descriptive / Pearson-Spearman / OLS HC3-cluster-HAC",
+    "status": "implemented",
+    "requirements": [
+      "explicit field roles",
+      "missing-value denominator",
+      "appropriate dependence and covariance assumptions for OLS"
+    ],
+    "validation": "three new downloaded datasets; numerical reference comparisons; browser upload",
+    "source": "https://github.com/statsmodels/statsmodels"
+  },
+  {
+    "method": "DAG identification and sensitivity/refutation tools",
+    "status": "reference_downloaded_not_integrated",
+    "requirements": [
+      "user-reviewed causal graph",
+      "explicit adjustment set",
+      "no automatic proof of identifiability from columns alone"
+    ],
+    "validation_before_release": [
+      "graph counterexamples",
+      "placebo designs",
+      "refuter false-positive checks"
+    ],
+    "source": "https://github.com/py-why/dowhy"
+  },
+  {
+    "method": "IV / 2SLS",
+    "status": "planned_not_executable",
+    "requirements": [
+      "instrument relevance",
+      "exclusion restriction and independence justified",
+      "weak-instrument diagnostics",
+      "estimand and population explicitly stated"
+    ],
+    "validation_before_release": [
+      "known IV synthetic DGP",
+      "weak/invalid instrument rejection",
+      "independent numerical reference"
+    ],
+    "source": "https://github.com/bashtage/linearmodels"
+  },
+  {
+    "method": "RDD",
+    "status": "planned_not_executable",
+    "requirements": [
+      "running variable",
+      "threshold",
+      "sharp/fuzzy assignment",
+      "local continuity and manipulation checks",
+      "bandwidth and robust inference"
+    ],
+    "validation_before_release": [
+      "near-threshold coverage",
+      "bandwidth sensitivity",
+      "manipulation and sparse-support failures"
+    ],
+    "source": "https://github.com/rdpackages/rdrobust"
+  },
+  {
+    "method": "Logit / Poisson / predictive analysis",
+    "status": "planned_not_executable",
+    "requirements": [
+      "binary/count outcome contract",
+      "separation/overdispersion checks",
+      "time-aware splits for prediction",
+      "probability calibration and held-out validation"
+    ],
+    "validation_before_release": [
+      "official library reference",
+      "degenerate outcome failures",
+      "time leakage checks"
+    ],
+    "source": "https://github.com/statsmodels/statsmodels"
+  }
+]

@@ -1,0 +1,28 @@
+{
+  "question": "Does receiving an AI reply change subsequent user interactions?",
+  "domain": "ugc",
+  "analysis_unit": "user",
+  "treatment": "treated",
+  "outcome": "post_total_interactions",
+  "entity_id_column": "user_id",
+  "covariates": [
+    "registration_age_days",
+    "baseline_activity",
+    "ai_eligible",
+    "pre_active_days",
+    "pre_post_count",
+    "pre_comment_count",
+    "pre_like_count",
+    "pre_repost_count",
+    "pre_total_interactions"
+  ],
+  "candidate_methods": ["psm"],
+  "identification_assumptions": [
+    "conditional exchangeability given observed pre-treatment activity",
+    "stable unit treatment value"
+  ],
+  "source_tables": ["psm_user_cohort"],
+  "assignment_mechanism": "observational",
+  "data_structure": "cross_section",
+  "positivity_plausible": true
+}

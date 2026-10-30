@@ -1,0 +1,20 @@
+{
+  "question": "Does an AI reply increase subsequent user interactions?",
+  "domain": "ugc",
+  "analysis_unit": "user_day",
+  "treatment": "ai_reply_received",
+  "outcome": "total_interactions",
+  "time_column": "event_date",
+  "entity_id_column": "user_id",
+  "treatment_time_column": "first_ai_reply_date",
+  "covariates": ["baseline_activity"],
+  "candidate_methods": ["did"],
+  "identification_assumptions": ["parallel_trends", "no_anticipation", "stable_composition"],
+  "pre_period_days": 30,
+  "post_period_days": 30,
+  "cluster_column": "user_id",
+  "source_tables": ["raw_daily_activity"],
+  "assignment_mechanism": "observational",
+  "data_structure": "panel",
+  "parallel_trends_plausible": true
+}
