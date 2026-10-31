@@ -12,7 +12,7 @@
   {
     "file": "application-wheel.json",
     "bytes": 160,
-    "sha256": "9a8b26fbc262c139cf9a9c7965f7b031abe94bae3d786dae44045d8d839979c5"
+    "sha256": "bbd1bb427d6cebbaa1f4af6d13c1ddd8b5bf77bc36580e0a531a8bf34e11d113"
   },
   {
     "file": "CONTRIBUTING.md",
@@ -36,8 +36,8 @@
   },
   {
     "file": "docs/assets/architecture-current.svg",
-    "bytes": 3662,
-    "sha256": "cdbfd7d0329422b86ec895965d4e522f30bcc123488bd2713c8e35e18ae7cb8c"
+    "bytes": 3672,
+    "sha256": "68b976a492cd8e9e38048bf4e6bca2d06c3e80f39d402cf491196ef90f773a16"
   },
   {
     "file": "docs/assets/architecture-target.svg",
@@ -55,9 +55,19 @@
     "sha256": "7d7def13effaf749c1c32feff86124ef13db6cde9f08db9ff14510257dc033fb"
   },
   {
+    "file": "docs/assets/onboarding-directions.png",
+    "bytes": 165935,
+    "sha256": "b76504193ea637a3585bbd2e66ed76916f6857e56099516e8f8663944982634f"
+  },
+  {
+    "file": "docs/assets/onboarding-home.png",
+    "bytes": 154142,
+    "sha256": "d36d07ab2ff17e8cb691845f2107f3af9bc918cd02eaa18d429cdad84cc4538a"
+  },
+  {
     "file": "docs/assets/rag-evidence-current.svg",
-    "bytes": 3528,
-    "sha256": "26fbe12b763cdc817db5101ccf9ffbfa9e1e7f3ced690100ca24566d9c627a63"
+    "bytes": 2539,
+    "sha256": "c7f2f606ebd5e53244d4b7e3fcf29645c302facdd645226a3cbb6be36d2f968b"
   },
   {
     "file": "docs/assets/rag-evidence-target.svg",
@@ -76,8 +86,8 @@
   },
   {
     "file": "docs/assets/task-workflow-current.svg",
-    "bytes": 3558,
-    "sha256": "d02378e5baf79b82783ba1ad35a874cf5a2107a5b63db0f1d437013917d4f0a2"
+    "bytes": 3580,
+    "sha256": "da8ff447784014002cd26d49376143d3f5e166e9b889b5e87315e14bee45365a"
   },
   {
     "file": "docs/assets/tool-gateway-target.svg",
@@ -106,28 +116,28 @@
   },
   {
     "file": "docs/current/ARCHITECTURE.md",
-    "bytes": 4011,
-    "sha256": "79d8e61553ec5bcae720d9d88f4d4113113b46f11af3922a255683da91502cf1"
+    "bytes": 4652,
+    "sha256": "9f12b73a78156466ffb2445aabb6546f3723210ec841ff168ed6a78ff889ab56"
   },
   {
     "file": "docs/current/PROVIDERS.md",
-    "bytes": 7411,
-    "sha256": "41f054e5cfd476097546dcd9ec0cd7a18b09dd5b702a4b7bacc07efc9117932b"
+    "bytes": 7641,
+    "sha256": "52c1765c3333015e59a3f2bcf68aab60b3b9562e6a7bee84bd4e2dd30509e988"
   },
   {
     "file": "docs/current/ROADMAP.md",
-    "bytes": 1329,
-    "sha256": "9809e8c57ba03771d9c928f6f0b338f02678f905acbb44db359f1ee1b79a0c57"
+    "bytes": 1690,
+    "sha256": "59e04ba9a9709c4a515998e719e11e89ef7f03e6d75548f1807d53e581aaa3b2"
   },
   {
     "file": "docs/current/USER_GUIDE.md",
-    "bytes": 2938,
-    "sha256": "392e8bbe33e5ce9ed394964f3e50f29ff80fb73502ce3eeca5f22b8395d84767"
+    "bytes": 4935,
+    "sha256": "dc956708f2c482f6007a3f656f90135afbed42843413469e0bd6fcfe528dbc02"
   },
   {
     "file": "docs/current/VALIDATION.md",
-    "bytes": 6724,
-    "sha256": "7cc4905c12b545b1fc985ec0a42710b7786f45e7b91dd68d88389517bd0ef981"
+    "bytes": 3179,
+    "sha256": "d52a02692138ad6dc58134d594e599005436b9a9fe6ceaf05543186f4ff7bc6a"
   },
   {
     "file": "docs/diagrams/current-architecture.mmd",
@@ -191,8 +201,8 @@
   },
   {
     "file": "docs/HISTORY.md",
-    "bytes": 1035,
-    "sha256": "8e790f489d58009344a3d01f4b12c4e40d444516d6312fc8eeec5793aa4d72e4"
+    "bytes": 1197,
+    "sha256": "7ab6758ccf514334915d33a94086735126050960b1fd24d3bbf983244fd8af60"
   },
   {
     "file": "docs/IMPLEMENTATION_0.7.0.md",
@@ -231,8 +241,8 @@
   },
   {
     "file": "docs/README.md",
-    "bytes": 483,
-    "sha256": "a9ff60e873d6914fa25cf44bf9a9bbdec22c93bdb951de6defb1fc3846d61473"
+    "bytes": 508,
+    "sha256": "b2e5dc53e46cb68a58b92c32aeb4ce5e953af46fbd5eb85640ccf618dc085c9a"
   },
   {
     "file": "docs/REFERENCE_PROJECT_REVIEW.md",
@@ -258,6 +268,16 @@
     "file": "docs/validation/v0100/results-summary.json",
     "bytes": 28725,
     "sha256": "8f5e3863f5e452fcd2cc2d6e4dda61f380cab12908898d182fe925a2eaeb3717"
+  },
+  {
+    "file": "docs/validation/v0100/VALIDATION.md",
+    "bytes": 6684,
+    "sha256": "a392fbae400b4055107cbdd958ab3caac26a03affcb6f4291c3ee223dc900d79"
+  },
+  {
+    "file": "docs/validation/v0110/first-use-summary.json",
+    "bytes": 1460,
+    "sha256": "fea04ab271e2eda7d585f6bf676393663aefbec398d88f009f91591eb327191c"
   },
   {
     "file": "docs/validation-v080.json",
@@ -317,12 +337,12 @@
   {
     "file": "pyproject.toml",
     "bytes": 1308,
-    "sha256": "db0a5095f72565933a5a2b49268ccf0a0859c42ca6918de1f00defaf757fc207"
+    "sha256": "18ecc898df7910c17954ec35fc9162d48b643744ece9cd26a579e4918b2cd924"
   },
   {
     "file": "README.md",
-    "bytes": 6516,
-    "sha256": "96723c27ccc02175c0ae6b0dad30b60d1bc8b77da86a00c3ded1354d378ff61d"
+    "bytes": 6472,
+    "sha256": "d80848701dc208a4872c8cb98b4e71efed046b129f79264b4fd6ae63fcb70c44"
   },
   {
     "file": "requirements-runtime-win-py311.txt",
@@ -452,7 +472,7 @@
   {
     "file": "src/causalops/__init__.py",
     "bytes": 64,
-    "sha256": "dab9ddace6519ec345b166ed63551f04d10cf6d8e98ba6736c3a047ce73c8a1c"
+    "sha256": "b53e4c9aa271ef042127aa240edd73519792679080c097da1f1e5d2d9935fa0c"
   },
   {
     "file": "src/causalops/advanced/__init__.py",
@@ -505,9 +525,19 @@
     "sha256": "97976e8fd4cde903fb4fe07ad88129c43937e2eb33908e007e3171c01f623330"
   },
   {
+    "file": "src/causalops/application/onboarding.py",
+    "bytes": 2574,
+    "sha256": "daa2b1708e7651f7e7d0ad19163ed40aa09576e89b3b2aaab0e76343884386b1"
+  },
+  {
+    "file": "src/causalops/application/question_discovery.py",
+    "bytes": 3699,
+    "sha256": "15b1cd33bc19e6a64a8a8173393c2a102517334c951550afc3fade9583dc0b15"
+  },
+  {
     "file": "src/causalops/application/research_service.py",
-    "bytes": 24855,
-    "sha256": "fa57317ac8dd3af81960061cc799de2e3ae7e7d220e90341b8330050ba1f3595"
+    "bytes": 26281,
+    "sha256": "7e7b760f226ed49af486457676919f16a36d1f2fe0a480e4f7e27cf3d42383d1"
   },
   {
     "file": "src/causalops/application/task_conclusions.py",
@@ -866,8 +896,8 @@
   },
   {
     "file": "src/causalops/orchestration/research_graph.py",
-    "bytes": 8172,
-    "sha256": "82c16ed491809e3bd41a3b1c63eb733a08fd18c06817e628cf3f2f39b0dad499"
+    "bytes": 9063,
+    "sha256": "409d542e98843cb7142a851bd57c1a74d8b5b2e011867bb3bd2cdde1595fd9dc"
   },
   {
     "file": "src/causalops/protocols/__init__.py",
@@ -991,8 +1021,8 @@
   },
   {
     "file": "src/causalops/ui/assistant_app.py",
-    "bytes": 38431,
-    "sha256": "f8751932c15f950221145716e99351ccb09943a5fab24802207f9f1cc1a13fab"
+    "bytes": 32808,
+    "sha256": "278946b07a80b55d9a51ae41c824b07663b81a9d9cf5c48d85df513b592b6c7c"
   },
   {
     "file": "src/causalops/ui/contracts_editor.py",
@@ -1016,8 +1046,18 @@
   },
   {
     "file": "src/causalops/ui/graph_app.py",
-    "bytes": 15165,
-    "sha256": "e17d906d8e8abf650f36f4d68b07664ad043b78868dd965e16b2d0d4425dd8b2"
+    "bytes": 16512,
+    "sha256": "c63c702dac34d1228b1ab9eca28bebe73a3925399bf0a5f5c858ebe7060e2a84"
+  },
+  {
+    "file": "src/causalops/ui/model_setup.py",
+    "bytes": 6763,
+    "sha256": "9a1ab76e346694540663cf0ca10b3884a7176d7bfdc325c41a15c88820654204"
+  },
+  {
+    "file": "src/causalops/ui/onboarding.py",
+    "bytes": 2769,
+    "sha256": "0597ef5052b5a4ed607cd58ddfc1b82990551254d9618fded8b2acf7c5871f17"
   },
   {
     "file": "src/causalops/ui/portfolio_demo.py",
@@ -1026,8 +1066,8 @@
   },
   {
     "file": "src/causalops/ui/showcase_support.py",
-    "bytes": 5800,
-    "sha256": "56f54ee2f1eaec297f1d5697f05d40d7a4289b58cca49c20d10eb10b387ef05b"
+    "bytes": 5803,
+    "sha256": "35a16329910122c9da62e977e069aed8bbe4cf038d2fe85547b0c79d5d5e47a8"
   },
   {
     "file": "src/causalops/ui/showcase_widgets.py",
@@ -1046,8 +1086,8 @@
   },
   {
     "file": "src/causalops/ui/workbench.py",
-    "bytes": 15235,
-    "sha256": "e5f06115fb8f714042e6caff0728eca8ca8891c455f0550de9950d32763f5d8f"
+    "bytes": 15671,
+    "sha256": "c9ec60846af92187774568cd19f18379b4e11683604b496aa53fe3ae3f1543f0"
   },
   {
     "file": "src/causalops/visualization.py",
@@ -1168,6 +1208,11 @@
     "file": "tests/test_natural_tasks_v0100.py",
     "bytes": 16826,
     "sha256": "eb8a1acae7dd8d11ddb91a57a91dc2e1e29d57a89a19a9ff18c713878851c85e"
+  },
+  {
+    "file": "tests/test_onboarding_v0110.py",
+    "bytes": 6339,
+    "sha256": "53067594041682955dcfaabe8996b4f09a155837d5383eab20b52971fe44775f"
   },
   {
     "file": "tests/test_orchestration_v060.py",

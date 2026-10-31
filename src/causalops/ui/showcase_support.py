@@ -8,9 +8,9 @@ from causalops.results.interpretation import interpret_run
 
 ROOT=Path(__file__).resolve().parents[3]
 ROUTES={
+ 'home':('首页与模型连接','首次使用引导、连接模型并开始分析。'),
  'assistant':('分析工作台','上传、对话、方法检索、受控执行与证据解释。'),
  'analysis':('专业分析','上传自己的表、确认研究设计、执行并恢复分析。'),
- 'home':('示例与入门','选择一个问题，跟随提示完成一次分析。'),
  'experiment':('示例一 · 随机实验','营销邮件是否提高访问概率？读懂绝对变化、区间和实际意义。'),
  'diagnostic':('示例二 · 识别诊断','如果处理前趋势已经不同，为什么不能把估计称为因果效应？'),
  'weibo':('示例三 · 用户行为研究','回看已保存的全量研究结果；不重新读取原始CSV或估计。'),

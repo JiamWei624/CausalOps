@@ -6,7 +6,7 @@ import streamlit as st
 from causalops.application.research_service import ResearchService
 
 STATUS={'cancelled':'已停止，可继续','created':'准备中','awaiting_review':'待人工审核','approved':'已批准','executing':'统计执行中','executed':'正在解释结果','completed':'已完成','rejected':'已放弃','blocked':'执行条件不满足','failed':'处理失败，可核对记录','needs_clarification':'需要补充说明'}
-NODES={'method_scope':'确定候选方法','method_retrieval':'补充方法依据','method_research':'核对方法条件','cancel':'停止请求','load_context':'核对任务与数据版本','route_intent':'识别请求类型','retrieve_methods':'检索方法依据','draft_plan':'生成待审计划','await_review':'等待人工审核','execute_plan':'执行已批准的统计','answer_results':'核对运行证据并解释','answer_method':'整理方法依据','profile_data':'读取数据概况','clarify':'说明需补充的信息','statistical_tool':'统计工具','review':'人工审核','retrieve':'检索结果'}
+NODES={'method_scope':'确定候选方法','method_retrieval':'补充方法依据','method_research':'核对方法条件','cancel':'停止请求','load_context':'核对任务与数据版本','route_intent':'识别请求类型','retrieve_methods':'检索方法依据','draft_plan':'生成待审计划','await_review':'等待人工审核','execute_plan':'执行已批准的统计','answer_results':'核对运行证据并解释','answer_method':'整理方法依据','discover_questions':'推荐可回答的问题','profile_data':'读取数据概况','clarify':'说明需补充的信息','statistical_tool':'统计工具','review':'人工审核','retrieve':'检索结果'}
 STATES={'started':'开始','completed':'完成','running':'运行中','blocked':'需要补充','failed':'失败','approved':'已批准','rejected':'已放弃'}
 
 def render_graph_workspace(a,sid,frame,model):
@@ -23,18 +23,21 @@ def render_graph_workspace(a,sid,frame,model):
             st.caption('当前状态：'+STATUS.get(overview_flow['status'],overview_flow['status']))
             next_step={'awaiting_review':'下一步：查看待审计划与必要口径，核对后再批准计算。','completed':'下一步：查看本次研究结论，继续追问或导出报告。','needs_clarification':'下一步：补充字段含义、分组依据或分析目标，再提出问题。','failed':'下一步：查看具体缺项或服务错误，修正后重新制定计划。','blocked':'下一步：核对被阻断步骤的设计要求；不要为了继续运行而确认未知事实。'}.get(overview_flow['status'],'下一步：等待后台状态更新；需要时可请求停止。')
             st.write(next_step)
-    else:st.info('下一步：有已知口径时先登记数据字典，然后用业务语言提出问题；不知道的信息可以保持未知。')
-    render_contract(service,sid,frame)
+    else:st.info('文件已就绪。建议先生成基础报告；如果不知道要问什么，点击“推荐分析方向”。')
+    from causalops.ui.onboarding import render_start_actions
+    render_start_actions(service,jobs,sid,frame)
+    with st.expander('高级设置：完整数据字典与研究事实'):
+        render_contract(service,sid,frame)
     st.session_state.setdefault('_job_signature_'+sid,tuple((j['id'],j['status']) for j in jobs.jobs(sid)))
-    st.subheader('研究流程与证据讨论')
-    st.caption('提出问题后，系统检索方法依据并核对已登记口径，必要时补充检索；计算前暂停审核。后台进度来自真实节点，结果追问不重新估计。')
+    st.subheader('分析对话与结果')
+    st.caption('可以直接说想了解什么。系统会区分问题推荐、分析计划和结果追问；需要计算时会说明方法与待确认事项。')
     flows=service.flows(sid);choice_key='graph_flow_'+sid
     pending=st.session_state.pop('_graph_pending_'+sid,None)
     if pending:st.session_state[choice_key]=pending
     if flows:
         ids=[f['id'] for f in flows]
         if st.session_state.get(choice_key) not in ids:st.session_state[choice_key]=ids[0]
-        current=st.selectbox('本轮流程与历史记录',ids,format_func=lambda x:STATUS.get(next(f['status'] for f in flows if f['id']==x),'处理中')+' · '+next(f['request']['question'][:35] for f in flows if f['id']==x)+' · '+x[:6],key=choice_key)
+        current=st.selectbox('查看本轮或历史对话',ids,format_func=lambda x:STATUS.get(next(f['status'] for f in flows if f['id']==x),'处理中')+' · '+next(f['request']['question'][:45] for f in flows if f['id']==x),key=choice_key)
         f=service.flow(current)
         current_jobs=[j for j in jobs.jobs(sid) if j['flow_id']==current]
         active=any(j['status'] in ACTIVE for j in current_jobs)
@@ -109,8 +112,21 @@ def render_graph_workspace(a,sid,frame,model):
                     for fact in answer['facts'][:4]:st.write(friendly_fact_label(fact['text'])+'：'+display_number(fact['value']))
                 with st.expander('核对回答使用的精确运行证据'):
                     st.dataframe([{'指标':f['text'],'数值':str(f['value']),'证据标识':f['id'],'运行编号':f['run_id']} for f in answer['facts']],hide_index=True,width='stretch')
+        discovery=service.output(current,'discovery')
+        if discovery:
+            for i,d in enumerate(discovery['directions']):
+                with st.container(border=True):
+                    st.markdown('**'+safe_text(d['title'])+'**');st.write(safe_text(d['question']))
+                    st.caption('涉及字段：'+('、'.join(d['fields']) or '根据可用字段确定'))
+                    for question in d['needs_confirmation']:st.write('待你补充：'+safe_text(question))
+                    st.caption('解释范围：'+safe_text(d['limitation']))
+                    if st.button('沿这个方向继续',key='direction_'+current+'_'+str(i)):
+                        try:
+                            job=jobs.submit_start(sid,d['question'],mode='plan');st.session_state['_graph_pending_'+sid]=job['flow_id'];st.rerun()
+                        except (ValueError,RuntimeError) as exc:st.error(str(exc))
         pr=service.output(current,'profile')
-        if pr:st.dataframe(pd.DataFrame(pr['fields']).rename(columns={'field':'字段','dtype':'类型','missing_n':'缺失数','numeric':'数值字段','distinct_n':'唯一值数','likely_identifier':'疑似标识','infinite_n':'无穷值数'}),hide_index=True,width='stretch')
+        if pr:
+            with st.expander('字段检查明细'):st.dataframe(pd.DataFrame(pr['fields']).rename(columns={'field':'字段','dtype':'类型','missing_n':'缺失数','numeric':'数值字段','distinct_n':'唯一值数','likely_identifier':'疑似标识','infinite_n':'无穷值数'}),hide_index=True,width='stretch')
         retrieval=service.output(current,'retrieval')
         if retrieval:
             with st.expander('本轮实际检索的方法依据'):show_sources(retrieval)
@@ -133,7 +149,10 @@ def render_graph_workspace(a,sid,frame,model):
         if rid!=selected:a.select_run(sid,rid)
         with st.expander('查看完整图表与下载分析报告',expanded=bool(flows and service.output(current,'execution'))):show_run(a,refs[rid],sid)
     modes={'自动选择请求类型':'auto','制定分析计划':'plan','方法咨询':'method','解释当前运行':'results','数据概况':'profile'}
-    mode=st.radio('本轮请求',list(modes),horizontal=True,key='graph_mode_'+sid)
+    mode='自动选择请求类型'
+    with st.expander('高级：手动指定请求类型'):
+        manual=st.checkbox('本次由我指定请求类型',key='manual_route_v011_'+sid)
+        if manual:mode=st.radio('本轮请求',list(modes),horizontal=True,key='graph_mode_v011_'+sid)
     q=st.chat_input('例如：分析这张表的缺失和分布；或解释当前结果的实际含义',key='graph_question_'+sid)
     if q:
         try:

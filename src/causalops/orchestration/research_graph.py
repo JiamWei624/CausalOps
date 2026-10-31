@@ -105,20 +105,27 @@ def build_graph(service):
     def data_profile(state):
         fid=state['flow_id'];f=s.flow(fid)
         s.save_output(fid,'profile',profile(s.ws.load_upload(f['request']['data']['upload_id'])))
+        from causalops.application.onboarding import overview
+        s.save_output(fid,'answer',{'source':'本地数据检查','text':overview(s.ws.load_upload(f['request']['data']['upload_id']))['text']+' 可点击“生成基础报告”查看分布图和统计摘要，或选择“推荐分析方向”。','facts':[],'citations':[],'run_ids':[],'scope':'data_overview'})
+        s.update(fid,status='completed');return {'status':'completed'}
+    def explore(state):
+        from causalops.application.question_discovery import discover
+        fid=state['flow_id'];value=s.output(fid,'discovery') or s.save_output(fid,'discovery',discover(s,fid))
+        s.save_output(fid,'answer',{'source':value['source'],'text':value['introduction'],'facts':[],'citations':[],'run_ids':[],'scope':'question_options'})
         s.update(fid,status='completed');return {'status':'completed'}
     def clarify(state):
         fid=state['flow_id'];decision=s.output(fid,'route')
         s.save_output(fid,'answer',{'source':'本地流程检查','text':decision['reason'],'facts':[],'citations':[],'run_ids':[]})
         s.update(fid,status='needs_clarification');return {'status':'needs_clarification'}
     graph=StateGraph(ResearchState)
-    funcs={'load_context':load,'route_intent':route,'draft_plan':draft,'await_review':review,'execute_plan':execute,'answer_results':answer,'answer_method':method,'profile_data':data_profile,'clarify':clarify}
+    funcs={'load_context':load,'route_intent':route,'draft_plan':draft,'await_review':review,'execute_plan':execute,'answer_results':answer,'answer_method':method,'profile_data':data_profile,'discover_questions':explore,'clarify':clarify}
     for name,func in funcs.items():graph.add_node(name,node(name,func))
     graph.add_node('retrieve_methods',build_method_graph(s).compile())
     graph.add_edge(START,'load_context');graph.add_edge('load_context','route_intent')
-    graph.add_conditional_edges('route_intent',lambda st:st['route'],{'plan':'retrieve_methods','method':'retrieve_methods','results':'retrieve_methods','profile':'profile_data','clarify':'clarify'})
+    graph.add_conditional_edges('route_intent',lambda st:st['route'],{'plan':'retrieve_methods','method':'retrieve_methods','results':'retrieve_methods','profile':'profile_data','explore':'discover_questions','clarify':'clarify'})
     graph.add_conditional_edges('retrieve_methods',lambda st:'method' if (s.output(st['flow_id'],'method_research') or {}).get('status') in ('unsupported','insufficient_evidence') else st['route'],{'plan':'draft_plan','method':'answer_method','results':'answer_results'})
     graph.add_edge('draft_plan','await_review')
     graph.add_conditional_edges('await_review',lambda st:st['status'],{'approved':'execute_plan','rejected':END})
     graph.add_conditional_edges('execute_plan',lambda st:'answer' if st['status']=='executed' else 'end',{'answer':'answer_results','end':END})
-    for name in ['answer_results','answer_method','profile_data','clarify']:graph.add_edge(name,END)
+    for name in ['answer_results','answer_method','profile_data','discover_questions','clarify']:graph.add_edge(name,END)
     return graph

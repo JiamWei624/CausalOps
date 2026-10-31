@@ -1,0 +1,64 @@
+{
+  "version": "0.11.0",
+  "source_tests": {
+    "tests": "507",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0"
+  },
+  "browser": {
+    "exceptions": [],
+    "home_first": true,
+    "friendly_task": true,
+    "key_survived": true,
+    "local_mode": true,
+    "question_cards": 2,
+    "no_schema_only": true,
+    "basic_completed": true,
+    "report_has_conclusion": true,
+    "history_restored": true,
+    "st_exceptions": 0,
+    "ok": true
+  },
+  "real_model": {
+    "provider": {
+      "provider": "deepseek",
+      "base_url": "https://api.deepseek.com",
+      "model": "deepseek-flash",
+      "api_mode": "responses",
+      "json_mode": "json_object",
+      "anthropic_version": null
+    },
+    "question_discovery": {
+      "accepted": 2,
+      "cases": 2,
+      "no_estimation": true
+    },
+    "result_question": {
+      "source": "DeepSeek官方模型+本地证据校验",
+      "has_fact_references": true,
+      "no_reestimate": true
+    }
+  },
+  "independent_user_study": "deferred",
+  "installed_wheel_tests": {
+    "tests": "507",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0"
+  },
+  "installed_browser": {
+    "exceptions": [],
+    "home_first": true,
+    "friendly_task": true,
+    "key_survived": true,
+    "local_mode": true,
+    "question_cards": 2,
+    "no_schema_only": true,
+    "basic_completed": true,
+    "report_has_conclusion": true,
+    "history_restored": true,
+    "st_exceptions": 0,
+    "ok": true
+  }
+}

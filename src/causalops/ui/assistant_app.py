@@ -83,11 +83,11 @@ def render_assistant():
     a=AssistantWorkspace();st.title('CausalOps · 数据分析与研究工作台')
     from causalops import __version__
     st.caption('版本 '+__version__+' · 本地单用户工作区')
-    st.caption('导入数据后，可在同一任务中制定分析计划、审核研究设计、执行统计分析并查阅运行证据。')
+    st.caption('从一张表开始：了解数据 → 明确问题 → 确认计划 → 查看分析与报告 → 继续追问。')
     sessions=a.sessions();byid={s['id']:s for s in sessions};sid=st.query_params.get('assistant')
     with st.sidebar:
         if byid:
-            if st.session_state.get('assistant_history_url')!=sid:
+            if st.session_state.get('assistant_history_url')!=sid or 'assistant_history' not in st.session_state:
                 st.session_state['assistant_history']=sid if sid in byid else None
                 st.session_state['assistant_history_url']=sid
             chosen=st.selectbox('历史分析任务',[None]+list(byid),format_func=lambda x:'新建任务' if x is None else byid[x]['title']+' · '+x[-6:],key='assistant_history')
@@ -97,7 +97,11 @@ def render_assistant():
                 st.rerun()
         if sid and st.button('新建分析任务',key='assistant_new'):st.query_params.pop('assistant',None);st.rerun()
     if sid not in byid:
-        st.markdown('**导入分析数据**')
+        st.subheader('2. 上传一张分析表')
+        st.info('不必先选统计方法。上传后会说明表的基本情况，再推荐下一步。每一行含义不清楚时可以先留空。')
+        from causalops.ui.model_setup import current_connection
+        config,credential=current_connection()
+        st.caption('模型已在首页配置；本任务仍需单独授权发送摘要。' if config and credential else '当前可用本地模式。智能问题推荐需到首页填写模型和密钥。')
         upload=st.file_uploader('CSV / Parquet（不超过50MB、10万行、200列）',type=['csv','parquet','pq'],key='assistant_file')
         with st.expander('文件编码与分隔符设置'):
             enc=st.selectbox('编码',['utf-8-sig','gb18030'],key='assistant_enc');sep=st.selectbox('分隔符',[',',';','\t'],format_func=lambda v:{',':'逗号',';':'分号','\t':'制表符'}[v],key='assistant_sep')
@@ -119,70 +123,19 @@ def render_assistant():
                         p=a.propose(sid,'请先完成数据质量、缺失和分布的描述性体检');a.accept(p['id'],p['sha']);a.execute(p['id'],permit=True);status.update(label='数据质量检查已完成',state='complete')
                 st.query_params['assistant']=sid;st.rerun()
             except (ValueError,RuntimeError,OSError) as exc:st.error(str(exc))
-        st.caption('此按钮授权本地描述性体检，不批准因果研究，也不向模型发送数据。')
+        st.caption('此按钮只登记文件并核对结构，不执行回归或因果分析，不向模型发送数据。')
         return
     s=a.session(sid);frame=a.ws.load_upload(s['upload_id']);pr=profile(frame)
-    top=st.columns(3);top[0].metric('数据行数',f'{pr["rows"]:,}');top[1].metric('字段数',pr['columns']);top[2].metric('当前任务',sid[-8:])
+    top=st.columns(3);top[0].metric('数据行数',f'{pr["rows"]:,}');top[1].metric('字段数',pr['columns']);top[2].metric('分析任务',s['title'][:28])
+    from causalops.application.onboarding import overview
+    st.write(overview(frame)['text'])
     with st.expander('数据概况与字段目录'):
         st.dataframe(pd.DataFrame(pr['fields']).rename(columns={'field':'字段','dtype':'类型','missing_n':'缺失数','distinct_n':'非缺失唯一值数','numeric':'是否数值','likely_identifier':'疑似标识/敏感字段','infinite_n':'无穷值数'}),hide_index=True,width='stretch');st.caption(pr['meaning'])
-    from causalops.llm.providers import ProviderConfig,PRESETS,StructuredModelClient
-    cfg=None;key='';model=None
-    with st.expander('模型配置与数据发送授权'):
-        provider=st.selectbox('模型服务商',list(PRESETS),format_func=lambda v:PRESETS[v]['label'],key='assistant_provider')
-        preset=PRESETS[provider];profiles=st.session_state.setdefault('_assistant_provider_profiles',{});saved=profiles.get(provider,{})
-        st.caption('模型名须填写API服务实际可调用的模型ID；应用中的模型菜单名称不一定是API模型ID。')
-        base=st.text_input('API Base URL',value=saved.get('base_url',preset['base_url']),key='assistant_base_'+provider,help='填写服务基础地址，不填写chat/completions等具体接口路径。')
-        name=st.text_input('API模型ID',value=saved.get('model',preset['model']),key='assistant_model_'+provider,placeholder='填写当前账户可调用的模型ID')
-        with st.expander('接口协议与输出设置'):
-            modes=['anthropic_messages'] if provider=='anthropic' else ['responses','chat_completions']
-            default=saved.get('api_mode',preset['api_mode']);mode=st.selectbox('接口协议',modes,index=modes.index(default),format_func=lambda v:{'responses':'Responses API','chat_completions':'Chat Completions','anthropic_messages':'Anthropic Messages'}[v],key='assistant_protocol_'+provider)
-            formats=['prompt_json'] if provider=='anthropic' else ['json_object','json_schema','prompt_json']
-            fmt=st.selectbox('结构化输出模式',formats,index=formats.index(saved.get('json_mode',preset['json_mode'])),format_func=lambda v:{'json_object':'JSON对象，并在本地检查结构','json_schema':'JSON Schema（仅接口支持时）','prompt_json':'提示生成JSON，并在本地检查结构'}[v],key='assistant_format_'+provider)
-            limit=st.number_input('单次输出Token上限',min_value=256,max_value=8192,value=5000,step=256,key='assistant_tokens')
-            thinking=st.selectbox('DeepSeek思考模式',['none','high'],format_func=lambda v:'关闭思考（默认）' if v=='none' else '开启高强度思考',key='assistant_deepseek_reasoning') if provider=='deepseek' else 'none'
-            version=st.text_input('Anthropic API版本',value=saved.get('anthropic_version','2026-10-21'),key='assistant_anthropic_version') if provider=='anthropic' else '2026-10-21'
-        profiles[provider]={'base_url':base,'model':name,'api_mode':mode,'json_mode':fmt,'anthropic_version':version}
-        if name.strip():
-            try:cfg=ProviderConfig(provider=provider,base_url=base,model=name,api_mode=mode,json_mode=fmt,max_output_tokens=limit,anthropic_version=version,deepseek_reasoning=thinking)
-            except ValueError as exc:st.error('模型配置尚未通过检查：'+str(exc))
-        else:st.info('请填写模型ID；在此之前可继续本地分析。')
-        import hashlib
-        credential_scope=hashlib.sha256((provider+'|'+base.rstrip('/')).encode()).hexdigest()[:16]
-        visible=st.checkbox('显示密钥',key='assistant_key_visible')
-        credential_widget='assistant_key_'+credential_scope
-        if credential_widget not in st.session_state:st.session_state[credential_widget]=''
-        key=st.text_input('API密钥',type='default' if visible else 'password',key=credential_widget,help='仅保存在本次浏览器会话内存中；切换服务地址不会自动带入旧密钥；切回后请重新输入。')
-        if preset['docs']:st.markdown('[查看该服务官方接入文档]('+preset['docs']+')')
-        st.caption('发送范围：过滤标识后的字段元数据、汇总、研究问题、有限研究上下文和运行数字事实。不发送原始数据行、ID值或完整论文。')
-        if cfg:
-            consent=a.consent_enabled(sid,cfg)
-            consent_key='assistant_consent_'+sid+'_'+cfg.fingerprint
-            st.session_state[consent_key]=consent
-            def update_model_consent(workspace=a,session_id=sid,widget_key=consent_key,config=cfg):
-                workspace.consent(session_id,st.session_state[widget_key],config)
-            check=st.checkbox('授权当前任务向所选服务与模型发送上述信息',key=consent_key,on_change=update_model_consent)
-            if not check:st.caption('当前配置尚未获得该任务的数据发送授权。切换地址、模型或协议后需重新确认。')
-        if st.button('预览拟发送内容',key='assistant_preview'):st.json({'target':cfg.binding() if cfg else None,'payload':a.external_payload(sid,'请解释当前数据并提出分析计划')})
-        if st.button('核验当前配置（不发送研究数据）',disabled=not cfg or not key,key='assistant_probe'):
-            try:
-                probe=StructuredModelClient(cfg,key)
-                try:
-                    with st.spinner('正在发送固定的最小JSON测试请求'):result=probe.probe()
-                finally:probe.close()
-                st.success('认证、接口与本地JSON校验通过。');st.json(result)
-            except (ValueError,RuntimeError) as exc:st.error(str(exc))
-        st.caption('密钥不会写入数据库、报告或Git。配置核验只发送固定测试，不授予研究数据外发权限；失败时不会自动更换服务商。')
-    if cfg and key and a.consent_enabled(sid,cfg):
-        try:
-            cached=st.session_state.get('_assistant_provider_client')
-            if cached and (cached.provider_config!=cfg or cached._api_key!=key):cached.close();cached=None
-            if cached is None:cached=StructuredModelClient(cfg,key);st.session_state['_assistant_provider_client']=cached
-            model=cached
-        except (ValueError,RuntimeError) as exc:st.warning(str(exc)+'；可继续本地模式。')
-    st.caption('运行模式：'+(PRESETS[cfg.provider]['label']+' / '+cfg.model+' 已配置并获当前任务授权；连接状况请通过上方配置核验确认。统计由本机工具执行。' if model else '本地分析模式。配置模型并授权当前任务后，可生成待审计划与证据解释。'))
+    from causalops.ui.model_setup import task_model
+    model=task_model(a,sid)
     from importlib.util import find_spec
     if find_spec('langgraph') is not None and find_spec('langchain_core') is not None:
-        use_graph=st.toggle('使用 LangGraph 研究流程',value=True,key='assistant_use_graph',help='可切回原工作台。历史计划和运行保持原有记录；新流程使用独立图检查点。')
+        use_graph=True
         if use_graph:
             from causalops.ui.graph_app import render_graph_workspace
             render_graph_workspace(a,sid,frame,model)

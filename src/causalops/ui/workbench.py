@@ -20,10 +20,14 @@ def sync_route():st.query_params['route']=st.session_state['showcase_route']
 
 def home():
     st.markdown('<div class="eyebrow">CAUSALOPS / EVIDENCE TO DECISION</div>',unsafe_allow_html=True)
-    st.title('数据分析与研究流程')
-    st.markdown('<p class="hero-note">在统一工作区完成数据检查、研究设计、统计估计和结果解释。报告保留方法版本、诊断结果及运行记录。</p>',unsafe_allow_html=True)
-    st.button('开始分析我的数据',type='primary',on_click=navigate,args=('analysis',),width='stretch')
-    st.info('上传自己的CSV/Parquet，明确变量与指标口径。已有研究可直接恢复；下面三条路线是示例中心。')
+    st.title('从一张表，走到有依据的分析')
+    st.markdown('<p class="hero-note">帮助你理解数据、提出可回答的问题，再完成可核对的分析。无需一开始就决定统计方法。</p>',unsafe_allow_html=True)
+    st.markdown('**使用顺序：** 连接助手 → 上传表格 → 了解数据与选问题 → 确认分析计划 → 阅读结论并追问。')
+    from causalops.ui.model_setup import render_model_setup
+    render_model_setup()
+    st.subheader('2. 开始一个数据任务')
+    st.button('开始分析我的数据',type='primary',on_click=navigate,args=('assistant',),width='stretch')
+    st.info('没有密钥也可以先体验本地基础报告。导入后只需确认你知道的业务事实；不知道的内容可保持未知。')
     st.subheader('示例分析')
     cols=st.columns(3)
     cards=[('experiment','01 · 随机实验','发一封营销邮件，访问概率差多少？','公开随机实验数据 · 42,613条分析观测','核对设计 → 确认运行 → 阅读提升幅度','进入随机实验'),
@@ -63,7 +67,7 @@ def real_view():
 
 def guide():
     st.title('使用说明与方法范围')
-    st.markdown('**主流程：** 上传自己的表 → 选择字段和两组取值 → 填写指标单位与窗口 → 保存草案 → 核对后执行 → 阅读结论、下载报告和证据。也可先使用合成示例。已有结果会自动恢复，刷新不重复执行。')
+    st.markdown('**首次使用：** 首页填写模型与密钥（可跳过） → 点击开始分析我的数据 → 上传表格 → 生成基础报告或推荐分析方向 → 选择问题 → 确认必要事实与计划 → 本地计算 → 阅读结论、下载报告并继续追问。无需先选A/B或回归。已有结果会保留，刷新不重新计算。')
     st.subheader('常用统计概念')
     st.dataframe([{'概念':a,'说明':b} for a,b in [
        ('绝对变化 / 百分点','概率从20%到23%，绝对变化是3个百分点。相对变化是15%；两者不能混写。'),
@@ -93,7 +97,7 @@ def guide():
 def status():
     st.title('系统状态与故障排查')
     current=source_fingerprint();loaded=os.environ.get('CAUSALOPS_SOURCE_FINGERPRINT')
-    a,b,c=st.columns(3);a.metric('访问方式','仅本机');b.metric('模型模式','已配置官方API' if os.environ.get('DEEPSEEK_API_KEY') else '本地证据模式');c.metric('存储位置','当前工作区')
+    a,b,c=st.columns(3);a.metric('访问方式','仅本机');b.metric('模型模式','浏览器会话已配置' if __import__('causalops.ui.model_setup',fromlist=['current_connection']).current_connection()[1] else '本地分析模式');c.metric('存储位置','当前工作区')
     st.caption('工作区：'+str(workspace_root()))
     if loaded and loaded!=current:st.warning('磁盘代码已更新，本服务仍是旧启动版本。请关闭启动窗口，再双击“启动作品集.cmd”；刷新页面不足以保证模块同步。')
     elif loaded:st.success('启动代码指纹与当前磁盘一致。')
@@ -107,7 +111,7 @@ def status():
 
 def main():
     st.set_page_config(page_title='CausalOps · 数据分析与研究工作台',page_icon='◈',layout='wide');style()
-    initial=checked_route(st.query_params.get('route','assistant'))
+    initial=checked_route(st.query_params.get('route','home'))
     if 'showcase_route' not in st.session_state:st.session_state['showcase_route']=initial
     with st.sidebar:
         st.markdown('## CausalOps');st.caption('数据分析 · 研究设计 · 证据管理')
@@ -121,7 +125,7 @@ def main():
         elif route=='home':home()
         elif route=='analysis':
             options=['causal','descriptive','correlation','ols'];labels={'causal':'研究与效应分析','descriptive':'描述性统计分析','correlation':'相关分析','ols':'线性关联回归'}
-            requested=st.query_params.get('mode','causal');kind=st.radio('分析任务类型',options,index=options.index(requested) if requested in options else 0,format_func=lambda x:labels[x],horizontal=True,key='analysis_kind')
+            requested=st.query_params.get('mode','descriptive');kind=st.radio('分析任务类型',options,index=options.index(requested) if requested in options else 0,format_func=lambda x:labels[x],horizontal=True,key='analysis_kind')
             if kind=='causal':
                 from causalops.ui.general_app import render_general
                 render_general()

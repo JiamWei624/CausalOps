@@ -1,4 +1,9 @@
-# 当前实际架构 · 0.10.0
+# 当前实际架构 · 0.11.0
+
+## 0.11 首次使用层
+
+默认首页先配置模型。上传后分为字段概况、问题发现（explore）、待审计划和运行解释四种不同产出。基础报告复用 ResearchService，但入口严格限制为描述统计，显式按钮触发批准；模型不获得批准接口。连接与密钥放在非 widget 的内存状态中，数据任务仍独立授权。
+
 
 日期：2026-11-01。图中组件均按当前源码核对；未来扩展见[路线图](ROADMAP.md)，历史方案见[历史索引](../HISTORY.md)。
 
@@ -16,6 +21,9 @@ Streamlit → ResearchService → 安全字段与冻结DataContract → 结构�
 
 | 模块 | 职责 |
 |---|---|
+| ui/model_setup.py | 首页连接、内存密钥与任务级外发许可 |
+| application/onboarding.py | 显式限权的基础报告，版本核对与复用 |
+| application/question_discovery.py | 安全字段问题建议、字段校验与明确本地兜底 |
 | application/research_service.py | 统一服务、数据/计划/字典绑定和审批验证 |
 | orchestration/research_graph.py | 持久主图、审核中断、主要结果选择 |
 | orchestration/method_research.py | 有限补检与方法条件检查 |

@@ -4,7 +4,8 @@
 
 | 版本 | 主要变化 | 对应记录 |
 |---|---|---|
-| 0.10.0 | 自然语言真实任务验收、口径传递、就绪检查、主要结果及量化解释、当前文档统一入口 | [当前验收](current/VALIDATION.md) |
+| 0.11.0 | 首页模型连接、首次使用引导、问题发现、一键基础报告、可追溯快捷授权 | [当前验收](current/VALIDATION.md) |
+| 0.10.0 | 自然语言真实任务验收、口径传递、就绪检查、主要结果及量化解释、当前文档统一入口 | [历史验收](validation/v0100/VALIDATION.md) |
 | 0.9.0 | 方法研究子图、有限补检、数据字典、后台运行与跨数据验收 | [原始说明](RESEARCH_WORKFLOW_0.9.0.md)、[原始机器记录](validation-v090.json) |
 | 0.8.0 | 首个LangGraph迁移闭环、审核中断、原统计与证据内核整合 | [原始说明](LANGGRAPH_IMPLEMENTATION_0.8.0.md) |
 | 0.7.0 | 多模型预设、MCP/A2A接口与架构核查 | [原始功能说明](IMPLEMENTATION_0.7.0.md)、[原始架构核查](ARCHITECTURE_REVIEW_0.7.0.md) |
