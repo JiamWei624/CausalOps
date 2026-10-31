@@ -135,13 +135,14 @@ class StructuredModelClient:
             except (httpx.TimeoutException,httpx.TransportError) as exc:
                 if attempt<self.provider_config.max_retries:self._sleep(1);continue
                 raise ProviderError('模型网络请求未完成：'+type(exc).__name__+'；未切换服务商。') from None
-            except (ValueError,UnicodeError,KeyError,TypeError):raise ProviderError('模型返回内容不完整或JSON格式无效，未采纳输出。') from None
+            except (ValueError,UnicodeError,KeyError,TypeError,AttributeError):raise ProviderError('模型返回内容不完整或JSON格式无效，未采纳输出。') from None
         raise ProviderError('已达到请求尝试上限。')
     def _content(self,r):
         if self.api_mode=='responses':
             if r.get('status')!='completed':raise ProviderError('模型响应未完成；请检查输出上限或服务状态。')
             texts=[]
             for item in r.get('output',[]):
+                if item.get('type') not in ('message','reasoning'):raise ProviderError('当前接口只接受结构化文本，不接受模型工具调用。')
                 if item.get('type')=='message':
                     for c in item.get('content',[]):
                         if c.get('type')=='refusal':raise ProviderError('模型拒绝返回该内容。')
@@ -154,7 +155,7 @@ class StructuredModelClient:
             if message.get('refusal') or message.get('tool_calls'):raise ProviderError('当前接口只接受结构化文本，不接受拒绝或工具调用。')
             text=message.get('content','')
         else:
-            if r.get('stop_reason')!='end_turn' or r.get('stop_details',{}).get('type')=='refusal':raise ProviderError('Messages输出未正常结束或被拒绝。')
+            if r.get('stop_reason')!='end_turn' or (r.get('stop_details') or {}).get('type')=='refusal':raise ProviderError('Messages输出未正常结束或被拒绝。')
             if any(c.get('type')=='tool_use' for c in r.get('content',[])):raise ProviderError('不接受模型工具调用。')
             text=''.join(c.get('text','') for c in r.get('content',[]) if c.get('type')=='text')
         if not isinstance(text,str) or not text.strip():raise ProviderError('模型未返回可解析文本。')

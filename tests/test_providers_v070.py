@@ -140,3 +140,20 @@ def test_reviewer_does_not_reuse_other_workspace(monkeypatch,tmp_path):
     with pytest.raises(RuntimeError,match='工作区'):m.ensure_reviewer(tmp_path)
     monkeypatch.setattr(m,'reviewer_identity',lambda port:{'workspace_fingerprint':m.workspace_identity(tmp_path)})
     assert m.ensure_reviewer(tmp_path)['status']=='already_running'
+
+
+def test_anthropic_null_stop_details_is_normal_text():
+    cfg=config('anthropic')
+    with httpx.Client(transport=httpx.MockTransport(lambda _:httpx.Response(200,json=response(cfg.api_mode,stop_details=None)))) as h:
+        assert StructuredModelClient(cfg,TEST_KEY,client=h).probe()['ok']
+
+def test_malformed_outer_response_is_controlled_error():
+    cfg=config().model_copy(update={'api_mode':'chat_completions'})
+    with httpx.Client(transport=httpx.MockTransport(lambda _:httpx.Response(200,json={'choices':['malformed']}))) as h:
+        with pytest.raises(ProviderError):StructuredModelClient(cfg,TEST_KEY,client=h).probe()
+
+def test_responses_tool_call_is_not_adopted():
+    cfg=config().model_copy(update={'api_mode':'responses'})
+    raw=response('responses');raw['output'].append({'type':'function_call','name':'execute','arguments':'{}'})
+    with httpx.Client(transport=httpx.MockTransport(lambda _:httpx.Response(200,json=raw))) as h:
+        with pytest.raises(ProviderError):StructuredModelClient(cfg,TEST_KEY,client=h).probe()

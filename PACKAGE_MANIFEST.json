@@ -12,7 +12,7 @@
   {
     "file": "application-wheel.json",
     "bytes": 158,
-    "sha256": "e4a6169bb2cf396083592c5802ab537e774969ed2d5ae3d8a3b0e3fcd1a0d11a"
+    "sha256": "55efe23887ee25c7b546354d46564d2769ac3801eb392a4eef29ad5728959c16"
   },
   {
     "file": "CONTRIBUTING.md",
@@ -536,8 +536,8 @@
   },
   {
     "file": "src/causalops/llm/providers.py",
-    "bytes": 14679,
-    "sha256": "8a1cabcc75d3f2e7084f5a4d2ba6b46ad066340254c69c21542e597cea74dbae"
+    "bytes": 14859,
+    "sha256": "deb378aea50a9cb8a20d0e9ab4211ef79c9ce71a467bfd48e558e561828e12f8"
   },
   {
     "file": "src/causalops/llm/schema_builder.py",
@@ -876,8 +876,8 @@
   },
   {
     "file": "tests/test_providers_v070.py",
-    "bytes": 11068,
-    "sha256": "ddaac73a8e1a3144c50d3af4964023b12d2e905d224aa0fa528803459c6943d0"
+    "bytes": 12116,
+    "sha256": "341abe617dae0fa2d57806a1741f6bc00ca5231c2fe1a1e98fb162a1a78d25f4"
   },
   {
     "file": "tests/test_psm_cohort.py",
