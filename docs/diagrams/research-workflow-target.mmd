@@ -1,13 +1,16 @@
-flowchart TB
- A["加载研究上下文"] --> B["意图路由与检索"]
- B --> C["生成候选与条件检查"]
- C --> D{"必要事实是否齐全"}
- D -->|否| E["集中澄清并暂停"]
- E --> C
- D -->|是| F["interrupt：人工审核"]
- F -->|批准并核验版本| G["执行 / 调和已有结果"]
- F -->|修改| C
- F -->|取消| Z["结束"]
- G --> H["诊断与解释边界"]
- H --> I["报告与运行级问答"]
- I -. "新研究" .-> B
+flowchart TD
+    Input[同一任务入口] --> Supervisor[结构化 Supervisor]
+    Supervisor --> Clarify[缺少事实时集中澄清]
+    Supervisor --> Retrieve[方法 / 口径咨询]
+    Supervisor --> Plan[新分析待审计划]
+    Supervisor --> RunEvidence[既有运行证据问答]
+    Retrieve --> Coverage[检查出处和覆盖]
+    Coverage -->|预算内有缺口| Retrieve
+    Coverage -->|足够或到预算| Explain[有依据说明或明确不足]
+    Plan --> Review[人工接受与批准 / interrupt]
+    Review --> Validate[领域服务核验计划与数据摘要]
+    Validate --> Runtime[TaskRuntime 复用或执行]
+    Runtime --> RunEvidence
+    RunEvidence --> Verify[本地数值与引用校验]
+    Verify --> Report[结论 / 图表 / 报告]
+    RunEvidence -->|需新估计| Plan

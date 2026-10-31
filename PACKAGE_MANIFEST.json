@@ -21,8 +21,8 @@
   },
   {
     "file": "README.md",
-    "bytes": 7589,
-    "sha256": "f1d19fc296b713854dea77f791216400705a1ae8ae156382b70c7b8ea27a2c3a"
+    "bytes": 8344,
+    "sha256": "9835383f390c5d0c01394977ee08a07c702fe47ac3b49644302d0c082d65b16c"
   },
   {
     "file": "SECURITY.md",
@@ -41,13 +41,13 @@
   },
   {
     "file": "docs/ARCHITECTURE.md",
-    "bytes": 7768,
-    "sha256": "abf4b50ba3fde4eebb09d81d3dd1bc8c643afbfc8574186396f0e01963bbfbd1"
+    "bytes": 7827,
+    "sha256": "51b8ea734905d5e084a9e3b5768420b6d2905d927ad0b9b1123fb1ee98aa3e21"
   },
   {
     "file": "docs/ARCHITECTURE_REVIEW_0.7.0.md",
-    "bytes": 7834,
-    "sha256": "d63b8bc8bc5a9f17fb0690129577171a4249fe1377221125fb2a9433e3fc42d8"
+    "bytes": 7798,
+    "sha256": "e5a307e4cb49fb6d044f9131a206e2cd16a64842c3f0fc3d2a078dbe79e7f898"
   },
   {
     "file": "docs/BOUNDARIES_0.5.1.md",
@@ -66,8 +66,8 @@
   },
   {
     "file": "docs/LANGGRAPH_MIGRATION_PLAN.md",
-    "bytes": 10320,
-    "sha256": "908c7191866474ed4fb7f53e5bcaf14f46e096c624ab12f943dcf29fd73a55dc"
+    "bytes": 15922,
+    "sha256": "b63b52b2f5c0a830fe4216c8f3c69ba90bd009842ab8ab96ceee50166b251d5d"
   },
   {
     "file": "docs/METHOD_CONTRACTS.md",
@@ -85,9 +85,14 @@
     "sha256": "fbadecdf7f26f419c8f764ae18e39a01dce4d07a42fc53dfc0ae01e0a9c54673"
   },
   {
+    "file": "docs/REFERENCE_PROJECT_REVIEW.md",
+    "bytes": 8516,
+    "sha256": "3bb5a51e0a094f28a74cef7d0a41d054598e1dc70f7353616a2ddb2884abb1b4"
+  },
+  {
     "file": "docs/architecture-sources.json",
-    "bytes": 2965,
-    "sha256": "1bad7474bc9262c26efb361405fcfe9886aef947cd94f6c1f2c093d079939dd0"
+    "bytes": 5167,
+    "sha256": "ab90ef6d12c799ca060d21ed2a35e908fafc46713b704f62c76a9458ccf926dd"
   },
   {
     "file": "docs/assets/architecture-current.svg",
@@ -96,18 +101,28 @@
   },
   {
     "file": "docs/assets/architecture-target.svg",
-    "bytes": 5171,
-    "sha256": "f3445e303e7e6d4252516602b4337aa04b98f6103338a59fa7bd5bbc42864894"
+    "bytes": 6353,
+    "sha256": "550d9f0cbad52e7ab0d9119d0d1b8404edfb53d65ad9d213538a22326354243e"
+  },
+  {
+    "file": "docs/assets/memory-boundaries-target.svg",
+    "bytes": 3922,
+    "sha256": "7d7def13effaf749c1c32feff86124ef13db6cde9f08db9ff14510257dc033fb"
   },
   {
     "file": "docs/assets/rag-evidence-target.svg",
-    "bytes": 4315,
-    "sha256": "cdaeb42237961ceaff759e5a36150bdba00ec6c037267b221d919b60e561a05a"
+    "bytes": 4391,
+    "sha256": "20d3e63c45cba002deeb4aea1a9c36711c5fe193131c954e665983638a2e90e2"
   },
   {
     "file": "docs/assets/research-workflow-target.svg",
-    "bytes": 4623,
-    "sha256": "38183fbd55e583b7734828d7a1c2cd587a601b170f6a8f80d9a891dd67fa612b"
+    "bytes": 4518,
+    "sha256": "4420b5e0258bc833e7692be76dec2243367fbbeb3d2b9cfea5ccc6e0bfef98b6"
+  },
+  {
+    "file": "docs/assets/tool-gateway-target.svg",
+    "bytes": 4590,
+    "sha256": "110d34427f733b4c2e1a59dd40b85b693899d4e452b95ec47687b76f4f4644a2"
   },
   {
     "file": "docs/assets/workbench-overview.png",
@@ -121,8 +136,8 @@
   },
   {
     "file": "docs/diagrams/README.md",
-    "bytes": 2191,
-    "sha256": "83d0b785230a01d652b32b85255bdef3cc25cda3f7b1269bbbc179a753e8e166"
+    "bytes": 4149,
+    "sha256": "d72852aa5a5f45e219802a31be5e7b7e95411def3a7c8279da1c2180a36b032e"
   },
   {
     "file": "docs/diagrams/current-architecture.mmd",
@@ -130,19 +145,29 @@
     "sha256": "7e89835fa98ac5937eed66db32f9d55f568b879d4b4e71363f6d3af5f9cde57c"
   },
   {
+    "file": "docs/diagrams/memory-boundaries-target.mmd",
+    "bytes": 527,
+    "sha256": "92b86cd8149fdd1e3b47e772ca0080600704b9f45c761b26214bfbe68221c150"
+  },
+  {
     "file": "docs/diagrams/rag-evidence-target.mmd",
-    "bytes": 307,
-    "sha256": "4240e55d7ee5c74ca246eb6dffd99d172b73d71720fa3c09072d1c7de65fd2d8"
+    "bytes": 583,
+    "sha256": "8c441edbb3f8fddf5e878362cc4b2920a157b094b63e95dcdc2ec3adce42b55c"
   },
   {
     "file": "docs/diagrams/research-workflow-target.mmd",
-    "bytes": 441,
-    "sha256": "178a286fc49eccfbfc486a443b5fbbf08717fc29c54616eb7066e229f537b39b"
+    "bytes": 808,
+    "sha256": "d5a92be3345f870d6db39197347dc304bc6f8ab44fd08980a6e3e1b94e670c50"
   },
   {
     "file": "docs/diagrams/target-architecture.mmd",
-    "bytes": 604,
-    "sha256": "59e587eac0c6d6ea68f053241878bde6debd2f5bf2b2b99ab6341478f9237f89"
+    "bytes": 761,
+    "sha256": "04c8520f77ffe4b2bc39a9f9c38823f9d5b60d443012bf482a67e533b44dfd97"
+  },
+  {
+    "file": "docs/diagrams/tool-gateway-target.mmd",
+    "bytes": 567,
+    "sha256": "3673aa3f3900c5aae6b2e53ca1c994e9894f21d5878605972cb51857de7f3ddd"
   },
   {
     "file": "docs/method-extension-plan.json",

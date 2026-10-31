@@ -3,22 +3,55 @@
   "runtime_version": "0.7.0",
   "reference_access": [
     {
-      "name": "AI客服助手",
       "url": "https://dqej47nflyz.feishu.cn/wiki/Sjedw0wDSiFj6Dk3rc5c1Ioontf",
-      "status": "not_read",
-      "reason": "Web reader inaccessible; browser returned blank shell or permission-related errors before any passcode field. No password submitted; no architecture claims inferred."
+      "status": "reviewed_authorized_browser",
+      "shared_label": "AI客服助手",
+      "title": "滴云智能办公丨多Agent协同系统",
+      "accessed_on": "2026-10-31",
+      "scope": "Rendered body scrolled to the end; architecture, explanations and shown snippets reviewed. Full repository not obtained or executed.",
+      "section_locators": [
+        "架构图",
+        "主图与补充检索子流程",
+        "工具封装",
+        "记忆与SSE接口片段"
+      ],
+      "reached_bottom": true,
+      "history": "Earlier blank-page attempts were superseded by successful local browser passcode access.",
+      "redistribution": "Only original synthesis and original CausalOps diagrams; no copied document body, code, figures or passcodes."
     },
     {
-      "name": "AI办公助手",
       "url": "https://dqej47nflyz.feishu.cn/wiki/W87YwmTsSim3lxkxSXicRHcrnbp",
-      "status": "not_read",
-      "reason": "Web reader inaccessible; browser returned blank shell or permission-related errors before any passcode field. No password submitted; no architecture claims inferred."
+      "status": "reviewed_authorized_browser",
+      "shared_label": "AI办公助手",
+      "title": "多Agent项目实战： 智能问_诊AI客服系统",
+      "accessed_on": "2026-10-31",
+      "scope": "Rendered body scrolled to the end; architecture, explanations and shown snippets reviewed. Full repository not obtained or executed.",
+      "section_locators": [
+        "Supervisor图构建与路由",
+        "状态模型",
+        "长短期记忆",
+        "会话与接口片段"
+      ],
+      "reached_bottom": true,
+      "history": "Earlier blank-page attempts were superseded by successful local browser passcode access.",
+      "redistribution": "Only original synthesis and original CausalOps diagrams; no copied document body, code, figures or passcodes."
     },
     {
-      "name": "智能出行助手",
       "url": "https://dqej47nflyz.feishu.cn/wiki/PenqwX3LMiQrVrkaka2c39Vwnvd",
-      "status": "not_read",
-      "reason": "Web reader inaccessible; browser returned blank shell or permission-related errors before any passcode field. No password submitted; no architecture claims inferred."
+      "status": "reviewed_authorized_browser",
+      "shared_label": "智能出行助手",
+      "title": "实战智能出行Agent助手-附代码和前后端可视化界面",
+      "accessed_on": "2026-10-31",
+      "scope": "Rendered body scrolled to the end; architecture, explanations and shown snippets reviewed. Full repository not obtained or executed.",
+      "section_locators": [
+        "技术说明：未使用RAG/Milvus",
+        "MCP客户端与多工具",
+        "内存检查点",
+        "CLI/HTTP与生命周期"
+      ],
+      "reached_bottom": true,
+      "history": "Earlier blank-page attempts were superseded by successful local browser passcode access.",
+      "redistribution": "Only original synthesis and original CausalOps diagrams; no copied document body, code, figures or passcodes."
     }
   ],
   "official_sources": [
@@ -69,9 +102,23 @@
       "title": "GitHub creating diagrams",
       "url": "https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams",
       "use": "Mermaid及图示展示格式"
+    },
+    {
+      "id": "structured-output",
+      "title": "LangChain structured output",
+      "url": "https://docs.langchain.com/oss/python/langchain/structured-output",
+      "use": "结构化输出和提供方能力；保留本地校验"
+    },
+    {
+      "id": "mcp-transports",
+      "title": "MCP standard transports",
+      "url": "https://modelcontextprotocol.io/specification/latest/basic/transports",
+      "use": "stdio/Streamable HTTP及教程SSE兼容核对"
     }
   ],
   "secrets_included": false,
   "langgraph_installed": false,
-  "runtime_code_modified": false
+  "runtime_code_modified": false,
+  "review_document": "REFERENCE_PROJECT_REVIEW.md",
+  "framework_migration_status": "design_only"
 }

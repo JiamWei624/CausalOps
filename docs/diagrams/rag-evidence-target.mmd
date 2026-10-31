@@ -1,9 +1,11 @@
-flowchart LR
- M["方法资料"] --> I["建议：文档索引与检索接口"]
- B["业务口径资料"] --> I
- I --> C["上下文组装"]
- R["当前运行"] --> F["只读数字事实查询"]
- F --> C
- C --> L["模型生成解释"]
- L --> V["本地数值 / 来源 / 版本校验"]
- V --> O["结论与报告"]
+flowchart TD
+    Methods[方法资料与来源] --> Retrieval[LangChain 检索适配 / 拟增]
+    Business[业务口径与人工确认合同] --> Retrieval
+    Retrieval --> Check[覆盖与引用检查]
+    Check -->|预算内补充| Retrieval
+    Check -->|无更多依据| Missing[说明不足]
+    Check --> Context[研究解释上下文]
+    Run[指定运行的结构化证据] --> Exact[精确数值与归属查询]
+    Exact --> Context
+    Context --> Validation[Schema / 数值 / 引用 / 解释上限]
+    Validation --> Conclusion[基线—幅度—实际含义—行动]

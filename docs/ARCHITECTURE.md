@@ -1,6 +1,6 @@
 # 系统架构与执行边界（0.7.0）
 
-[当前架构核查与目标图](ARCHITECTURE_REVIEW_0.7.0.md) · [LangGraph迁移方案（尚未实施）](LANGGRAPH_MIGRATION_PLAN.md)
+[当前架构核查与目标图](ARCHITECTURE_REVIEW_0.7.0.md) · [LangGraph迁移方案（尚未实施）](LANGGRAPH_MIGRATION_PLAN.md) · [三份参考项目核查](REFERENCE_PROJECT_REVIEW.md)
 
 ![当前真实架构](assets/architecture-current.svg)
 

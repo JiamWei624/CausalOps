@@ -1,0 +1,11 @@
+flowchart TD
+    Model[模型候选工具调用] --> Adapter[LangChain 工具适配 / 拟增]
+    MCP[白名单 MCP 客户端 / 拟增] --> Gateway[ToolGateway / 拟增]
+    Adapter --> Gateway
+    Gateway --> Check[Schema / 效果 / 范围 / 授权 / 预算]
+    Check --> Read[只读查询]
+    Check --> Compute[经领域批准的统计]
+    Check --> Export[受限工作区导出]
+    Check --> External[单独同意的外部读取]
+    Compute --> Runtime[现有 TaskRuntime]
+    Denied[批准 / 授权变更 / 数据删除] -. 不作为模型工具 .-> Gateway

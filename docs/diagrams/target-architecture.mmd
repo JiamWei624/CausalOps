@@ -1,13 +1,15 @@
 flowchart TB
- U["交互层：同一研究任务"] --> G["建议：LangGraph StateGraph"]
- G --> L["模型服务层：现有网关与授权"]
- G --> K["建议：LangChain 检索器与工具适配"]
- G --> H["审核中断与领域批准记录"]
- H --> T["保留：TaskRuntime / AnalysisTools"]
- T --> E["保留：统计执行与证据合同"]
- E --> Q["报告 / 解释 / 后续研究"]
- G --> CP[("建议：独立图检查点")]
- T --> DB[("保留：研究数据库与数据副本")]
- K --> KR["方法文献库 / 业务口径库"]
- E --> PR["MCP / A2A 只读协议"]
- Q -. "新候选，重新审核" .-> G
+    UI[Streamlit 交互] --> Service[拟增 ResearchService]
+    API[未来可选 HTTP / SSE] --> Service
+    Service --> Graph[拟增 LangGraph Supervisor]
+    Graph --> Subgraphs[计划 / 方法 / 结果 有界子图]
+    Graph --> Models[保留多模型网关与授权]
+    Subgraphs --> LC[拟增 LangChain 检索与工具适配]
+    LC --> Gateway[拟增 ToolGateway]
+    Subgraphs --> Gateway
+    Gateway --> Runtime[保留 TaskRuntime / AnalysisTools]
+    Runtime --> Statistics[保留 17 项统计方法]
+    Statistics --> Evidence[保留 ToolResult / 证据 / 报告]
+    Runtime <--> Domain[保留领域 SQLite / Parquet]
+    Graph --> Checkpoints[独立图检查点]
+    Gateway --> Protocols[只读 MCP / 规则 A2A / 拟增客户端]

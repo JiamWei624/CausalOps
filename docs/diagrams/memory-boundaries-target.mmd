@@ -1,0 +1,9 @@
+flowchart TD
+    Graph[图检查点：执行位置与引用] --> Context[统一研究上下文]
+    Chat[聊天摘要：辅助且未经确认] --> Context
+    Domain[领域库：批准 / 运行 / 精确证据] --> Context
+    Contract[人工确认合同：口径与测量时点] --> Context
+    Sources[知识索引：来源与访问范围] --> Context
+    Context --> Verify[任务 / 数据 / 计划 / 运行范围核验]
+    Verify --> Answer[受限解释与下一步]
+    Chat -. 经人工登记后另建版本 .-> Contract

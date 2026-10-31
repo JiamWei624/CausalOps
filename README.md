@@ -7,7 +7,7 @@
 
 > 当前主流程采用自建状态编排，尚未使用LangChain或LangGraph。下面分别展示当前实现和建议目标；目标设计不作为已完成能力或简历成果。
 
-[快速开始](#快速开始) · [当前架构](#当前架构) · [目标架构](#目标架构建议尚未接入) · [完整功能与边界](docs/IMPLEMENTATION_0.7.0.md) · [迁移实施方案](docs/LANGGRAPH_MIGRATION_PLAN.md)
+[快速开始](#快速开始) · [当前架构](#当前架构) · [目标架构](#目标架构建议尚未接入) · [完整功能与边界](docs/IMPLEMENTATION_0.7.0.md) · [迁移实施方案](docs/LANGGRAPH_MIGRATION_PLAN.md) · [三份参考项目核查](docs/REFERENCE_PROJECT_REVIEW.md)
 
 ## 适合解决什么问题
 
@@ -94,14 +94,20 @@ python -m causalops.protocols.readonly_server --workspace "E:/my-causalops-works
 
 ![LangGraph与LangChain目标架构：尚未实现](docs/assets/architecture-target.svg)
 
-建议采用 **LangGraph主编排 + LangChain检索/工具适配 + 现有统计与证据内核 + MCP/A2A外部边界**。保留Streamlit首版，先完成应用服务解耦、图节点与中断恢复，再升级检索和交互。不是同时重写前后端或堆叠所有框架。
+建议采用 **ResearchService统一入口 + LangGraph结构化Supervisor与有界子图 + LangChain检索/工具适配 + 现有统计与证据内核**。ToolGateway统一检查工具效果、调用范围与授权；MCP/A2A保留明确协议边界。
+
+已通过口令读取三份授权参考文档并核对至末尾，具体比较见[阅读核查](docs/REFERENCE_PROJECT_REVIEW.md)。借鉴主流程、主管路由和工具连接，同时区分图状态、人工研究事实和运行证据。出行示例明确未使用RAG/Milvus；参考项目完整源码未运行，不直接采用其生产能力宣称。
+
+先保留Streamlit、SQLite与现有统计运行时。迁移顺序为服务解耦、结构化路由、检索子图、审核中断、真实进度与结果解释。框架尚未接入，不在当前环境直接升级依赖。
 
 - [当前问题、参考模式与职责分工](docs/ARCHITECTURE_REVIEW_0.7.0.md)
 - [逐阶段迁移、输入输出与验收标准](docs/LANGGRAPH_MIGRATION_PLAN.md)
 - [研究工作流图](docs/assets/research-workflow-target.svg)
 - [知识与证据双通道图](docs/assets/rag-evidence-target.svg)
 - [Mermaid图源](docs/diagrams/)
-- [来源与飞书访问状态](docs/architecture-sources.json)
+- [工具权限入口图](docs/assets/tool-gateway-target.svg)
+- [记忆与研究事实职责图](docs/assets/memory-boundaries-target.svg)
+- [来源与飞书阅读范围](docs/architecture-sources.json)
 
 ## 数据、研究与发布边界
 
