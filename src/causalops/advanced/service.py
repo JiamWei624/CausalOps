@@ -12,11 +12,11 @@ from scipy.stats import norm
 from causalops.general.service import GeneralWorkspace,DesignError
 from causalops.general.exploration import clean_json
 
-LABELS={'iv_2sls':'工具变量 2SLS','rd_sharp':'清晰断点回归 RDD','staggered_did':'交错 DID：ATT(g,t)'}
+LABELS={'iv_2sls':'工具变量 2SLS','rd_sharp':'清晰断点回归（Sharp RD）','rd_fuzzy':'模糊断点回归（Fuzzy RD）','staggered_did':'交错 DID：ATT(g,t)'}
 FACT_FIELDS={'allow_complete_case','independent_units_reviewed','design_evidence','instrument_exogeneity_reviewed','exclusion_reviewed','monotonicity_reviewed','continuity_reviewed','no_manipulation_reviewed','threshold_rule_reviewed','parallel_reviewed','no_anticipation_reviewed','no_interference_reviewed','covariates_pre_reviewed'}
 class AdvancedDesign(BaseModel):
     model_config=ConfigDict(extra='forbid',allow_inf_nan=False)
-    method:Literal['iv_2sls','rd_sharp','staggered_did']
+    method:Literal['iv_2sls','rd_sharp','rd_fuzzy','staggered_did']
     question:str=Field(min_length=8,max_length=1000)
     outcome:str
     treatment:str|None=None
@@ -28,6 +28,7 @@ class AdvancedDesign(BaseModel):
     cohort:str|None=None
     running:str|None=None
     cutoff:float=0.0
+    ar_null:float=0.0
     control_group:Literal['never_treated','not_yet_treated']='never_treated'
     unit:str=Field(default='结果指标原单位',max_length=100)
     allow_complete_case:bool=False
@@ -62,9 +63,10 @@ def estimate(frame,d):
     if set(d.instruments)&{d.entity,d.cluster}:raise DesignError('标识不能作为工具变量。')
     required=roles(d)
     if set(required)-set(frame):raise DesignError('字段不存在：'+str(sorted(set(required)-set(frame))))
-    predictors=[d.treatment,*d.instruments,*d.covariates] if d.method=='iv_2sls' else [d.running,*d.covariates] if d.method=='rd_sharp' else [d.cohort,d.time,*d.covariates]
+    predictors=[d.treatment,*d.instruments,*d.covariates] if d.method=='iv_2sls' else [d.running,*d.covariates] if d.method in ('rd_sharp','rd_fuzzy') else [d.cohort,d.time,*d.covariates]
     predictors=[x for x in predictors if x]
     if len(set(predictors))!=len(predictors) or d.outcome in predictors:raise DesignError('结果、自变量与工具角色冲突或重复。')
+    if d.treatment and d.treatment in d.covariates:raise DesignError('实际处理变量不能同时作为控制变量。')
     if set(d.covariates)&{d.entity,d.cluster}:raise DesignError('标识不能作为协变量。')
     if d.covariates and not d.covariates_pre_reviewed:raise DesignError('协变量的处理前时序尚未确认。')
     f=frame[required].copy();before=len(f)
@@ -77,6 +79,7 @@ def estimate(frame,d):
     f=f.loc[complete].reset_index(drop=True)
     if len(f)<60 or f[d.outcome].nunique()<2:raise DesignError('本扩展至少60行且结果须有变异。')
     if d.entity and d.method!='staggered_did' and f[d.entity].duplicated().any() and not d.cluster:raise DesignError('重复实体需明确聚类字段，不能按独立行推断。')
+    if d.entity and d.cluster and f.groupby(d.entity)[d.cluster].nunique().max()>1:raise DesignError('同一实体跨越多个聚类，当前单向聚类设计不适用。')
     out={'method':d.method,'input_rows':before,'analysis_rows':len(f),'excluded_rows':dropped,'warnings':[],'diagnostics':[],'unit':d.unit,'assumptions_are_human_declarations':True,'claim':'reduced_form','automatic_assumption_verification':False}
     with warnings.catch_warnings(record=True) as caught:
         warnings.simplefilter('always')
@@ -98,27 +101,47 @@ def estimate(frame,d):
             ci=r.conf_int().loc[d.treatment];b=float(r.params[d.treatment]);se=float(r.std_errors[d.treatment]);pv=float(r.pvalues[d.treatment])
             diag=r.first_stage.diagnostics.reset_index().rename(columns={'index':'term'}).to_dict('records')
             # Robust first-stage chi-square is NOT an ordinary F(10) weak-IV certificate.
-            first=diag[0];weak=not np.isfinite(first['f.stat']) or first['f.pval']>.05
+            first=diag[0];weak=not np.isfinite([first['f.stat'],first['f.pval']]).all() or first['f.pval']>.05
             out.update(estimate=b,std_error=se,p_value=pv,ci95=[float(ci.iloc[0]),float(ci.iloc[1])],implementation='linearmodels.IV2SLS',package_version=version('linearmodels'),first_stage=diag,estimand='线性IV参数；二元工具/处理在额外单调性下才有局部解释，不自动等于总体ATE')
-            out['diagnostics'].append({'name':'工具相关性检验','status':'warning' if weak else 'informative_only','value':first['f.pval'],'note':'仅报告相关性与partial R²；不能据此排除弱工具或证明排除限制。'})
-            out['warnings']+=['常规2SLS置信区间不是弱工具稳健区间；未实现AR/CLR，不能仅用第一阶段显著性作因果结论。','工具外生性和排除限制不能由此表证明。']
+            out['diagnostics'].append({'name':'第一阶段工具相关性检验','status':'warning' if weak else 'informative_only','value':first['f.pval'],'note':'仅报告相关性与partial R²；不能据此排除弱工具或证明排除限制。'})
+            from causalops.advanced.boundaries import ar_null_test
+            out['ar_test']=ar_null_test(f,d,x)
+            out['warnings']+=['常规2SLS置信区间不具备弱工具稳健性。本次另行报告指定效应值的AR型检验，尚未实现AR置信集合与CLR。','工具外生性及排除限制须由研究设计论证，无法由当前数据检验确认。']
             out['claim']='associational' if weak else 'iv_under_declared_assumptions'
-        elif d.method=='rd_sharp':
+        elif d.method in ('rd_sharp','rd_fuzzy'):
             require(d,'continuity_reviewed','no_manipulation_reviewed','threshold_rule_reviewed','no_interference_reviewed')
             if not d.running:raise DesignError('RDD须明确运行变量和事先存在的阈值。')
             if not d.cluster:require(d,'independent_units_reviewed')
             if d.cluster and f[d.cluster].nunique()<30:raise DesignError('当前RD聚类推断要求至少30簇。')
-            if d.treatment and not f[d.treatment].eq((f[d.running]>=d.cutoff).astype(int)).all():raise DesignError('处理不完全遵循阈值；这是模糊断点，不能套清晰断点执行器。')
+            if d.method=='rd_fuzzy':
+                require(d,'exclusion_reviewed','monotonicity_reviewed')
+                if not d.treatment or not f[d.treatment].isin([0,1]).all() or f[d.treatment].nunique()!=2:raise DesignError('模糊断点须指定有变异的二元实际处理变量。')
+            if d.method=='rd_sharp' and d.treatment and not f[d.treatment].eq((f[d.running]>=d.cutoff).astype(int)).all():raise DesignError('处理不完全遵循阈值；这是模糊断点，不能套清晰断点执行器。')
             left=f.loc[f[d.running]<d.cutoff,d.running];right=f.loc[f[d.running]>=d.cutoff,d.running]
             if min(len(left),len(right))<30 or min(left.nunique(),right.nunique())<15:raise DesignError('阈值每侧至少30行、15个不同运行变量取值。')
             from rdrobust import rdrobust
-            r=rdrobust(f[d.outcome],f[d.running],c=d.cutoff,p=1,q=2,bwselect='mserd',kernel='tri',masspoints='adjust',covs=f[d.covariates] if d.covariates else None,cluster=f[d.cluster] if d.cluster else None)
+            rd_kwargs=dict(c=d.cutoff,p=1,q=2,kernel='tri',masspoints='adjust',covs=f[d.covariates] if d.covariates else None,cluster=f[d.cluster] if d.cluster else None)
+            if d.method=='rd_fuzzy':rd_kwargs['fuzzy']=f[d.treatment]
+            r=rdrobust(f[d.outcome],f[d.running],bwselect='mserd',**rd_kwargs)
             b=float(r.coef.loc['Robust'].iloc[0]);se=float(r.se.loc['Robust'].iloc[0]);pv=float(r.pv.loc['Robust'].iloc[0]);ci=r.ci.loc['Robust'].tolist()
             if min(r.N_h)<20:raise DesignError('自动选带宽内任一侧不足20观测，停止不稳定推断。')
             out.update(estimate=b,std_error=se,p_value=pv,ci95=list(map(float,ci)),implementation='rdrobust.rdrobust robust bias-corrected row',package_version=version('rdrobust'),bandwidth=r.bws.to_dict(),effective_n=list(map(int,r.N_h)),estimand='阈值处的局部跳跃，不外推全体平均效应')
             out['diagnostics']=[{'name':'带宽内样本','status':'informative_only','value':list(map(int,r.N_h)),'note':'使用mserd带宽、局部线性、三角核与稳健偏差校正区间。'}]
-            out['warnings']+=['未自动完成运行变量密度/操纵检验和协变量连续性检验；人工声明不是经验检验。','阈值其他政策、排序或堆积可能破坏局部解释；带宽敏感性须另行预定。']
+            from causalops.advanced.boundaries import rd_sensitivity
+            out['bandwidth_sensitivity']=rd_sensitivity(f,d,r,rd_kwargs)
+            if d.cluster:
+                local=f[d.running].between(d.cutoff-float(r.bws.loc['h'].iloc[0]),d.cutoff+float(r.bws.loc['h'].iloc[1]))
+                if f.loc[local,d.cluster].nunique()<30:raise DesignError('主带宽内独立簇少于30，停止当前RD聚类推断。')
+            out['warnings']+=['运行变量密度、操纵风险及协变量连续性尚未经自动检验，须另行评估。','带宽比较按预定倍数完整报告，主估计不随显著性调整。']
             out['claim']='local_rd_under_declared_assumptions'
+            if d.method=='rd_fuzzy':
+                first=rdrobust(f[d.treatment],f[d.running],h=r.bws.loc['h'].to_numpy(float),b=r.bws.loc['b'].to_numpy(float),**{k:v for k,v in rd_kwargs.items() if k!='fuzzy'})
+                first_ci=list(map(float,first.ci.loc['Robust']));first_b=float(first.coef.loc['Robust'].iloc[0]);first_p=float(first.pv.loc['Robust'].iloc[0])
+                strong_support=np.isfinite([first_b,first_p,*first_ci]).all() and first_ci[0]>0
+                out['treatment_jump']={'estimate':first_b,'ci95':first_ci,'p_value':first_p,'same_bandwidth_as_main':True,'positive_jump_precisely_estimated':bool(strong_support)}
+                out['estimand']='阈值附近因规则变化而接受处理者的局部平均效应；依赖连续性、排除限制及单调性，不代表总体平均效应'
+                out['claim']='local_fuzzy_rd_under_declared_assumptions' if strong_support else 'associational'
+                out['warnings'].append('本实现要求处理概率在阈值右侧增加。常规模糊RD区间不具备弱第一阶段稳健性；处理跳跃不精确时降低解释等级。')
             bins=pd.cut(f[d.running],20);plot=f.assign(bin=bins).groupby('bin',observed=True).agg(x=(d.running,'mean'),y=(d.outcome,'mean'),n=(d.outcome,'size'))
             out['plot']=plot.reset_index(drop=True).to_dict('records')
         else:
@@ -160,8 +183,11 @@ def estimate(frame,d):
             out['warnings']+=['事件期置信区间为逐点区间，不是同时置信带；未拒绝处理前检验不证明平行趋势。','不同事件期的批次构成可能变化，动态形状不等于同一人群效应轨迹。']
             out['diagnostics']=[{'name':'处理前ATT联合检验','status':pre['status'],'value':pre.get('p_value'),'note':pre['note']}]
         out['upstream_warnings']=list(dict.fromkeys(str(w.message)[:500] for w in caught))
-    if not all(np.isfinite([out['estimate'],out['std_error'],*out['ci95']])) or out['std_error']<=0:raise DesignError('估计或不确定性非有限，停止输出。')
-    out['conclusion']=f"{LABELS[d.method]}估计差异为{out['estimate']:.4g} {d.unit}，95%区间[{out['ci95'][0]:.4g}, {out['ci95'][1]:.4g}]。这不是自动证实的业务增量；解释范围：{out['estimand']}。"
+    if not all(np.isfinite([out['estimate'],out['std_error'],*out['ci95']])) or out['std_error']<=0 or not np.isfinite(out['p_value']) or not 0<=out['p_value']<=1:raise DesignError('估计或不确定性非有限，停止输出。')
+    from causalops.advanced.boundaries import boundary_rows
+    out['boundary_register']=boundary_rows(d.method)
+    out['conclusion']=f"{LABELS[d.method]}的估计值为{out['estimate']:.4g}（{d.unit}），95%置信区间为[{out['ci95'][0]:.4g}, {out['ci95'][1]:.4g}]。估计对象：{out['estimand']}。"
+    if out['claim']=='associational':out['conclusion']+='当前诊断不足以支持因果解释，结果仅作关联性参考。'
     return clean_json(out)
 
 class AdvancedWorkspace:

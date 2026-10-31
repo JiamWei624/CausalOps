@@ -9,21 +9,21 @@ from causalops.ui.showcase_support import overview_numbers,conclusion_figures
 def style():
     st.markdown("""<style>
     .block-container{max-width:1240px;padding-top:4.5rem;padding-bottom:3rem}
-    h1{letter-spacing:-.03em} h2,h3{letter-spacing:-.02em}
+    h1{font-size:2rem!important;font-weight:650!important;letter-spacing:0;line-height:1.45!important} h2,h3{letter-spacing:0;line-height:1.55!important} [data-testid=stMarkdownContainer] p{line-height:1.8}
     .eyebrow{font-size:.78rem;letter-spacing:.13em;color:#527a78;font-weight:700}
     .hero-note{font-size:1.04rem;line-height:1.85;max-width:900px;color:#637274}
     .flow{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 24px}
-    .flow span{border:1px solid #b8cdcb;padding:8px 14px;border-radius:30px;font-size:.88rem}
+    .flow span{border:1px solid #b8cdcb;padding:8px 14px;border-radius:5px;font-size:.88rem}
     .flow .active{background:#176b65;color:white;border-color:#176b65}
     .source-pill{font-size:.82rem;color:#527a78;margin:6px 0 14px}
-    div[data-testid=stMetric]{padding:14px;border:1px solid #d8e2df;border-radius:12px}
+    div[data-testid=stMetric]{padding:14px;border:1px solid #d8e2df;border-radius:6px}
     div[data-testid=stMetricValue]{font-size:1.85rem}
-    div[data-testid=stVerticalBlockBorderWrapper]{border-radius:14px}
+    div[data-testid=stVerticalBlockBorderWrapper]{border-radius:6px}
     @media(max-width:700px){.block-container{padding:1rem}div[data-testid=stMetricValue]{font-size:1.4rem}}
     </style>""",unsafe_allow_html=True)
 
 def flow(existing:bool):
-    st.markdown('<div class="flow"><span>① 理解问题</span><span>② 审核设计</span><span class="'+('' if existing else 'active')+'">③ 确认运行</span><span class="'+('active' if existing else '')+'">④ 阅读结论与证据</span></div>',unsafe_allow_html=True)
+    st.markdown('<div class="flow"><span>① 明确问题</span><span>② 审核设计</span><span class="'+('' if existing else 'active')+'">③ 执行分析</span><span class="'+('active' if existing else '')+'">④ 查阅结果</span></div>',unsafe_allow_html=True)
 
 def design_summary(spec):
     from causalops.capabilities import format_method_label
@@ -39,15 +39,15 @@ def show_conclusion(bundle):
     n=overview_numbers(bundle);a,b,c=st.columns([1.1,1.3,1.4])
     a.metric('主估计差异'+('（百分点）' if n['binary'] else ''),'未估计' if n['estimate'] is None else f"{n['estimate']:+.3f}")
     b.metric('95%置信区间','未记录' if n['ci'] is None else f"[{n['ci'][0]:.3f}, {n['ci'][1]:.3f}]")
-    c.metric('允许的结论',{'identified_causal':'有条件因果解释','reduced_form':'受限准实验','associational':'条件相关','descriptive':'描述性结论'}[bundle.claim_level.value])
+    c.metric('结论解释等级',{'identified_causal':'有条件因果解释','reduced_form':'受限准实验','associational':'条件相关','descriptive':'描述性结论'}[bundle.claim_level.value])
     st.caption('完整结论等级：'+claim_label_zh(bundle.claim_level))
     if bundle.claim_level.value in ('associational','descriptive'):
-        st.warning('当前结果不能表述为“干预导致了改善”。下面仍展示估计幅度，同时保留解释边界。')
-    st.caption('二元指标以百分点展示；例如0.03概率差等于3个百分点。数值来自当前保存运行，不由模型生成。' if n['binary'] else '数值按登记指标单位展示；不把系数随意换成百分比。')
+        st.warning('当前研究仅支持描述性或关联性解释，不足以将估计差异归因于干预。')
+    st.caption('二元指标以百分点展示；例如0.03概率差等于3个百分点。数值来自当前保存运行，不由模型生成。' if n['binary'] else '估计按已登记的指标单位呈现；百分比换算须有相应指标定义和参考基线。')
     for title,paragraphs in business_sections(bundle):
         with st.container(border=True):
             st.markdown('**'+title+'**')
             for p in paragraphs:st.write(p)
-    with st.expander('用图理解幅度与参考水平',expanded=True):
+    with st.expander('估计幅度与样本参考水平',expanded=True):
         for title,figure in conclusion_figures(bundle).items():st.plotly_chart(figure,key='summary_'+bundle.run_id+'_'+title,width='stretch')
-    st.caption('结论对应运行：'+bundle.run_id+'；数据范围和识别假设不会因为图表更直观而自动成立。')
+    st.caption('运行编号：'+bundle.run_id+'。解释范围取决于样本、研究设计与识别条件。')

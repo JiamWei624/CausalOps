@@ -8,14 +8,14 @@ from causalops.results.interpretation import interpret_run
 
 ROOT=Path(__file__).resolve().parents[3]
 ROUTES={
- 'assistant':('分析助手 · 统一入口','上传、对话、方法检索、受控执行与证据解释。'),
- 'analysis':('分析我的数据','上传自己的表、确认研究设计、执行并恢复分析。'),
- 'home':('开始使用','选择一个问题，跟随提示完成一次分析。'),
- 'experiment':('路线一 · 随机实验','营销邮件是否提高访问概率？读懂绝对变化、区间和实际意义。'),
- 'diagnostic':('路线二 · 识别失败','如果处理前趋势已经不同，为什么不能把估计称为因果效应？'),
- 'weibo':('路线三 · 真实微博研究','回看已保存的全量研究结果；不重新读取原始CSV或估计。'),
- 'guide':('使用说明与方法选择','理解指标、方法适用条件、权限边界和后续扩展。'),
- 'status':('系统状态与故障处理','确认服务版本，按明确步骤恢复，不反复尝试相同操作。'),
+ 'assistant':('分析工作台','上传、对话、方法检索、受控执行与证据解释。'),
+ 'analysis':('专业分析','上传自己的表、确认研究设计、执行并恢复分析。'),
+ 'home':('示例与入门','选择一个问题，跟随提示完成一次分析。'),
+ 'experiment':('示例一 · 随机实验','营销邮件是否提高访问概率？读懂绝对变化、区间和实际意义。'),
+ 'diagnostic':('示例二 · 识别诊断','如果处理前趋势已经不同，为什么不能把估计称为因果效应？'),
+ 'weibo':('示例三 · 用户行为研究','回看已保存的全量研究结果；不重新读取原始CSV或估计。'),
+ 'guide':('使用说明与方法范围','理解指标、方法适用条件、权限边界和后续扩展。'),
+ 'status':('系统状态与故障排查','确认服务版本，按明确步骤恢复，不反复尝试相同操作。'),
 }
 
 def source_fingerprint(root:Path=ROOT)->str:
@@ -32,7 +32,7 @@ def checked_route(value:str)->str:
 def safe_error(exc:Exception)->dict[str,str]:
     # Never display arbitrary exception text: it can contain paths, IDs or secrets.
     if isinstance(exc,ImportError):return {'title':'组件版本未同步','action':'关闭作品集启动窗口，然后双击“启动作品集.cmd”；已有研究记录会保留。'}
-    if isinstance(exc,FileNotFoundError):return {'title':'所需文件尚未就绪','action':'请打开“系统状态与故障处理”核对数据和报告；可先使用识别失败的合成演示。'}
+    if isinstance(exc,FileNotFoundError):return {'title':'所需文件尚未就绪','action':'请打开“系统状态与故障排查”核对数据和报告；可先使用识别失败的合成演示。'}
     if isinstance(exc,(ValueError,KeyError)):return {'title':'数据或证据未通过核验','action':'保留当前记录，不要修改原始证据；请查看故障编号并重新核对数据版本。'}
     return {'title':'本次操作未完成','action':'请保留当前页面和故障编号；重新打开作品集。如果再次出现，请提供编号。'}
 

@@ -8,7 +8,7 @@ from causalops.general.exploration import ExplorationWorkspace,ExplorationDesign
 from causalops.general.exploration_report import display,figures,render_report
 
 def render_exploration(method):
-    st.title(LABELS[method]);st.caption('独立分析方法：上传/选择表 → 明确分析字段 → 保存配置 → 运行 → 图文报告与恢复')
+    st.title(LABELS[method]);st.caption('导入数据并明确统计口径后保存配置。每次分析对应独立运行记录，支持报告导出与历史结果恢复。')
     st.info('无需填写处理组或因果假设。数据与问题仅在本机处理；描述、相关和关联回归不能自动解释为因果。')
     ws=GeneralWorkspace();ex=ExplorationWorkspace(ws);studies=ex.studies(method);byid={x['study_id']:x for x in studies};req=st.query_params.get('explore')
     pending=st.session_state.pop('exp_open_'+method,None)
@@ -79,7 +79,7 @@ def render_exploration(method):
     for c in summary['categorical']:
         with st.expander('分类频数：'+c['field']):st.caption('分母为全表'+str(c['denominator'])+'行；剩余类别'+str(c['remaining_n'])+'行。');st.dataframe(display(c['top']),hide_index=True,width='stretch')
     if summary.get('date_quality'):st.caption('日期不可用行数：'+str(summary['date_quality']['unusable_rows'])+'；时间汇总不补缺期。')
-    if b['regression']:st.subheader('回归关联结果（不是因果效应）');st.dataframe(display(b['regression']['coefficients']),hide_index=True,width='stretch');st.caption(b['regression']['note'])
+    if b['regression']:st.subheader('关联回归结果');st.dataframe(display(b['regression']['coefficients']),hide_index=True,width='stretch');st.caption(b['regression']['note'])
     for title,fig in figures(b).items():st.plotly_chart(fig,key=rid+'_'+title,width='stretch')
     for warning in b['warnings']:st.caption(warning)
     a,c=st.columns(2);a.download_button('下载探索分析图文报告',render_report(b),file_name=method+'-'+rid+'.html',mime='text/html');c.download_button('下载探索分析证据JSON',json.dumps(b,ensure_ascii=False,indent=2),file_name=rid+'.json',mime='application/json')

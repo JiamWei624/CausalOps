@@ -4,7 +4,7 @@ import streamlit as st
 from causalops.evaluation.user_trials import UserTrials
 
 def render_user_trial(ws):
-    trials=UserTrials(ws);st.subheader('实际使用价值：先正确，再比较时间')
+    trials=UserTrials(ws);st.subheader('使用效果与任务效率评测')
     st.write('请邀请未参与开发的人独立完成：导入表格→确定字段与方法→解释结论和边界→导出报告。相同任务分别用原有工具和本助手完成，交替安排先后顺序。由另一人核对答案，不能把程序测试当作人的评测。')
     participant=st.text_input('匿名参与者编号（不要真实姓名）',key='ut_participant');pair=st.text_input('配对任务编号',value='T1',key='ut_pair');task=st.text_area('统一验收目标与判分规则',value='计算指定字段的有效样本数、均值、缺失率；解释分母和非因果边界；导出可追溯报告。',key='ut_task')
     mode=st.radio('本次使用方式',['manual','assistant'],format_func=lambda v:'原有人工工具流程' if v=='manual' else 'CausalOps助手流程',horizontal=True,key='ut_mode')
@@ -17,5 +17,5 @@ def render_user_trial(ws):
             try:trials.finish(st.session_state.pop('ut_active'),reviewed_correct=correct,error_count=errors,rework_count=rework,report_exported=exported);st.success('已记录。本次记录尚不是总体提效结论。')
             except ValueError as e:st.error(str(e))
     report=trials.report();st.caption('已完成真实任务：'+str(report['completed_tasks'])+'；满足正确且导出条件的配对：'+str(len(report['valid_correct_exported_pairs'])))
-    if not report['completed_tasks']:st.info('等待真实陌生使用者参加。当前没有人类效率提升数值。')
+    if not report['completed_tasks']:st.info('尚无独立参与者的完成记录，暂不报告使用效率差异。')
     st.download_button('下载真实任务评测记录',json.dumps(report,ensure_ascii=False,indent=2),file_name='CausalOps-user-trials.json',key='ut_download')

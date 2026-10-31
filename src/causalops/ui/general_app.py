@@ -15,9 +15,9 @@ from causalops.ui.showcase_widgets import show_conclusion
 from causalops.visualization import build_did_diagnostic_figures,build_regression_diagnostic_figures
 
 def render_general():
-    ws=GeneralWorkspace();st.title('分析我的数据')
-    st.caption('上传自己的分析表 → 确认字段与口径 → 保存草案 → 审核并执行 → 报告、问答与恢复')
-    st.info('首版为本机单用户工作台：CSV/Parquet，最多50MB、100,000行、200列。数据、字段与问题不会自动发送给模型；本页问答使用本地证据。')
+    ws=GeneralWorkspace();st.title('专业统计分析')
+    st.caption('用于明确变量映射与指标口径的专业分析入口。保存设计版本后审核执行，并查阅对应运行的结果与证据。')
+    st.info('本入口用于本机单用户分析：CSV/Parquet，最多50MB、100,000行、200列。数据、字段与问题不会自动发送给模型；本页问答使用本地证据。')
     studies=ws.studies();by_id={s.session_id:s for s in studies};requested=st.query_params.get('study')
     mode=st.radio('工作方式',['新建研究','恢复已保存研究'],index=1 if requested in by_id else 0,horizontal=True)
     sid=None;uid=None;current=None
@@ -40,7 +40,7 @@ def render_general():
         if not uid and available:
             chosen=st.selectbox('也可选择本工作区已导入文件',[None]+[x['upload_id'] for x in available],format_func=lambda x:'请选择' if x is None else next(y['name'] for y in available if y['upload_id']==x))
             uid=chosen
-        if not uid:st.info('先上传文件并点击“导入并检查”。本入口没有预设你的处理变量和结果。');return
+        if not uid:st.info('请导入数据后继续设置变量。本入口不预设处理变量、结果变量或分组口径。');return
     try:frame=ws.load_upload(uid)
     except (ValueError,OSError) as exc:st.error(str(exc));return
     a,b,c=st.columns(3);a.metric('原表行数',f'{len(frame):,}');b.metric('字段数',len(frame.columns));c.metric('工作区','本机持久化')
@@ -90,7 +90,7 @@ def render_general():
         exchange=st.checkbox('有依据支持给定已选处理前协变量后的条件可交换性（声明，不是已验证）',value=saved.exchangeability_declared if saved else False,key=key('exchange'))
         overlap=st.checkbox('有依据认为两组有共同支撑；仍须进行诊断（声明，不是已验证）',value=saved.overlap_declared if saved else False,key=key('overlap'))
     if method=='did':
-        st.info('首版仅支持共同处理日期、含从未处理对照的完整日级面板。处理字段表示当日是否已处理；不支持交错处理和月度面板。')
+        st.info('本入口的DID适用于共同处理日期、含从未处理对照的完整日级面板。交错处理请使用“分析工作台—进阶研究设计”，并显式登记整数期序与首次处理期。')
         a,b=st.columns(2)
         with a:time=pick('日级观测日期字段','time')
         with b:treatment_time=pick('首次处理日期字段（从未处理者留空）','treatment_time')

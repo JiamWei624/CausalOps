@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-31.2",
+  "version": "2026-10-31.3",
   "sources": {
     "pandas": {
       "source_id": "pandas",
@@ -240,12 +240,42 @@
       "checked_on": "2026-10-31",
       "access_scope": "full_text_selected_method_pages_visual",
       "reuse": "原创简要方法提炼；链接与页码；不分发原始论文全文"
+    },
+    "statsmodels_wald": {
+      "source_id": "statsmodels_wald",
+      "title": "statsmodels：线性约束联合检验",
+      "url": "https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.RegressionResults.wald_test.html",
+      "source_type": "official_documentation",
+      "locator": "wald_test：限制矩阵、cov_p、use_f=False与渐近卡方分布",
+      "checked_on": "2026-10-31",
+      "access_scope": "public_documentation",
+      "reuse": "原创方法说明，保留来源链接，不转载全文。"
+    },
+    "statsmodels_cov": {
+      "source_id": "statsmodels_cov",
+      "title": "statsmodels：稳健协方差估计",
+      "url": "https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.RegressionResults.get_robustcov_results.html",
+      "source_type": "official_documentation",
+      "locator": "HC1与单向cluster参数、use_correction及渐近条件",
+      "checked_on": "2026-10-31",
+      "access_scope": "public_documentation",
+      "reuse": "原创方法说明，保留来源链接，不转载全文。"
+    },
+    "robust_ar_theory": {
+      "source_id": "robust_ar_theory",
+      "title": "Mikusheva & Sun：Weak Identification with Many Instruments",
+      "url": "https://economics.mit.edu/sites/default/files/2023-08/paper.pdf",
+      "source_type": "author_method_paper",
+      "locator": "仅核对第4.1节Robust AR关于Y−beta0*D与工具的矩条件；本实现限少量固定工具，不实现论文的多工具jackknife扩展",
+      "checked_on": "2026-10-31",
+      "access_scope": "public_selected_section",
+      "reuse": "原创方法说明，保留来源链接，不转载全文。"
     }
   },
   "cards": [
     {
       "card_id": "describe",
-      "title": "先了解数据质量与分布",
+      "title": "数据质量与分布检查",
       "methods": [
         "descriptive"
       ],
@@ -433,7 +463,7 @@
     },
     {
       "card_id": "cuped",
-      "title": "CUPED 用处理前信息改善精度",
+      "title": "CUPED：基于处理前信息的方差缩减",
       "methods": [
         "cuped"
       ],
@@ -463,7 +493,7 @@
     },
     {
       "card_id": "psm",
-      "title": "匹配和加权不能解决未测混杂",
+      "title": "倾向得分匹配与加权：适用条件与混杂限制",
       "methods": [
         "psm",
         "ipw"
@@ -495,7 +525,7 @@
     },
     {
       "card_id": "dml",
-      "title": "PLR 与 IRM/AIPW 的目标不同",
+      "title": "PLR与IRM/AIPW：估计对象与方法选择",
       "methods": [
         "double_ml",
         "aipw"
@@ -649,7 +679,7 @@
     },
     {
       "card_id": "iv_2sls",
-      "title": "工具变量2SLS：先论证排除限制，再看第一阶段",
+      "title": "工具变量估计与指定效应值检验",
       "methods": [
         "iv_2sls"
       ],
@@ -662,16 +692,19 @@
         "弱工具"
       ],
       "source_ids": [
-        "iv_official"
+        "iv_official",
+        "statsmodels_wald",
+        "statsmodels_cov",
+        "robust_ar_theory"
       ],
       "scope": "method_rule",
-      "version": "2026-10-31.2",
+      "version": "2026-10-31.3",
       "sections": {
         "适用问题": "有可信外部工具解释内生处理的变化；不按相关性自动挑工具。",
         "数据要求": "一个内生处理、数值结果、足够排除工具、事前控制和独立单位/簇。",
         "识别条件": "相关性、工具外生性、排除限制；二元处理的局部解释还需单调性等条件。",
-        "诊断方法": "报告partial R²、第一阶段统计量及分布。稳健chi²不能直接套普通F阈值；不能证明无弱工具。",
-        "失败情形": "弱相关、共线、错误排除限制或干扰；未实现AR/CLR，常规区间可能失真。",
+        "诊断方法": "保留第一阶段部分R²、Wald统计量及参照分布；不得将稳健chi²当作普通F。对指定beta0另估计Y−beta0*D关于X、Z的回归，使用HC1或单向聚类的渐近Wald检验联合Z系数为零。",
+        "失败情形": "工具无效、弱相关、共线或干扰；AR型检验依赖工具有效性与渐近条件。当前仅检验指定值，无AR置信集合、CLR或多工具渐近扩展，常规2SLS区间仍可能失真。",
         "结果解释": "线性IV参数或条件成立时的局部效应，不自动是全体ATE/ROI。"
       },
       "estimand": "线性结构方程内生处理参数",
@@ -680,7 +713,7 @@
     },
     {
       "card_id": "rd_sharp",
-      "title": "清晰RDD：预定阈值附近的局部效应",
+      "title": "清晰断点回归：局部效应与带宽敏感性",
       "methods": [
         "rd_sharp"
       ],
@@ -696,12 +729,12 @@
         "rd_official"
       ],
       "scope": "method_rule",
-      "version": "2026-10-31.2",
+      "version": "2026-10-31.3",
       "sections": {
         "适用问题": "事先存在的阈值决定处理，比较阈值两侧局部结果。",
         "数据要求": "连续运行变量、已知阈值、足够近阈值支持、明确处理规则。",
         "识别条件": "潜在结果连续，无精确操纵，无同时跳变政策与不可忽略干扰。",
-        "诊断方法": "密度/堆积、协变量连续性、安慰剂阈值和带宽敏感性须预定；当前程序只计算主设定及带宽内数。",
+        "诊断方法": "主设定使用mserd带宽；固定比较主带宽与偏差带宽的0.75、1和1.25倍，完整保留无法估计的情形。密度、协变量连续性及安慰剂阈值仍须另行预定。",
         "失败情形": "模糊处理不能套清晰RDD；离散支持稀少、阈值排序、按显著性挑带宽。",
         "结果解释": "仅阈值附近局部跳跃；制度批准不必等于实际执行。"
       },
@@ -711,7 +744,7 @@
     },
     {
       "card_id": "staggered_did",
-      "title": "交错DID：批次时间ATT与干净对照",
+      "title": "交错DID：批次平均处理效应与对照组构造",
       "methods": [
         "staggered_did"
       ],
@@ -743,7 +776,7 @@
     },
     {
       "card_id": "jfe_design_review",
-      "title": "UTD全文方法案例：交错TWFE的错误比较",
+      "title": "JFE文献：交错处理中的TWFE比较与偏误",
       "methods": [
         "staggered_did",
         "did"
@@ -773,7 +806,7 @@
     },
     {
       "card_id": "platform_policy_review",
-      "title": "UTD全文实证：平台政策的直接与溢出反应",
+      "title": "ISR文献：平台政策的直接效应与溢出反应",
       "methods": [
         "staggered_did",
         "psm"
@@ -804,7 +837,7 @@
     },
     {
       "card_id": "csr_threshold_review",
-      "title": "UTD全文实证：投票阈值与处理含义",
+      "title": "Management Science文献：投票阈值与处理定义",
       "methods": [
         "rd_sharp"
       ],
@@ -830,6 +863,37 @@
       },
       "full_text_reviewed": true,
       "review_scope": "所列方法与结论相关完整页面，非所有附录或复现"
+    },
+    {
+      "card_id": "rd_fuzzy",
+      "title": "模糊断点回归：阈值附近的局部处理效应",
+      "methods": [
+        "rd_fuzzy"
+      ],
+      "tags": [
+        "rd_fuzzy",
+        "模糊断点",
+        "fuzzy",
+        "不完全遵从",
+        "处理跳跃",
+        "断点回归"
+      ],
+      "source_ids": [
+        "rd_official"
+      ],
+      "scope": "method_rule",
+      "version": "2026-10-31.3",
+      "sections": {
+        "适用问题": "阈值规则改变实际接受处理的概率，但不完全决定处理。",
+        "数据要求": "结果、连续运行变量、既定阈值、实际二元处理；阈值两侧有足够观测与支持。当前以阈值右侧处理概率增加为约定。",
+        "识别条件": "潜在结果与类型在阈值处连续、阈值不可精确操纵、排除限制、局部单调性及无干扰；须有制度与行为论证。",
+        "诊断方法": "使用rdrobust fuzzy参数和Robust行；同主带宽报告处理概率跳跃及区间；固定比较0.75/1/1.25倍带宽。跳跃不精确时降低解释等级，不依据显著性更换主估计。",
+        "失败情形": "处理跳跃弱或方向错误、违反排除限制、排序与同时政策、带宽内支持不足。无弱第一阶段稳健区间、正式密度/连续性检验；处理跳跃显著也不能单独证明强识别。",
+        "结果解释": "阈值附近遵从者的局部平均处理效应，不外推总体ATE；无基线与成本时不换算业务收益。"
+      },
+      "estimand": "阈值处遵从者的局部平均处理效应",
+      "formula": "tau_FRD(c) = 结果条件均值的阈值跳跃 / 实际处理概率的阈值跳跃",
+      "implementation": "rdrobust==2.1.1，fuzzy=实际处理，p=1,q=2,tri,mserd；Robust偏差校正推断。"
     }
   ],
   "policy": "方法规则与实证案例分层；只索引已核实原创提炼，不含客户数据；检索失败明确拒答；期刊身份不是假设成立的证据。"
