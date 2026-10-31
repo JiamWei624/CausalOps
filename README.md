@@ -1,101 +1,122 @@
 <!-- release: 0.7.0 -->
 # CausalOps · 数据分析与研究工作台
 
-私有验证版本 **0.7.0**。本机单用户使用，最终确认前保持私有。
+**将数据检查、研究设计、统计分析和证据解释组织在同一任务中。**
 
-上传CSV/Parquet → 本地数据检查 → 方法依据与待审计划 → 人工接受/登记事实 → 本地统计执行 → 图文报告与运行级证据问答。原专业表单与历史研究保留。
+当前为 **0.7.0 私有验证版本**，面向本机单用户。原始数据在本地处理；可选模型提出待审计划和解释，统计计算由本地工具完成。
 
-## 0.7.0 新增能力
+> 当前主流程采用自建状态编排，尚未使用LangChain或LangGraph。下面分别展示当前实现和建议目标；目标设计不作为已完成能力或简历成果。
 
-- 多模型预设：DeepSeek、OpenAI、Anthropic、百炼/千问、Gemini及明确的第三方HTTPS兼容服务。支持三类协议；所有模型输出仍经本地合同与证据校验。
-- 任务授权绑定服务、地址、模型和协议；密钥按服务地址隔离，仅浏览器会话内存保留；更换接收方须重新确认。
-- MCP五项只读工具与A2A运行证据审阅，均不授予接受、批准或统计执行权限。
-- DeepSeek已完成真实官方API验证；其他预设完成协议合同测试，尚未做真实账户验证。详见[接入操作与能力边界](docs/PROVIDERS_PROTOCOLS_0.7.0.md)。
+[快速开始](#快速开始) · [当前架构](#当前架构) · [目标架构](#目标架构建议尚未接入) · [完整功能与边界](docs/IMPLEMENTATION_0.7.0.md) · [迁移实施方案](docs/LANGGRAPH_MIGRATION_PLAN.md)
 
-## 沿用的工作流能力
+## 适合解决什么问题
 
-- **同一运行贯穿结果与讨论**：持久选择运行；问答不再隐式读取最近计划。跨运行比较需单独明确选择；不混入单运行报告。
-- **统一方法与结果合同**：17项方法的输入模式、执行分派与能力说明由同一注册表提供；三类原统计引擎通过适配层保留各自验证边界。
-- **检查点与故障恢复**：执行令牌、进程身份、心跳、限次尝试、取消标记及准备引用。恢复先调和已有结果，再考虑重算；不以心跳超时窃取执行权。
-- **结构化研究上下文**：按数据和运行保存来源计划、人工登记标记、未解决项、被拒绝方法及有限同范围引用；持久存储不等于将全部历史塞给模型。
-- **有界观察与待审修订**：根据已保存诊断选择只读检查、方法检索、询问事实或提出候选；三项动作和共享三次模型调用上限，不自动接受、批准或执行。
-- **可定位方法RAG**：20张卡、27条来源、120个原创摘要章节；章节定位、来源范围、版本指纹、引用校验和不足依据返回。没有宣称全文嵌入库或所有论文已全文核读。
-- **结果与方法能力**：描述、相关、OLS/Logit/Poisson；A/B、CUPED、关联回归、PSM/IPW/DML/AIPW、共同日期DID；IV、清晰/模糊RD、交错DID。具体识别要求见架构文档与方法注册表。
-- **协议与隐私**：通用助手可选择多家模型；本机只读MCP与A2A规则审阅已接入。新任务的模型授权单独控制，不发送原始数据行、ID值或完整论文。
+- **陌生表格体检**：检查缺失、分布、重复与候选字段角色，再提出分析步骤。
+- **实验与观察性研究**：按数据结构、分配机制和识别依据制定研究计划，由使用者审核后执行。
+- **围绕结果继续讨论**：解释幅度、区间、实际意义及限制；回答绑定选定运行，保留来源和数值依据。
 
-[架构与边界](docs/ARCHITECTURE.md) · [本轮变更和操作](docs/ORCHESTRATION_0.6.0.md) · [自动生成方法合同](docs/METHOD_CONTRACTS.md) · [0.5.1方法边界](docs/BOUNDARIES_0.5.1.md)
+**操作路径：上传表格 → 本地检查 → 提出待审计划 → 人工审核 → 本地计算 → 图文报告与持续问答。**
 
-## 开始使用
+## 当前架构
 
-Windows x64 / Python 3.11 为验收平台。安装后启动：
+![CausalOps 0.7.0 当前真实架构](docs/assets/architecture-current.svg)
+
+| 层 | 当前实现 | 责任 |
+|---|---|---|
+| 交互 | Streamlit | 导入、讨论、审核、图表和报告 |
+| 应用与编排 | AssistantWorkspace、TaskRuntime、EvidenceLoop | 版本、检查点、限次恢复与有界观察 |
+| 模型 | 多服务商HTTP网关 | 接收配置授权、结构化输出与本地校验 |
+| 知识 | TF-IDF方法卡与章节检索 | 方法条件、来源位置、知识库版本 |
+| 统计 | 17项方法、三类执行器、ToolResult | 设计检查、计算、诊断与运行归属 |
+| 存储 | SQLite、Parquet、JSON/HTML | 研究版本、数据副本、证据和成果 |
+| 协议 | MCP与A2A | 明确导出的只读方法/证据查询与规则审阅 |
+
+代码与职责映射见[架构核查](docs/ARCHITECTURE_REVIEW_0.7.0.md)；详细研究合同见[方法注册表](docs/METHOD_CONTRACTS.md)及[执行边界](docs/ARCHITECTURE.md)。
+
+## 当前能力与验证状态
+
+| 能力 | 已实现范围 | 说明 |
+|---|---|---|
+| 数据导入 | CSV/Parquet；50MB、10万行、200列，解码内存上限256MB | 原文件不改写；更大原始日志需先整理 |
+| 探索性分析 | 描述、相关、OLS、Logit、Poisson | 相关/回归不等于因果；缺失、单位和暴露需核对 |
+| 实验与研究 | A/B、CUPED、关联回归、PSM、IPW、DML、AIPW、共同日期DID | 方法有各自数据与识别条件 |
+| 进阶设计 | 2SLS、清晰/模糊RD、限定条件的交错DID | 非任意IV/RDD/DID自动研究，见方法边界 |
+| 方法RAG | 20张卡、27条来源、120个原创摘要章节 | 有出处与核对范围；不是全文向量库 |
+| 结果问答 | 指定运行的事实、引用、解释等级与来源快照 | 单运行与明确多运行比较分开 |
+| 多模型 | DeepSeek、OpenAI、Anthropic、百炼、Gemini及HTTPS兼容接口 | DeepSeek真实API验收通过；其他预设为协议合同测试 |
+| MCP | 五项只读工具 | 不提供批准或统计执行权限 |
+| A2A | 独立本地规则审阅服务 | 不是第二个自主研究大模型，不验证因果假设 |
+| LangGraph / LangChain | 已形成目标架构与迁移方案 | 尚未安装或接入正式流程 |
+
+0.7.0上轮验收：源码与独立已安装wheel环境分别 **401项测试通过**，浏览器及MCP/A2A实际协议调用通过。测试数不等于开放任务准确率；独立用户效率与完成率仍待评测。[测试工作流](https://github.com/JiamWei624/CausalOps/actions)
+
+## 页面示例
+
+以下截图使用固定合成任务，不包含真实微博数据或密钥。
+
+![工作台任务与数据检查](docs/assets/workbench-overview.png)
+
+![图表、报告与运行证据](docs/assets/workbench-results.png)
+
+## 快速开始
+
+验收平台：Windows x64、Python 3.11。默认离线模式不需要模型密钥。建议较短的E盘工作区路径，缓存、日志和产物均留在该盘。
+
+已有安装环境启动：
 
 ```powershell
 python -m causalops.launch --workspace "E:/my-causalops-workspace" --port 8510
 ```
 
-原作者电脑也可双击项目内已有启动脚本。默认不需要API密钥；进入“模型与发送权限”可选择服务、模型和协议，在内存填写密钥并单独授权当前任务。离线分析、报告、方法检索不依赖外部模型。MCP为可选依赖：`pip install ".[mcp]"`。
+从源码安装可按[固定运行依赖](requirements-runtime-win-py311.txt)与[第三方许可说明](THIRD_PARTY_NOTICES.md)准备环境：
 
-可选只读工具服务由宿主通过stdio启动：
+```powershell
+$env:TEMP = "E:/project-temp"
+$env:TMP = "E:/project-temp"
+$env:PIP_CACHE_DIR = "E:/project-cache/pip"
+python -m venv "E:/causalops-venv"
+& "E:/causalops-venv/Scripts/python.exe" -m pip install -r requirements-runtime-win-py311.txt
+& "E:/causalops-venv/Scripts/python.exe" -m pip install --no-deps .
+& "E:/causalops-venv/Scripts/python.exe" -m causalops.launch --workspace "E:/causalops-work" --port 8510
+```
+
+以上从项目根目录执行，E盘目录需存在。离线发行包另附匹配wheel与安装脚本；Git仓库不包含大型依赖包。模型配置方法见[多模型接入说明](docs/PROVIDERS_PROTOCOLS_0.7.0.md)。密钥只在界面内存使用，不提交到Git。
+
+只读MCP服务由宿主启动：
 
 ```powershell
 python -m causalops.protocols.readonly_server --workspace "E:/my-causalops-workspace"
 ```
 
-使用前在助手的方法依据页明确导出当前任务数字证据。宿主只能读该导出库，不可要求服务执行分析。支持`search_methods`、`read_method_source`、`list_analysis_capabilities`、`read_run_evidence`和`check_evidence_citations`五项工具。
+先在任务中明确导出证据；宿主仅读取该导出范围。宿主配置与权限由使用者确认，不自动继承工作台外发授权。
 
-## 验收与边界
+## 目标架构（建议，尚未接入）
 
-新增固定数据验收覆盖企鹅、小费、宏观表和statsmodels官方RAND数据；后者20,190行仅用于关联/数值验证。论文仅提炼可访问摘要，不分发原文；原始网页快照和研究数据不随源码发布。真实使用效率仍待独立使用者完成任务。
+![LangGraph与LangChain目标架构：尚未实现](docs/assets/architecture-target.svg)
 
-“任意上传一张表就完成全部因果研究”不是产品承诺。描述与相关可在授权后连续执行；字段含义、独立单位、分配机制、处理前测量或识别依据不清时需补充事实。已开放限定条件的IV、清晰/模糊RD、交错DID及AR型原假设检验；仍未实现AR置信集合/CLR、RD密度操纵检验、上层聚类或不平衡面板交错DID、变暴露计数offset、多租户部署。
+建议采用 **LangGraph主编排 + LangChain检索/工具适配 + 现有统计与证据内核 + MCP/A2A外部边界**。保留Streamlit首版，先完成应用服务解耦、图节点与中断恢复，再升级检索和交互。不是同时重写前后端或堆叠所有框架。
 
-## 沿用的统计与存储合同
+- [当前问题、参考模式与职责分工](docs/ARCHITECTURE_REVIEW_0.7.0.md)
+- [逐阶段迁移、输入输出与验收标准](docs/LANGGRAPH_MIGRATION_PLAN.md)
+- [研究工作流图](docs/assets/research-workflow-target.svg)
+- [知识与证据双通道图](docs/assets/rag-evidence-target.svg)
+- [Mermaid图源](docs/diagrams/)
+- [来源与飞书访问状态](docs/architecture-sources.json)
 
-## 首版支持范围
+## 数据、研究与发布边界
 
-| 方法 | 输入与限制 |
-|---|---|
-| A/B | 两组、已知真实随机分配、每随机化单位一行，独立单位推断 |
-| CUPED | 同 A/B，加人工核对的处理前数值指标 |
-| 观察性关联回归 | 两组、明确控制变量；可含重复实体并按实体聚类；只报告条件关联 |
-| PSM / IPW / DoubleMLPLR / AIPW-IRM | 两组、每实体一行、数值处理前协变量；需声明并诊断共同支撑、条件可交换性 |
-| 日级面板 DID | 共同处理日期、从未处理对照、完整日级窗口、每实体每天一行；不接收交错处理/月度面板 |
+模型不能从表格确认随机化、无混杂或平行趋势。批准绑定具体计划与数据版本；方法条件不满足时停止、询问或降低解释等级。数值结论按“基线—幅度—实际含义—行动建议”组织，没有合适分母、成本或单位时不编造相对增长与ROI。
 
-所有方法先核对变量、缺失、数据角色与适用条件。声明不是经验验证；诊断通过也不能证明所有因果假设。首版处理字段必须恰有两个非空值，用户明确指定编码为0和1，不静默删除第三组，不擅自二分连续处理。
+原始微博数据、用户/帖子ID、完整论文、密钥、个人对话和本地数据库不进入仓库。知识卡区分原创提炼、摘要及已核对全文页；不分发所参考商业文档或论文全文。代码MIT不替代第三方数据与软件许可。
 
-上传上限：50MB、100,000行、200列，解码后表内存估计上限256MB。CSV支持UTF-8/GB18030和逗号/分号/制表符。Parquet支持扁平表。大规模原始日志应先在自己的数据流程中整理为分析表，当前上传页不是分布式数仓。
+当前无多租户鉴权，不直接部署公网。仓库在最终确认前持续保持私有。
 
-## 研究与结果如何保存
-
-- 原文件不改写，上传副本转存工作区的 Parquet；读取时核对文件和表内容指纹。
-- 问题、字段映射、0/1编码、方法与指标定义冻结在草案版本中。修改设计要保存新版本；旧批准不继承。
-- 每次运行关联具体草案与数据版本，报告可回到运行证据核对；历史记录不会被刷新覆盖。
-- 结论按“基线—幅度—实际含义—行动建议”展示，附区间、方法限制与图表；没有合适分母时不编造相对增长率或ROI。
-- 专业表单沿用本地证据问答；统一助手已接入任务与接收配置绑定授权的模型。新任务不继承作者旧数据的外发授权。
-
-## 示例与隐私
-
-合成演示用于检验统计行为。作者电脑的公开实验示例和真实微博研究是可选历史入口，发行包不包含原始微博数据、ID、论文、用户聊天、密钥、数据库或派生研究报告。公开数据请按原作者来源和许可另行获取。本项目MIT许可证仅覆盖本项目代码，不替代第三方代码与数据许可。
-
-## 验证与贡献
+## 开发与贡献
 
 ```powershell
-& ".\.venv\Scripts\python.exe" -m pytest --basetemp ".\test-temp"
+python -m pytest --basetemp "E:/causalops-test"
 ```
 
-源码测试使用合成数据。验收报告应分别记录单元回归、固定数据端到端、真实浏览器和干净安装，不把这些加成开放问题准确率。脚本运行时间不等于人工效率提升。
+贡献流程：问题与最小复现 → 研究假设/数据条件 → 数值参照与失败用例 → 实现 → 回归 → 安装与界面验收。新框架接入后增加路由、中断恢复、批准绑定与重放去重检查，不用框架名称或测试数量替代实际效果。
 
-建议贡献：最小复现 → 明确方法假设 → 新的失败用例/独立数值参考 → 实现 → 回归验证。不要在Issue、测试或截图中加入密钥或真实用户记录。仅绑定127.0.0.1；不应直接部署为无认证公网服务。
-
-RAG与只读MCP的具体边界见上文；A2A本地只读审阅已实现；任意远程Agent委派、自动清洗、任意交错DID与多用户权限管理未实现。
-
-## 技术与方法来源
-
-- [Python打包与虚拟环境](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/)
-- [pip可复现安装与哈希锁定](https://pip.pypa.io/en/stable/topics/repeatable-installs/)
-- [Streamlit官方文档](https://docs.streamlit.io/)
-- [pandas读取CSV](https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html)
-- [statsmodels](https://www.statsmodels.org/stable/)
-- [linearmodels面板模型](https://bashtage.github.io/linearmodels/panel/panel/linearmodels.panel.model.PanelOLS.html)
-- [DoubleML官方指南](https://docs.doubleml.org/stable/)
-- [MIT许可证](https://spdx.org/licenses/MIT.html)
+[参与贡献](CONTRIBUTING.md) · [安全与隐私](SECURITY.md) · [第三方许可](THIRD_PARTY_NOTICES.md) · [完整实现说明](docs/IMPLEMENTATION_0.7.0.md)

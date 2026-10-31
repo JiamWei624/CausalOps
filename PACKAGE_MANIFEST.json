@@ -10,19 +10,44 @@
     "sha256": "3756806f3819f18443633903a6285d8c4016e005b697790e26d0a00e63070268"
   },
   {
-    "file": "application-wheel.json",
-    "bytes": 158,
-    "sha256": "55efe23887ee25c7b546354d46564d2769ac3801eb392a4eef29ad5728959c16"
-  },
-  {
     "file": "CONTRIBUTING.md",
     "bytes": 381,
     "sha256": "83e9c13af658a0b6081bcdec9f228b077f8832961c00e377eb1957553b2ea78c"
   },
   {
+    "file": "LICENSE",
+    "bytes": 1097,
+    "sha256": "37d163bbc8d8306f349ecb2f6e2c757c6ac213cb81a17f974c1743323b24efa8"
+  },
+  {
+    "file": "README.md",
+    "bytes": 7589,
+    "sha256": "f1d19fc296b713854dea77f791216400705a1ae8ae156382b70c7b8ea27a2c3a"
+  },
+  {
+    "file": "SECURITY.md",
+    "bytes": 627,
+    "sha256": "323b37dbe4eae0e0037e12186f2114b2afcdf12746d5ba2996cbfd7ab7b5a677"
+  },
+  {
+    "file": "THIRD_PARTY_NOTICES.md",
+    "bytes": 2782,
+    "sha256": "ebee48a38bfb05441b93007a30a6a3a50461ece7b8bf52b2addf1b873813ef91"
+  },
+  {
+    "file": "application-wheel.json",
+    "bytes": 158,
+    "sha256": "55efe23887ee25c7b546354d46564d2769ac3801eb392a4eef29ad5728959c16"
+  },
+  {
     "file": "docs/ARCHITECTURE.md",
-    "bytes": 7574,
-    "sha256": "2946206d0b229e18db0e00bccdb7441900e76d2421ade8c78982a5f492c925f7"
+    "bytes": 7768,
+    "sha256": "abf4b50ba3fde4eebb09d81d3dd1bc8c643afbfc8574186396f0e01963bbfbd1"
+  },
+  {
+    "file": "docs/ARCHITECTURE_REVIEW_0.7.0.md",
+    "bytes": 7834,
+    "sha256": "d63b8bc8bc5a9f17fb0690129577171a4249fe1377221125fb2a9433e3fc42d8"
   },
   {
     "file": "docs/BOUNDARIES_0.5.1.md",
@@ -35,9 +60,14 @@
     "sha256": "8a41ce1caa458179b88ef26f842f4b776e054d8e8cc02d26acbd0c1cd532f372"
   },
   {
-    "file": "docs/method-extension-plan.json",
-    "bytes": 3074,
-    "sha256": "aa58ed9cb3de35b17e28d3db9bea92fbbb9f01467c6d125aba4746bab6f0bcb7"
+    "file": "docs/IMPLEMENTATION_0.7.0.md",
+    "bytes": 8312,
+    "sha256": "f641bc568f43900965bce6d2d2891324dfae50abd33fa2f1b845168f9e416918"
+  },
+  {
+    "file": "docs/LANGGRAPH_MIGRATION_PLAN.md",
+    "bytes": 10320,
+    "sha256": "908c7191866474ed4fb7f53e5bcaf14f46e096c624ab12f943dcf29fd73a55dc"
   },
   {
     "file": "docs/METHOD_CONTRACTS.md",
@@ -53,6 +83,71 @@
     "file": "docs/PROVIDERS_PROTOCOLS_0.7.0.md",
     "bytes": 7409,
     "sha256": "fbadecdf7f26f419c8f764ae18e39a01dce4d07a42fc53dfc0ae01e0a9c54673"
+  },
+  {
+    "file": "docs/architecture-sources.json",
+    "bytes": 2965,
+    "sha256": "1bad7474bc9262c26efb361405fcfe9886aef947cd94f6c1f2c093d079939dd0"
+  },
+  {
+    "file": "docs/assets/architecture-current.svg",
+    "bytes": 5302,
+    "sha256": "21355be8ec2e4e8abd6cd4da509fbdbe016e1819f8d59e86febe1f03fdd827f9"
+  },
+  {
+    "file": "docs/assets/architecture-target.svg",
+    "bytes": 5171,
+    "sha256": "f3445e303e7e6d4252516602b4337aa04b98f6103338a59fa7bd5bbc42864894"
+  },
+  {
+    "file": "docs/assets/rag-evidence-target.svg",
+    "bytes": 4315,
+    "sha256": "cdaeb42237961ceaff759e5a36150bdba00ec6c037267b221d919b60e561a05a"
+  },
+  {
+    "file": "docs/assets/research-workflow-target.svg",
+    "bytes": 4623,
+    "sha256": "38183fbd55e583b7734828d7a1c2cd587a601b170f6a8f80d9a891dd67fa612b"
+  },
+  {
+    "file": "docs/assets/workbench-overview.png",
+    "bytes": 180929,
+    "sha256": "056f60cbb6f38e59f7e9deb0b10c3816d76ff74378c0350419832bfe17ced9ea"
+  },
+  {
+    "file": "docs/assets/workbench-results.png",
+    "bytes": 165368,
+    "sha256": "6d8a4a60367eab95a632841fe00c1dece6786b41d43204d9ba456af36b8a7b23"
+  },
+  {
+    "file": "docs/diagrams/README.md",
+    "bytes": 2191,
+    "sha256": "83d0b785230a01d652b32b85255bdef3cc25cda3f7b1269bbbc179a753e8e166"
+  },
+  {
+    "file": "docs/diagrams/current-architecture.mmd",
+    "bytes": 467,
+    "sha256": "7e89835fa98ac5937eed66db32f9d55f568b879d4b4e71363f6d3af5f9cde57c"
+  },
+  {
+    "file": "docs/diagrams/rag-evidence-target.mmd",
+    "bytes": 307,
+    "sha256": "4240e55d7ee5c74ca246eb6dffd99d172b73d71720fa3c09072d1c7de65fd2d8"
+  },
+  {
+    "file": "docs/diagrams/research-workflow-target.mmd",
+    "bytes": 441,
+    "sha256": "178a286fc49eccfbfc486a443b5fbbf08717fc29c54616eb7066e229f537b39b"
+  },
+  {
+    "file": "docs/diagrams/target-architecture.mmd",
+    "bytes": 604,
+    "sha256": "59e587eac0c6d6ea68f053241878bde6debd2f5bf2b2b99ab6341478f9237f89"
+  },
+  {
+    "file": "docs/method-extension-plan.json",
+    "bytes": 3074,
+    "sha256": "aa58ed9cb3de35b17e28d3db9bea92fbbb9f01467c6d125aba4746bab6f0bcb7"
   },
   {
     "file": "docs/upstream-references.json",
@@ -95,19 +190,9 @@
     "sha256": "fb60c00a6123ecc0f972cb6bc0d1049951e9eb5754cd417f82698f8625a02014"
   },
   {
-    "file": "LICENSE",
-    "bytes": 1097,
-    "sha256": "37d163bbc8d8306f349ecb2f6e2c757c6ac213cb81a17f974c1743323b24efa8"
-  },
-  {
     "file": "pyproject.toml",
     "bytes": 1211,
     "sha256": "0c34da49f884c020040b53bacc3da379faa3227ed6eee088ca5db53bd6b801bd"
-  },
-  {
-    "file": "README.md",
-    "bytes": 8337,
-    "sha256": "81e47ca2d55c7c9c464e47e0d2c28740c1eaa599b8a407d6b26d3baac515a25a"
   },
   {
     "file": "requirements-runtime-win-py311.txt",
@@ -203,11 +288,6 @@
     "file": "scripts/verify_providers_protocols.py",
     "bytes": 2917,
     "sha256": "3bd5847b84d35fd8c43665b314881087f915142db614d2cb7f081baa9d3c3663"
-  },
-  {
-    "file": "SECURITY.md",
-    "bytes": 627,
-    "sha256": "323b37dbe4eae0e0037e12186f2114b2afcdf12746d5ba2996cbfd7ab7b5a677"
   },
   {
     "file": "src/causalops/__init__.py",
@@ -928,10 +1008,5 @@
     "file": "tests/test_ui.py",
     "bytes": 15566,
     "sha256": "e13133232ed0fde7d340fd33fd6a114b2a15db5f1cf783870f0d2e6e583a1882"
-  },
-  {
-    "file": "THIRD_PARTY_NOTICES.md",
-    "bytes": 2782,
-    "sha256": "ebee48a38bfb05441b93007a30a6a3a50461ece7b8bf52b2addf1b873813ef91"
   }
 ]

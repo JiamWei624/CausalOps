@@ -1,0 +1,77 @@
+{
+  "checked_on": "2026-10-31",
+  "runtime_version": "0.7.0",
+  "reference_access": [
+    {
+      "name": "AI客服助手",
+      "url": "https://dqej47nflyz.feishu.cn/wiki/Sjedw0wDSiFj6Dk3rc5c1Ioontf",
+      "status": "not_read",
+      "reason": "Web reader inaccessible; browser returned blank shell or permission-related errors before any passcode field. No password submitted; no architecture claims inferred."
+    },
+    {
+      "name": "AI办公助手",
+      "url": "https://dqej47nflyz.feishu.cn/wiki/W87YwmTsSim3lxkxSXicRHcrnbp",
+      "status": "not_read",
+      "reason": "Web reader inaccessible; browser returned blank shell or permission-related errors before any passcode field. No password submitted; no architecture claims inferred."
+    },
+    {
+      "name": "智能出行助手",
+      "url": "https://dqej47nflyz.feishu.cn/wiki/PenqwX3LMiQrVrkaka2c39Vwnvd",
+      "status": "not_read",
+      "reason": "Web reader inaccessible; browser returned blank shell or permission-related errors before any passcode field. No password submitted; no architecture claims inferred."
+    }
+  ],
+  "official_sources": [
+    {
+      "id": "langgraph-overview",
+      "title": "LangGraph overview",
+      "url": "https://docs.langchain.com/oss/python/langgraph/overview",
+      "use": "编排职责和LangChain可选依赖；目标设计"
+    },
+    {
+      "id": "interrupts",
+      "title": "LangGraph interrupts",
+      "url": "https://docs.langchain.com/oss/python/langgraph/interrupts",
+      "use": "暂停与恢复语义；节点重入限制"
+    },
+    {
+      "id": "persistence",
+      "title": "LangGraph persistence",
+      "url": "https://docs.langchain.com/oss/python/langgraph/persistence",
+      "use": "图检查点与存储；本地持久化边界"
+    },
+    {
+      "id": "streaming",
+      "title": "LangGraph streaming",
+      "url": "https://docs.langchain.com/oss/python/langgraph/streaming",
+      "use": "节点进度与事件适配"
+    },
+    {
+      "id": "retrieval",
+      "title": "Retrieval",
+      "url": "https://docs.langchain.com/oss/python/deepagents/retrieval",
+      "use": "检索器接口与知识库分工；方案参考"
+    },
+    {
+      "id": "langchain",
+      "title": "LangChain overview",
+      "url": "https://docs.langchain.com/oss/python/langchain/overview",
+      "use": "模型与工具接口；不默认叠加通用Agent循环"
+    },
+    {
+      "id": "mcp-integration",
+      "title": "LangChain MCP",
+      "url": "https://docs.langchain.com/oss/python/langchain/mcp",
+      "use": "版本变化与适配边界；当前未采用beta接口"
+    },
+    {
+      "id": "github-diagrams",
+      "title": "GitHub creating diagrams",
+      "url": "https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams",
+      "use": "Mermaid及图示展示格式"
+    }
+  ],
+  "secrets_included": false,
+  "langgraph_installed": false,
+  "runtime_code_modified": false
+}

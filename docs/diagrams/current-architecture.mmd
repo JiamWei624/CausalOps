@@ -1,0 +1,11 @@
+flowchart TB
+ U["Streamlit 工作台"] --> A["AssistantWorkspace 自建编排"]
+ A --> M["多服务商模型网关"]
+ A --> K["MethodLibrary 方法 RAG"]
+ A --> R["TaskRuntime 检查点"]
+ R --> T["AnalysisTools 白名单与 ToolResult"]
+ T --> X["探索 / 研究 / 进阶统计引擎"]
+ X --> E["运行证据 / 图文报告 / 持续问答"]
+ A --> D[("SQLite / Parquet / 结果文件")]
+ E --> P["明确导出证据"]
+ P --> C["MCP 只读工具 / A2A 规则审阅"]

@@ -1,5 +1,9 @@
 # 系统架构与执行边界（0.7.0）
 
+[当前架构核查与目标图](ARCHITECTURE_REVIEW_0.7.0.md) · [LangGraph迁移方案（尚未实施）](LANGGRAPH_MIGRATION_PLAN.md)
+
+![当前真实架构](assets/architecture-current.svg)
+
 CausalOps 是本机单用户的模块化研究工作台。统计估计在本地运行；可选的结构化模型客户端提出待审计划、解释既有证据和决定有限的只读观察步骤。它不从表格自动确认随机化、变量时序或因果识别，也不让模型批准或执行新分析。
 
 ## 主流程
