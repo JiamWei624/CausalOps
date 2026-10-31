@@ -7,12 +7,15 @@ from langgraph.types import interrupt
 from langgraph.errors import GraphInterrupt
 from causalops.general.service import DesignError
 from causalops.assistant.service import profile
+from causalops.application.research_service import FlowCancelled
+from causalops.orchestration.method_research import build_method_graph
 
 class ResearchState(TypedDict,total=False):
     flow_id: str
     route: str
     plan_id: str
     status: str
+    method_research_ref: str
 
 class MethodExplanation(BaseModel):
     model_config=ConfigDict(extra='forbid')
@@ -25,14 +28,20 @@ def build_graph(service):
         def run(state):
             fid=state['flow_id'];s.emit(fid,name,'started')
             try:
+                s.check_cancel(fid)
                 result=func(state)
-            except GraphInterrupt:raise
+                s.check_cancel(fid)
+            except GraphInterrupt:
+                if name=='await_review' and s.flow(fid)['status'] not in ('approved','rejected'):s.update(fid,status='awaiting_review')
+                raise
+            except FlowCancelled:
+                s.update(fid,status='cancelled');s.emit(fid,name,'cancelled');raise
             except Exception as exc:
                 s.emit(fid,name,'failed',{'exception_type':type(exc).__name__});s.update(fid,status='failed');raise
             s.emit(fid,name,'completed');return result
         return run
     def load(state):
-        f=s.flow(state['flow_id'])
+        f=s.flow(state['flow_id']);s.contracts.verify_current(f)
         if f['request']['data']!=s.data_binding(f['session_id']):raise DesignError('数据已变化，不能复用原流程。')
         return {'status':'ready'}
     def route(state):
@@ -45,7 +54,7 @@ def build_graph(service):
     def draft(state):
         fid=state['flow_id'];f=s.flow(fid)
         if f['plan_id']:p=s.a.get_plan(f['plan_id'])
-        else:p=s.a.propose(f['session_id'],f['request']['question'],s.model,request_key=fid,retrieval=s.output(fid,'retrieval'))
+        else:p=s.propose_researched(fid)
         s.update(fid,plan_id=p['id'],status='awaiting_review')
         return {'plan_id':p['id'],'status':'awaiting_review'}
     def review(state):
@@ -61,7 +70,8 @@ def build_graph(service):
         tasks=s.gateway.execute(fid)
         refs=[t['result']['run_id'] for t in tasks if t['state']=='completed']
         done=all(t['state']=='completed' for t in tasks)
-        s.save_output(fid,'execution',{'tasks':tasks,'run_ids':refs,'completed':done})
+        s.save_execution(fid,{'tasks':tasks,'run_ids':refs,'completed':done})
+        s.check_cancel(fid)
         status='executed' if done else 'blocked';s.update(fid,status=status)
         return {'status':status}
     def answer(state):
@@ -97,11 +107,12 @@ def build_graph(service):
         s.save_output(fid,'answer',{'source':'本地流程检查','text':decision['reason'],'facts':[],'citations':[],'run_ids':[]})
         s.update(fid,status='needs_clarification');return {'status':'needs_clarification'}
     graph=StateGraph(ResearchState)
-    funcs={'load_context':load,'route_intent':route,'retrieve_methods':retrieve,'draft_plan':draft,'await_review':review,'execute_plan':execute,'answer_results':answer,'answer_method':method,'profile_data':data_profile,'clarify':clarify}
+    funcs={'load_context':load,'route_intent':route,'draft_plan':draft,'await_review':review,'execute_plan':execute,'answer_results':answer,'answer_method':method,'profile_data':data_profile,'clarify':clarify}
     for name,func in funcs.items():graph.add_node(name,node(name,func))
+    graph.add_node('retrieve_methods',build_method_graph(s).compile())
     graph.add_edge(START,'load_context');graph.add_edge('load_context','route_intent')
     graph.add_conditional_edges('route_intent',lambda st:st['route'],{'plan':'retrieve_methods','method':'retrieve_methods','results':'retrieve_methods','profile':'profile_data','clarify':'clarify'})
-    graph.add_conditional_edges('retrieve_methods',lambda st:st['route'],{'plan':'draft_plan','method':'answer_method','results':'answer_results'})
+    graph.add_conditional_edges('retrieve_methods',lambda st:'method' if (s.output(st['flow_id'],'method_research') or {}).get('status') in ('unsupported','insufficient_evidence') else st['route'],{'plan':'draft_plan','method':'answer_method','results':'answer_results'})
     graph.add_edge('draft_plan','await_review')
     graph.add_conditional_edges('await_review',lambda st:st['status'],{'approved':'execute_plan','rejected':END})
     graph.add_conditional_edges('execute_plan',lambda st:'answer' if st['status']=='executed' else 'end',{'answer':'answer_results','end':END})

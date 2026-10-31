@@ -27,7 +27,7 @@ def test_actual_interrupt_and_no_preapproval_execution(world):
     s,sid,_=world;f=proposal(s,sid);snap=s.snapshot(f['id'])
     assert f['status']=='awaiting_review' and snap['next']==['await_review'] and len(snap['interrupts'])==1
     assert not s.a.completed_runs(sid) and s.a.tasks(f['plan_id'])==[]
-    assert set(snap['state'])=={'flow_id','route','plan_id','status'}
+    assert set(snap['state'])=={'flow_id','route','plan_id','status','method_research_ref'}
 
 def test_durable_resume_and_numeric_equivalence(world):
     s,sid,frame=world;f=proposal(s,sid)

@@ -5,15 +5,19 @@ import pandas as pd
 import streamlit as st
 from causalops.application.research_service import ResearchService
 
-STATUS={'created':'准备中','awaiting_review':'待人工审核','approved':'已批准','executing':'统计执行中','executed':'正在解释结果','completed':'已完成','rejected':'已放弃','blocked':'执行条件不满足','failed':'处理失败，可核对记录','needs_clarification':'需要补充说明'}
-NODES={'load_context':'核对任务与数据版本','route_intent':'识别请求类型','retrieve_methods':'检索方法依据','draft_plan':'生成待审计划','await_review':'等待人工审核','execute_plan':'执行已批准的统计','answer_results':'核对运行证据并解释','answer_method':'整理方法依据','profile_data':'读取数据概况','clarify':'说明需补充的信息','statistical_tool':'统计工具','review':'人工审核','retrieve':'检索结果'}
+STATUS={'cancelled':'已停止，可继续','created':'准备中','awaiting_review':'待人工审核','approved':'已批准','executing':'统计执行中','executed':'正在解释结果','completed':'已完成','rejected':'已放弃','blocked':'执行条件不满足','failed':'处理失败，可核对记录','needs_clarification':'需要补充说明'}
+NODES={'method_scope':'确定候选方法','method_retrieval':'补充方法依据','method_research':'核对方法条件','cancel':'停止请求','load_context':'核对任务与数据版本','route_intent':'识别请求类型','retrieve_methods':'检索方法依据','draft_plan':'生成待审计划','await_review':'等待人工审核','execute_plan':'执行已批准的统计','answer_results':'核对运行证据并解释','answer_method':'整理方法依据','profile_data':'读取数据概况','clarify':'说明需补充的信息','statistical_tool':'统计工具','review':'人工审核','retrieve':'检索结果'}
 STATES={'started':'开始','completed':'完成','running':'运行中','blocked':'需要补充','failed':'失败','approved':'已批准','rejected':'已放弃'}
 
 def render_graph_workspace(a,sid,frame,model):
     from causalops.ui.assistant_app import confirmations,show_run,show_sources,safe_text
-    service=ResearchService(a,model=model)
+    from causalops.application.background import BackgroundJobs, ACTIVE
+    from causalops.ui.contracts_editor import render_contract,render_fact_fields
+    service=ResearchService(a,model=model);jobs=BackgroundJobs(service);jobs.reconcile(sid)
+    render_contract(service,sid,frame)
+    st.session_state.setdefault('_job_signature_'+sid,tuple((j['id'],j['status']) for j in jobs.jobs(sid)))
     st.subheader('研究流程与证据讨论')
-    st.caption('当前采用 LangGraph 编排、SQLite 检查点与 LangChain 检索适配。提出计划后暂停审核；方法咨询和结果追问不重新估计。')
+    st.caption('提出问题后，系统检索方法依据并核对已登记口径，必要时补充检索；计算前暂停审核。后台进度来自真实节点，结果追问不重新估计。')
     flows=service.flows(sid);choice_key='graph_flow_'+sid
     pending=st.session_state.pop('_graph_pending_'+sid,None)
     if pending:st.session_state[choice_key]=pending
@@ -21,7 +25,21 @@ def render_graph_workspace(a,sid,frame,model):
         ids=[f['id'] for f in flows]
         if st.session_state.get(choice_key) not in ids:st.session_state[choice_key]=ids[0]
         current=st.selectbox('本轮流程与历史记录',ids,format_func=lambda x:STATUS.get(next(f['status'] for f in flows if f['id']==x),'处理中')+' · '+next(f['request']['question'][:35] for f in flows if f['id']==x)+' · '+x[:6],key=choice_key)
-        f=service.flow(current);st.caption('流程 '+current[:8]+' · '+STATUS.get(f['status'],f['status']))
+        f=service.flow(current)
+        current_jobs=[j for j in jobs.jobs(sid) if j['flow_id']==current]
+        active=any(j['status'] in ACTIVE for j in current_jobs)
+        if active:
+            st.info('后台正在处理，页面可以继续操作。停止请求会在安全边界生效；正在进行的底层计算不会被强制中断。')
+            if st.button('请求停止当前流程',key='graph_cancel_'+current):jobs.cancel(current,human_confirmed=True);st.rerun()
+        elif current_jobs and current_jobs[0]['error_note']:st.warning(current_jobs[0]['error_note'])
+        advice=service.output(current,'method_research')
+        if advice:
+            with st.expander('方法选择、依据覆盖与待确认条件',expanded=bool(advice['questions'])):
+                st.write('候选方法：'+ '、'.join(a.tools.method(__import__('causalops.assistant.contracts',fromlist=['REGISTRY']).REGISTRY[m].tool,m).label for m in advice['candidate_methods']))
+                st.caption('实际检索 '+str(advice['retrieval_passes'])+' 轮；停止原因：'+{'coverage_complete':'规则卡六个部分均有依据','unsupported_method':'当前尚未支持该方法','retrieval_budget':'达到三轮上限','no_new_evidence':'未获得新增依据'}.get(advice['stop_reason'],advice['stop_reason']))
+                if advice['conditions']:st.dataframe([{'检查内容':x['condition'],'状态':{'declared':'已登记声明（未证明）','structural':'结构核对','missing':'待补充','diagnostic_required':'待执行诊断'}[x['status']],'说明':x['detail']} for x in advice['conditions']],hide_index=True,width='stretch')
+                for question in advice['questions']:st.info(safe_text(question))
+        st.caption('流程 '+current[:8]+' · '+STATUS.get(f['status'],f['status']))
         if f['plan_id']:
             p=a.get_plan(f['plan_id']);v=p['plan']
             with st.container(border=True):
@@ -34,27 +52,28 @@ def render_graph_workspace(a,sid,frame,model):
                 for q in v['required_questions']:st.info(safe_text(q))
                 with st.expander('核对完整配置、计划和数据版本'):
                     st.json(v);st.caption('计划指纹 '+p['sha']+'；数据指纹 '+f['request']['data']['frame_sha'])
-                if f['status']=='awaiting_review':
+                if f['status']=='awaiting_review' and not active:
                     st.write('如变量或方法不合适，请放弃本候选，再提出新的计划；不会自动改变人工事实。')
                     facts={}
-                    for i,step in enumerate(v['steps']):facts[str(i)]=confirmations(step,i,p['id'],frame)
+                    bound=service.contracts.bound(f)
+                    for i,step in enumerate(v['steps']):
+                        if bound:facts[str(i)]=render_fact_fields(step['config']['method'],bound['body']['method_facts'].get(step['config']['method'],{}),'review_'+p['id']+'_'+str(i))
+                        else:facts[str(i)]=confirmations(step,i,p['id'],frame)
                     checked=st.checkbox('我已核对上述计划和本步骤必要事实，同意按当前数据与计划版本进行本地计算。',key='graph_review_'+current)
                     yes,no=st.columns(2)
                     if yes.button('接受计划并批准本次执行',type='primary',disabled=not checked,key='graph_approve_'+current):
                         try:
-                            with st.status('正在恢复已审核流程',expanded=True) as progress:
-                                service.progress=lambda e:st.write(NODES.get(e['node'],e['node'])+' · '+STATES.get(e['status'],e['status']))
-                                result=service.review(current,accept=True,expected_plan_id=p['id'],expected_plan_sha=p['sha'],expected_data_sha=f['request']['data']['frame_sha'],human_confirmed=True,confirmations=facts)
-                                progress.update(label=STATUS.get(result['status'],'处理结束'),state='complete' if result['status']=='completed' else 'error')
+                            service.review(current,accept=True,expected_plan_id=p['id'],expected_plan_sha=p['sha'],expected_data_sha=f['request']['data']['frame_sha'],human_confirmed=True,confirmations=facts,dispatch=False,use_contract_facts=bool(bound))
+                            jobs.submit(current)
                             st.rerun()
                         except (ValueError,RuntimeError,OSError) as exc:st.error(str(exc))
                     if no.button('放弃本候选计划',key='graph_reject_'+current):
                         try:service.review(current,accept=False,expected_plan_id=p['id'],expected_plan_sha=p['sha'],expected_data_sha=f['request']['data']['frame_sha'],human_confirmed=True);st.rerun()
                         except (ValueError,RuntimeError,OSError) as exc:st.error(str(exc))
-        if f['status'] in ('approved','executing','failed'):
-            st.info('若原处理进程已退出，可继续保存的流程；批准与数据版本将再次核对。前置步骤失败且尚未批准时，请新建一轮请求。')
+        if not active and (f['status'] in ('approved','executing','failed','cancelled') or (current_jobs and current_jobs[0]['status']=='interrupted')):
+            st.info('可继续保存的流程。系统会复核数据字典、批准与代码版本，保留已完成的统计步骤；恢复模型请求时需重新提供原配置的认证信息。')
             if st.button('检查批准并继续流程',key='graph_resume_'+current):
-                try:service.resume(current,human_confirmed=True);st.rerun()
+                try:jobs.resume(current,human_confirmed=True);st.rerun()
                 except (ValueError,RuntimeError,OSError) as exc:st.error(str(exc))
         execution=service.output(current,'execution')
         if execution:
@@ -82,6 +101,13 @@ def render_graph_workspace(a,sid,frame,model):
             st.download_button('下载流程记录（JSON）',json.dumps({'flow_id':current,'events':rows,'snapshot':service.snapshot(current)},ensure_ascii=False,indent=2),file_name='workflow-'+current+'.json',mime='application/json',key='graph_trace_'+current)
     else:st.info('数据已登记。输入分析问题后，系统会检索方法并提出待审计划；不会在未审核前进行统计估计。')
     runs=a.completed_runs(sid);refs={r['run_id']:r for r in runs}
+    if flows:
+        completed=service.output(current,'execution')
+        if completed and completed.get('completed') and completed.get('run_ids'):
+            last=completed['run_ids'][-1];stamp=(current,last)
+            if st.session_state.get('_graph_run_seen_'+sid)!=stamp and last in refs:
+                st.session_state['_graph_run_seen_'+sid]=stamp
+                st.session_state['graph_run_'+sid]=last;a.select_run(sid,last)
     if refs:
         selected=a.selected_run(sid);rid=st.selectbox('结果展示与追问所依据的运行',list(refs),index=list(refs).index(selected) if selected in refs else 0,format_func=lambda x:refs[x]['method']+' · '+x[:8],key='graph_run_'+sid)
         if rid!=selected:a.select_run(sid,rid)
@@ -91,8 +117,22 @@ def render_graph_workspace(a,sid,frame,model):
     q=st.chat_input('例如：分析这张表的缺失和分布；或解释当前结果的实际含义',key='graph_question_'+sid)
     if q:
         try:
-            with st.status('正在处理研究请求',expanded=True) as progress:
-                service.progress=lambda e:st.write(NODES.get(e['node'],e['node'])+' · '+STATES.get(e['status'],e['status']))
-                f=service.start(sid,q,mode=modes[mode]);progress.update(label=STATUS.get(f['status'],'处理结束'),state='complete')
-            st.session_state['_graph_pending_'+sid]=f['id'];st.rerun()
+            job=jobs.submit_start(sid,q,mode=modes[mode])
+            st.session_state['_graph_pending_'+sid]=job['flow_id'];st.rerun()
         except (ValueError,RuntimeError,OSError) as exc:st.error(str(exc));st.info('未执行未批准的统计；已有结果保持不变。')
+
+    @st.fragment(run_every=1)
+    def watch_background():
+        records=jobs.jobs(sid)
+        signature=tuple((j['id'],j['status']) for j in records)
+        key='_job_signature_'+sid
+        old=st.session_state.get(key);st.session_state[key]=signature
+        if old is not None and old!=signature:st.rerun()
+        running=[j for j in records if j['status'] in ACTIVE]
+        if running:
+            labels={'queued':'排队中','running':'后台处理中','cancel_requested':'正在安全停止'}
+            for job in running:
+                events=service.events(job['flow_id'])
+                last=events[-1] if events else None
+                st.caption(labels[job['status']]+' · '+job['flow_id'][:8]+(' · '+NODES.get(last['node'],last['node'])+' / '+STATES.get(last['status'],last['status']) if last else ''))
+    watch_background()

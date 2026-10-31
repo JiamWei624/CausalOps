@@ -1,0 +1,298 @@
+{
+  "version": "0.9.0",
+  "source_tests": {
+    "tests": "460",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "120.171"
+  },
+  "dataset_cases": [
+    {
+      "case": "wine-descriptive",
+      "rows": 1599,
+      "method": "descriptive",
+      "expected": "completed",
+      "followup_no_recompute": true,
+      "passed": true,
+      "elapsed_seconds": 4.518
+    },
+    {
+      "case": "wine-ols",
+      "rows": 1599,
+      "method": "ols",
+      "expected": "completed",
+      "max_reference_error": 0.0,
+      "followup_no_recompute": true,
+      "passed": true,
+      "elapsed_seconds": 2.824
+    },
+    {
+      "case": "shopper-logit",
+      "rows": 12330,
+      "method": "logit",
+      "expected": "completed",
+      "max_reference_error": 0.0,
+      "followup_no_recompute": true,
+      "passed": true,
+      "elapsed_seconds": 4.307
+    },
+    {
+      "case": "bank-descriptive",
+      "rows": 45211,
+      "method": "descriptive",
+      "expected": "completed",
+      "followup_no_recompute": true,
+      "passed": true,
+      "elapsed_seconds": 13.762
+    },
+    {
+      "case": "bank-postcall-leakage",
+      "rows": 45211,
+      "method": "logit",
+      "expected": "blocked",
+      "passed": true,
+      "elapsed_seconds": 5.023
+    },
+    {
+      "case": "bank-independent-rows-not-confirmed",
+      "rows": 45211,
+      "method": "logit",
+      "expected": "blocked",
+      "passed": true,
+      "elapsed_seconds": 7.76
+    },
+    {
+      "case": "hillstrom-visit-ab",
+      "rows": 42613,
+      "method": "ab_test",
+      "expected": "completed",
+      "max_reference_error": 0.0,
+      "followup_no_recompute": true,
+      "passed": true,
+      "elapsed_seconds": 11.886
+    },
+    {
+      "case": "hillstrom-without-randomization",
+      "rows": 42613,
+      "method": "ab_test",
+      "expected": "blocked",
+      "passed": true,
+      "elapsed_seconds": 6.949
+    }
+  ],
+  "dataset_scope": "Automated, predeclared scenarios; not open-ended AI accuracy or causal truth.",
+  "retrieval_cases": [
+    {
+      "method": "descriptive",
+      "selected": [
+        "descriptive"
+      ],
+      "covered": true,
+      "passes": 1,
+      "stop": "coverage_complete"
+    },
+    {
+      "method": "correlation",
+      "selected": [
+        "correlation"
+      ],
+      "covered": true,
+      "passes": 1,
+      "stop": "coverage_complete"
+    },
+    {
+      "method": "ols",
+      "selected": [
+        "ols"
+      ],
+      "covered": true,
+      "passes": 1,
+      "stop": "coverage_complete"
+    },
+    {
+      "method": "logit",
+      "selected": [
+        "logit"
+      ],
+      "covered": true,
+      "passes": 1,
+      "stop": "coverage_complete"
+    },
+    {
+      "method": "poisson",
+      "selected": [
+        "poisson"
+      ],
+      "covered": true,
+      "passes": 1,
+      "stop": "coverage_complete"
+    },
+    {
+      "method": "ab_test",
+      "selected": [
+        "ab_test"
+      ],
+      "covered": true,
+      "passes": 1,
+      "stop": "coverage_complete"
+    },
+    {
+      "method": "cuped",
+      "selected": [
+        "cuped"
+      ],
+      "covered": true,
+      "passes": 1,
+      "stop": "coverage_complete"
+    },
+    {
+      "method": "regression_adjustment",
+      "selected": [
+        "regression_adjustment"
+      ],
+      "covered": true,
+      "passes": 1,
+      "stop": "coverage_complete"
+    },
+    {
+      "method": "psm",
+      "selected": [
+        "psm"
+      ],
+      "covered": true,
+      "passes": 1,
+      "stop": "coverage_complete"
+    },
+    {
+      "method": "ipw",
+      "selected": [
+        "ipw"
+      ],
+      "covered": true,
+      "passes": 1,
+      "stop": "coverage_complete"
+    },
+    {
+      "method": "double_ml",
+      "selected": [
+        "double_ml"
+      ],
+      "covered": true,
+      "passes": 1,
+      "stop": "coverage_complete"
+    },
+    {
+      "method": "did",
+      "selected": [
+        "did"
+      ],
+      "covered": true,
+      "passes": 1,
+      "stop": "coverage_complete"
+    },
+    {
+      "method": "aipw",
+      "selected": [
+        "aipw"
+      ],
+      "covered": true,
+      "passes": 1,
+      "stop": "coverage_complete"
+    },
+    {
+      "method": "iv_2sls",
+      "selected": [
+        "iv_2sls"
+      ],
+      "covered": true,
+      "passes": 1,
+      "stop": "coverage_complete"
+    },
+    {
+      "method": "rd_sharp",
+      "selected": [
+        "rd_sharp"
+      ],
+      "covered": true,
+      "passes": 1,
+      "stop": "coverage_complete"
+    },
+    {
+      "method": "rd_fuzzy",
+      "selected": [
+        "rd_fuzzy"
+      ],
+      "covered": true,
+      "passes": 1,
+      "stop": "coverage_complete"
+    },
+    {
+      "method": "staggered_did",
+      "selected": [
+        "staggered_did"
+      ],
+      "covered": true,
+      "passes": 1,
+      "stop": "coverage_complete"
+    }
+  ],
+  "live_api": {
+    "provider": "DeepSeek official",
+    "synthetic_only": true,
+    "successful_http_requests": 6,
+    "total_tokens": 33304,
+    "paused_before_review": true,
+    "preapproval_runs": 0,
+    "followup_no_recompute": true,
+    "last_followup_source": "DeepSeek官方模型+本地证据校验",
+    "answer_validation_rejections": [
+      {
+        "attempt": 1,
+        "reason": "正文引用超过八条，请聚焦本轮问题的关键事实。"
+      },
+      {
+        "attempt": 2,
+        "reason": "正文引用超过八条，请聚焦本轮问题的关键事实。"
+      }
+    ],
+    "note": "Initial result explanation exceeded the citation limit twice and used explicit local fallback; later follow-up passed. Failed earlier trial retained in local workspace."
+  },
+  "crash_recovery": {
+    "real_exit_after_result_commit": true,
+    "distinct_processes": 3,
+    "duplicate_statistics": false
+  },
+  "independent_user_acceptance": "deferred; no human efficiency claim",
+  "original_runtime_environment_modified": false,
+  "new_software_installed_on_C": false,
+  "installed_wheel_tests": {
+    "tests": "460",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "110.777"
+  },
+  "browser": {
+    "exceptions": [],
+    "blocked_before_review": true,
+    "method_panel": true,
+    "background_completed": true,
+    "download": true,
+    "dictionary_saved": true,
+    "ols_with_reused_dictionary": true,
+    "method_consultation": true,
+    "persisted_after_reload": true,
+    "st_exceptions": 0,
+    "ok": true
+  },
+  "application_wheel": {
+    "version": "0.9.0",
+    "wheel": "causalops_agent-0.9.0-py3-none-any.whl",
+    "sha256": "5b33b29053acf45128eef8fb9134e0a6eb4066bdea1fabbb713dc80fbaed79bd"
+  },
+  "offline_runtime_locked_distributions": 139,
+  "offline_wheels": 140,
+  "new_regression_cases": 28,
+  "offline_lock_correction": "Inherited 0.8 offline lock omitted graph packages; rebuilt from complete pinned runtime, installed clean and reran all tests without skips."
+}

@@ -34,7 +34,9 @@ def generalized_association(frame,d):
     except (np.linalg.LinAlgError,ValueError) as exc:
         raise DesignError('GLM拟合失败；检查分离、共线性与有效样本。') from exc
     if not fit.converged or not np.isfinite(fit.params).all() or not np.isfinite(fit.bse).all() or (fit.bse<=0).any():raise DesignError('模型未收敛或推断非有限，停止报告。')
-    if np.abs(fit.params).max()>30:raise DesignError('系数极端，疑似分离/退化；需要重新设计，未输出夸张优势比。')
+    # A coefficient per raw unit is not scale invariant. Check its one-SD contrast instead.
+    scaled=np.abs(fit.params.drop('const',errors='ignore'))*x.drop(columns='const',errors='ignore').std(ddof=0)
+    if len(scaled) and scaled.max()>30:raise DesignError('单标准差线性预测变化极端，需要检查近分离/退化；该保护阈值不是分离的统计检验。')
     ci=fit.conf_int();dispersion=float(fit.pearson_chi2/fit.df_resid)
     note=('二元条件关联；exp系数是优势比OR，不是概率比或提升百分点。' if d.method=='logit' else '计数条件均值关联；exp系数是等暴露条件均值比，非因果收益；稳健标准误不修复均值模型错设。')
-    return {'n':int(fit.nobs),'excluded_complete_case_rows':excluded,'covariance':d.covariance,'model_family':d.method,'converged':bool(fit.converged),'pearson_dispersion':dispersion,'overdispersion_flag':bool(d.method=='poisson' and dispersion>1.5),'coefficients':[{'term':str(t),'coefficient':float(fit.params[t]),'standard_error':float(fit.bse[t]),'ci95_low':float(ci.loc[t,0]),'ci95_high':float(ci.loc[t,1]),'p_value':float(fit.pvalues[t]),'exp_coefficient':float(np.exp(fit.params[t]))} for t in x.columns],'note':note,'sources':['https://www.statsmodels.org/stable/examples/notebooks/generated/glm.html']}
+    return {'n':int(fit.nobs),'excluded_complete_case_rows':excluded,'covariance':d.covariance,'model_family':d.method,'converged':bool(fit.converged),'coefficient_scale_note':'大原单位系数不等于分离；分离警告、收敛和有限推断检查仍保留。exp系数超出数值安全范围时不报告；不裁剪为虚假有限值。','pearson_dispersion':dispersion,'overdispersion_flag':bool(d.method=='poisson' and dispersion>1.5),'coefficients':[{'term':str(t),'coefficient':float(fit.params[t]),'standard_error':float(fit.bse[t]),'ci95_low':float(ci.loc[t,0]),'ci95_high':float(ci.loc[t,1]),'p_value':float(fit.pvalues[t]),'exp_coefficient':float(np.exp(fit.params[t])) if abs(float(fit.params[t]))<700 else None} for t in x.columns],'note':note,'sources':['https://www.statsmodels.org/stable/examples/notebooks/generated/glm.html']}
