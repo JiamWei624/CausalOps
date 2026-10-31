@@ -10,7 +10,7 @@ from causalops.knowledge.retrieval import MethodLibrary
 
 def create_server(workspace):
     root=Path(workspace).resolve();library=MethodLibrary()
-    server=MCPServer('CausalOps read-only evidence',version='0.5.0',instructions='Only method knowledge and existing sanitized numeric evidence; no arbitrary SQL, files, raw rows, execution, or approval.')
+    server=MCPServer('CausalOps read-only evidence',version='0.6.0',instructions='Only method knowledge and existing sanitized numeric evidence; no arbitrary SQL, files, raw rows, execution, or approval.')
     annotation=ToolAnnotations(read_only_hint=True,destructive_hint=False,idempotent_hint=True,open_world_hint=False)
     @server.tool(annotations=annotation)
     def search_methods(question:str,method:str|None=None,k:int=4)->dict:

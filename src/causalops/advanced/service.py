@@ -194,9 +194,17 @@ class AdvancedWorkspace:
     def __init__(self,workspace=None):
         self.ws=workspace or GeneralWorkspace()
         with self.ws.connection() as c:c.execute('CREATE TABLE IF NOT EXISTS advanced_runs(run_id TEXT PRIMARY KEY,upload_id TEXT NOT NULL,design_json TEXT NOT NULL,result_json TEXT NOT NULL,result_sha TEXT NOT NULL,created TEXT NOT NULL)')
-    def run(self,uid,d,*,reviewed=False):
+    def run(self,uid,d,*,reviewed=False,run_id=None):
         if not reviewed:raise DesignError('须人工确认具体设计后执行；模型无执行权限。')
-        frame=self.ws.load_upload(uid);out=estimate(frame,d);rid=uuid.uuid4().hex
+        if run_id:
+            import re
+            if not re.fullmatch(r'[a-f0-9]{32}',run_id):raise DesignError('运行标识格式无效。')
+            with self.ws.connection() as c:exists=c.execute('SELECT 1 FROM advanced_runs WHERE run_id=?',(run_id,)).fetchone()
+            if exists:
+                b=self.load(run_id)
+                if b['upload_id']!=uid or b['design']!=d.model_dump():raise DesignError('运行标识与设计不一致。')
+                return b
+        frame=self.ws.load_upload(uid);out=estimate(frame,d);rid=run_id or uuid.uuid4().hex
         out.update(run_id=rid,upload_id=uid,design=d.model_dump(),data_fingerprint=sha(frame.to_json()),created=datetime.now(timezone.utc).isoformat())
         with self.ws.connection() as c:c.execute('INSERT INTO advanced_runs VALUES(?,?,?,?,?,?)',(rid,uid,json.dumps(d.model_dump(),ensure_ascii=False),json.dumps(out,ensure_ascii=False),sha(out),out['created']))
         return out

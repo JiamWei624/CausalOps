@@ -24,6 +24,8 @@ def show_sources(hits):
             if h.get('estimand'):st.markdown('**目标量：** '+h['estimand']);st.code(h['formula'],language='text');st.caption(h['implementation'])
             for source in h['sources']:st.markdown('['+source['title']+']('+source['url']+')');st.caption(source['locator']+' · 核对日期 '+source['checked_on'])
             st.caption('知识卡 '+h['card_id']+' · 版本 '+h['version'])
+            for span in h.get('matched_sections',[]):st.caption('命中章节：'+span['section']+' · 原创方法摘要指纹 '+span['note_sha256'][:12])
+            st.caption('原文核对范围以来源登记为准；方法摘要不是论文逐字引文。')
 
 def show_run(a,ref,sid):
     from causalops.assistant.export import attach_discussion
@@ -124,6 +126,18 @@ def render_assistant():
     if plans:
         latest=plans[0];state={'candidate':'待审核','accepted':'待执行','completed':'已完成','rejected':'已放弃'}[latest['state']]
         st.caption('当前计划：V'+str(latest['version'])+' · '+state+'。研究事实与识别条件须经人工审核。')
+    completed=a.completed_runs(sid);byrun={r['run_id']:r for r in completed};qa_compare=None
+    if byrun:
+        selector='assistant_result_runid_'+sid
+        selected=a.selected_run(sid)
+        if st.session_state.get(selector) not in byrun:st.session_state[selector]=selected
+        focus=st.session_state.pop('assistant_focus_run_'+sid,None)
+        if focus in byrun:st.session_state[selector]=focus
+        rid=st.selectbox('当前讨论与展示的运行',list(byrun),format_func=lambda r:LABELS.get(byrun[r].get('method'),METHODS.get(byrun[r].get('method'),byrun[r]['kind']))+' · 计划V'+str(byrun[r]['plan_version'])+' · '+r[:8],key=selector)
+        if rid!=selected:a.select_run(sid,rid)
+        st.caption('结果展示、解释和报告均以此运行为准。切换后不会重新估计；历史回答仍保留原证据范围。')
+        if st.checkbox('本轮明确比较多条运行',key='assistant_compare_'+sid):
+            qa_compare=st.multiselect('选择比较的运行（最多三条，同一数据任务）',list(byrun),default=[rid],max_selections=3,format_func=lambda r:byrun[r].get('method',byrun[r]['kind'])+' · '+r[:8],key='assistant_compare_runs_'+sid)
     tab_task,tab_result,tab_methods,tab_advanced,tab_trial=st.tabs(['研究计划与讨论','结果与报告','方法与文献','进阶研究设计','使用评测'])
     with tab_task:
         events=a.events(sid)
@@ -133,6 +147,7 @@ def render_assistant():
             if event['kind']=='answer':
                 with st.chat_message('assistant'):
                     body=event['body'];st.caption(body['source']);st.write(safe_text(body['text']))
+                    if body.get('run_ids'):st.caption('本轮依据的运行：'+'、'.join(r[:8] for r in body['run_ids']))
                     if body.get('display_note'):st.caption(body['display_note'])
                     if body['facts']:
                         with st.expander('核对本轮引用的运行事实'):
@@ -213,9 +228,21 @@ def render_assistant():
                         tasks=a.execute(p['id'],permit=True,confirmations=facts,progress=progress);finished=[t['result']['run_id'] for t in tasks if t['state']=='completed'];st.session_state['assistant_focus_run_'+sid]=finished[-1] if finished else None;done=all(t['state']=='completed' for t in tasks);status.update(label='分析已完成' if done else '执行已暂停，请检查原因',state='complete' if done else 'error')
                     st.rerun()
             task_rows=a.tasks(p['id'])
-            if task_rows:st.dataframe([{'步骤':t['ordinal']+1,'状态':{'pending':'等待执行','running':'执行中','completed':'已完成','blocked':'待补充'}[t['state']],'计算用时（秒）':(t['result'] or {}).get('seconds')} for t in task_rows],hide_index=True,width='stretch')
+            if task_rows:st.dataframe([{'步骤':t['ordinal']+1,'状态':{'pending':'等待执行','running':'执行中','completed':'已完成','blocked':'待补充','interrupted':'执行已中断','cancelled':'已取消'}[t['state']],'计算用时（秒）':(t['result'] or {}).get('seconds')} for t in task_rows],hide_index=True,width='stretch')
             for t in task_rows:
                 if t['state']=='blocked':st.warning('步骤'+str(t['ordinal']+1)+'：'+t['result']['error'])
+            if any(t['state']=='running' for t in task_rows):
+                st.warning('有步骤仍标记为运行中。检查恢复只会在确认原进程退出后处理，不并行重算。')
+                x,y=st.columns(2)
+                if x.button('检查中断并恢复记录',key='recover_'+p['id']):a.recover(p['id']);st.rerun()
+                if y.button('请求停止后续步骤',key='cancel_'+p['id']):a.cancel(p['id']);st.rerun()
+                st.caption('当前统计函数采用协作式取消：正在计算的结果会先保存，再停止后续步骤。')
+            if any(t['state']=='cancelled' for t in task_rows):
+                if st.button('恢复已取消的未完成步骤',key='resume_'+p['id']):a.resume(p['id'],permit=True);st.rerun()
+            if task_rows:
+                with st.expander('执行尝试与恢复检查点'):
+                    for task in task_rows:
+                        st.write('步骤 '+str(task['ordinal']+1));st.json(a.runtime.attempts(task['id']))
             if p['state']=='completed':st.success('分析已完成。结果、诊断和报告已保存，可继续讨论或创建修订计划。')
         action=st.radio('提问类型',['自动识别','制定或修订分析计划','解读分析结果','方法咨询'],horizontal=True,key='assistant_action')
         q=st.chat_input('输入研究问题、计划修改要求或结果解释问题',key='assistant_chat')
@@ -225,31 +252,36 @@ def render_assistant():
                 with st.spinner('正在检索方法并'+('生成候选计划' if intent=='plan' else '核对运行证据')):
                     if intent=='plan':a.propose(sid,q,model)
                     else:
-                        answer=a.ask(sid,q,model)
-                        if answer.get('facts'):st.session_state['assistant_focus_run_'+sid]=answer['facts'][0]['run_id']
+                        if qa_compare is not None:
+                            if len(qa_compare)<2:raise ValueError('跨运行比较请明确选择至少两条运行。')
+                            answer=a.ask(sid,q,model,compare_run_ids=qa_compare)
+                        else:answer=a.ask(sid,q,model,run_id=a.selected_run(sid))
+                        # Answering cannot silently change the user's selected run.
                 st.rerun()
             except (ValueError,RuntimeError,OSError) as exc:st.error(str(exc));st.info('未展示未经校验的模型结果；已有运行和原始数据保持不变。')
     with tab_result:
-        completed=[]
-        for p in plans:
-            for t in a.tasks(p['id']):
-                if t['state']=='completed':completed.append(t['result'])
-        if not completed:st.info('当前任务尚无已完成的分析。请先审核并执行分析计划。')
+        if not byrun:st.info('当前任务尚无已完成的分析。请先审核并执行分析计划。')
         else:
-            focus=st.session_state.pop('assistant_focus_run_'+sid,None)
-            byrun={r['run_id']:r for r in completed};selector='assistant_result_runid_'+sid
-            newest=next((p for p in plans if any(t['state']=='completed' for t in a.tasks(p['id']))),None)
-            if newest and st.session_state.get('assistant_seen_result_plan_'+sid)!=newest['id']:
-                if focus is None:focus=next(t['result']['run_id'] for t in reversed(a.tasks(newest['id'])) if t['state']=='completed')
-                st.session_state['assistant_seen_result_plan_'+sid]=newest['id']
-            if focus is None and selector not in st.session_state:
-                answers=[e['body'] for e in a.events(sid) if e['kind']=='answer' and e['body'].get('facts')]
-                if answers:focus=answers[-1]['facts'][0]['run_id']
-            if focus in byrun:st.session_state[selector]=focus
-            elif st.session_state.get(selector) not in byrun:st.session_state[selector]=next(iter(byrun))
-            st.caption('结果按运行编号分别保存。默认显示最近运行或讨论中引用的结果，可切换查阅历史记录。')
-            rid=st.selectbox('分析运行记录',list(byrun),format_func=lambda rid:LABELS.get(byrun[rid].get('method'),METHODS.get(byrun[rid].get('method'),byrun[rid]['kind']))+' · '+rid[:8],key=selector)
-            show_run(a,byrun[rid],sid)
+            rid=a.selected_run(sid);show_run(a,byrun[rid],sid)
+            st.subheader('结果复核与后续研究')
+            st.caption('读取当前运行诊断并检索方法依据。缺少事实时列出问题；修订始终保存为待审候选，不自动批准或执行。')
+            observe_q=st.text_area('需要复核的问题',value='根据本次运行诊断，说明还缺少哪些依据，以及下一步适合做什么。',key='assistant_observe_q_'+sid)
+            allow_candidate=st.checkbox('允许提出新的待审计划（仍需人工接受）',key='assistant_observe_candidate_'+sid)
+            if st.button('复核本次运行并提出下一步',key='assistant_observe_'+sid):
+                try:
+                    from causalops.assistant.observation import EvidenceLoop
+                    with st.spinner('正在核对运行诊断和方法条件'):
+                        EvidenceLoop(a).run(sid,observe_q,run_id=rid,model=model,allow_candidate=allow_candidate)
+                    st.rerun()
+                except (ValueError,RuntimeError,OSError) as exc:st.error(str(exc))
+            observations=[e['body'] for e in a.events(sid) if e['kind']=='observation_loop' and e['body']['run_id']==rid]
+            if observations:
+                last=observations[-1];st.caption('复核已保存；停止原因：'+{'human_fact_required':'需要人工补充事实','finished':'证据复核结束','candidate_requires_human_review':'候选计划待审核','candidate_permission_required':'尚未授权提出候选','step_budget':'达到观察步数上限','model_call_budget':'达到模型调用上限','repeated_action':'重复动作已停止','time_budget':'达到时间预算','validation_failed':'建议未通过本地校验，未执行','provider_error':'模型服务未完成请求','proposal_validation_failed':'修订未通过校验，未创建候选'}.get(last['stop_reason'],last['stop_reason']))
+                for row in last['trace']:
+                    st.write(safe_text(row['reason']))
+                    for question in row.get('questions',[]):st.write('• '+safe_text(question))
+                    if row.get('retrieval'):show_sources(row['retrieval'])
+                with st.expander('复核记录与预算'):st.json(last)
     with tab_methods:
         query=st.text_input('检索方法、条件、诊断或商业/学术案例',value='如何选择方法并检查识别条件',key='assistant_search')
         if query:show_sources(a.library.search(query))

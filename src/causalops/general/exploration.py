@@ -154,12 +154,21 @@ class ExplorationWorkspace:
             if row and row[2]==text:return sid,row[0]
             v=row[0]+1 if row else 1;c.execute('INSERT INTO exploration_designs VALUES(?,?,?,?,?)',(sid,v,uid,text,datetime.now(timezone.utc).isoformat()))
         return sid,v
-    def run(self,sid,version):
+    def run(self,sid,version,*,run_id=None):
+        if run_id:
+            import re
+            if not re.fullmatch(r"[a-f0-9]{32}",run_id):raise DesignError("运行标识格式无效。")
+            with self.ws.connection() as c:exists=c.execute("SELECT 1 FROM exploration_runs WHERE run_id=?",(run_id,)).fetchone()
+            if exists:
+                b=self.load(run_id)
+                if b["study_id"]!=sid or b["design_version"]!=version:raise DesignError("运行标识与研究版本不一致。")
+                return b
         with self.ws.connection() as c:row=c.execute('SELECT upload_id,design_json,version FROM exploration_designs WHERE study_id=? ORDER BY version DESC LIMIT 1',(sid,)).fetchone()
         if not row or row[2]!=version:raise DesignError('分析配置已变化，请核对最新保存版本。')
         b=compute(self.ws.load_upload(row[0]),ExplorationDesign.model_validate_json(row[1]));b.update(study_id=sid,design_version=version,upload_id=row[0],external_model_calls=0)
+        if run_id:b['run_id']=run_id
         base=self.ws.root/'exploration-runs'/sid;base.mkdir(parents=True,exist_ok=True);p=base/(b['run_id']+'.json');text=json.dumps(b,ensure_ascii=False,indent=2,allow_nan=False)
-        with p.open('x',encoding='utf-8') as f:f.write(text)
+        temp=p.with_suffix('.pending');temp.write_text(text,encoding='utf-8');temp.replace(p)
         with self.ws.connection() as c:c.execute('INSERT INTO exploration_runs VALUES(?,?,?,?,?,?)',(b['run_id'],sid,version,str(p.relative_to(self.ws.root)),hashlib.sha256(p.read_bytes()).hexdigest(),b['created_at']))
         return b
     def runs(self,sid):

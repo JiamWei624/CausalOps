@@ -12,7 +12,7 @@
   {
     "file": "application-wheel.json",
     "bytes": 158,
-    "sha256": "a1ae4ffe9853719bc39e608948d1bfd186f042935767802270f141a970101108"
+    "sha256": "88010a72dfcbe33ff0bd6edc97309afcbb90d5d1fd9bee45307677063e0227b9"
   },
   {
     "file": "CONTRIBUTING.md",
@@ -21,8 +21,8 @@
   },
   {
     "file": "docs/ARCHITECTURE.md",
-    "bytes": 2406,
-    "sha256": "b7ace149df0c742bd4df3193d8f5f6ee749b9fe987cb8771e31f2a0b26f39cfa"
+    "bytes": 6972,
+    "sha256": "cd36c48419f412a9b11401be7a8b53b341c011f762420c1298352a549d48b9b0"
   },
   {
     "file": "docs/BOUNDARIES_0.5.1.md",
@@ -38,6 +38,16 @@
     "file": "docs/method-extension-plan.json",
     "bytes": 3074,
     "sha256": "aa58ed9cb3de35b17e28d3db9bea92fbbb9f01467c6d125aba4746bab6f0bcb7"
+  },
+  {
+    "file": "docs/METHOD_CONTRACTS.md",
+    "bytes": 3663,
+    "sha256": "07fa37494327f9584296253b127049f6a4829dd15c7761e075d86984b9da7ab8"
+  },
+  {
+    "file": "docs/ORCHESTRATION_0.6.0.md",
+    "bytes": 4137,
+    "sha256": "c1248452c3c89aee6c4b4dc39e3995a438d5ace5cbf38b5dfc28b7d0b922bb23"
   },
   {
     "file": "docs/upstream-references.json",
@@ -87,12 +97,12 @@
   {
     "file": "pyproject.toml",
     "bytes": 1163,
-    "sha256": "52fb69477e829c0a1c24d1cd51e01b2a083b7816ab128428652224a33a1b9fb3"
+    "sha256": "cf75b8bd1d08bc5af2aecf7e95bcc2a737e396b0a69195e27ed4aa47a19d75f3"
   },
   {
     "file": "README.md",
-    "bytes": 8874,
-    "sha256": "83c6a435a8a6ee5d70960855717148629a4335034f4f95b8b13ea8ac74e38743"
+    "bytes": 7490,
+    "sha256": "c5317b84a6e070dbe687e8a85eae4e8da20f149c6e37c93ab971a84e9c21b168"
   },
   {
     "file": "requirements-runtime-win-py311.txt",
@@ -108,6 +118,21 @@
     "file": "scripts/configure_readonly_hosts.py",
     "bytes": 2278,
     "sha256": "48e3107b8c9eb2a3c2ccd1699e1247a353a5b1f792c3c727b3278aeeaddf5eed"
+  },
+  {
+    "file": "scripts/evaluate_orchestration_online.py",
+    "bytes": 3119,
+    "sha256": "2d7e8a92429aee11ba787ae51f7c02138b4c19cffa9773b76faba8ec2da74328"
+  },
+  {
+    "file": "scripts/evaluate_orchestration_rag.py",
+    "bytes": 3522,
+    "sha256": "96542d35a491e2d92caf71fc7332aef1542433ffdf18470cb8e393f1b42bf1f4"
+  },
+  {
+    "file": "scripts/generate_method_contracts.py",
+    "bytes": 566,
+    "sha256": "d3696b5c14b1347521400275272caf7ffdf3d283914f7fd53da339dde3d9bbe1"
   },
   {
     "file": "scripts/prepublish_audit.py",
@@ -160,6 +185,11 @@
     "sha256": "1ffb2efd405d930317178f76321805289eeb42eb8eacac1e06bb19122f0d5f9f"
   },
   {
+    "file": "scripts/verify_orchestration_browser.cjs",
+    "bytes": 4489,
+    "sha256": "63260eb62acd08efd548130ac908efa2dfa0f1da83564c1f6c2ef203263e99cd"
+  },
+  {
     "file": "SECURITY.md",
     "bytes": 627,
     "sha256": "323b37dbe4eae0e0037e12186f2114b2afcdf12746d5ba2996cbfd7ab7b5a677"
@@ -186,8 +216,8 @@
   },
   {
     "file": "src/causalops/advanced/service.py",
-    "bytes": 20175,
-    "sha256": "da2c6dc94e755793b8832df387db53f648ddca8dfc5632207232f95a3a3fc690"
+    "bytes": 20679,
+    "sha256": "0fa918d1f2f76b90aaf5bc2a24f3ad21a3baac581f1ae9255c1c2f32a4741d24"
   },
   {
     "file": "src/causalops/agent.py",
@@ -200,14 +230,34 @@
     "sha256": "a1e87f5ae555e44b753b9a99e1a95ddce6e03374ffa5565b73bded2358dfb86d"
   },
   {
+    "file": "src/causalops/assistant/context.py",
+    "bytes": 3246,
+    "sha256": "3e605e9e20abf21ae477c717e88ae6a5e499734d09928602c937edaadf74b598"
+  },
+  {
+    "file": "src/causalops/assistant/contracts.py",
+    "bytes": 6518,
+    "sha256": "c1968f08b8d268ac060045eb1f3c6da1509da596a5ecd5d817d3d24eb1e69761"
+  },
+  {
     "file": "src/causalops/assistant/export.py",
-    "bytes": 1905,
-    "sha256": "d91ea997e80a766c1eadc4c424b3adbdf1168ff70ae90d8fff7968af0fd2d3a7"
+    "bytes": 2242,
+    "sha256": "2e7185879cc4bb67ea417c4126206b86530d7a2d191d4e6b7f0940d1a1584783"
+  },
+  {
+    "file": "src/causalops/assistant/observation.py",
+    "bytes": 7603,
+    "sha256": "e5e7a5b880fde37193e68e94a31579d03a872f6994a1170a0d22b3c1502a7d64"
+  },
+  {
+    "file": "src/causalops/assistant/runtime.py",
+    "bytes": 7127,
+    "sha256": "ff45248db9284f831e69a31876e4fb2b287af2b509f2e8546398d9c5d183ca0d"
   },
   {
     "file": "src/causalops/assistant/service.py",
-    "bytes": 35162,
-    "sha256": "58a598b19f521b06be72f0d35682bd7730ced65fe9149432532469894cd16171"
+    "bytes": 39765,
+    "sha256": "a82af80c2d753bd7c90b72bb280a572016d7ec696ccaf3458f804ebae5099587"
   },
   {
     "file": "src/causalops/audits/__init__.py",
@@ -411,8 +461,8 @@
   },
   {
     "file": "src/causalops/general/exploration.py",
-    "bytes": 17029,
-    "sha256": "33b4dc04995ae864f180d456d384b168f2aa8021691b63a69926175a44219d67"
+    "bytes": 17604,
+    "sha256": "e54abf8268cef1e48f45050b9075cc29e3f185fef02cddee3ab81a5b9a678e9d"
   },
   {
     "file": "src/causalops/general/exploration_report.py",
@@ -446,8 +496,8 @@
   },
   {
     "file": "src/causalops/knowledge/retrieval.py",
-    "bytes": 2774,
-    "sha256": "f0fdc5410e2e4e16906c437bbb610a9befe696169e5e870c32bbd2c10c4db76b"
+    "bytes": 6764,
+    "sha256": "b668a71c134f293710607f001ad75476fc99b34ce84b86939c74e8165694f06d"
   },
   {
     "file": "src/causalops/launch.py",
@@ -517,12 +567,12 @@
   {
     "file": "src/causalops/protocols/readonly_server.py",
     "bytes": 2249,
-    "sha256": "188d8bfc630da99ac73675ce3c7a25a272a5f0a53a869a36b7a873af7e0ff871"
+    "sha256": "7c90d55c4383f364acd27d86276d544f4a4716f5e46fd17fd43c7371975c07c2"
   },
   {
     "file": "src/causalops/protocols/reviewer_server.py",
     "bytes": 5585,
-    "sha256": "605454a479f3b2079233e9f03db031b35f8b552dc8a472017305ba3c62a543af"
+    "sha256": "bb2a8137851fd0c717011144302a99d53d663e5f0d5d5b4247919e5d7e951600"
   },
   {
     "file": "src/causalops/real_data.py",
@@ -611,8 +661,8 @@
   },
   {
     "file": "src/causalops/ui/assistant_app.py",
-    "bytes": 27177,
-    "sha256": "2b78f1db4939f5fab96e9b4421e2d8d31199846e9d2bb2524c83f1e02fa7fd91"
+    "bytes": 30815,
+    "sha256": "dbdc5777f260b7468095c5c18bf4dd8bfe1b00363d3134c9c0c3eedbe2ddf9d8"
   },
   {
     "file": "src/causalops/ui/controller.py",
@@ -773,6 +823,11 @@
     "file": "tests/test_llm_guard.py",
     "bytes": 6408,
     "sha256": "21a6efb08929e25a4bef529d7948dbc7c273d5eeb6ca6724ee6f2e6fc84a9f82"
+  },
+  {
+    "file": "tests/test_orchestration_v060.py",
+    "bytes": 17380,
+    "sha256": "07489e220b2e76e595d30d3782625b42e11d06c5cca08351ec02e66bf60193e3"
   },
   {
     "file": "tests/test_portfolio_showcase.py",

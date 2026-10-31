@@ -8,13 +8,17 @@ def attach_discussion(html,events,run_id,library):
         if event['kind']=='user':question=event['body']['question']
         if event['kind']!='answer':continue
         answer=event['body'];facts=answer.get('facts',[])
-        if run_id not in {f['run_id'] for f in facts}:continue
+        scope=set(answer.get('run_ids',[])) or {f['run_id'] for f in facts}
+        if run_id not in scope:continue
+        if len(scope)>1:continue  # Cross-run discussions require a comparison report, not a single-run appendix.
         sources=[]
+        saved={r['card_id']:r for r in answer.get('method_provenance',[])}
         for cid in answer.get('citations',[]):
-            card=next((c for c in library.cards if c['card_id']==cid),None)
-            if card:
-                for source_id in card['source_ids']:
-                    s=library.catalog['sources'][source_id];sources.append('<li><a href="'+escape(s['url'],quote=True)+'">'+escape(s['title'])+'</a>（'+escape(s['access_scope'])+'）</li>')
+            if cid in saved:records=saved[cid]['sources']
+            else:
+                card=next((c for c in library.cards if c['card_id']==cid),None)
+                records=[library.catalog['sources'][v] for v in card['source_ids']] if card else []
+            for source in records:sources.append('<li><a href="'+escape(source['url'],quote=True)+'">'+escape(source['title'])+'</a>（'+escape(source['access_scope'])+'）</li>')
         text=escape(answer['text']).replace('\n','<br>');text=re.sub(r'\*\*([^*]+)\*\*',r'<strong>\1</strong>',text)
         items.append('<article style="border-left:3px solid #176b65;padding:12px 20px;margin:24px 0"><h3>'+escape(question)+'</h3><p>回答来源：'+escape(answer['source'])+'；不新增计算，按原运行解释等级讨论。</p><p>'+text+'</p><ul>'+''.join(dict.fromkeys(sources))+'</ul><details><summary>展开完整引用与精确数值</summary><pre style="white-space:pre-wrap;overflow-wrap:anywhere">'+escape(json.dumps(facts,ensure_ascii=False,indent=2))+'</pre></details></article>')
     if not items:return html

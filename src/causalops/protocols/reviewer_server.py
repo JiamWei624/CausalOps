@@ -42,7 +42,7 @@ class ReviewerExecutor(AgentExecutor):
             await u.reject(message=u.new_agent_message(parts=[Part(text=str(exc))]))
 
 def create_app(workspace,port=8512):
-    card=AgentCard(name='CausalOps Method Reviewer',description='Read-only, deterministic method review and explicit run evidence handoff; never executes or approves.',version='0.5.1',capabilities=AgentCapabilities(streaming=True,push_notifications=False),default_input_modes=['text/plain'],default_output_modes=['text/plain'],skills=[AgentSkill(id='review-method-evidence',name='方法依据与证据审阅',description='Curated source-backed method review only',tags=['causal-inference','read-only'])],supported_interfaces=[AgentInterface(protocol_binding='JSONRPC',protocol_version='1.0',url=f'http://127.0.0.1:{port}/a2a/jsonrpc')])
+    card=AgentCard(name='CausalOps Method Reviewer',description='Read-only, deterministic method review and explicit run evidence handoff; never executes or approves.',version='0.6.0',capabilities=AgentCapabilities(streaming=True,push_notifications=False),default_input_modes=['text/plain'],default_output_modes=['text/plain'],skills=[AgentSkill(id='review-method-evidence',name='方法依据与证据审阅',description='Curated source-backed method review only',tags=['causal-inference','read-only'])],supported_interfaces=[AgentInterface(protocol_binding='JSONRPC',protocol_version='1.0',url=f'http://127.0.0.1:{port}/a2a/jsonrpc')])
     handler=DefaultRequestHandler(agent_executor=ReviewerExecutor(workspace),task_store=InMemoryTaskStore(),agent_card=card)
     return Starlette(routes=create_agent_card_routes(card)+create_jsonrpc_routes(handler,rpc_url='/a2a/jsonrpc'))
 
