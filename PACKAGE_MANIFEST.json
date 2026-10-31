@@ -226,8 +226,8 @@
   },
   {
     "file": "install_offline.py",
-    "bytes": 2000,
-    "sha256": "fb60c00a6123ecc0f972cb6bc0d1049951e9eb5754cd417f82698f8625a02014"
+    "bytes": 2096,
+    "sha256": "a426bde17a5c20e838eab675cf295a78bb43a4aee8d09cdc176acdfe773f2623"
   },
   {
     "file": "LICENSE",
@@ -251,8 +251,8 @@
   },
   {
     "file": "requirements-win-py311-offline.lock",
-    "bytes": 11448,
-    "sha256": "90b5d2f8b08829e26312a67bd64f3948c9807aa1c59661c379ead16cb095059c"
+    "bytes": 13433,
+    "sha256": "f2c6a2cc745939016421d25c072cb5d190d1a87ba0088852739be25b7bd9b69c"
   },
   {
     "file": "scripts/configure_readonly_hosts.py",

@@ -7,6 +7,7 @@ def main():
     root=Path(__file__).resolve().parent;dest=a.destination.expanduser().resolve()
     if sys.version_info[:2]!=(3,11):raise SystemExit('Use Python 3.11 on Windows x64 for this verified release.')
     if not (root/'wheelhouse').is_dir():raise SystemExit('This source-only download has no wheels. Use the full offline release or install source dependencies online.')
+    if dest.drive.lower()=='c:':raise SystemExit('Choose a data-drive destination outside C:.')
     if dest.exists():raise SystemExit('Destination already exists. Choose a new environment path; no files were removed.')
     env=os.environ.copy();env['PYTHONDONTWRITEBYTECODE']='1'
     short=Path(dest.anchor)/'causalops-install-temp';cache=Path(dest.anchor)/'causalops-install-cache'
@@ -18,5 +19,5 @@ def main():
     if not app.is_file() or hashlib.sha256(app.read_bytes()).hexdigest()!=record['sha256']:raise SystemExit('Application wheel hash mismatch; installation stopped.')
     subprocess.run([str(python),'-m','pip','install','--no-index','--no-deps',str(app)],env=env,check=True)
     subprocess.run([str(python),'-m','pip','check'],env=env,check=True)
-    print('Installed. Start with: '+str(python)+' -m causalops.launch --workspace <data-drive-workspace> --port 8510')
+    print('Installed. Start with: '+str(python)+' -m causalops.launch --workspace <data-drive-workspace> --port 8513')
 if __name__=='__main__':main()
