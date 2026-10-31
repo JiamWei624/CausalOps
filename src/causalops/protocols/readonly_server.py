@@ -10,7 +10,7 @@ from causalops.knowledge.retrieval import MethodLibrary
 
 def create_server(workspace):
     root=Path(workspace).resolve();library=MethodLibrary()
-    server=MCPServer('CausalOps read-only evidence',version='0.6.0',instructions='Only method knowledge and existing sanitized numeric evidence; no arbitrary SQL, files, raw rows, execution, or approval.')
+    server=MCPServer('CausalOps read-only evidence',version='0.7.0',instructions='Only method knowledge and existing sanitized numeric evidence; no arbitrary SQL, files, raw rows, execution, or approval.')
     annotation=ToolAnnotations(read_only_hint=True,destructive_hint=False,idempotent_hint=True,open_world_hint=False)
     @server.tool(annotations=annotation)
     def search_methods(question:str,method:str|None=None,k:int=4)->dict:
@@ -20,6 +20,25 @@ def create_server(workspace):
     def read_run_evidence(run_id:str)->dict:
         """Read a previously exported sanitized numeric fact catalog by opaque run ID; never raw rows."""
         return read_exported_facts(root,run_id)
+
+    @server.tool(annotations=annotation)
+    def list_analysis_capabilities()->dict:
+        """List executable method contracts and their human-review boundaries; never execute."""
+        from causalops.assistant.contracts import REGISTRY
+        return {'methods':[v.json() for v in REGISTRY.values()],'execution_available':False,'approval_available':False}
+    @server.tool(annotations=annotation)
+    def read_method_source(card_id:str,section:str|None=None)->dict:
+        """Read an exact curated method card/section with registered source locators."""
+        if not isinstance(card_id,str) or len(card_id)>80:raise ToolError('Invalid card identifier')
+        c=next((c for c in library.cards if c['card_id']==card_id),None)
+        if c is None:return {'status':'not_found','card_id':card_id}
+        if section is not None and section not in c['sections']:return {'status':'section_not_found','card_id':card_id}
+        return {'status':'found','card_id':card_id,'title':c['title'],'version':c['version'],'knowledge_sha256':library.digest,'sections':{section:c['sections'][section]} if section else c['sections'],'sources':[library.catalog['sources'][x] for x in c['source_ids']],'scope':'original curated summary, not a verbatim full-text document'}
+    @server.tool(annotations=annotation)
+    def check_evidence_citations(run_id:str,fact_ids:list[str])->dict:
+        """Check that every cited fact belongs to one explicitly exported run."""
+        from causalops.protocols.evidence_review import validate_fact_citations
+        return validate_fact_citations(read_exported_facts(root,run_id),fact_ids)
 
     return server
 

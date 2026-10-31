@@ -9,7 +9,7 @@ async def verify(root,run_id=None):
     params=StdioServerParameters(command=sys.executable,args=['-m','causalops.protocols.readonly_server','--workspace',str(root)],env=env)
     async with Client(params) as client:
         tools=await client.list_tools();names=[t.name for t in tools.tools] if hasattr(tools,'tools') else [t.name for t in tools]
-        assert set(names)=={'search_methods','read_run_evidence'},names
+        assert set(names)=={'search_methods','read_run_evidence','list_analysis_capabilities','read_method_source','check_evidence_citations'},names
         result=await client.call_tool('search_methods',{'question':'DID平行趋势事件研究','k':3})
         text=' '.join(x.text for x in result.content if hasattr(x,'text'));assert 'did' in text
         if run_id:

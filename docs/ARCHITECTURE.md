@@ -1,12 +1,12 @@
-# 系统架构与执行边界（0.6.0）
+# 系统架构与执行边界（0.7.0）
 
-CausalOps 是本机单用户的模块化研究工作台。统计估计在本地运行；可选 DeepSeek 官方模型提出待审计划、解释既有证据和决定有限的只读观察步骤。它不从表格自动确认随机化、变量时序或因果识别，也不让模型批准或执行新分析。
+CausalOps 是本机单用户的模块化研究工作台。统计估计在本地运行；可选的结构化模型客户端提出待审计划、解释既有证据和决定有限的只读观察步骤。它不从表格自动确认随机化、变量时序或因果识别，也不让模型批准或执行新分析。
 
 ## 主流程
 
 `CSV/Parquet → GeneralWorkspace登记与双指纹 → AssistantWorkspace任务 → MethodLibrary检索 → Plan候选 → 人工接受/登记研究事实 → TaskRuntime检查点 → AnalysisTools适配器 → 原统计引擎 → ToolResult契约 → 运行选择/结果问答/报告`
 
-界面为Streamlit；任务、版本、运行引用、执行尝试和对话保存在SQLite。原始数据副本为本地Parquet。无需LangChain/LangGraph；主流程直接使用SDK和本项目的受限状态机。
+界面为Streamlit；任务、版本、运行引用、执行尝试和对话保存在SQLite。原始数据副本为本地Parquet。无需LangChain/LangGraph；主流程使用明确的HTTP协议适配器（旧专业表单保留SDK）和本项目的受限状态机。
 
 ## 三类执行器与统一合同
 
@@ -66,3 +66,9 @@ MCP提供只读方法检索和明确导出的运行数字事实。A2A为本机�
 - [DeepSeek官方API](https://api-docs.deepseek.com/zh-cn/)
 
 独立参与者的完成率、用时、准确性和返工评测按项目安排留待下一阶段，不能用自动测试或少量API用例替代。
+
+## 0.7.0 模型与协议扩展
+
+ProviderConfig绑定服务/地址/模型/协议/输出格式。StructuredModelClient统一三类HTTP协议并本地校验JSON，授权按完整绑定核对。配置核验不授予外发权限，密钥仅内存。当前通用配置不改写旧专业表单的DeepSeek启动设置。
+
+MCP现有五项只读工具，A2A新增已导出运行事实的一致性检查；版本、工作区指纹与固定本机端点均核对。A2A审阅不持有模型密钥。详见[0.7.0接入与边界](PROVIDERS_PROTOCOLS_0.7.0.md)。

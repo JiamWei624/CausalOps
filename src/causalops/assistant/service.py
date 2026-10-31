@@ -99,11 +99,18 @@ class AssistantWorkspace:
         with self.ws.connection() as c:r=c.execute('SELECT * FROM assistant_plans WHERE id=?',(pid,)).fetchone()
         if not r:raise DesignError('计划不存在。')
         return self._plan(r)
-    def consent(self,sid,enabled):
-        self.event(sid,'external_consent',{'enabled':bool(enabled),'upload_id':self.session(sid)['upload_id'],'scope':'sanitized_schema_counts_question_recent_dialogue_and_numeric_fact_catalog','provider':'https://api.deepseek.com','no_rows':True,'no_identifiers':True})
-    def consent_enabled(self,sid):
+    def consent(self,sid,enabled,provider_config=None):
+        from causalops.llm.providers import DEFAULT_BINDING
+        binding=provider_config.binding() if provider_config else dict(DEFAULT_BINDING)
+        self.event(sid,'external_consent',{'enabled':bool(enabled),'upload_id':self.session(sid)['upload_id'],'scope':'sanitized_schema_counts_question_recent_dialogue_and_numeric_fact_catalog','provider':binding['base_url'],'binding':binding,'no_rows':True,'no_identifiers':True})
+    def consent_enabled(self,sid,provider_config=None):
+        from causalops.llm.providers import DEFAULT_BINDING
         e=[e['body'] for e in self.events(sid) if e['kind']=='external_consent']
-        return bool(e and e[-1]['enabled'] and e[-1]['upload_id']==self.session(sid)['upload_id'])
+        if not (e and e[-1]['enabled'] and e[-1]['upload_id']==self.session(sid)['upload_id']):return False
+        if provider_config is None:return True
+        wanted=provider_config.binding() if hasattr(provider_config,'binding') else provider_config
+        registered=e[-1].get('binding') or (DEFAULT_BINDING if e[-1].get('provider')=='https://api.deepseek.com' else None)
+        return wanted==registered
     def external_payload(self,sid,q,*,facts=None):
         from causalops.assistant.context import research_context
         q=check_question(q);s=self.session(sid);p=safe_profile(profile(self.ws.load_upload(s['upload_id'])))
@@ -111,13 +118,18 @@ class AssistantWorkspace:
         context=research_context(self,sid,run_ids=ids if facts is not None else None)
         return {'question':q,'dataset':p,'research_context':context,'retrieved_methods':self.library.search(q),'fact_catalog':facts or {},'claim_boundary':'描述、相关和关联回归不等于因果；没有成本不计算ROI；文献结果不代表当前任务收益。'}
     def _call(self,sid,model,system,payload,schema):
-        if not self.consent_enabled(sid):raise DesignError('当前数据会话尚未允许向官方模型发送列名、汇总和对话。')
-        if getattr(model,'base_url','').rstrip('/')!='https://api.deepseek.com':raise DesignError('统一助手仅允许DeepSeek官方API；不沿用第三方地址。')
-        self.event(sid,'model_request',{'payload_sha256':digest(payload),'scope':'schema_aggregates_dialogue_no_rows','provider_host':'api.deepseek.com'})
+        from causalops.llm.providers import model_binding,ProviderError
+        try:binding=model_binding(model)
+        except ValueError:raise DesignError('模型服务配置与允许的协议/地址不匹配。') from None
+        if not self.consent_enabled(sid,binding):raise DesignError('尚未授权当前服务地址、模型与协议发送该任务信息。切换配置后请重新确认。')
+        from urllib.parse import urlsplit
+        self.event(sid,'model_request',{'payload_sha256':digest(payload),'scope':'schema_aggregates_dialogue_no_rows','provider_host':urlsplit(binding['base_url']).hostname,'provider_binding':binding})
         try:
             result=model.complete_json(system_instruction=system,user_payload=payload,output_schema=schema)
         except Exception as exc:
-            self.event(sid,'model_error',{'exception_type':type(exc).__name__});raise DesignError('模型请求未完成；可继续使用本地模式。错误类型：'+type(exc).__name__) from None
+            self.event(sid,'model_error',{'exception_type':type(exc).__name__,'provider_binding':binding})
+            reason=str(exc) if isinstance(exc,ProviderError) else type(exc).__name__
+            raise DesignError('模型请求未完成；可继续使用本地模式。'+reason) from None
         self.event(sid,'model_usage',getattr(model,'last_telemetry',{}));return result
     def validate_plan(self,uid,p):
         p=Plan.model_validate(p);frame=self.ws.load_upload(uid);cols=set(frame)
@@ -162,7 +174,7 @@ class AssistantWorkspace:
                 '不要凭列名宣称随机化、行独立或处理前测量。引用仅用检索card_id，实证例子不证明本数据因果。不要把计划叙述成已完成。每项config必须有至少8字question。')
             for attempt in range(2):
                 result=self._call(sid,model,system,payload,Plan.model_json_schema())
-                try:return self.store_plan(sid,result,'DeepSeek官方模型候选',q,hits)
+                try:return self.store_plan(sid,result,__import__('causalops.llm.providers',fromlist=['model_label']).model_label(model)+'模型候选',q,hits)
                 except (ValueError,RuntimeError) as exc:
                     if attempt:raise
                     payload={**payload,'repair_required':str(exc)[:800],'repair_rule':'只修复明确问题，不确认人工事实，不执行。输出完整Plan对象。'}
@@ -412,7 +424,7 @@ class AssistantWorkspace:
                         method_refs=re.findall(r'\[citation:([a-zA-Z0-9_-]+)\]',text)
                         if set(method_refs)-set(reply.citations):raise DesignError('正文方法引用不在本轮引用列表中。')
                         text=re.sub(r'\[citation:[a-zA-Z0-9_-]+\]','（方法依据见下方）',text)
-                        answer={'source':'DeepSeek官方模型+本地证据校验','text':text,'facts':rendered_facts,'citations':reply.citations,'validation_repairs':validation_failures,'display_note':'正文数值适度四舍五入；完整精度与运行标识见证据展开区。'};break
+                        answer={'source':__import__('causalops.llm.providers',fromlist=['model_label']).model_label(model)+'模型+本地证据校验','text':text,'facts':rendered_facts,'citations':reply.citations,'validation_repairs':validation_failures,'display_note':'正文数值适度四舍五入；完整精度与运行标识见证据展开区。'};break
                     except (ValueError,RuntimeError) as exc:
                         validation_failures.append(str(exc)[:800]);self.event(sid,'answer_validation',{'attempt':attempt+1,'reason':str(exc)[:800]})
                         payload={**payload,'repair_required':str(exc)[:800],'repair_example':{'explanation':'本次样本量见[['+selected[0][0]+']]，数据描述不能证明干预收益。' if selected else '当前没有运行证据，无法提供数值结论。','fact_ids':[selected[0][0]] if selected else [],'citations':[]},'repair_rule':'重新生成完整对象。不要输出任何占位符之外的阿拉伯数字；不要编造事实、引用、操作或因果。'}
@@ -425,5 +437,6 @@ class AssistantWorkspace:
         if 'hits' in locals():
             answer['method_provenance']=[{'card_id':h['card_id'],'title':h['title'],'version':h['version'],'knowledge_sha256':self.library.digest,'sources':h['sources'],'matched_sections':h.get('matched_sections',[])} for h in hits['hits'] if h['card_id'] in answer.get('citations',[])]
         answer['knowledge_sha256']=self.library.digest
+        if model:answer['provider_binding']=__import__('causalops.llm.providers',fromlist=['model_binding']).model_binding(model)
         answer.update(run_ids=scope_ids,upload_id=self.session(sid)['upload_id'],scope='explicit_comparison' if compare_run_ids is not None else 'selected_run')
         self.event(sid,'user',{'question':q,'run_ids':scope_ids});self.event(sid,'answer',answer);return answer

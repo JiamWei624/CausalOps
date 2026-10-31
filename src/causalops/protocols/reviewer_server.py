@@ -4,6 +4,8 @@ import argparse,json,re,uuid,asyncio
 from pathlib import Path
 from google.protobuf.json_format import MessageToDict
 from starlette.applications import Starlette
+from starlette.routing import Route
+from starlette.responses import JSONResponse
 from a2a.server.agent_execution import AgentExecutor,RequestContext
 from a2a.server.events import EventQueue
 from a2a.server.tasks import TaskUpdater,InMemoryTaskStore
@@ -12,6 +14,7 @@ from a2a.server.routes import create_jsonrpc_routes,create_agent_card_routes
 from a2a.types import AgentCard,AgentCapabilities,AgentSkill,AgentInterface,Part,Task,TaskStatus,TaskState
 from causalops.knowledge.retrieval import MethodLibrary
 from causalops.protocols.readonly_server import read_exported_facts
+SERVER_VERSION='0.7.0'
 
 class ReviewerExecutor(AgentExecutor):
     def __init__(self,workspace):self.workspace=Path(workspace);self.library=MethodLibrary()
@@ -27,24 +30,32 @@ class ReviewerExecutor(AgentExecutor):
             p=json.loads(raw)
             if not isinstance(p,dict):raise ValueError('必须为对象')
             action=p.get('action')
+            if action in ('read_evidence','review_evidence') and (not isinstance(p.get('run_id'),str) or not re.fullmatch(r'[a-f0-9]{32}',p['run_id'])):raise ValueError('运行编号须为已导出的不透明标识，不能是路径。')
             if action=='review_method':
                 if set(p)-{'action','method','question'}:raise ValueError('不接收原始行、任意设计事实或额外字段')
                 q=p.get('question','');m=p.get('method')
                 if not isinstance(q,str) or re.search(r'sk-|@|\b\d{11,}\b|https?://',q):raise ValueError('请求疑似包含敏感信息或外部地址')
                 evidence=self.library.search(q,method=m,k=3)
                 result={'role':'independent_deterministic_method_reviewer','execution_performed':False,'approval_performed':False,'assumptions_verified':False,'retrieved':evidence,'next_action':'请将检查项与原设计对照，由使用者决定是否创建修订；此审阅不接受或批准草案。'}
+            elif action=='review_evidence':
+                if set(p)!={'action','run_id'}:raise ValueError('只接收已导出运行编号，不接收原始行或任意路径')
+                from causalops.protocols.evidence_review import review_exported_evidence
+                result=review_exported_evidence(read_exported_facts(self.workspace,p['run_id']))
             elif action=='read_evidence':
                 if set(p)!={'action','run_id'}:raise ValueError('仅接受运行编号')
                 result=read_exported_facts(self.workspace,p['run_id'])
-            else:raise ValueError('仅开放review_method/read_evidence；不执行分析、修改或批准')
+            else:raise ValueError('仅开放review_method/read_evidence/review_evidence；不执行分析、修改或批准')
             await u.add_artifact(parts=[Part(text=json.dumps(result,ensure_ascii=False))],name='method-review-and-evidence',last_chunk=True);await u.complete()
         except (ValueError,TypeError) as exc:
             await u.reject(message=u.new_agent_message(parts=[Part(text=str(exc))]))
 
 def create_app(workspace,port=8512):
-    card=AgentCard(name='CausalOps Method Reviewer',description='Read-only, deterministic method review and explicit run evidence handoff; never executes or approves.',version='0.6.0',capabilities=AgentCapabilities(streaming=True,push_notifications=False),default_input_modes=['text/plain'],default_output_modes=['text/plain'],skills=[AgentSkill(id='review-method-evidence',name='方法依据与证据审阅',description='Curated source-backed method review only',tags=['causal-inference','read-only'])],supported_interfaces=[AgentInterface(protocol_binding='JSONRPC',protocol_version='1.0',url=f'http://127.0.0.1:{port}/a2a/jsonrpc')])
+    card=AgentCard(name='CausalOps Method Reviewer',description='Read-only, deterministic method review and explicit run evidence handoff; never executes or approves.',version=SERVER_VERSION,capabilities=AgentCapabilities(streaming=True,push_notifications=False),default_input_modes=['text/plain'],default_output_modes=['text/plain'],skills=[AgentSkill(id='review-method-evidence',name='方法依据与证据审阅',description='Curated source-backed method review only',tags=['causal-inference','read-only'])],supported_interfaces=[AgentInterface(protocol_binding='JSONRPC',protocol_version='1.0',url=f'http://127.0.0.1:{port}/a2a/jsonrpc')])
     handler=DefaultRequestHandler(agent_executor=ReviewerExecutor(workspace),task_store=InMemoryTaskStore(),agent_card=card)
-    return Starlette(routes=create_agent_card_routes(card)+create_jsonrpc_routes(handler,rpc_url='/a2a/jsonrpc'))
+    async def status(request):
+        from causalops.protocols.local_services import workspace_identity
+        return JSONResponse({'version':SERVER_VERSION,'workspace_fingerprint':workspace_identity(workspace)})
+    return Starlette(routes=create_agent_card_routes(card)+create_jsonrpc_routes(handler,rpc_url='/a2a/jsonrpc')+[Route('/causalops/status',status)])
 
 async def request_review(payload,*,port=8512):
     """Whitelist loopback peer. No arbitrary URL or automatic model provider handoff."""

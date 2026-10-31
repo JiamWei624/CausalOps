@@ -12,12 +12,13 @@ class NextAction(BaseModel):
     questions:list[str]=Field(default_factory=list,max_length=4)
 
 class CallBudget:
-    def __init__(self,model,max_calls,deadline):self.model=model;self.max_calls=max_calls;self.calls=0;self.deadline=deadline;self.base_url=model.base_url
+    def __init__(self,model,max_calls,deadline):self._delegate=model;self.max_calls=max_calls;self.calls=0;self.deadline=deadline;self.base_url=model.base_url
+    def __getattr__(self,name):return getattr(self._delegate,name)
     @property
-    def last_telemetry(self):return getattr(self.model,'last_telemetry',{})
+    def last_telemetry(self):return getattr(self._delegate,'last_telemetry',{})
     def complete_json(self,**kwargs):
         if self.calls>=self.max_calls or time.monotonic()>self.deadline:raise RuntimeError('观察循环已达到模型调用或时间预算。')
-        self.calls+=1;return self.model.complete_json(**kwargs)
+        self.calls+=1;return self._delegate.complete_json(**kwargs)
 
 class EvidenceLoop:
     def __init__(self,a):self.a=a

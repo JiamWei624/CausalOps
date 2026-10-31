@@ -1,6 +1,6 @@
 """Start the optional local read-only reviewer on demand, with logs on the workspace drive."""
 from pathlib import Path
-import json,os,socket,subprocess,sys,time
+import json,os,socket,subprocess,sys,time,hashlib
 from urllib.request import build_opener,ProxyHandler
 
 def card(port):
@@ -8,10 +8,22 @@ def card(port):
         with build_opener(ProxyHandler({})).open(f'http://127.0.0.1:{port}/.well-known/agent-card.json',timeout=2) as r:return json.load(r)
     except (OSError,ValueError):return None
 
+def workspace_identity(workspace):
+    return hashlib.sha256(os.path.normcase(str(Path(workspace).resolve())).encode()).hexdigest()
+
+def reviewer_identity(port):
+    try:
+        with build_opener(ProxyHandler({})).open(f'http://127.0.0.1:{port}/causalops/status',timeout=2) as r:return json.load(r)
+    except (OSError,ValueError):return None
+
 def ensure_reviewer(workspace,port=8512):
     workspace=Path(workspace).resolve();existing=card(port)
     if existing:
         if existing.get('name')!='CausalOps Method Reviewer':raise RuntimeError('审阅端口属于其他服务，未进行替换。')
+        from causalops.protocols.reviewer_server import SERVER_VERSION
+        if existing.get('version')!=SERVER_VERSION:raise RuntimeError('审阅服务仍为旧版本；请重启本项目的审阅服务或选择新端口，不混用旧规则。')
+        identity=reviewer_identity(port)
+        if not identity or identity.get('workspace_fingerprint')!=workspace_identity(workspace):raise RuntimeError('审阅服务不属于当前工作区；请使用该工作区的独立端口，未读取其他工作区证据。')
         return {'status':'already_running','port':port}
     with socket.socket() as s:
         if s.connect_ex(('127.0.0.1',port))==0:raise RuntimeError('审阅端口被其他程序占用，未关闭任何程序。')
@@ -23,7 +35,7 @@ def ensure_reviewer(workspace,port=8512):
         p=subprocess.Popen([sys.executable,'-m','causalops.protocols.reviewer_server','--workspace',str(workspace),'--port',str(port)],cwd=workspace,env=env,stdout=f,stderr=f,stdin=subprocess.DEVNULL,creationflags=subprocess.CREATE_NO_WINDOW if os.name=='nt' else 0)
     for _ in range(40):
         if p.poll() is not None:raise RuntimeError('只读审阅服务启动失败，请查看工作区runtime/a2a-reviewer.log。')
-        if card(port):
+        if card(port) and (reviewer_identity(port) or {}).get('workspace_fingerprint')==workspace_identity(workspace):
             (runtime/'a2a-reviewer.json').write_text(json.dumps({'pid':p.pid,'port':port,'workspace':str(workspace),'log':str(log)}),encoding='utf-8');return {'status':'started','port':port,'pid':p.pid}
         time.sleep(.15)
     p.terminate();raise RuntimeError('审阅服务启动超时。')

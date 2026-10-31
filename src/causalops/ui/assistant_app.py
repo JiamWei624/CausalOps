@@ -107,21 +107,61 @@ def render_assistant():
     top=st.columns(3);top[0].metric('数据行数',f'{pr["rows"]:,}');top[1].metric('字段数',pr['columns']);top[2].metric('当前任务',sid[-8:])
     with st.expander('数据概况与字段目录'):
         st.dataframe(pd.DataFrame(pr['fields']).rename(columns={'field':'字段','dtype':'类型','missing_n':'缺失数','distinct_n':'非缺失唯一值数','numeric':'是否数值','likely_identifier':'疑似标识/敏感字段','infinite_n':'无穷值数'}),hide_index=True,width='stretch');st.caption(pr['meaning'])
+    from causalops.llm.providers import ProviderConfig,PRESETS,StructuredModelClient
+    cfg=None;key='';model=None
     with st.expander('模型配置与数据发送授权'):
-        st.caption('仅支持DeepSeek官方API。密钥只在当前浏览器会话内存中，不写入数据库、报告或Git。刷新会话后可能需重新填写。')
-        key=st.text_input('官方API密钥',type='password',key='assistant_api_key',help='粘贴后按回车提交，再勾选当前任务授权；密钥只在会话内存中。')
-        st.caption('发送范围：过滤标识后的字段名、类型、缺失/唯一值数量、研究问题、近期对话及运行数字事实。不会发送原始行、ID值或论文全文。')
-        consent=a.consent_enabled(sid);check=st.checkbox('授权当前任务发送上述信息',value=consent,key='assistant_consent_'+sid)
-        if check!=consent:a.consent(sid,check)
-        if st.button('预览拟发送内容',key='assistant_preview'):
-            st.json(a.external_payload(sid,'请解释当前数据并提出分析计划'))
-        st.caption('先核对问题中是否含敏感信息；工作台会阻断常见密钥、邮箱和长标识。授权只适用于此任务，可随时撤回。')
-    model=None
-    if st.session_state.get('assistant_api_key') and a.consent_enabled(sid):
-        from causalops.llm.deepseek import DeepSeekStructuredModelClient
-        try:model=DeepSeekStructuredModelClient(api_key=st.session_state['assistant_api_key'],base_url='https://api.deepseek.com',model='deepseek-flash',max_output_tokens=5000,max_retries=1)
-        except RuntimeError as exc:st.warning(type(exc).__name__+'：可继续本地模式。')
-    st.caption('运行模式：'+('DeepSeek官方模型提出计划/解释，统计由本机工具执行。' if model else '本地分析模式。启用官方模型并授权当前任务后，可通过自然语言生成待审计划与结果解释。'))
+        provider=st.selectbox('模型服务商',list(PRESETS),format_func=lambda v:PRESETS[v]['label'],key='assistant_provider')
+        preset=PRESETS[provider];profiles=st.session_state.setdefault('_assistant_provider_profiles',{});saved=profiles.get(provider,{})
+        st.caption('模型名须填写API服务实际可调用的模型ID；应用中的模型菜单名称不一定是API模型ID。')
+        base=st.text_input('API Base URL',value=saved.get('base_url',preset['base_url']),key='assistant_base_'+provider,help='填写服务基础地址，不填写chat/completions等具体接口路径。')
+        name=st.text_input('API模型ID',value=saved.get('model',preset['model']),key='assistant_model_'+provider,placeholder='填写当前账户可调用的模型ID')
+        with st.expander('接口协议与输出设置'):
+            modes=['anthropic_messages'] if provider=='anthropic' else ['responses','chat_completions']
+            default=saved.get('api_mode',preset['api_mode']);mode=st.selectbox('接口协议',modes,index=modes.index(default),format_func=lambda v:{'responses':'Responses API','chat_completions':'Chat Completions','anthropic_messages':'Anthropic Messages'}[v],key='assistant_protocol_'+provider)
+            formats=['prompt_json'] if provider=='anthropic' else ['json_object','json_schema','prompt_json']
+            fmt=st.selectbox('结构化输出模式',formats,index=formats.index(saved.get('json_mode',preset['json_mode'])),format_func=lambda v:{'json_object':'JSON对象，并在本地检查结构','json_schema':'JSON Schema（仅接口支持时）','prompt_json':'提示生成JSON，并在本地检查结构'}[v],key='assistant_format_'+provider)
+            limit=st.number_input('单次输出Token上限',min_value=256,max_value=8192,value=5000,step=256,key='assistant_tokens')
+            thinking=st.selectbox('DeepSeek思考模式',['none','high'],format_func=lambda v:'关闭思考（默认）' if v=='none' else '开启高强度思考',key='assistant_deepseek_reasoning') if provider=='deepseek' else 'none'
+            version=st.text_input('Anthropic API版本',value=saved.get('anthropic_version','2026-10-21'),key='assistant_anthropic_version') if provider=='anthropic' else '2026-10-21'
+        profiles[provider]={'base_url':base,'model':name,'api_mode':mode,'json_mode':fmt,'anthropic_version':version}
+        if name.strip():
+            try:cfg=ProviderConfig(provider=provider,base_url=base,model=name,api_mode=mode,json_mode=fmt,max_output_tokens=limit,anthropic_version=version,deepseek_reasoning=thinking)
+            except ValueError as exc:st.error('模型配置尚未通过检查：'+str(exc))
+        else:st.info('请填写模型ID；在此之前可继续本地分析。')
+        import hashlib
+        credential_scope=hashlib.sha256((provider+'|'+base.rstrip('/')).encode()).hexdigest()[:16]
+        visible=st.checkbox('显示密钥',key='assistant_key_visible')
+        credential_widget='assistant_key_'+credential_scope
+        if credential_widget not in st.session_state:st.session_state[credential_widget]=''
+        key=st.text_input('API密钥',type='default' if visible else 'password',key=credential_widget,help='仅保存在本次浏览器会话内存中；切换服务地址不会自动带入旧密钥；切回后请重新输入。')
+        if preset['docs']:st.markdown('[查看该服务官方接入文档]('+preset['docs']+')')
+        st.caption('发送范围：过滤标识后的字段元数据、汇总、研究问题、有限研究上下文和运行数字事实。不发送原始数据行、ID值或完整论文。')
+        if cfg:
+            consent=a.consent_enabled(sid,cfg)
+            consent_key='assistant_consent_'+sid+'_'+cfg.fingerprint
+            st.session_state[consent_key]=consent
+            def update_model_consent(workspace=a,session_id=sid,widget_key=consent_key,config=cfg):
+                workspace.consent(session_id,st.session_state[widget_key],config)
+            check=st.checkbox('授权当前任务向所选服务与模型发送上述信息',key=consent_key,on_change=update_model_consent)
+            if not check:st.caption('当前配置尚未获得该任务的数据发送授权。切换地址、模型或协议后需重新确认。')
+        if st.button('预览拟发送内容',key='assistant_preview'):st.json({'target':cfg.binding() if cfg else None,'payload':a.external_payload(sid,'请解释当前数据并提出分析计划')})
+        if st.button('核验当前配置（不发送研究数据）',disabled=not cfg or not key,key='assistant_probe'):
+            try:
+                probe=StructuredModelClient(cfg,key)
+                try:
+                    with st.spinner('正在发送固定的最小JSON测试请求'):result=probe.probe()
+                finally:probe.close()
+                st.success('认证、接口与本地JSON校验通过。');st.json(result)
+            except (ValueError,RuntimeError) as exc:st.error(str(exc))
+        st.caption('密钥不会写入数据库、报告或Git。配置核验只发送固定测试，不授予研究数据外发权限；失败时不会自动更换服务商。')
+    if cfg and key and a.consent_enabled(sid,cfg):
+        try:
+            cached=st.session_state.get('_assistant_provider_client')
+            if cached and (cached.provider_config!=cfg or cached._api_key!=key):cached.close();cached=None
+            if cached is None:cached=StructuredModelClient(cfg,key);st.session_state['_assistant_provider_client']=cached
+            model=cached
+        except (ValueError,RuntimeError) as exc:st.warning(str(exc)+'；可继续本地模式。')
+    st.caption('运行模式：'+(PRESETS[cfg.provider]['label']+' / '+cfg.model+' 已配置并获当前任务授权；连接状况请通过上方配置核验确认。统计由本机工具执行。' if model else '本地分析模式。配置模型并授权当前任务后，可生成待审计划与证据解释。'))
     plans=a.plans(sid)
     if plans:
         latest=plans[0];state={'candidate':'待审核','accepted':'待执行','completed':'已完成','rejected':'已放弃'}[latest['state']]
@@ -263,6 +303,18 @@ def render_assistant():
         if not byrun:st.info('当前任务尚无已完成的分析。请先审核并执行分析计划。')
         else:
             rid=a.selected_run(sid);show_run(a,byrun[rid],sid)
+            with st.expander('独立运行证据审阅（A2A，本地服务）'):
+                st.caption('只提交运行编号。独立服务检查已明确导出的事实归属、数值范围和区间顺序；不重新估计，也不验证识别假设。')
+                if st.button('导出并审阅当前运行证据',key='assistant_a2a_evidence_'+sid):
+                    try:
+                        import asyncio
+                        from causalops.protocols.local_services import ensure_reviewer
+                        from causalops.protocols.reviewer_server import request_review
+                        a.export_readonly(sid);ensure_reviewer(a.ws.root)
+                        reply=asyncio.run(request_review({'action':'review_evidence','run_id':rid}))
+                        a.event(sid,'a2a_evidence_review',{'run_id':rid,'transport':'A2A1.0_JSONRPC_loopback','events':reply,'execution_performed':False})
+                        st.success('运行证据审阅已完成。');st.json(reply)
+                    except (ValueError,RuntimeError,OSError) as exc:st.error(str(exc))
             st.subheader('结果复核与后续研究')
             st.caption('读取当前运行诊断并检索方法依据。缺少事实时列出问题；修订始终保存为待审候选，不自动批准或执行。')
             observe_q=st.text_area('需要复核的问题',value='根据本次运行诊断，说明还缺少哪些依据，以及下一步适合做什么。',key='assistant_observe_q_'+sid)
