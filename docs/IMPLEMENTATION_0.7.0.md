@@ -1,3 +1,5 @@
+> **历史阶段记录**：本文保留当时的实现与验收状态，不作为当前版本说明。请查看[当前文档入口](README.md)及[当前架构](current/ARCHITECTURE.md)。
+
 <!-- release: 0.7.0 -->
 # CausalOps · 数据分析与研究工作台
 

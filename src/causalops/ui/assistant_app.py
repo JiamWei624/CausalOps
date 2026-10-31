@@ -30,23 +30,31 @@ def show_sources(hits):
 def show_run(a,ref,sid):
     from causalops.assistant.export import attach_discussion
     rid=ref['run_id']
+    from causalops.application.task_conclusions import build_task_conclusion,attach_task_conclusion,TITLES
+    conclusion=build_task_conclusion(a,sid,rid)
+    with st.container(border=True):
+        st.markdown('**本次研究结论**')
+        for section,text in conclusion['sections'].items():st.markdown('**'+TITLES[section]+'：** '+safe_text(text))
+        st.caption('解释来自保存运行；数据字典版本与证据指纹可追溯，未重新估计。')
     if ref['kind']=='advanced':
         b=a.advanced.load(rid);advanced_ui.display(b)
-        st.download_button('下载研究报告（HTML）',attach_discussion(advanced_ui.report(b),a.events(sid),rid,a.library),file_name='advanced-'+rid+'.html',mime='text/html',key='adv_report_'+rid)
+        st.download_button('下载研究报告（HTML）',attach_discussion(attach_task_conclusion(advanced_ui.report(b),conclusion),a.events(sid),rid,a.library),file_name='advanced-'+rid+'.html',mime='text/html',key='adv_report_'+rid)
         return
     if ref['kind']=='exploration':
         b=a.ex.load(rid);st.caption('运行 '+rid+' · 配置V'+str(b['design_version'])+' · 数据指纹 '+b['data_fingerprint'][:12])
         for line in b['conclusions']:st.write(line)
         if b['regression']:
-            st.dataframe(display(b['regression']['coefficients']),hide_index=True,width='stretch');st.info(b['regression']['note'])
+            table=display(b['regression']['coefficients'])
+            formats={c:st.column_config.NumberColumn(format='scientific' if c=='P值' else '%.4g') for c in table.select_dtypes(include='number').columns}
+            st.dataframe(table,column_config=formats,hide_index=True,width='stretch');st.info(b['regression']['note'])
             if b['regression'].get('overdispersion_flag'):st.warning('Pearson离散度偏高；应检查计数均值设定、暴露与负二项等替代，当前不自动换模型。')
         for name,f in list(figures(b).items())[:5]:st.plotly_chart(f,key='assist_'+rid+'_'+name,width='stretch')
         with st.expander('完整数据质量与数值统计'):
             st.dataframe(display(b['summary']['columns']),hide_index=True,width='stretch');st.dataframe(display(b['summary']['numeric']),hide_index=True,width='stretch')
-        x,y=st.columns(2);x.download_button('下载分析报告（HTML）',attach_discussion(render_report(b),a.events(sid),rid,a.library),file_name='CausalOps-'+rid+'.html',mime='text/html',key='ah_'+rid);y.download_button('下载运行证据（JSON）',json.dumps(b,ensure_ascii=False,indent=2),file_name=rid+'.json',key='aj_'+rid)
+        x,y=st.columns(2);x.download_button('下载分析报告（HTML）',attach_discussion(attach_task_conclusion(render_report(b),conclusion),a.events(sid),rid,a.library),file_name='CausalOps-'+rid+'.html',mime='text/html',key='ah_'+rid);y.download_button('下载运行证据（JSON）',json.dumps(b,ensure_ascii=False,indent=2),file_name=rid+'.json',key='aj_'+rid)
     else:
         b,run=a.ws.bundle(rid);st.caption('研究运行 '+rid+' · 草案 '+run.revision_id);show_conclusion(b)
-        st.download_button('下载研究图文报告',attach_discussion(render_html_report(b),a.events(sid),rid,a.library),file_name='research-'+rid+'.html',mime='text/html',key='rh_'+rid)
+        st.download_button('下载研究图文报告',attach_discussion(attach_task_conclusion(render_html_report(b),conclusion),a.events(sid),rid,a.library),file_name='research-'+rid+'.html',mime='text/html',key='rh_'+rid)
 
 def confirmations(step,index,pid,frame):
     cfg=step['config'];key=lambda k:'af_'+pid+'_'+str(index)+'_'+k;facts={}
@@ -73,6 +81,8 @@ def confirmations(step,index,pid,frame):
 
 def render_assistant():
     a=AssistantWorkspace();st.title('CausalOps · 数据分析与研究工作台')
+    from causalops import __version__
+    st.caption('版本 '+__version__+' · 本地单用户工作区')
     st.caption('导入数据后，可在同一任务中制定分析计划、审核研究设计、执行统计分析并查阅运行证据。')
     sessions=a.sessions();byid={s['id']:s for s in sessions};sid=st.query_params.get('assistant')
     with st.sidebar:

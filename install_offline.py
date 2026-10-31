@@ -9,7 +9,7 @@ def main():
     if not (root/'wheelhouse').is_dir():raise SystemExit('This source-only download has no wheels. Use the full offline release or install source dependencies online.')
     if dest.drive.lower()=='c:':raise SystemExit('Choose a data-drive destination outside C:.')
     if dest.exists():raise SystemExit('Destination already exists. Choose a new environment path; no files were removed.')
-    env=os.environ.copy();env['PYTHONDONTWRITEBYTECODE']='1'
+    env=os.environ.copy();env['PYTHONDONTWRITEBYTECODE']='1';env.pop('PYTHONPATH',None);env.pop('PYTHONHOME',None)
     short=Path(dest.anchor)/'causalops-install-temp';cache=Path(dest.anchor)/'causalops-install-cache'
     for key,path in {'TEMP':short,'TMP':short,'PIP_CACHE_DIR':cache}.items():path.mkdir(exist_ok=True);env[key]=str(path)
     subprocess.run([sys.executable,'-m','venv',str(dest)],env=env,check=True)
@@ -17,7 +17,9 @@ def main():
     subprocess.run([str(python),'-m','pip','install','--no-index','--find-links',str(root/'wheelhouse'),'--require-hashes','--no-deps','-r',str(lock)],env=env,check=True)
     record=json.loads((root/'application-wheel.json').read_text(encoding='utf-8'));app=root/'wheelhouse'/record['wheel']
     if not app.is_file() or hashlib.sha256(app.read_bytes()).hexdigest()!=record['sha256']:raise SystemExit('Application wheel hash mismatch; installation stopped.')
-    subprocess.run([str(python),'-m','pip','install','--no-index','--no-deps',str(app)],env=env,check=True)
-    subprocess.run([str(python),'-m','pip','check'],env=env,check=True)
+    subprocess.run([str(python),'-m','pip','install','--no-index','--no-deps','--force-reinstall',str(app)],env=env,cwd=short,check=True)
+    subprocess.run([str(python),'-m','pip','check'],env=env,cwd=short,check=True)
+    probe="from pathlib import Path;import causalops,sys;assert Path(causalops.__file__).resolve().is_relative_to(Path(sys.prefix).resolve());assert causalops.__version__=="+repr(record['version'])+";print('Verified installed module:',causalops.__file__)"
+    subprocess.run([str(python),'-I','-c',probe],env=env,cwd=short,check=True)
     print('Installed. Start with: '+str(python)+' -m causalops.launch --workspace <data-drive-workspace> --port 8513')
 if __name__=='__main__':main()

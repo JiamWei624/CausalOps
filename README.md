@@ -1,136 +1,99 @@
-<!-- release: 0.9.0 -->
+<!-- release: 0.10.0 -->
 # CausalOps · 数据分析与研究工作台
 
-**将数据检查、研究设计、统计分析和证据解释组织在同一任务中。**
+**从业务问题出发，组织数据口径、研究计划、统计计算和可追溯的结果讨论。**
 
-当前为 **0.9.0 私有验证版本**，面向本机单用户。原始数据在本地处理；可选模型提出待审计划和解释，统计计算由本地工具完成。
+当前版本：**0.10.0 私有验证版**。本机单用户运行；统计计算留在本地。模型在明确授权后理解字段、提出待审计划和解释已有证据，不能自行确认研究事实、批准计划或执行分析。
 
-> 本版新增真实方法研究子图、有限补检、版本化人工数据字典和本地后台运行；计算前保留审核中断，结果问答继续绑定运行证据。操作与边界详见[0.9.0说明](docs/RESEARCH_WORKFLOW_0.9.0.md)。
+[操作说明](docs/current/USER_GUIDE.md) · [当前架构](docs/current/ARCHITECTURE.md) · [真实任务验收](docs/current/VALIDATION.md) · [模型配置](docs/current/PROVIDERS.md) · [后续边界](docs/current/ROADMAP.md) · [版本历史](docs/HISTORY.md)
 
-[快速开始](#快速开始) · [当前架构](#当前架构) · [目标架构](#完整目标架构部分已实现) · [完整功能与边界](docs/IMPLEMENTATION_0.7.0.md) · [迁移实施方案](docs/LANGGRAPH_MIGRATION_PLAN.md) · [三份参考项目核查](docs/REFERENCE_PROJECT_REVIEW.md)
+## 一次任务如何完成
 
-## 适合解决什么问题
+1. 上传CSV或Parquet，检查数据结构。
+2. 登记已知字段含义、单位、时间和分组依据；不知道的内容保持未知。
+3. 用业务语言提问。系统根据安全元数据选择主要分析，检索方法条件；缺少依据时补检或澄清。
+4. 查看候选与具体缺项。口径完整后，由使用者审核本次计划。
+5. 本地后台执行统计并保存证据；完成后默认展示主要分析。
+6. 阅读量化结论、继续追问或导出含图表与来源的报告。追问不自动重跑。
 
-- **陌生表格体检**：检查缺失、分布、重复与候选字段角色，再提出分析步骤。
-- **实验与观察性研究**：按数据结构、分配机制和识别依据制定研究计划，由使用者审核后执行。
-- **围绕结果继续讨论**：解释幅度、区间、实际意义及限制；回答绑定选定运行，保留来源和数值依据。
+![当前实际任务流程](docs/assets/task-workflow-current.svg)
 
-**操作路径：上传表格 → 登记口径 → 方法研究与待审计划 → 人工审核 → 后台计算 → 图文报告与持续问答。**
+## 当前实际架构
 
-## 当前架构
+![CausalOps 0.10.0 已实现架构](docs/assets/architecture-current.svg)
 
-![CausalOps 0.9.0 当前真实架构](docs/assets/architecture-current.svg)
-
-| 层 | 当前实现 | 责任 |
+| 层 | 实现 | 责任与边界 |
 |---|---|---|
-| 交互 | Streamlit | 导入、讨论、审核、图表和报告 |
-| 应用与编排 | ResearchService、LangGraph StateGraph、SQLite Saver | 结构化路由、持久审核中断、版本批准与真实步骤事件 |
-| 原执行协调 | AssistantWorkspace、TaskRuntime、EvidenceLoop | 统计执行权、结果调和、运行问答与原工作台 |
-| 模型 | 多服务商HTTP网关 | 接收配置授权、结构化输出与本地校验 |
-| 知识 | LangChain Core Retriever适配TF-IDF方法卡 | 保留方法条件、来源位置、排名与知识库版本 |
-| 统计 | 17项方法、三类执行器、ToolResult | 设计检查、计算、诊断与运行归属 |
-| 后台运行 | 本地单工作线程、四项队列、SQLite任务状态 | 真实进度、协作停止与原检查点恢复 |
-| 数据口径 | DataContract、冻结版本与人工声明 | 角色/时序核对、批准失效与声明复用 |
-| 存储 | SQLite、Parquet、JSON/HTML | 研究版本、数据副本、证据和成果 |
-| 协议 | MCP与A2A | 明确导出的只读方法/证据查询与规则审阅 |
+| 交互 | Streamlit | 显示当前任务、下一步、具体缺项、审核和主要结果 |
+| 应用服务 | ResearchService | 统一数据、字典、候选、审批、执行和证据入口 |
+| 编排 | LangGraph主图与方法研究子图 | 结构化路由、有限补检、SQLite检查点、审核中断 |
+| 口径 | DataContract与就绪检查 | 冻结登记版本；声明不是已验证假设，模型不能修改事实 |
+| 知识 | LangChain Core BaseRetriever + 字符TF-IDF | 20张规则/案例卡、27条来源；按方法定向补检，不编造引用 |
+| 统计 | 三类执行器、17项注册方法 | 设计检查、官方包计算、数值诊断与主张降级 |
+| 后台 | 单工作线程、四项本地队列 | 真实进度、协作停止与检查点恢复；不是分布式平台 |
+| 结果 | ToolResult、运行事实、冻结来源口径 | 区分参考水平、差异幅度、实际含义和下一步；不补写ROI |
+| 模型 | 六类服务预设与HTTPS协议适配 | DeepSeek做真实调用验收；其他服务目前仍以协议测试为主 |
+| 扩展 | MCP只读查询、A2A本地规则审阅 | 不赋予批准权或统计执行权；不宣称多模型自主科研 |
 
-代码与职责映射见[架构核查](docs/ARCHITECTURE_REVIEW_0.7.0.md)；详细研究合同见[方法注册表](docs/METHOD_CONTRACTS.md)及[执行边界](docs/ARCHITECTURE.md)。
+![知识与结果证据通道](docs/assets/rag-evidence-current.svg)
 
-## 当前能力与验证状态
+## 可执行方法与限制
 
-| 能力 | 已实现范围 | 说明 |
-|---|---|---|
-| 数据导入 | CSV/Parquet；50MB、10万行、200列，解码内存上限256MB | 原文件不改写；更大原始日志需先整理 |
-| 探索性分析 | 描述、相关、OLS、Logit、Poisson | 相关/回归不等于因果；缺失、单位和暴露需核对 |
-| 实验与研究 | A/B、CUPED、关联回归、PSM、IPW、DML、AIPW、共同日期DID | 方法有各自数据与识别条件 |
-| 进阶设计 | 2SLS、清晰/模糊RD、限定条件的交错DID | 非任意IV/RDD/DID自动研究，见方法边界 |
-| 方法RAG | 20张卡、27条来源、120个原创摘要章节 | 有出处与核对范围；不是全文向量库 |
-| 结果问答 | 指定运行的事实、引用、解释等级与来源快照 | 单运行与明确多运行比较分开 |
-| 多模型 | DeepSeek、OpenAI、Anthropic、百炼、Gemini及HTTPS兼容接口 | DeepSeek真实API验收通过；其他预设为协议合同测试 |
-| MCP | 五项只读工具 | 不提供批准或统计执行权限 |
-| A2A | 独立本地规则审阅服务 | 不是第二个自主研究大模型，不验证因果假设 |
-| LangGraph / LangChain Core | 方法研究子图与后台恢复已接入；本地SQLite图检查点 | 方法研究子图已接入；外部MCP客户端与HTTP/SSE仍不在本轮范围 |
+- 探索：描述、相关、OLS、Logit、Poisson。
+- 实验与研究：A/B、CUPED、观察性关联回归、PSM、IPW、DoubleML、AIPW、共同处理时点DID。
+- 进阶：2SLS、清晰/模糊RD、限定条件的交错DID。
 
-0.9.0源码与独立离线安装wheel环境分别 **460项测试通过，零跳过**，比0.8.0增加28项回归场景。真实浏览器完成上传、后台审核执行、报告下载、字典保存复用及重载；真实子进程在结果提交后退出，恢复后未重复估计。三份新增UCI数据与既有邮件实验共8个预先定义场景通过；17项方法规则卡检索覆盖通过。这些不是开放任务准确率或用户提效百分比。DeepSeek官方合成任务完成真实后台调用，初次结果解释曾因引用超限返回明确本地摘要，后续追问通过。独立用户验收仍待开展。详见[完整验收记录](docs/validation-v090.json)。
+[方法合同](docs/METHOD_CONTRACTS.md)由注册表生成。具备接口不等于适用于任意数据；工具外生性、无混杂、平行趋势等不能由表格或模型自动证明。
+
+上传限制仍为50MB、10万行、200列，解码后内存上限256MB。当前没有通用预测训练/样本外评估流水线；会话中的条件关联结果不能冒充预测准确率。
+
+## 本轮验收如何解读
+
+本轮固定12个不指定方法的自然语言任务，分为4个开发任务、8个保留任务；来自真实公开数据与固定种子模拟。问题、数据指纹、审核依据和验收规则在开发前保存。报告分别列出首次结果、开发后重测、有限修复、本地兜底与未完成情况。
+
+自动化脚本替用户执行预先授权的测试审核，不是独立用户研究；测试数量、接口成功次数和这组固定任务的表现，都不是开放任务准确率或节省工时的证据。实际结果见[当前验收说明](docs/current/VALIDATION.md)。最终源码与独立离线安装包均为493项测试通过、零跳过；首次留出7/8，最终保存运行问答7/7（其中一项受限修复），不同口径不合并为一个成功率。
+
+![不同验收口径分开报告](docs/assets/validation-current.svg)
 
 ## 页面示例
 
-以下截图使用固定合成任务，不包含真实微博数据或密钥。
+截图仅使用固定合成数据，不包含原始微博数据或密钥。
 
-![工作台任务与数据检查](docs/assets/workbench-overview.png)
+![工作台与任务状态](docs/assets/workbench-overview.png)
 
-![图表、报告与运行证据](docs/assets/workbench-results.png)
+![主要结果、结论及运行证据](docs/assets/workbench-results.png)
 
-## 快速开始
+## 安装与启动
 
-验收平台：Windows x64、Python 3.11。默认离线模式不需要模型密钥。建议较短的E盘工作区路径，缓存、日志和产物均留在该盘。
-
-已有安装环境启动：
-
-```powershell
-python -m causalops.launch --workspace "E:/my-causalops-workspace" --port 8513
-```
-
-从源码安装可按[固定运行依赖](requirements-runtime-win-py311.txt)与[第三方许可说明](THIRD_PARTY_NOTICES.md)准备环境：
+已验收平台为Windows x64、Python 3.11。依赖版本保持固定，本轮没有为新增功能安装新的框架。
 
 ```powershell
 $env:TEMP = "E:/project-temp"
 $env:TMP = "E:/project-temp"
 $env:PIP_CACHE_DIR = "E:/project-cache/pip"
+$env:MPLCONFIGDIR = "E:/project-cache/matplotlib"
 python -m venv "E:/causalops-venv"
 & "E:/causalops-venv/Scripts/python.exe" -m pip install -r requirements-runtime-win-py311.txt
 & "E:/causalops-venv/Scripts/python.exe" -m pip install --no-deps .
 & "E:/causalops-venv/Scripts/python.exe" -m causalops.launch --workspace "E:/causalops-work" --port 8513
 ```
 
-以上从项目根目录执行，E盘目录需存在。离线发行包另附匹配wheel与安装脚本；Git仓库不包含大型依赖包。模型配置方法见[多模型接入说明](docs/PROVIDERS_PROTOCOLS_0.7.0.md)。密钥只在界面内存使用，不提交到Git。
+从源码根目录执行。项目已有环境可使用启动脚本；离线包另附固定wheel、哈希锁和安装程序，Git源码仓库不含大型依赖包。模型可选，不配置时仍可使用本地分析入口。
 
-只读MCP服务由宿主启动：
+## 数据与发布边界
 
-```powershell
-python -m causalops.protocols.readonly_server --workspace "E:/my-causalops-workspace"
-```
+原始微博数据、用户/帖子ID值、论文全文、模型密钥、私有对话和工作区数据库不进入Git。新任务的模型发送授权单独控制；仅发送已授权元数据、汇总及有限上下文。密钥仅存内存，重启后重新输入。
 
-先在任务中明确导出证据；宿主仅读取该导出范围。宿主配置与权限由使用者确认，不自动继承工作台外发授权。
+知识卡区分方法规则与实证案例，并保留来源和阅读范围；不是全文向量数据库。文献中的结果不作为当前数据或本工具已经创造收益的证据。代码许可不替代第三方数据与软件许可。
 
-## 完整目标架构（部分已实现）
+当前无多用户鉴权，不直接部署公网；仓库在最终确认前保持私有。
 
-![LangGraph与LangChain完整目标：仍有待实现部分](docs/assets/architecture-target.svg)
-
-建议采用 **ResearchService统一入口 + LangGraph结构化Supervisor与有界子图 + LangChain检索/工具适配 + 现有统计与证据内核**。ToolGateway统一检查工具效果、调用范围与授权；MCP/A2A保留明确协议边界。
-
-已通过口令读取三份授权参考文档并核对至末尾，具体比较见[阅读核查](docs/REFERENCE_PROJECT_REVIEW.md)。借鉴主流程、主管路由和工具连接，同时区分图状态、人工研究事实和运行证据。出行示例明确未使用RAG/Milvus；参考项目完整源码未运行，不直接采用其生产能力宣称。
-
-首个闭环已在独立环境接入，完整目标中的补充检索子图、长期记忆治理和外部MCP客户端仍未全部实现。保留Streamlit、SQLite和原统计运行时，分阶段迁移；不在旧环境直接升级依赖。
-
-- [0.8.0已实现闭环与操作说明](docs/LANGGRAPH_IMPLEMENTATION_0.8.0.md)
-- [当前问题、参考模式与职责分工](docs/ARCHITECTURE_REVIEW_0.7.0.md)
-- [逐阶段迁移、输入输出与验收标准](docs/LANGGRAPH_MIGRATION_PLAN.md)
-- [研究工作流图](docs/assets/research-workflow-target.svg)
-- [知识与证据双通道图](docs/assets/rag-evidence-target.svg)
-- [Mermaid图源](docs/diagrams/)
-- [工具权限入口图](docs/assets/tool-gateway-target.svg)
-- [记忆与研究事实职责图](docs/assets/memory-boundaries-target.svg)
-- [来源与飞书阅读范围](docs/architecture-sources.json)
-
-## 数据、研究与发布边界
-
-模型不能从表格确认随机化、无混杂或平行趋势。批准绑定具体计划与数据版本；方法条件不满足时停止、询问或降低解释等级。数值结论按“基线—幅度—实际含义—行动建议”组织，没有合适分母、成本或单位时不编造相对增长与ROI。
-
-原始微博数据、用户/帖子ID、完整论文、密钥、个人对话和本地数据库不进入仓库。知识卡区分原创提炼、摘要及已核对全文页；不分发所参考商业文档或论文全文。代码MIT不替代第三方数据与软件许可。
-
-当前无多租户鉴权，不直接部署公网。仓库在最终确认前持续保持私有。
-
-## 开发与贡献
+## 开发与复现
 
 ```powershell
-python -m pytest --basetemp "E:/causalops-test"
+python -m pytest --basetemp "E:/causalops-tests"
 ```
 
-贡献流程：问题与最小复现 → 研究假设/数据条件 → 数值参照与失败用例 → 实现 → 回归 → 安装与界面验收。新框架接入后增加路由、中断恢复、批准绑定与重放去重检查，不用框架名称或测试数量替代实际效果。
+[真实API验收脚本](scripts/evaluate_natural_tasks.py)要求事先固定基准文件，密钥通过进程环境传入；不得放入配置或提交。公开数据下载使用[scripts/download_validation_data.py](scripts/download_validation_data.py)，数据目录应放在源码仓库外。
 
-[参与贡献](CONTRIBUTING.md) · [安全与隐私](SECURITY.md) · [第三方许可](THIRD_PARTY_NOTICES.md) · [完整实现说明](docs/IMPLEMENTATION_0.7.0.md)
-
-## 0.9.0本轮验收
-
-详见[完整操作与边界](docs/RESEARCH_WORKFLOW_0.9.0.md)和[机器可读验收结果](docs/validation-v090.json)。新增数据可使用`scripts/download_validation_data.py --output E:/causalops-public-data`在本地下载；仓库不含原始数据、私有研究、密钥或工作区数据库。独立用户验收仍待开展。
+[贡献说明](CONTRIBUTING.md) · [安全说明](SECURITY.md) · [第三方许可](THIRD_PARTY_NOTICES.md) · [文档索引](docs/README.md)

@@ -14,6 +14,9 @@ PRESETS={
  'custom':{'label':'自定义 HTTPS 兼容接口','base_url':'','api_mode':'chat_completions','model':'','json_mode':'json_object','docs':''}}
 
 class ProviderError(RuntimeError):pass
+class OutputContractError(ProviderError):
+    """A completed textual response failed local JSON/schema validation; no HTTP retry."""
+    pass
 class ProviderConfig(BaseModel):
     model_config=ConfigDict(extra='forbid',frozen=True)
     provider:Literal['deepseek','openai','anthropic','qwen','gemini','custom']='deepseek'
@@ -128,9 +131,11 @@ class StructuredModelClient:
                 text,usage=self._content(outer)
                 self.last_telemetry={'request_id':request_id,'provider':self.provider_config.provider,'provider_host':urlsplit(self.base_url).hostname,'model':str(outer.get('model',self.model))[:160],'requested_model':self.model,'api_mode':self.api_mode,'output_contract':self.provider_config.json_mode+'_with_local_schema_validation','status':'completed','attempts':attempt+1,'latency_ms':round((time.monotonic()-started)*1000),'input_tokens':usage.get('input_tokens',usage.get('prompt_tokens')),'output_tokens':usage.get('output_tokens',usage.get('completion_tokens')),'total_tokens':usage.get('total_tokens')}
                 if len(self._api_key)>=8 and self._api_key in text:raise ProviderError('模型输出包含认证信息，已阻止保存与展示。')
-                value=strict_object(text)
+                try:value=strict_object(text)
+                except ValueError:raise OutputContractError('返回文本不是有效的单一JSON对象；仅允许按原结构修复一次。') from None
                 validator=validator_for(output_schema);validator.check_schema(output_schema)
-                if next(validator(output_schema).iter_errors(value),None) is not None:raise ProviderError('模型JSON不符合本轮结构要求，未采纳输出。')
+                error=next(validator(output_schema).iter_errors(value),None)
+                if error is not None:raise OutputContractError('模型JSON未通过本地结构校验（规则：'+str(error.validator)+'）；请重新输出完整且字段类型正确的JSON。')
                 return value
             except (httpx.TimeoutException,httpx.TransportError) as exc:
                 if attempt<self.provider_config.max_retries:self._sleep(1);continue

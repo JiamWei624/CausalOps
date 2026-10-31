@@ -104,7 +104,10 @@ def build_method_graph(service):
         if cached is None:
             if i==0:query=flow['request']['question']+(' 描述 数据质量' if state['candidates']==['descriptive'] and not state['unsupported'] else '')
             else:query=' '.join(state.get('missing',state['candidates']))+' 适用问题 数据要求 识别条件 诊断方法 失败情形 结果解释'
-            cached=MethodRetriever(library=s.a.library,k=8).search_bundle(query)
+            if (s.output(fid,'route') or {}).get('route')=='plan':query+=' 描述 数据质量'
+            target=state.get('missing',[None])[0] if i>0 and state.get('missing') else None
+            if target:query=REGISTRY[target].label+' '+flow['request']['question']+' '+query
+            cached=MethodRetriever(library=s.a.library,k=8,method_filter=target).search_bundle(query)
             s.save_output(fid,'method_pass_'+str(i),cached)
         s.emit(fid,'method_retrieval','completed',{'pass':i+1,'card_ids':[h['card_id'] for h in cached['hits']]})
         return {'attempt':i+1}

@@ -14,6 +14,16 @@ def render_graph_workspace(a,sid,frame,model):
     from causalops.application.background import BackgroundJobs, ACTIVE
     from causalops.ui.contracts_editor import render_contract,render_fact_fields
     service=ResearchService(a,model=model);jobs=BackgroundJobs(service);jobs.reconcile(sid)
+    overview=service.flows(sid)
+    if overview:
+        chosen=st.session_state.get('_graph_pending_'+sid) or st.session_state.get('graph_flow_'+sid)
+        overview_flow=next((v for v in overview if v['id']==chosen),overview[0])
+        with st.container(border=True):
+            st.markdown('**当前任务：** '+safe_text(overview_flow['request']['question']))
+            st.caption('当前状态：'+STATUS.get(overview_flow['status'],overview_flow['status']))
+            next_step={'awaiting_review':'下一步：查看待审计划与必要口径，核对后再批准计算。','completed':'下一步：查看本次研究结论，继续追问或导出报告。','needs_clarification':'下一步：补充字段含义、分组依据或分析目标，再提出问题。','failed':'下一步：查看具体缺项或服务错误，修正后重新制定计划。','blocked':'下一步：核对被阻断步骤的设计要求；不要为了继续运行而确认未知事实。'}.get(overview_flow['status'],'下一步：等待后台状态更新；需要时可请求停止。')
+            st.write(next_step)
+    else:st.info('下一步：有已知口径时先登记数据字典，然后用业务语言提出问题；不知道的信息可以保持未知。')
     render_contract(service,sid,frame)
     st.session_state.setdefault('_job_signature_'+sid,tuple((j['id'],j['status']) for j in jobs.jobs(sid)))
     st.subheader('研究流程与证据讨论')
@@ -53,6 +63,16 @@ def render_graph_workspace(a,sid,frame,model):
                 with st.expander('核对完整配置、计划和数据版本'):
                     st.json(v);st.caption('计划指纹 '+p['sha']+'；数据指纹 '+f['request']['data']['frame_sha'])
                 if f['status']=='awaiting_review' and not active:
+                    from causalops.application.task_readiness import plan_readiness
+                    readiness=plan_readiness(service,f,v)
+                    stale=f['request'].get('contract_ref')!=service.contracts.ref(sid) if 'contract_ref' in f['request'] else False
+                    for error in readiness['errors']:st.warning(error)
+                    if stale:st.warning('数据字典已更新，本候选引用旧版本；请重新制定计划。')
+                    if not readiness['configuration_ready'] or stale:
+                        if st.button('按最新口径重新制定计划',key='replan_'+current):
+                            try:
+                                job=jobs.submit_start(sid,f['request']['question'],mode='plan');st.session_state['_graph_pending_'+sid]=job['flow_id'];st.rerun()
+                            except (ValueError,RuntimeError) as exc:st.error(str(exc))
                     st.write('如变量或方法不合适，请放弃本候选，再提出新的计划；不会自动改变人工事实。')
                     facts={}
                     bound=service.contracts.bound(f)
@@ -61,7 +81,7 @@ def render_graph_workspace(a,sid,frame,model):
                         else:facts[str(i)]=confirmations(step,i,p['id'],frame)
                     checked=st.checkbox('我已核对上述计划和本步骤必要事实，同意按当前数据与计划版本进行本地计算。',key='graph_review_'+current)
                     yes,no=st.columns(2)
-                    if yes.button('接受计划并批准本次执行',type='primary',disabled=not checked,key='graph_approve_'+current):
+                    if yes.button('接受计划并批准本次执行',type='primary',disabled=not checked or not readiness['configuration_ready'] or stale,key='graph_approve_'+current):
                         try:
                             service.review(current,accept=True,expected_plan_id=p['id'],expected_plan_sha=p['sha'],expected_data_sha=f['request']['data']['frame_sha'],human_confirmed=True,confirmations=facts,dispatch=False,use_contract_facts=bool(bound))
                             jobs.submit(current)
@@ -104,7 +124,7 @@ def render_graph_workspace(a,sid,frame,model):
     if flows:
         completed=service.output(current,'execution')
         if completed and completed.get('completed') and completed.get('run_ids'):
-            last=completed['run_ids'][-1];stamp=(current,last)
+            last=completed.get('primary_run_ids',completed['run_ids'][-1:])[-1];stamp=(current,last)
             if st.session_state.get('_graph_run_seen_'+sid)!=stamp and last in refs:
                 st.session_state['_graph_run_seen_'+sid]=stamp
                 st.session_state['graph_run_'+sid]=last;a.select_run(sid,last)

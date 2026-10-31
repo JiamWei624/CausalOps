@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1320" height="780" viewBox="0 0 1320 780" role="img" aria-labelledby="title desc">
+<title id="title">一次可追溯分析任务</title><desc id="desc">新分析需要明确审核；已有结果的追问只读取运行证据，不重新估计</desc>
+<style>text{font-family:"Microsoft YaHei","Noto Sans CJK SC",Arial,sans-serif}.t{font-size:28px;font-weight:700;fill:#132438}.s{font-size:17px;fill:#435469}.h{font-size:21px;font-weight:700;fill:#172c44}.p{font-size:17px;fill:#374960}</style>
+<rect width="1320" height="780" fill="#f5f8fb"/>
+<text x="40" y="52" class="t">一次可追溯分析任务</text>
+<text x="40" y="86" class="s">新分析需要明确审核；已有结果的追问只读取运行证据，不重新估计</text>
+<rect x="40.0" y="120" width="610.0" height="120" rx="10" fill="white" stroke="#c3cfdb"/>
+<text x="60.0" y="152" class="h">1 上传与理解</text>
+<text x="60.0" y="182" class="p">CSV / Parquet，结构与质量概况</text>
+<text x="60.0" y="205" class="p">登记字段含义、单位与分组依据</text>
+<rect x="670.0" y="120" width="610.0" height="120" rx="10" fill="white" stroke="#c3cfdb"/>
+<text x="690.0" y="152" class="h">2 业务语言提问</text>
+<text x="690.0" y="182" class="p">关联、差异、缺失或结果解释</text>
+<text x="690.0" y="205" class="p">缺少时间/角色依据时澄清</text>
+<path d="M660 245 v20 m-7 -7 7 7 7-7" fill="none" stroke="#7b91a8" stroke-width="2"/>
+<rect x="40.0" y="275" width="610.0" height="120" rx="10" fill="white" stroke="#c3cfdb"/>
+<text x="60.0" y="307" class="h">3 路由与方法研究</text>
+<text x="60.0" y="337" class="p">选择最低必要的主要方法</text>
+<text x="60.0" y="360" class="p">检索条件、失败情形与解释边界</text>
+<rect x="670.0" y="275" width="610.0" height="120" rx="10" fill="white" stroke="#c3cfdb"/>
+<text x="690.0" y="307" class="h">4 待审计划与缺项</text>
+<text x="690.0" y="337" class="p">逐项显示配置和人工确认要求</text>
+<text x="690.0" y="360" class="p">更新字典后创建新计划</text>
+<path d="M660 400 v20 m-7 -7 7 7 7-7" fill="none" stroke="#7b91a8" stroke-width="2"/>
+<rect x="40.0" y="430" width="610.0" height="120" rx="10" fill="white" stroke="#c3cfdb"/>
+<text x="60.0" y="462" class="h">5 人工审核中断</text>
+<text x="60.0" y="492" class="p">绑定数据、字典、计划、依据、代码</text>
+<text x="60.0" y="515" class="p">恢复图信号不能代替领域批准</text>
+<rect x="670.0" y="430" width="610.0" height="120" rx="10" fill="white" stroke="#c3cfdb"/>
+<text x="690.0" y="462" class="h">6 本地后台计算</text>
+<text x="690.0" y="492" class="p">执行原统计程序，保存工具轨迹</text>
+<text x="690.0" y="515" class="p">检验诊断，必要时降低主张</text>
+<path d="M660 555 v20 m-7 -7 7 7 7-7" fill="none" stroke="#7b91a8" stroke-width="2"/>
+<rect x="40.0" y="585" width="610.0" height="120" rx="10" fill="white" stroke="#c3cfdb"/>
+<text x="60.0" y="617" class="h">7 主要结果与结论</text>
+<text x="60.0" y="647" class="p">量化差异、置信区间及实际单位</text>
+<text x="60.0" y="670" class="p">关联不冒充因果，收入不冒充利润</text>
+<rect x="670.0" y="585" width="610.0" height="120" rx="10" fill="white" stroke="#c3cfdb"/>
+<text x="690.0" y="617" class="h">8 持续追问与导出</text>
+<text x="690.0" y="647" class="p">运行级证据引用、持久化对话</text>
+<text x="690.0" y="670" class="p">可下载含结论和图表的报告</text>
+</svg>

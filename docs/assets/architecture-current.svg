@@ -1,1 +1,42 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1420" height="1120" viewBox="0 0 1420 1120"><title>CausalOps 0.9.0 实际架构</title><defs><marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="#667a82"/></marker></defs><rect width="1420" height="1120" fill="white"/><g font-family="Microsoft YaHei,Arial,sans-serif" fill="#1c3340"><text x="40" y="48" font-size="30" font-weight="700">CausalOps 0.9.0 · 已实现组件与权限边界</text><text x="40" y="82" font-size="17">方法依据、人工事实与统计证据分开保存；本机单用户，非任意数据自动因果研究。</text><rect x="400" y="110" width="640" height="90" rx="12" fill="#f1f6f7" stroke="#52777f"/><text x="418" y="141" font-size="21" font-weight="600">Streamlit · 数据与研究工作台</text><text x="418" y="172" font-size="17" font-weight="400">导入 / 字典 / 计划 / 审核 / 运行问答</text><rect x="400" y="250" width="640" height="90" rx="12" fill="#f1f6f7" stroke="#52777f"/><text x="418" y="281" font-size="21" font-weight="600">ResearchService · 唯一业务服务入口</text><text x="418" y="312" font-size="17" font-weight="400">数据、字典、计划、知识库与代码版本绑定</text><rect x="40" y="390" width="400" height="150" rx="12" fill="#f1f6f7" stroke="#52777f"/><text x="58" y="421" font-size="21" font-weight="600">DataContract · 人工数据字典</text><text x="58" y="452" font-size="17" font-weight="400">字段角色 / 测量时点 / 指标单位</text><text x="58" y="483" font-size="17" font-weight="400">不可变版本 · 声明不等于验证</text><rect x="510" y="390" width="400" height="150" rx="12" fill="#f1f6f7" stroke="#52777f"/><text x="528" y="421" font-size="21" font-weight="600">LangGraph 方法研究子图</text><text x="528" y="452" font-size="17" font-weight="400">确定方法 → 检索 → 条件核对</text><text x="528" y="483" font-size="17" font-weight="400">补检最多三轮 · 无依据即停止</text><rect x="980" y="390" width="400" height="150" rx="12" fill="#f1f6f7" stroke="#52777f"/><text x="998" y="421" font-size="21" font-weight="600">BackgroundJobs · 本地后台</text><text x="998" y="452" font-size="17" font-weight="400">单工作线程 · 最多四项排队</text><text x="998" y="483" font-size="17" font-weight="400">真实进度 / 协作停止 / 安全恢复</text><rect x="400" y="610" width="640" height="95" rx="12" fill="#f1f6f7" stroke="#52777f"/><text x="418" y="641" font-size="21" font-weight="600">待审计划与审核中断</text><text x="418" y="672" font-size="17" font-weight="400">只有使用者批准；模型不能写入人工事实</text><rect x="400" y="770" width="640" height="95" rx="12" fill="#f1f6f7" stroke="#52777f"/><text x="418" y="801" font-size="21" font-weight="600">原统计与证据内核</text><text x="418" y="832" font-size="17" font-weight="400">TaskRuntime → 三类执行器 / 17项方法 → ToolResult</text><rect x="400" y="930" width="640" height="95" rx="12" fill="#f1f6f7" stroke="#52777f"/><text x="418" y="961" font-size="21" font-weight="600">报告与运行级证据问答</text><text x="418" y="992" font-size="17" font-weight="400">基线—幅度—实际含义—行动建议；引用可追溯</text><path d="M720 200V250" stroke="#667a82" fill="none" stroke-width="2" marker-end="url(#a)"/><path d="M720 340V390" stroke="#667a82" fill="none" stroke-width="2" marker-end="url(#a)"/><path d="M400 300H240V390" stroke="#667a82" fill="none" stroke-width="2" marker-end="url(#a)"/><path d="M1040 300H1180V390" stroke="#667a82" fill="none" stroke-width="2" marker-end="url(#a)"/><path d="M710 540V610" stroke="#667a82" fill="none" stroke-width="2" marker-end="url(#a)"/><path d="M240 540V655H400" stroke="#667a82" fill="none" stroke-width="2" marker-end="url(#a)"/><path d="M1180 540V655H1040" stroke="#667a82" fill="none" stroke-width="2" marker-end="url(#a)"/><path d="M720 705V770" stroke="#667a82" fill="none" stroke-width="2" marker-end="url(#a)"/><path d="M720 865V930" stroke="#667a82" fill="none" stroke-width="2" marker-end="url(#a)"/><text x="40" y="1080" font-size="17">模型认证仅在内存；后台任务与图检查点不保存原始数据行或密钥。独立用户效率尚未测量。</text></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1320" height="780" viewBox="0 0 1320 780" role="img" aria-labelledby="title desc">
+<title id="title">CausalOps 0.10.0 · 当前实际架构</title><desc id="desc">本地单用户｜官方模型理解与解释｜人工审核｜统计结果与证据不可变关联</desc>
+<style>text{font-family:"Microsoft YaHei","Noto Sans CJK SC",Arial,sans-serif}.t{font-size:28px;font-weight:700;fill:#132438}.s{font-size:17px;fill:#435469}.h{font-size:21px;font-weight:700;fill:#172c44}.p{font-size:17px;fill:#374960}</style>
+<rect width="1320" height="780" fill="#f5f8fb"/>
+<text x="40" y="52" class="t">CausalOps 0.10.0 · 当前实际架构</text>
+<text x="40" y="86" class="s">本地单用户｜官方模型理解与解释｜人工审核｜统计结果与证据不可变关联</text>
+<rect x="40.0" y="120" width="610.0" height="120" rx="10" fill="white" stroke="#c3cfdb"/>
+<text x="60.0" y="152" class="h">Streamlit 统一工作台</text>
+<text x="60.0" y="182" class="p">数据导入、任务状态、具体缺项</text>
+<text x="60.0" y="205" class="p">待审计划、主要结果、连续追问</text>
+<rect x="670.0" y="120" width="610.0" height="120" rx="10" fill="white" stroke="#c3cfdb"/>
+<text x="690.0" y="152" class="h">ResearchService 应用入口</text>
+<text x="690.0" y="182" class="p">数据与字典冻结、授权与版本绑定</text>
+<text x="690.0" y="205" class="p">后台任务队列、停止与恢复</text>
+<path d="M660 245 v20 m-7 -7 7 7 7-7" fill="none" stroke="#7b91a8" stroke-width="2"/>
+<rect x="40.0" y="275" width="610.0" height="120" rx="10" fill="white" stroke="#c3cfdb"/>
+<text x="60.0" y="307" class="h">LangGraph 主图与方法子图</text>
+<text x="60.0" y="337" class="p">结构化路由 → 有限检索 → 待审计划</text>
+<text x="60.0" y="360" class="p">SQLite 检查点与审核中断</text>
+<rect x="670.0" y="275" width="610.0" height="120" rx="10" fill="white" stroke="#c3cfdb"/>
+<text x="690.0" y="307" class="h">LangChain Core 检索适配</text>
+<text x="690.0" y="337" class="p">字符 TF-IDF · 20 张规则/案例卡</text>
+<text x="690.0" y="360" class="p">27 条来源 · 方法定向补检</text>
+<path d="M660 400 v20 m-7 -7 7 7 7-7" fill="none" stroke="#7b91a8" stroke-width="2"/>
+<rect x="40.0" y="430" width="610.0" height="120" rx="10" fill="white" stroke="#c3cfdb"/>
+<text x="60.0" y="462" class="h">领域与权限门控</text>
+<text x="60.0" y="492" class="p">字段角色、配置就绪、识别条件</text>
+<text x="60.0" y="515" class="p">模型不能确认事实、批准或执行</text>
+<rect x="670.0" y="430" width="610.0" height="120" rx="10" fill="white" stroke="#c3cfdb"/>
+<text x="690.0" y="462" class="h">原统计内核 · 17 项方法</text>
+<text x="690.0" y="492" class="p">探索、实验/观察性、进阶执行器</text>
+<text x="690.0" y="515" class="p">官方数值包 · 诊断失败限制主张</text>
+<path d="M660 555 v20 m-7 -7 7 7 7-7" fill="none" stroke="#7b91a8" stroke-width="2"/>
+<rect x="40.0" y="585" width="610.0" height="120" rx="10" fill="white" stroke="#c3cfdb"/>
+<text x="60.0" y="617" class="h">运行证据与统一结论</text>
+<text x="60.0" y="647" class="p">保存的数值 + 来源字典 + 指纹</text>
+<text x="60.0" y="670" class="p">参考水平 → 幅度 → 含义 → 建议</text>
+<rect x="670.0" y="585" width="610.0" height="120" rx="10" fill="white" stroke="#c3cfdb"/>
+<text x="690.0" y="617" class="h">证据问答与报告</text>
+<text x="690.0" y="647" class="p">有界事实目录、引用和解释检查</text>
+<text x="690.0" y="670" class="p">HTML 导出 · MCP 只读查询</text>
+</svg>

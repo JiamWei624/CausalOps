@@ -11,8 +11,8 @@
   },
   {
     "file": "application-wheel.json",
-    "bytes": 157,
-    "sha256": "96b5aec25dc8dd43a195f3698b5ecc305dd314e50f81138b058ce17fa0a260d4"
+    "bytes": 160,
+    "sha256": "9a8b26fbc262c139cf9a9c7965f7b031abe94bae3d786dae44045d8d839979c5"
   },
   {
     "file": "CONTRIBUTING.md",
@@ -26,18 +26,18 @@
   },
   {
     "file": "docs/ARCHITECTURE.md",
-    "bytes": 7883,
-    "sha256": "e1ee3747dfcac0fbab6625b7ee53af7807c938938a9d3e30f16e2e23ad5561f9"
+    "bytes": 8072,
+    "sha256": "8f81e2c3b6e2e1e99bae1150e1756c5ddd29e14e22a2489f2a4683a3e227c62f"
   },
   {
     "file": "docs/ARCHITECTURE_REVIEW_0.7.0.md",
-    "bytes": 8012,
-    "sha256": "df700b4a33244344d2fc813701ddeb481ec51233d32f6616d976fcdbd3a43a39"
+    "bytes": 8201,
+    "sha256": "79c68894e1071e9d93d687a92f3a8fcd6c6cecdf81c7854b8481c5e6ec51d744"
   },
   {
     "file": "docs/assets/architecture-current.svg",
-    "bytes": 4314,
-    "sha256": "c197b6e16b8424d76d6293f3ab940f9fd6294fb2d6695258a6e2db9c156cebdf"
+    "bytes": 3662,
+    "sha256": "cdbfd7d0329422b86ec895965d4e522f30bcc123488bd2713c8e35e18ae7cb8c"
   },
   {
     "file": "docs/assets/architecture-target.svg",
@@ -55,9 +55,19 @@
     "sha256": "7d7def13effaf749c1c32feff86124ef13db6cde9f08db9ff14510257dc033fb"
   },
   {
+    "file": "docs/assets/rag-evidence-current.svg",
+    "bytes": 3528,
+    "sha256": "26fbe12b763cdc817db5101ccf9ffbfa9e1e7f3ced690100ca24566d9c627a63"
+  },
+  {
     "file": "docs/assets/rag-evidence-target.svg",
     "bytes": 4391,
     "sha256": "20d3e63c45cba002deeb4aea1a9c36711c5fe193131c954e665983638a2e90e2"
+  },
+  {
+    "file": "docs/assets/README.md",
+    "bytes": 349,
+    "sha256": "c1bfed55d1d2b7a76a840b2e237ffeaa6bf63f539c14b7689246a135193e8410"
   },
   {
     "file": "docs/assets/research-workflow-target.svg",
@@ -65,14 +75,24 @@
     "sha256": "4420b5e0258bc833e7692be76dec2243367fbbeb3d2b9cfea5ccc6e0bfef98b6"
   },
   {
+    "file": "docs/assets/task-workflow-current.svg",
+    "bytes": 3558,
+    "sha256": "d02378e5baf79b82783ba1ad35a874cf5a2107a5b63db0f1d437013917d4f0a2"
+  },
+  {
     "file": "docs/assets/tool-gateway-target.svg",
     "bytes": 4590,
     "sha256": "110d34427f733b4c2e1a59dd40b85b693899d4e452b95ec47687b76f4f4644a2"
   },
   {
+    "file": "docs/assets/validation-current.svg",
+    "bytes": 1545,
+    "sha256": "e3b3b6423f06db6814429bfa135257d35017d5afb3d4896d507ba1f2b623273d"
+  },
+  {
     "file": "docs/assets/workbench-overview.png",
-    "bytes": 180929,
-    "sha256": "056f60cbb6f38e59f7e9deb0b10c3816d76ff74378c0350419832bfe17ced9ea"
+    "bytes": 156109,
+    "sha256": "74fdeeeb349d6e5495677d38cd3c48e5c8b0b8d7da166eedb0388aabd4b473a5"
   },
   {
     "file": "docs/assets/workbench-results.png",
@@ -85,14 +105,49 @@
     "sha256": "320932d1de8c3cd49563f2c4cc3b1a28e9d17a99a95f2690a5681d9ac24d0816"
   },
   {
+    "file": "docs/current/ARCHITECTURE.md",
+    "bytes": 4011,
+    "sha256": "79d8e61553ec5bcae720d9d88f4d4113113b46f11af3922a255683da91502cf1"
+  },
+  {
+    "file": "docs/current/PROVIDERS.md",
+    "bytes": 7411,
+    "sha256": "41f054e5cfd476097546dcd9ec0cd7a18b09dd5b702a4b7bacc07efc9117932b"
+  },
+  {
+    "file": "docs/current/ROADMAP.md",
+    "bytes": 1329,
+    "sha256": "9809e8c57ba03771d9c928f6f0b338f02678f905acbb44db359f1ee1b79a0c57"
+  },
+  {
+    "file": "docs/current/USER_GUIDE.md",
+    "bytes": 2938,
+    "sha256": "392e8bbe33e5ce9ed394964f3e50f29ff80fb73502ce3eeca5f22b8395d84767"
+  },
+  {
+    "file": "docs/current/VALIDATION.md",
+    "bytes": 6724,
+    "sha256": "7cc4905c12b545b1fc985ec0a42710b7786f45e7b91dd68d88389517bd0ef981"
+  },
+  {
     "file": "docs/diagrams/current-architecture.mmd",
-    "bytes": 620,
-    "sha256": "4d4a51160535da1127edd562a5f0dcf685f4cc8b340fc79ef8e93a43d6729076"
+    "bytes": 730,
+    "sha256": "429ed8ff0a59defb0fbcf644d3195540f7e0c071524392540971c5a734898632"
+  },
+  {
+    "file": "docs/diagrams/HISTORY.md",
+    "bytes": 5771,
+    "sha256": "5214512917867b606075ae33aa00d7ce8c6ebf8d361e680d29996583879d57d8"
   },
   {
     "file": "docs/diagrams/memory-boundaries-target.mmd",
     "bytes": 527,
     "sha256": "92b86cd8149fdd1e3b47e772ca0080600704b9f45c761b26214bfbe68221c150"
+  },
+  {
+    "file": "docs/diagrams/rag-evidence-current.mmd",
+    "bytes": 405,
+    "sha256": "a3f7264c00ab78b997f310e988597dd460abc0573afbb5fca69cae52ab9866a7"
   },
   {
     "file": "docs/diagrams/rag-evidence-target.mmd",
@@ -101,8 +156,8 @@
   },
   {
     "file": "docs/diagrams/README.md",
-    "bytes": 5637,
-    "sha256": "8998299f8c6cf4326679b3f9b44f38ad0431635e6bb7d563d7ee0951586eda32"
+    "bytes": 303,
+    "sha256": "e8f45275b5d8de32ed9cbeeb17cc21d5f52135867febd0d65750db3edae5de94"
   },
   {
     "file": "docs/diagrams/research-workflow-target.mmd",
@@ -113,6 +168,11 @@
     "file": "docs/diagrams/target-architecture.mmd",
     "bytes": 761,
     "sha256": "04c8520f77ffe4b2bc39a9f9c38823f9d5b60d443012bf482a67e533b44dfd97"
+  },
+  {
+    "file": "docs/diagrams/task-workflow-current.mmd",
+    "bytes": 335,
+    "sha256": "8900d18e33509dbb70917ea97213b0b96d38444a4da63629df0ef474bdb8ca66"
   },
   {
     "file": "docs/diagrams/tool-gateway-target.mmd",
@@ -130,19 +190,24 @@
     "sha256": "8a41ce1caa458179b88ef26f842f4b776e054d8e8cc02d26acbd0c1cd532f372"
   },
   {
+    "file": "docs/HISTORY.md",
+    "bytes": 1035,
+    "sha256": "8e790f489d58009344a3d01f4b12c4e40d444516d6312fc8eeec5793aa4d72e4"
+  },
+  {
     "file": "docs/IMPLEMENTATION_0.7.0.md",
-    "bytes": 8312,
-    "sha256": "f641bc568f43900965bce6d2d2891324dfae50abd33fa2f1b845168f9e416918"
+    "bytes": 8501,
+    "sha256": "90b5cfca4b664c14f8336c217f9c50d4705a7266da62689766793654d6ded9d9"
   },
   {
     "file": "docs/LANGGRAPH_IMPLEMENTATION_0.8.0.md",
-    "bytes": 6598,
-    "sha256": "0cddfd975f132c52f1f202c6d4fa761ad81cc84e159e44dea58e2fbac69d8bec"
+    "bytes": 6787,
+    "sha256": "4feefcc57efe2cf955ba5fa1adf97f2fa77c0abb850f8ee9e55c172f1e4e275b"
   },
   {
     "file": "docs/LANGGRAPH_MIGRATION_PLAN.md",
-    "bytes": 16297,
-    "sha256": "a780ef4e45080300e76dd652743e2c2eba337f90ad73756def35f898a78134a1"
+    "bytes": 16486,
+    "sha256": "369888663843802706904ee7aa7383a64ba4ec9a6908f382e525fc416f8383a3"
   },
   {
     "file": "docs/method-extension-plan.json",
@@ -161,8 +226,13 @@
   },
   {
     "file": "docs/PROVIDERS_PROTOCOLS_0.7.0.md",
-    "bytes": 7409,
-    "sha256": "fbadecdf7f26f419c8f764ae18e39a01dce4d07a42fc53dfc0ae01e0a9c54673"
+    "bytes": 7598,
+    "sha256": "1503564190a8dfbe304006d84698f62777d7d0f91af2258e0ac186f3c4e373f1"
+  },
+  {
+    "file": "docs/README.md",
+    "bytes": 483,
+    "sha256": "a9ff60e873d6914fa25cf44bf9a9bbdec22c93bdb951de6defb1fc3846d61473"
   },
   {
     "file": "docs/REFERENCE_PROJECT_REVIEW.md",
@@ -171,13 +241,23 @@
   },
   {
     "file": "docs/RESEARCH_WORKFLOW_0.9.0.md",
-    "bytes": 7401,
-    "sha256": "580cccc4b35e9b93eff4f172a49ec02f23c070a87fed3ee38a8552003fceb7d4"
+    "bytes": 7590,
+    "sha256": "a091f9a421e72ebd68d84bd01527daff3d24da01eabb693e5bc72ac3953c4139"
   },
   {
     "file": "docs/upstream-references.json",
     "bytes": 1046,
     "sha256": "fa7d81e77da83ab2568d716a804a9be27074da2f825f2b2db0a0b4960fc5e54e"
+  },
+  {
+    "file": "docs/validation/v0100/natural-task-cases.json",
+    "bytes": 6784,
+    "sha256": "77f0b4fa99ffd84aa50c1682c15b8ca68dfa718b1cb87a65b137f5f84b440e8e"
+  },
+  {
+    "file": "docs/validation/v0100/results-summary.json",
+    "bytes": 28725,
+    "sha256": "8f5e3863f5e452fcd2cc2d6e4dda61f380cab12908898d182fe925a2eaeb3717"
   },
   {
     "file": "docs/validation-v080.json",
@@ -226,8 +306,8 @@
   },
   {
     "file": "install_offline.py",
-    "bytes": 2096,
-    "sha256": "a426bde17a5c20e838eab675cf295a78bb43a4aee8d09cdc176acdfe773f2623"
+    "bytes": 2525,
+    "sha256": "b4d4bdb3f192ebf0cae69ba038d5f45864ddf468fb71fccbc17150d99d01e273"
   },
   {
     "file": "LICENSE",
@@ -236,13 +316,13 @@
   },
   {
     "file": "pyproject.toml",
-    "bytes": 1307,
-    "sha256": "f9f2a085008c8baf04b1aa6fd56c22a1bcbb548364de8862515738a5a0efdb5f"
+    "bytes": 1308,
+    "sha256": "db0a5095f72565933a5a2b49268ccf0a0859c42ca6918de1f00defaf757fc207"
   },
   {
     "file": "README.md",
-    "bytes": 9810,
-    "sha256": "6e4452bb0718cd4d6224d05c1e61266319d47bf86ca68acbbc3583a8fac348a8"
+    "bytes": 6516,
+    "sha256": "96723c27ccc02175c0ae6b0dad30b60d1bc8b77da86a00c3ded1354d378ff61d"
   },
   {
     "file": "requirements-runtime-win-py311.txt",
@@ -260,9 +340,19 @@
     "sha256": "822a57e8fa9da2ec31b08306d937edd95a8d0c9e38e0e4e21a750c8dbf98fb86"
   },
   {
+    "file": "scripts/download_hillstrom_benchmark.py",
+    "bytes": 2864,
+    "sha256": "6d545dd7e94fdd46605964195779a2f2a0bcde2a7374218850338f29d4eef54b"
+  },
+  {
     "file": "scripts/download_validation_data.py",
     "bytes": 3051,
     "sha256": "784613b9c22f708220953b79a5e9b3ad1858ae1e17f309f121f529bd6eee2f8f"
+  },
+  {
+    "file": "scripts/evaluate_natural_tasks.py",
+    "bytes": 9494,
+    "sha256": "558ac611ddd5092ba715ce29338d574ce556fb5de10d82d878716fdeb2140e7e"
   },
   {
     "file": "scripts/evaluate_orchestration_online.py",
@@ -278,6 +368,11 @@
     "file": "scripts/generate_method_contracts.py",
     "bytes": 566,
     "sha256": "d3696b5c14b1347521400275272caf7ffdf3d283914f7fd53da339dde3d9bbe1"
+  },
+  {
+    "file": "scripts/prepare_natural_benchmark.py",
+    "bytes": 9922,
+    "sha256": "e4c0e3b48b34a0195110bbebbd07539dae3f19e2a79f6a94492b9e3a5e2752d0"
   },
   {
     "file": "scripts/prepublish_audit.py",
@@ -356,8 +451,8 @@
   },
   {
     "file": "src/causalops/__init__.py",
-    "bytes": 63,
-    "sha256": "cb4c31ae35af12b93122d8166a31041dd29ac7963e0753082dd95d6b0a7292ab"
+    "bytes": 64,
+    "sha256": "dab9ddace6519ec345b166ed63551f04d10cf6d8e98ba6736c3a047ce73c8a1c"
   },
   {
     "file": "src/causalops/advanced/__init__.py",
@@ -390,6 +485,11 @@
     "sha256": "e64942bea3b4cd601457ebb909f276a6c9f26d8af998f046f5c187949efa781c"
   },
   {
+    "file": "src/causalops/application/answer_evidence.py",
+    "bytes": 5856,
+    "sha256": "af53f01e8b8a9cf5224d003ef248f34724d55745bd7670d57f0f3b6a2f1e80fa"
+  },
+  {
     "file": "src/causalops/application/background.py",
     "bytes": 8229,
     "sha256": "927f4dcbbe322553ff8f42aa42f24feee42b505f970beb005943144218e95ee4"
@@ -406,8 +506,18 @@
   },
   {
     "file": "src/causalops/application/research_service.py",
-    "bytes": 22441,
-    "sha256": "42c2438ededa9150a4f86b1e089da4d058dea660a6e8e1449f6127a834735bd5"
+    "bytes": 24855,
+    "sha256": "fa57317ac8dd3af81960061cc799de2e3ae7e7d220e90341b8330050ba1f3595"
+  },
+  {
+    "file": "src/causalops/application/task_conclusions.py",
+    "bytes": 7331,
+    "sha256": "0efbec1dd28188d30e844a4e534300027f6ee69cf6513eaf3bd4b44f58103351"
+  },
+  {
+    "file": "src/causalops/application/task_readiness.py",
+    "bytes": 5540,
+    "sha256": "d6c09fe54497fe54f58291caa8d1048db0330efe233f926d823e3ad0629b6ffc"
   },
   {
     "file": "src/causalops/assistant/__init__.py",
@@ -441,8 +551,8 @@
   },
   {
     "file": "src/causalops/assistant/service.py",
-    "bytes": 43350,
-    "sha256": "bb86fd265d2dc7081757b0e080cc0eb74498af820d77c48bed958bb85629e227"
+    "bytes": 49863,
+    "sha256": "2ae657644c304b939b352463b7ba101771843c512f82e8ec6eb6f3fa602ee889"
   },
   {
     "file": "src/causalops/audits/__init__.py",
@@ -651,13 +761,13 @@
   },
   {
     "file": "src/causalops/general/exploration_report.py",
-    "bytes": 5988,
-    "sha256": "9412a484766358baf83b8e0812f60fff9b25683bb6f8400ae4118cdaa504b909"
+    "bytes": 6034,
+    "sha256": "e7118c623f29c37265dad8918f3d3a39b710b7068f86eee753ba8e0a4b070de2"
   },
   {
     "file": "src/causalops/general/glm.py",
-    "bytes": 4885,
-    "sha256": "af511f3e577796f18496cf9472048b5f5e434ea774140b9fdbe78eaed7e79dce"
+    "bytes": 5022,
+    "sha256": "480476f16bf6099e335c672a7119c6d138e88cbb088d62954d12be4c15bcbe31"
   },
   {
     "file": "src/causalops/general/service.py",
@@ -676,8 +786,8 @@
   },
   {
     "file": "src/causalops/integrations/method_retriever.py",
-    "bytes": 1601,
-    "sha256": "479040a2e43fedee3ede6acb9c656f60952895bcc87ac14d7ab258b6c3ae1978"
+    "bytes": 1701,
+    "sha256": "642e889c1a55011525344dc4352f175994d7bfd79583a73a6179293e548c46a4"
   },
   {
     "file": "src/causalops/knowledge/__init__.py",
@@ -716,8 +826,8 @@
   },
   {
     "file": "src/causalops/llm/providers.py",
-    "bytes": 14859,
-    "sha256": "deb378aea50a9cb8a20d0e9ab4211ef79c9ce71a467bfd48e558e561828e12f8"
+    "bytes": 15268,
+    "sha256": "b1263b952e1cb9ca0f171e0665beea8c2f1b662c7d874ebc99df728feb4b3c52"
   },
   {
     "file": "src/causalops/llm/schema_builder.py",
@@ -751,13 +861,13 @@
   },
   {
     "file": "src/causalops/orchestration/method_research.py",
-    "bytes": 11770,
-    "sha256": "f15f2497d7feb330c267976704d18b36c03207066a806c110eff16f9b281ebff"
+    "bytes": 12072,
+    "sha256": "77634db270af3f0452e932f6e724efbe9d8c907a88229cb3943369fd274b158c"
   },
   {
     "file": "src/causalops/orchestration/research_graph.py",
-    "bytes": 7619,
-    "sha256": "c7659bd03fdb79c89974621f3ff7b33a6dd97d544747288dfaf853be0701bb92"
+    "bytes": 8172,
+    "sha256": "82c16ed491809e3bd41a3b1c63eb733a08fd18c06817e628cf3f2f39b0dad499"
   },
   {
     "file": "src/causalops/protocols/__init__.py",
@@ -881,8 +991,8 @@
   },
   {
     "file": "src/causalops/ui/assistant_app.py",
-    "bytes": 37550,
-    "sha256": "3ca1cd9f847314acc4404990bb4ba3f6eaa6ee1dec26a17eaabf7e10d2236df9"
+    "bytes": 38431,
+    "sha256": "f8751932c15f950221145716e99351ccb09943a5fab24802207f9f1cc1a13fab"
   },
   {
     "file": "src/causalops/ui/contracts_editor.py",
@@ -906,8 +1016,8 @@
   },
   {
     "file": "src/causalops/ui/graph_app.py",
-    "bytes": 12903,
-    "sha256": "94509ceef6bde892c58828f73d662224bdd506bca22f01ab842acd40aceaf3e2"
+    "bytes": 15165,
+    "sha256": "e17d906d8e8abf650f36f4d68b07664ad043b78868dd965e16b2d0d4425dd8b2"
   },
   {
     "file": "src/causalops/ui/portfolio_demo.py",
@@ -951,8 +1061,8 @@
   },
   {
     "file": "tests/test_assistant_v040.py",
-    "bytes": 11720,
-    "sha256": "4775af364d3c3a27341676b2a1d3769c4c5e3f68cb32b84fab8d3fe618d5cbb5"
+    "bytes": 11790,
+    "sha256": "3a857e04a662094ef5d896f137cd54264d3d7ff954d87dfc68e0daf4d6026793"
   },
   {
     "file": "tests/test_boundaries_v051.py",
@@ -1053,6 +1163,11 @@
     "file": "tests/test_llm_guard.py",
     "bytes": 6408,
     "sha256": "21a6efb08929e25a4bef529d7948dbc7c273d5eeb6ca6724ee6f2e6fc84a9f82"
+  },
+  {
+    "file": "tests/test_natural_tasks_v0100.py",
+    "bytes": 16826,
+    "sha256": "eb8a1acae7dd8d11ddb91a57a91dc2e1e29d57a89a19a9ff18c713878851c85e"
   },
   {
     "file": "tests/test_orchestration_v060.py",

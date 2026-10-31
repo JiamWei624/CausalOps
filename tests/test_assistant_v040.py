@@ -123,7 +123,7 @@ def test_mcp_export_is_numeric_evidence_only(assistant):
 
 def test_negated_causal_claim_is_not_blocked(assistant):
     a,sid,f=assistant;p=a.propose(sid,'先描述数据的整体分布');a.accept(p['id'],p['sha']);a.execute(p['id'],permit=True);a.consent(sid,True)
-    model=FakeModel({'explanation':'这不足以说明因果效应，也不构成干预收益证明。','fact_ids':[],'citations':[]})
+    ref=next(iter(a.facts(sid)[0]));model=FakeModel({'explanation':'本次运行事实为[['+ref+']]，这不足以说明因果效应，也不构成干预收益证明。','fact_ids':[ref],'citations':[]})
     assert a.ask(sid,'解释本结果的局限',model)['source']=='DeepSeek官方模型+本地证据校验'
 
 def test_rag_unknown_method_does_not_substitute_ols():

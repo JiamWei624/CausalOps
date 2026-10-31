@@ -6,7 +6,7 @@ import pandas as pd
 import plotly.graph_objects as go
 from plotly.offline import get_plotlyjs
 from causalops.general.exploration import LABELS
-COLUMNS={'field':'字段','dtype':'类型','missing':'缺失数','missing_pct':'缺失比例(%)','distinct_nonmissing':'非缺失不同取值数','finite_n':'有限有效数','missing_n':'缺失数','infinite_n':'无穷值数','mean':'均值','median':'中位数','std_ddof1':'样本标准差','min':'最小值','max':'最大值','q25':'25%分位数','q75':'75%分位数','zero_n':'零值数','iqr_flag_n':'IQR异常标记数（未删除）','group_value':'分组取值','rows':'行数','value':'分类取值','is_missing':'是否缺失','n':'频数','pct_of_all_rows':'占全表比例(%)','period':'时间期','x':'变量一','y':'变量二','pairwise_n':'成对有效数','pearson':'Pearson系数','spearman':'Spearman系数','status':'状态','p_values':'显著性处理','term':'回归项','coefficient':'关联系数','standard_error':'标准误','ci95_low':'95%区间下限','ci95_high':'95%区间上限','p_value':'P值','exp_coefficient':'exp系数（OR或条件均值比）'}
+COLUMNS={'field':'字段','dtype':'类型','missing':'缺失数','missing_pct':'缺失比例(%)','distinct_nonmissing':'非缺失不同取值数','finite_n':'有限有效数','missing_n':'缺失数','infinite_n':'无穷值数','mean':'均值','median':'中位数','std_ddof1':'样本标准差','min':'最小值','max':'最大值','q25':'25%分位数','q75':'75%分位数','zero_n':'零值数','iqr_flag_n':'IQR异常标记数（未删除）','group_value':'分组取值','rows':'行数','value':'分类取值','is_missing':'是否缺失','n':'频数','pct_of_all_rows':'占全表比例(%)','period':'时间期','x':'变量一','y':'变量二','pairwise_n':'成对有效数','pearson':'Pearson系数','spearman':'Spearman系数','status':'状态','p_values':'显著性处理','term':'回归项','coefficient':'关联系数','standard_error':'标准误','ci95_low':'95%区间下限','ci95_high':'95%区间上限','p_value':'P值','exp_coefficient':'exp系数（OR或条件均值比）','exp_ci95':'OR或条件均值比的95%区间'}
 def display(rows):return pd.DataFrame(rows).rename(columns=COLUMNS)
 def figures(b):
     result={};s=b['summary']

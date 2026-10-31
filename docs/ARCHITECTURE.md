@@ -1,3 +1,5 @@
+> **历史阶段记录**：本文保留当时的实现与验收状态，不作为当前版本说明。请查看[当前文档入口](README.md)及[当前架构](current/ARCHITECTURE.md)。
+
 # 系统架构与执行边界（0.8.0）
 
 [首个LangGraph闭环](LANGGRAPH_IMPLEMENTATION_0.8.0.md) · [0.7.0架构核查与目标图](ARCHITECTURE_REVIEW_0.7.0.md) · [LangGraph迁移方案（尚未实施）](LANGGRAPH_MIGRATION_PLAN.md) · [三份参考项目核查](REFERENCE_PROJECT_REVIEW.md)

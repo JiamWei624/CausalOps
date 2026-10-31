@@ -55,6 +55,8 @@ def build_graph(service):
         fid=state['flow_id'];f=s.flow(fid)
         if f['plan_id']:p=s.a.get_plan(f['plan_id'])
         else:p=s.propose_researched(fid)
+        from causalops.application.task_readiness import plan_readiness
+        s.save_output(fid,'readiness',plan_readiness(s,f,p['plan']))
         s.update(fid,plan_id=p['id'],status='awaiting_review')
         return {'plan_id':p['id'],'status':'awaiting_review'}
     def review(state):
@@ -69,8 +71,9 @@ def build_graph(service):
         fid=state['flow_id'];s.update(fid,status='executing')
         tasks=s.gateway.execute(fid)
         refs=[t['result']['run_id'] for t in tasks if t['state']=='completed']
+        primary=[t['result']['run_id'] for t in tasks if t['state']=='completed' and t['result'].get('method')!='descriptive']
         done=all(t['state']=='completed' for t in tasks)
-        s.save_execution(fid,{'tasks':tasks,'run_ids':refs,'completed':done})
+        s.save_execution(fid,{'tasks':tasks,'run_ids':refs,'primary_run_ids':primary[-1:] or refs[-1:],'completed':done})
         s.check_cancel(fid)
         status='executed' if done else 'blocked';s.update(fid,status=status)
         return {'status':status}
@@ -78,8 +81,9 @@ def build_graph(service):
         fid=state['flow_id'];f=s.flow(fid)
         if not s.output(fid,'answer'):
             execution=s.output(fid,'execution')
-            ids=execution['run_ids'][-1:] if execution else f['request']['run_ids']
+            ids=execution.get('primary_run_ids',execution['run_ids'][-1:]) if execution else f['request']['run_ids']
             q='请解释本次结果的关键发现、实际含义、限制和下一步。' if execution else f['request']['question']
+            if execution and ids:s.a.select_run(f['session_id'],ids[-1])
             s.save_output(fid,'answer',s.gateway.answer(fid,ids,q))
         s.update(fid,status='completed');return {'status':'completed'}
     def method(state):
@@ -87,7 +91,7 @@ def build_graph(service):
         if not s.output(fid,'answer'):
             if not hits['hits']:body={'source':'本地方法目录','text':'现有已核对资料不足以回答该问题，未生成替代引用。','facts':[],'citations':[]}
             elif s.model:
-                raw=s.a._call(f['session_id'],s.model,'仅解释提供的方法资料：适用问题、数据要求、识别条件、诊断、失败情形。不要报告当前表的数值结果，不声称执行、批准或验证假设。引用只使用本轮card_id。',{'question':f['request']['question'],'retrieved_methods':hits},MethodExplanation.model_json_schema())
+                raw=s.a._call(f['session_id'],s.model,'仅解释提供的方法资料：适用问题、数据要求、识别条件、诊断、失败情形。不要报告当前表的数值结果，不声称执行、批准或验证假设。引用只使用本轮card_id。',{'question':f['request']['question'],'data_dictionary':__import__('causalops.application.task_readiness',fromlist=['public_contract_context']).public_contract_context(s,f),'retrieved_methods':hits},MethodExplanation.model_json_schema())
                 reply=MethodExplanation.model_validate(raw);s.a.library.validate_citations(reply.citations,hits['hits'])
                 body={'source':'模型方法解释＋本地来源校验','text':reply.explanation,'facts':[],'citations':reply.citations}
             else:

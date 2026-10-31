@@ -1,0 +1,938 @@
+{
+  "version": "0.10.0",
+  "date": "2026-11-01",
+  "benchmark_sha256": "d1d0c4ac25c302757a5c0395eadac8e842a4df9df813c0c825a91d6f6f97839a",
+  "rounds": [
+    {
+      "round": "baseline-development",
+      "cases": 4,
+      "pipeline_passed": 2,
+      "recorded_tokens_in_round_snapshot": 32235,
+      "cases_summary": [
+        {
+          "case": "dev_wine_association",
+          "passed": false,
+          "selected_methods": [
+            "descriptive",
+            "correlation",
+            "ols"
+          ],
+          "model_followup_accepted": null,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "selected_expected_method": false
+          },
+          "errors": [
+            "AssertionError:Candidate did not select the preregistered primary method; no plan was rewritten."
+          ]
+        },
+        {
+          "case": "dev_mail_visit",
+          "passed": false,
+          "selected_methods": null,
+          "model_followup_accepted": null,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "selected_expected_method": false
+          },
+          "errors": [
+            "DesignError:候选引用了当前表不存在的字段。",
+            "AssertionError:Candidate did not select the preregistered primary method; no plan was rewritten."
+          ]
+        },
+        {
+          "case": "dev_bank_leakage",
+          "passed": true,
+          "selected_methods": null,
+          "model_followup_accepted": null,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "request_handled_without_estimation": true
+          },
+          "errors": []
+        },
+        {
+          "case": "dev_missing_context",
+          "passed": true,
+          "selected_methods": null,
+          "model_followup_accepted": null,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "request_handled_without_estimation": true
+          },
+          "errors": []
+        }
+      ]
+    },
+    {
+      "round": "improved-development-final",
+      "cases": 4,
+      "pipeline_passed": 3,
+      "recorded_tokens_in_round_snapshot": 38016,
+      "cases_summary": [
+        {
+          "case": "dev_wine_association",
+          "passed": false,
+          "selected_methods": null,
+          "model_followup_accepted": null,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "selected_expected_method": false
+          },
+          "errors": [
+            "AssertionError:Candidate did not select the preregistered primary method; no plan was rewritten."
+          ]
+        },
+        {
+          "case": "dev_mail_visit",
+          "passed": true,
+          "selected_methods": [
+            "ab_test",
+            "descriptive"
+          ],
+          "model_followup_accepted": true,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "selected_expected_method": true,
+            "execution_completed": true,
+            "numeric_reference": true,
+            "followup_no_recompute": true,
+            "answer_has_run_evidence": true,
+            "four_part_conclusion": true,
+            "conclusion_run_bound": true,
+            "report_exported": true
+          },
+          "errors": []
+        },
+        {
+          "case": "dev_bank_leakage",
+          "passed": true,
+          "selected_methods": null,
+          "model_followup_accepted": null,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "request_handled_without_estimation": true
+          },
+          "errors": []
+        },
+        {
+          "case": "dev_missing_context",
+          "passed": true,
+          "selected_methods": null,
+          "model_followup_accepted": null,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "request_handled_without_estimation": true
+          },
+          "errors": []
+        }
+      ]
+    },
+    {
+      "round": "development-final",
+      "cases": 4,
+      "pipeline_passed": 3,
+      "recorded_tokens_in_round_snapshot": 66515,
+      "cases_summary": [
+        {
+          "case": "dev_wine_association",
+          "passed": false,
+          "selected_methods": [
+            "descriptive",
+            "ols"
+          ],
+          "model_followup_accepted": true,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "selected_expected_method": true,
+            "execution_completed": true,
+            "numeric_reference": true,
+            "followup_no_recompute": true,
+            "answer_has_run_evidence": false,
+            "four_part_conclusion": true,
+            "conclusion_run_bound": true,
+            "report_exported": true
+          },
+          "errors": []
+        },
+        {
+          "case": "dev_mail_visit",
+          "passed": true,
+          "selected_methods": [
+            "ab_test"
+          ],
+          "model_followup_accepted": true,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "selected_expected_method": true,
+            "execution_completed": true,
+            "numeric_reference": true,
+            "followup_no_recompute": true,
+            "answer_has_run_evidence": true,
+            "four_part_conclusion": true,
+            "conclusion_run_bound": true,
+            "report_exported": true
+          },
+          "errors": []
+        },
+        {
+          "case": "dev_bank_leakage",
+          "passed": true,
+          "selected_methods": null,
+          "model_followup_accepted": null,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "request_handled_without_estimation": true
+          },
+          "errors": []
+        },
+        {
+          "case": "dev_missing_context",
+          "passed": true,
+          "selected_methods": null,
+          "model_followup_accepted": null,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "request_handled_without_estimation": true
+          },
+          "errors": []
+        }
+      ]
+    },
+    {
+      "round": "holdout-first",
+      "cases": 8,
+      "pipeline_passed": 7,
+      "recorded_tokens_in_round_snapshot": 133861,
+      "cases_summary": [
+        {
+          "case": "holdout_data_audit",
+          "passed": true,
+          "selected_methods": null,
+          "model_followup_accepted": null,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "profile_matches_source": true
+          },
+          "errors": []
+        },
+        {
+          "case": "holdout_shopper_association",
+          "passed": true,
+          "selected_methods": [
+            "descriptive",
+            "logit"
+          ],
+          "model_followup_accepted": true,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "selected_expected_method": true,
+            "execution_completed": true,
+            "numeric_reference": true,
+            "followup_no_recompute": true,
+            "answer_has_run_evidence": true,
+            "four_part_conclusion": true,
+            "conclusion_run_bound": true,
+            "report_exported": true
+          },
+          "errors": []
+        },
+        {
+          "case": "holdout_wine_association",
+          "passed": true,
+          "selected_methods": [
+            "ols"
+          ],
+          "model_followup_accepted": true,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "selected_expected_method": true,
+            "execution_completed": true,
+            "numeric_reference": true,
+            "followup_no_recompute": true,
+            "answer_has_run_evidence": true,
+            "four_part_conclusion": true,
+            "conclusion_run_bound": true,
+            "report_exported": true
+          },
+          "errors": []
+        },
+        {
+          "case": "holdout_mail_spend",
+          "passed": true,
+          "selected_methods": [
+            "ab_test",
+            "descriptive"
+          ],
+          "model_followup_accepted": true,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "selected_expected_method": true,
+            "execution_completed": true,
+            "numeric_reference": true,
+            "followup_no_recompute": true,
+            "answer_has_run_evidence": true,
+            "four_part_conclusion": true,
+            "conclusion_run_bound": true,
+            "report_exported": true
+          },
+          "errors": []
+        },
+        {
+          "case": "holdout_mail_assignment_unknown",
+          "passed": true,
+          "selected_methods": null,
+          "model_followup_accepted": null,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "request_handled_without_estimation": true
+          },
+          "errors": []
+        },
+        {
+          "case": "holdout_shopper_future",
+          "passed": true,
+          "selected_methods": null,
+          "model_followup_accepted": null,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "request_handled_without_estimation": true
+          },
+          "errors": []
+        },
+        {
+          "case": "holdout_panel_good",
+          "passed": true,
+          "selected_methods": [
+            "descriptive",
+            "did"
+          ],
+          "model_followup_accepted": true,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "selected_expected_method": true,
+            "execution_completed": true,
+            "numeric_reference": true,
+            "claim_boundary": true,
+            "followup_no_recompute": true,
+            "answer_has_run_evidence": true,
+            "four_part_conclusion": true,
+            "conclusion_run_bound": true,
+            "report_exported": true
+          },
+          "errors": []
+        },
+        {
+          "case": "holdout_panel_bad",
+          "passed": false,
+          "selected_methods": [
+            "descriptive"
+          ],
+          "model_followup_accepted": null,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "selected_expected_method": false
+          },
+          "errors": [
+            "AssertionError:Candidate did not select the preregistered primary method; no plan was rewritten."
+          ]
+        }
+      ]
+    },
+    {
+      "round": "replay-development",
+      "cases": 4,
+      "pipeline_passed": 3,
+      "recorded_tokens_in_round_snapshot": 40976,
+      "cases_summary": [
+        {
+          "case": "dev_wine_association",
+          "passed": true,
+          "selected_methods": [
+            "descriptive",
+            "ols"
+          ],
+          "model_followup_accepted": true,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "selected_expected_method": true,
+            "execution_completed": true,
+            "numeric_reference": true,
+            "followup_no_recompute": true,
+            "answer_has_run_evidence": true,
+            "four_part_conclusion": true,
+            "conclusion_run_bound": true,
+            "report_exported": true
+          },
+          "errors": []
+        },
+        {
+          "case": "dev_mail_visit",
+          "passed": false,
+          "selected_methods": null,
+          "model_followup_accepted": null,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "selected_expected_method": false
+          },
+          "errors": [
+            "DesignError:模型请求未完成；可继续使用本地模式。模型JSON不符合本轮结构要求，未采纳输出。",
+            "AssertionError:Candidate did not select the preregistered primary method; no plan was rewritten."
+          ]
+        },
+        {
+          "case": "dev_bank_leakage",
+          "passed": true,
+          "selected_methods": null,
+          "model_followup_accepted": null,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "request_handled_without_estimation": true
+          },
+          "errors": []
+        },
+        {
+          "case": "dev_missing_context",
+          "passed": true,
+          "selected_methods": null,
+          "model_followup_accepted": null,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "request_handled_without_estimation": true
+          },
+          "errors": []
+        }
+      ]
+    },
+    {
+      "round": "replay-holdout",
+      "cases": 8,
+      "pipeline_passed": 6,
+      "recorded_tokens_in_round_snapshot": 155241,
+      "cases_summary": [
+        {
+          "case": "holdout_data_audit",
+          "passed": true,
+          "selected_methods": null,
+          "model_followup_accepted": null,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "profile_matches_source": true
+          },
+          "errors": []
+        },
+        {
+          "case": "holdout_shopper_association",
+          "passed": false,
+          "selected_methods": [
+            "descriptive"
+          ],
+          "model_followup_accepted": null,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "selected_expected_method": false
+          },
+          "errors": [
+            "AssertionError:Candidate did not select the preregistered primary method; no plan was rewritten."
+          ]
+        },
+        {
+          "case": "holdout_wine_association",
+          "passed": true,
+          "selected_methods": [
+            "descriptive",
+            "ols"
+          ],
+          "model_followup_accepted": false,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "selected_expected_method": true,
+            "execution_completed": true,
+            "numeric_reference": true,
+            "followup_no_recompute": true,
+            "answer_has_run_evidence": true,
+            "four_part_conclusion": true,
+            "conclusion_run_bound": true,
+            "report_exported": true
+          },
+          "errors": []
+        },
+        {
+          "case": "holdout_mail_spend",
+          "passed": true,
+          "selected_methods": [
+            "ab_test",
+            "descriptive"
+          ],
+          "model_followup_accepted": true,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "selected_expected_method": true,
+            "execution_completed": true,
+            "numeric_reference": true,
+            "followup_no_recompute": true,
+            "answer_has_run_evidence": true,
+            "four_part_conclusion": true,
+            "conclusion_run_bound": true,
+            "report_exported": true
+          },
+          "errors": []
+        },
+        {
+          "case": "holdout_mail_assignment_unknown",
+          "passed": true,
+          "selected_methods": null,
+          "model_followup_accepted": null,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "request_handled_without_estimation": true
+          },
+          "errors": []
+        },
+        {
+          "case": "holdout_shopper_future",
+          "passed": false,
+          "selected_methods": null,
+          "model_followup_accepted": null,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "request_handled_without_estimation": false
+          },
+          "errors": [
+            "ValueError:处理未完成，请保留流程记录并核对输入与服务配置。"
+          ]
+        },
+        {
+          "case": "holdout_panel_good",
+          "passed": true,
+          "selected_methods": [
+            "did"
+          ],
+          "model_followup_accepted": true,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "selected_expected_method": true,
+            "execution_completed": true,
+            "numeric_reference": true,
+            "claim_boundary": true,
+            "followup_no_recompute": true,
+            "answer_has_run_evidence": true,
+            "four_part_conclusion": true,
+            "conclusion_run_bound": true,
+            "report_exported": true
+          },
+          "errors": []
+        },
+        {
+          "case": "holdout_panel_bad",
+          "passed": true,
+          "selected_methods": [
+            "descriptive",
+            "did"
+          ],
+          "model_followup_accepted": true,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "selected_expected_method": true,
+            "execution_completed": true,
+            "numeric_reference": true,
+            "claim_boundary": true,
+            "followup_no_recompute": true,
+            "answer_has_run_evidence": true,
+            "four_part_conclusion": true,
+            "conclusion_run_bound": true,
+            "report_exported": true
+          },
+          "errors": []
+        }
+      ]
+    },
+    {
+      "round": "final-development",
+      "cases": 4,
+      "pipeline_passed": 4,
+      "recorded_tokens_in_round_snapshot": 65490,
+      "cases_summary": [
+        {
+          "case": "dev_wine_association",
+          "passed": true,
+          "selected_methods": [
+            "descriptive",
+            "ols"
+          ],
+          "model_followup_accepted": false,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "selected_expected_method": true,
+            "execution_completed": true,
+            "numeric_reference": true,
+            "followup_no_recompute": true,
+            "answer_has_run_evidence": true,
+            "four_part_conclusion": true,
+            "conclusion_run_bound": true,
+            "report_exported": true
+          },
+          "errors": []
+        },
+        {
+          "case": "dev_mail_visit",
+          "passed": true,
+          "selected_methods": [
+            "descriptive",
+            "ab_test"
+          ],
+          "model_followup_accepted": true,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "selected_expected_method": true,
+            "execution_completed": true,
+            "numeric_reference": true,
+            "followup_no_recompute": true,
+            "answer_has_run_evidence": true,
+            "four_part_conclusion": true,
+            "conclusion_run_bound": true,
+            "report_exported": true
+          },
+          "errors": []
+        },
+        {
+          "case": "dev_bank_leakage",
+          "passed": true,
+          "selected_methods": null,
+          "model_followup_accepted": null,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "request_handled_without_estimation": true
+          },
+          "errors": []
+        },
+        {
+          "case": "dev_missing_context",
+          "passed": true,
+          "selected_methods": null,
+          "model_followup_accepted": null,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "request_handled_without_estimation": true
+          },
+          "errors": []
+        }
+      ]
+    },
+    {
+      "round": "final-holdout",
+      "cases": 8,
+      "pipeline_passed": 7,
+      "recorded_tokens_in_round_snapshot": 152659,
+      "cases_summary": [
+        {
+          "case": "holdout_data_audit",
+          "passed": true,
+          "selected_methods": null,
+          "model_followup_accepted": null,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "profile_matches_source": true
+          },
+          "errors": []
+        },
+        {
+          "case": "holdout_shopper_association",
+          "passed": false,
+          "selected_methods": [
+            "logit",
+            "logit"
+          ],
+          "model_followup_accepted": null,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "selected_expected_method": true,
+            "execution_completed": true
+          },
+          "errors": [
+            "AssertionError:Expected exactly one primary result"
+          ]
+        },
+        {
+          "case": "holdout_wine_association",
+          "passed": true,
+          "selected_methods": [
+            "ols"
+          ],
+          "model_followup_accepted": false,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "selected_expected_method": true,
+            "execution_completed": true,
+            "numeric_reference": true,
+            "followup_no_recompute": true,
+            "answer_has_run_evidence": true,
+            "four_part_conclusion": true,
+            "conclusion_run_bound": true,
+            "report_exported": true
+          },
+          "errors": []
+        },
+        {
+          "case": "holdout_mail_spend",
+          "passed": true,
+          "selected_methods": [
+            "ab_test",
+            "descriptive"
+          ],
+          "model_followup_accepted": true,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "selected_expected_method": true,
+            "execution_completed": true,
+            "numeric_reference": true,
+            "followup_no_recompute": true,
+            "answer_has_run_evidence": true,
+            "four_part_conclusion": true,
+            "conclusion_run_bound": true,
+            "report_exported": true
+          },
+          "errors": []
+        },
+        {
+          "case": "holdout_mail_assignment_unknown",
+          "passed": true,
+          "selected_methods": null,
+          "model_followup_accepted": null,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "request_handled_without_estimation": true
+          },
+          "errors": []
+        },
+        {
+          "case": "holdout_shopper_future",
+          "passed": true,
+          "selected_methods": null,
+          "model_followup_accepted": null,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "request_handled_without_estimation": true
+          },
+          "errors": []
+        },
+        {
+          "case": "holdout_panel_good",
+          "passed": true,
+          "selected_methods": [
+            "did"
+          ],
+          "model_followup_accepted": true,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "selected_expected_method": true,
+            "execution_completed": true,
+            "numeric_reference": true,
+            "claim_boundary": true,
+            "followup_no_recompute": true,
+            "answer_has_run_evidence": true,
+            "four_part_conclusion": true,
+            "conclusion_run_bound": true,
+            "report_exported": true
+          },
+          "errors": []
+        },
+        {
+          "case": "holdout_panel_bad",
+          "passed": true,
+          "selected_methods": [
+            "descriptive",
+            "did"
+          ],
+          "model_followup_accepted": true,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "selected_expected_method": true,
+            "execution_completed": true,
+            "numeric_reference": true,
+            "claim_boundary": true,
+            "followup_no_recompute": true,
+            "answer_has_run_evidence": true,
+            "four_part_conclusion": true,
+            "conclusion_run_bound": true,
+            "report_exported": true
+          },
+          "errors": []
+        }
+      ]
+    },
+    {
+      "round": "targeted-development",
+      "cases": 1,
+      "pipeline_passed": 1,
+      "recorded_tokens_in_round_snapshot": 32689,
+      "cases_summary": [
+        {
+          "case": "dev_wine_association",
+          "passed": true,
+          "selected_methods": [
+            "descriptive",
+            "ols"
+          ],
+          "model_followup_accepted": false,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "selected_expected_method": true,
+            "execution_completed": true,
+            "numeric_reference": true,
+            "followup_no_recompute": true,
+            "answer_has_run_evidence": true,
+            "four_part_conclusion": true,
+            "conclusion_run_bound": true,
+            "report_exported": true
+          },
+          "errors": []
+        }
+      ]
+    },
+    {
+      "round": "targeted-holdout",
+      "cases": 2,
+      "pipeline_passed": 2,
+      "recorded_tokens_in_round_snapshot": 76612,
+      "cases_summary": [
+        {
+          "case": "holdout_shopper_association",
+          "passed": true,
+          "selected_methods": [
+            "logit"
+          ],
+          "model_followup_accepted": false,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "selected_expected_method": true,
+            "execution_completed": true,
+            "numeric_reference": true,
+            "followup_no_recompute": true,
+            "answer_has_run_evidence": true,
+            "four_part_conclusion": true,
+            "conclusion_run_bound": true,
+            "report_exported": true
+          },
+          "errors": []
+        },
+        {
+          "case": "holdout_wine_association",
+          "passed": true,
+          "selected_methods": [
+            "descriptive",
+            "ols"
+          ],
+          "model_followup_accepted": false,
+          "checks": {
+            "no_preapproval_estimate": true,
+            "selected_expected_method": true,
+            "execution_completed": true,
+            "numeric_reference": true,
+            "followup_no_recompute": true,
+            "answer_has_run_evidence": true,
+            "four_part_conclusion": true,
+            "conclusion_run_bound": true,
+            "report_exported": true
+          },
+          "errors": []
+        }
+      ]
+    }
+  ],
+  "final_result_questions": {
+    "cases": 7,
+    "model_accepted": 7,
+    "no_reestimation": true,
+    "first_response_accepted": 6,
+    "cases_summary": [
+      {
+        "case": "dev_wine_association",
+        "model_accepted": true,
+        "no_reestimate": true,
+        "citation_count": 6,
+        "validation_repairs": []
+      },
+      {
+        "case": "dev_mail_visit",
+        "model_accepted": true,
+        "no_reestimate": true,
+        "citation_count": 6,
+        "validation_repairs": []
+      },
+      {
+        "case": "holdout_wine_association",
+        "model_accepted": true,
+        "no_reestimate": true,
+        "citation_count": 8,
+        "validation_repairs": []
+      },
+      {
+        "case": "holdout_mail_spend",
+        "model_accepted": true,
+        "no_reestimate": true,
+        "citation_count": 4,
+        "validation_repairs": []
+      },
+      {
+        "case": "holdout_panel_good",
+        "model_accepted": true,
+        "no_reestimate": true,
+        "citation_count": 5,
+        "validation_repairs": []
+      },
+      {
+        "case": "holdout_panel_bad",
+        "model_accepted": true,
+        "no_reestimate": true,
+        "citation_count": 4,
+        "validation_repairs": [
+          {
+            "attempt": 1,
+            "reason": "回答越过解释权限。"
+          }
+        ]
+      },
+      {
+        "case": "holdout_shopper_association",
+        "model_accepted": true,
+        "no_reestimate": true,
+        "citation_count": 8,
+        "validation_repairs": []
+      }
+    ]
+  },
+  "local_recorded_usage": {
+    "request_events": 180,
+    "usage_events": 177,
+    "recorded_tokens": 937008,
+    "not_billing_statement": true,
+    "limitation": "Earlier rejected structured responses did not always emit usage events. Counts are observed records, not a complete billing total."
+  },
+  "independent_did_reference": [
+    {
+      "case": "holdout_panel_good",
+      "independent_reference": "statsmodels OLS with explicit entity and calendar dummies; point estimate only, covariance conventions differ",
+      "reference_estimate": 1.9565438969691642,
+      "saved_estimate": 1.9565438969691615,
+      "absolute_error": 2.6645352591003757e-15,
+      "passed": true,
+      "source": "https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.OLS.html"
+    },
+    {
+      "case": "holdout_panel_bad",
+      "independent_reference": "statsmodels OLS with explicit entity and calendar dummies; point estimate only, covariance conventions differ",
+      "reference_estimate": 4.404584503795091,
+      "saved_estimate": 4.404584503795087,
+      "absolute_error": 3.552713678800501e-15,
+      "passed": true,
+      "source": "https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.OLS.html"
+    }
+  ],
+  "limitations": [
+    "Repair replays are not held-out accuracy.",
+    "Pipeline completion may include explicit local evidence fallback; model acceptance is scored separately.",
+    "No independent human usability study or time-saving claim.",
+    "A small fixture suite does not prove unrestricted autonomous research."
+  ]
+}
