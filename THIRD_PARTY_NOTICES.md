@@ -26,3 +26,12 @@ MCP使用官方 Python SDK（https://github.com/modelcontextprotocol/python-sdk�
 - a2a-sdk 1.3.0: Apache-2.0, https://github.com/a2aproject/a2a-python.
 
 The project LICENSE describes original CausalOps code, not a relicensing of dependencies. The complete offline bundle includes GPL dependencies and their exact-version upstream source distributions under third_party_sources, with original notices preserved inside distributions/wheels. Do not describe the combined bundle as unrestricted MIT-only software. Papers are linked and paraphrased in original short notes, not redistributed.
+
+
+## 0.8.0 workflow integration
+
+- LangGraph 1.2.19: MIT, https://github.com/langchain-ai/langgraph . StateGraph and interrupt are used through the installed official package, not copied tutorial code.
+- langgraph-checkpoint-sqlite 3.1.3: local durable graph checkpoints, from the LangGraph project; separate from the research database.
+- langchain-core 1.7.3: MIT, https://github.com/langchain-ai/langchain . BaseRetriever and Document adapt the existing provenance-checked method library; this is not an embedding or vector-database migration.
+
+Resolved wheel versions, official PyPI download addresses and SHA-256 are recorded in docs/workflow-dependency-provenance.json. Bundled dependency wheels retain their upstream license files. LangSmith SDK is a transitive dependency; tracing is explicitly disabled in this release. No cloud tracing account or data upload is enabled.

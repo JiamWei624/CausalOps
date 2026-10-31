@@ -1,0 +1,40 @@
+{
+  "source": {
+    "tests": "432",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "105.119"
+  },
+  "installed_wheel": {
+    "tests": "432",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "88.237"
+  },
+  "version": "0.8.0",
+  "new_workflow_tests": 31,
+  "browser": {
+    "graph_ui": true,
+    "blocked_before_review": true,
+    "executed": true,
+    "download": true,
+    "followup": true,
+    "methods": true,
+    "restore": true,
+    "st_exceptions": 0,
+    "ok": true
+  },
+  "process_restart": true,
+  "live_api": {
+    "provider": "DeepSeek official",
+    "synthetic_only": true,
+    "successful_requests": 5,
+    "tokens": 25992,
+    "local_answer_repairs": 1,
+    "no_preapproval_runs": true,
+    "followup_did_not_recompute": true
+  },
+  "independent_user_efficiency": "not_evaluated"
+}

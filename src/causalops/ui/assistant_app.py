@@ -96,9 +96,17 @@ def render_assistant():
         if st.button('创建任务并检查数据',type='primary',disabled=not upload and not uid):
             try:
                 with st.status('正在登记数据并检查质量',expanded=True) as status:
-                    if upload:uid=a.ws.ingest(upload.getvalue(),upload.name,encoding=enc,separator=sep)
-                    sid=a.create(uid,title or (upload.name if upload else '本地分析任务'));st.write('数据已登记，原始文件不作修改。')
-                    p=a.propose(sid,'请先完成数据质量、缺失和分布的描述性体检');a.accept(p['id'],p['sha']);a.execute(p['id'],permit=True);status.update(label='数据质量检查已完成',state='complete')
+                    from importlib.util import find_spec
+                    graph_ready=find_spec('langgraph') is not None and find_spec('langchain_core') is not None
+                    if graph_ready:
+                        from causalops.application.research_service import ResearchService
+                        sid=ResearchService(a).create_task(payload=upload.getvalue() if upload else None,name=upload.name if upload else None,upload_id=None if upload else uid,title=title or (upload.name if upload else '本地分析任务'),encoding=enc,separator=sep)
+                        st.write('数据已登记，原始文件不作修改。分析计划将在审核后执行。')
+                        status.update(label='字段与数据结构检查已完成',state='complete')
+                    else:
+                        if upload:uid=a.ws.ingest(upload.getvalue(),upload.name,encoding=enc,separator=sep)
+                        sid=a.create(uid,title or (upload.name if upload else '本地分析任务'));st.write('数据已登记，原始文件不作修改。')
+                        p=a.propose(sid,'请先完成数据质量、缺失和分布的描述性体检');a.accept(p['id'],p['sha']);a.execute(p['id'],permit=True);status.update(label='数据质量检查已完成',state='complete')
                 st.query_params['assistant']=sid;st.rerun()
             except (ValueError,RuntimeError,OSError) as exc:st.error(str(exc))
         st.caption('此按钮授权本地描述性体检，不批准因果研究，也不向模型发送数据。')
@@ -162,6 +170,13 @@ def render_assistant():
             model=cached
         except (ValueError,RuntimeError) as exc:st.warning(str(exc)+'；可继续本地模式。')
     st.caption('运行模式：'+(PRESETS[cfg.provider]['label']+' / '+cfg.model+' 已配置并获当前任务授权；连接状况请通过上方配置核验确认。统计由本机工具执行。' if model else '本地分析模式。配置模型并授权当前任务后，可生成待审计划与证据解释。'))
+    from importlib.util import find_spec
+    if find_spec('langgraph') is not None and find_spec('langchain_core') is not None:
+        use_graph=st.toggle('使用 LangGraph 研究流程',value=True,key='assistant_use_graph',help='可切回原工作台。历史计划和运行保持原有记录；新流程使用独立图检查点。')
+        if use_graph:
+            from causalops.ui.graph_app import render_graph_workspace
+            render_graph_workspace(a,sid,frame,model)
+            return
     plans=a.plans(sid)
     if plans:
         latest=plans[0];state={'candidate':'待审核','accepted':'待执行','completed':'已完成','rejected':'已放弃'}[latest['state']]

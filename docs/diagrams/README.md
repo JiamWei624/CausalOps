@@ -1,21 +1,23 @@
 # 架构图源
 
-当前实现与目标图明确分开。目标图尚未作为正式编排运行，版本依据见[架构核查](../ARCHITECTURE_REVIEW_0.7.0.md)。所有图为CausalOps原创，不复制飞书图示。
+0.8.0首个闭环已实现；当前实现与完整目标图明确分开。完整目标中的后续条目尚未全部运行，版本依据见[架构核查](../ARCHITECTURE_REVIEW_0.7.0.md)。所有图为CausalOps原创，不复制飞书图示。
 
 ## 当前实现
 
 ```mermaid
-flowchart TB
- U["Streamlit 工作台"] --> A["AssistantWorkspace 自建编排"]
- A --> M["多服务商模型网关"]
- A --> K["MethodLibrary 方法 RAG"]
- A --> R["TaskRuntime 检查点"]
- R --> T["AnalysisTools 白名单与 ToolResult"]
- T --> X["探索 / 研究 / 进阶统计引擎"]
- X --> E["运行证据 / 图文报告 / 持续问答"]
- A --> D[("SQLite / Parquet / 结果文件")]
- E --> P["明确导出证据"]
- P --> C["MCP 只读工具 / A2A 规则审阅"]
+flowchart TD
+    UI[Streamlit] --> Service[ResearchService]
+    Service --> Graph[LangGraph StateGraph]
+    Graph --> Retriever[LangChain Core Retriever]
+    Graph --> Review[interrupt / 领域批准]
+    Review --> Gateway[固定 ToolGateway]
+    Gateway --> Runtime[TaskRuntime / AnalysisTools]
+    Runtime --> Tools[原17项统计方法]
+    Tools --> Evidence[ToolResult / 精确证据 / 图文报告]
+    Evidence --> Answer[运行级问答]
+    Graph --> Checkpoints[独立图检查点 SQLite]
+    Service --> Domain[研究版本与批准 SQLite]
+    Graph --> Provider[可选多模型网关 / 接收配置授权]
 ```
 
 ## 目标职责
@@ -103,4 +105,47 @@ flowchart TD
     Context --> Verify[任务 / 数据 / 计划 / 运行范围核验]
     Verify --> Answer[受限解释与下一步]
     Chat -. 经人工登记后另建版本 .-> Contract
+```
+
+## 从实际编译图生成的流程
+
+```mermaid
+---
+config:
+  flowchart:
+    curve: linear
+---
+graph TD;
+	__start__([<p>__start__</p>]):::first
+	load_context(load_context)
+	route_intent(route_intent)
+	retrieve_methods(retrieve_methods)
+	draft_plan(draft_plan)
+	await_review(await_review)
+	execute_plan(execute_plan)
+	answer_results(answer_results)
+	answer_method(answer_method)
+	profile_data(profile_data)
+	clarify(clarify)
+	__end__([<p>__end__</p>]):::last
+	__start__ --> load_context;
+	await_review -. &nbsp;rejected&nbsp; .-> __end__;
+	await_review -. &nbsp;approved&nbsp; .-> execute_plan;
+	draft_plan --> await_review;
+	execute_plan -. &nbsp;end&nbsp; .-> __end__;
+	execute_plan -. &nbsp;answer&nbsp; .-> answer_results;
+	load_context --> route_intent;
+	retrieve_methods -. &nbsp;method&nbsp; .-> answer_method;
+	retrieve_methods -. &nbsp;results&nbsp; .-> answer_results;
+	retrieve_methods -. &nbsp;plan&nbsp; .-> draft_plan;
+	route_intent -.-> clarify;
+	route_intent -. &nbsp;profile&nbsp; .-> profile_data;
+	route_intent -. &nbsp;method&nbsp; .-> retrieve_methods;
+	answer_method --> __end__;
+	answer_results --> __end__;
+	clarify --> __end__;
+	profile_data --> __end__;
+	classDef default fill:#f2f0ff,line-height:1.2
+	classDef first fill-opacity:0
+	classDef last fill:#bfb6fc
 ```

@@ -66,6 +66,7 @@ class AssistantWorkspace:
         from causalops.assistant.contracts import AnalysisTools
         self.runtime=TaskRuntime(self.ws);self.tools=AnalysisTools(self)
         with self.ws.connection() as c:
+            c.execute('CREATE TABLE IF NOT EXISTS assistant_plan_requests(session_id TEXT, request_key TEXT, question_sha TEXT, plan_id TEXT, PRIMARY KEY(session_id,request_key))')
             c.execute('CREATE TABLE IF NOT EXISTS assistant_focus(session_id TEXT PRIMARY KEY,run_id TEXT NOT NULL)')
             c.execute('CREATE TABLE IF NOT EXISTS assistant_sessions(id TEXT PRIMARY KEY,upload_id TEXT NOT NULL,title TEXT NOT NULL,created TEXT NOT NULL)')
             c.execute('CREATE TABLE IF NOT EXISTS assistant_events(id TEXT PRIMARY KEY,session_id TEXT NOT NULL,kind TEXT NOT NULL,body TEXT NOT NULL,created TEXT NOT NULL)')
@@ -155,16 +156,32 @@ class AssistantWorkspace:
             if set(fields)-cols:raise DesignError('候选引用了当前表不存在的字段。')
             if any(SENSITIVE.search(x) for x in set(fields)-{step.config.get('entity'),step.config.get('cluster')}):raise DesignError('标识或敏感字段不可作为自动分析指标/自变量。')
         return p
-    def store_plan(self,sid,p,source,question,hits):
+    def store_plan(self,sid,p,source,question,hits,request_key=None):
         s=self.session(sid);p=self.validate_plan(s['upload_id'],p);self.library.validate_citations(p.citations,hits['hits'])
         value=p.model_dump(mode='json');pid=uuid.uuid4().hex
         with self.ws.connection() as c:
+            c.execute('BEGIN IMMEDIATE')
+            if request_key:
+                prior=c.execute('SELECT question_sha,plan_id FROM assistant_plan_requests WHERE session_id=? AND request_key=?',(sid,request_key)).fetchone()
+                if prior:
+                    if prior[0]!=digest(question):raise DesignError('请求标识已绑定另一个问题。')
+                    return self.get_plan(prior[1])
             v=c.execute('SELECT COALESCE(MAX(version),0)+1 FROM assistant_plans WHERE session_id=?',(sid,)).fetchone()[0]
             c.execute('INSERT INTO assistant_plans VALUES(?,?,?,?,?,?,?)',(pid,sid,v,json.dumps(value,ensure_ascii=False),digest(value),'candidate',now()))
+            if request_key:c.execute('INSERT INTO assistant_plan_requests VALUES(?,?,?,?)',(sid,request_key,digest(question),pid))
         self.event(sid,'user',{'question':question});self.event(sid,'proposal',{'plan_id':pid,'version':v,'source':source,'knowledge_sha256':self.library.digest})
         return self.get_plan(pid)
-    def propose(self,sid,question,model=None):
-        q=check_question(question);s=self.session(sid);p=profile(self.ws.load_upload(s['upload_id']));hits=self.library.search(q+' 描述 数据质量')
+    def propose(self,sid,question,model=None,*,request_key=None,retrieval=None):
+        if request_key:
+            if not re.fullmatch(r'[a-f0-9]{32}',request_key):raise DesignError('请求标识格式不合法。')
+            with self.ws.connection() as c:prior=c.execute('SELECT question_sha,plan_id FROM assistant_plan_requests WHERE session_id=? AND request_key=?',(sid,request_key)).fetchone()
+            if prior:
+                if prior[0]!=digest(check_question(question)):raise DesignError('请求标识已绑定另一个问题。')
+                return self.get_plan(prior[1])
+        q=check_question(question);s=self.session(sid);p=profile(self.ws.load_upload(s['upload_id']));hits=retrieval if retrieval is not None else self.library.search(q+' 描述 数据质量')
+        if retrieval is not None:
+            if retrieval.get('knowledge_sha256')!=self.library.digest or not retrieval.get('hits'):raise DesignError('待审计划缺少当前版本的方法依据。')
+            self.library.validate_citations([h['card_id'] for h in hits['hits']],hits['hits'])
         if model:
             payload=self.external_payload(sid,q);payload['retrieved_methods']=hits;payload['available_methods']=self.tools.catalog();payload['config_schemas_by_tool']=self.tools.schemas(PROTECTED)
             system=('advanced config可用method(iv_2sls/rd_sharp/rd_fuzzy/staggered_did),question,outcome,treatment,instruments,covariates,entity,cluster,time,cohort,running,cutoff,ar_null,control_group,unit。整数期序与首次处理期、阈值必须来自用户现有事实，不猜测。advanced同样禁止任何人工确认FACT_FIELDS。'
@@ -174,7 +191,7 @@ class AssistantWorkspace:
                 '不要凭列名宣称随机化、行独立或处理前测量。引用仅用检索card_id，实证例子不证明本数据因果。不要把计划叙述成已完成。每项config必须有至少8字question。')
             for attempt in range(2):
                 result=self._call(sid,model,system,payload,Plan.model_json_schema())
-                try:return self.store_plan(sid,result,__import__('causalops.llm.providers',fromlist=['model_label']).model_label(model)+'模型候选',q,hits)
+                try:return self.store_plan(sid,result,__import__('causalops.llm.providers',fromlist=['model_label']).model_label(model)+'模型候选',q,hits,request_key=request_key)
                 except (ValueError,RuntimeError) as exc:
                     if attempt:raise
                     payload={**payload,'repair_required':str(exc)[:800],'repair_rule':'只修复明确问题，不确认人工事实，不执行。输出完整Plan对象。'}
@@ -189,7 +206,7 @@ class AssistantWorkspace:
         elif re.search('回归|logit|poisson|ols|预测|因果|效果|影响|提升|did|psm|aipw',q,re.I):
             questions=['请使用官方模型候选或专业模式明确结果、自变量/处理、分析单位与测量时序；本地模式先完成体检，不擅自选择因果方法。']
         ids=[h['card_id'] for h in hits['hits']]
-        return self.store_plan(sid,Plan(objective=q,dataset_notes=[f'已检测{p["rows"]}行、{p["columns"]}列；标识字段不自动作为指标。','本地规则候选，未调用大模型。'],steps=steps,required_questions=questions,citations=ids[:4] or ['describe']),'本地规则候选',q,hits)
+        return self.store_plan(sid,Plan(objective=q,dataset_notes=[f'已检测{p["rows"]}行、{p["columns"]}列；标识字段不自动作为指标。','本地规则候选，未调用大模型。'],steps=steps,required_questions=questions,citations=ids[:4] or ['describe']),'本地规则候选',q,hits,request_key=request_key)
     def refine(self,sid,value,question='使用者在本地补充字段口径与计划'):
         p=Plan.model_validate(value);hits={'hits':[h for c in p.citations for h in self.library.cards if h['card_id']==c]}
         return self.store_plan(sid,p,'用户本地修订',question,hits)

@@ -1,0 +1,98 @@
+"""First LangGraph workflow UI; models cannot invoke the review button."""
+from __future__ import annotations
+import json
+import pandas as pd
+import streamlit as st
+from causalops.application.research_service import ResearchService
+
+STATUS={'created':'准备中','awaiting_review':'待人工审核','approved':'已批准','executing':'统计执行中','executed':'正在解释结果','completed':'已完成','rejected':'已放弃','blocked':'执行条件不满足','failed':'处理失败，可核对记录','needs_clarification':'需要补充说明'}
+NODES={'load_context':'核对任务与数据版本','route_intent':'识别请求类型','retrieve_methods':'检索方法依据','draft_plan':'生成待审计划','await_review':'等待人工审核','execute_plan':'执行已批准的统计','answer_results':'核对运行证据并解释','answer_method':'整理方法依据','profile_data':'读取数据概况','clarify':'说明需补充的信息','statistical_tool':'统计工具','review':'人工审核','retrieve':'检索结果'}
+STATES={'started':'开始','completed':'完成','running':'运行中','blocked':'需要补充','failed':'失败','approved':'已批准','rejected':'已放弃'}
+
+def render_graph_workspace(a,sid,frame,model):
+    from causalops.ui.assistant_app import confirmations,show_run,show_sources,safe_text
+    service=ResearchService(a,model=model)
+    st.subheader('研究流程与证据讨论')
+    st.caption('当前采用 LangGraph 编排、SQLite 检查点与 LangChain 检索适配。提出计划后暂停审核；方法咨询和结果追问不重新估计。')
+    flows=service.flows(sid);choice_key='graph_flow_'+sid
+    pending=st.session_state.pop('_graph_pending_'+sid,None)
+    if pending:st.session_state[choice_key]=pending
+    if flows:
+        ids=[f['id'] for f in flows]
+        if st.session_state.get(choice_key) not in ids:st.session_state[choice_key]=ids[0]
+        current=st.selectbox('本轮流程与历史记录',ids,format_func=lambda x:STATUS.get(next(f['status'] for f in flows if f['id']==x),'处理中')+' · '+next(f['request']['question'][:35] for f in flows if f['id']==x)+' · '+x[:6],key=choice_key)
+        f=service.flow(current);st.caption('流程 '+current[:8]+' · '+STATUS.get(f['status'],f['status']))
+        if f['plan_id']:
+            p=a.get_plan(f['plan_id']);v=p['plan']
+            with st.container(border=True):
+                st.markdown('**待审计划 V'+str(p['version'])+'**' if f['status']=='awaiting_review' else '**来源计划 V'+str(p['version'])+'**')
+                st.write(safe_text(v['objective']))
+                for i,step in enumerate(v['steps']):
+                    st.markdown('**步骤 '+str(i+1)+' · '+a.tools.method(step['tool'],step['config']['method']).label+'**')
+                    st.write(safe_text(step['reason']))
+                    cfg=step['config'];st.caption('分析字段：'+', '.join(cfg.get('numeric',[])+cfg.get('predictors',[])+cfg.get('covariates',[]))+'；结果：'+str(cfg.get('outcome') or '分布/汇总'))
+                for q in v['required_questions']:st.info(safe_text(q))
+                with st.expander('核对完整配置、计划和数据版本'):
+                    st.json(v);st.caption('计划指纹 '+p['sha']+'；数据指纹 '+f['request']['data']['frame_sha'])
+                if f['status']=='awaiting_review':
+                    st.write('如变量或方法不合适，请放弃本候选，再提出新的计划；不会自动改变人工事实。')
+                    facts={}
+                    for i,step in enumerate(v['steps']):facts[str(i)]=confirmations(step,i,p['id'],frame)
+                    checked=st.checkbox('我已核对上述计划和本步骤必要事实，同意按当前数据与计划版本进行本地计算。',key='graph_review_'+current)
+                    yes,no=st.columns(2)
+                    if yes.button('接受计划并批准本次执行',type='primary',disabled=not checked,key='graph_approve_'+current):
+                        try:
+                            with st.status('正在恢复已审核流程',expanded=True) as progress:
+                                service.progress=lambda e:st.write(NODES.get(e['node'],e['node'])+' · '+STATES.get(e['status'],e['status']))
+                                result=service.review(current,accept=True,expected_plan_id=p['id'],expected_plan_sha=p['sha'],expected_data_sha=f['request']['data']['frame_sha'],human_confirmed=True,confirmations=facts)
+                                progress.update(label=STATUS.get(result['status'],'处理结束'),state='complete' if result['status']=='completed' else 'error')
+                            st.rerun()
+                        except (ValueError,RuntimeError,OSError) as exc:st.error(str(exc))
+                    if no.button('放弃本候选计划',key='graph_reject_'+current):
+                        try:service.review(current,accept=False,expected_plan_id=p['id'],expected_plan_sha=p['sha'],expected_data_sha=f['request']['data']['frame_sha'],human_confirmed=True);st.rerun()
+                        except (ValueError,RuntimeError,OSError) as exc:st.error(str(exc))
+        if f['status'] in ('approved','executing','failed'):
+            st.info('若原处理进程已退出，可继续保存的流程；批准与数据版本将再次核对。前置步骤失败且尚未批准时，请新建一轮请求。')
+            if st.button('检查批准并继续流程',key='graph_resume_'+current):
+                try:service.resume(current,human_confirmed=True);st.rerun()
+                except (ValueError,RuntimeError,OSError) as exc:st.error(str(exc))
+        execution=service.output(current,'execution')
+        if execution:
+            for t in execution['tasks']:
+                if t['state']!='completed':st.warning('步骤 '+str(t['ordinal']+1)+'：'+str((t['result'] or {}).get('error','未完成。请核对研究条件。')))
+        answer=service.output(current,'answer')
+        if answer:
+            st.markdown('**方法说明**' if answer.get('scope')=='method_only' else '**本轮结论与解释**')
+            st.caption(answer['source']);st.write(safe_text(answer['text']))
+            if answer.get('facts'):
+                from causalops.assistant.service import friendly_fact_label,display_number
+                if answer['source'].startswith('本地'):
+                    for fact in answer['facts'][:4]:st.write(friendly_fact_label(fact['text'])+'：'+display_number(fact['value']))
+                with st.expander('核对回答使用的精确运行证据'):
+                    st.dataframe([{'指标':f['text'],'数值':str(f['value']),'证据标识':f['id'],'运行编号':f['run_id']} for f in answer['facts']],hide_index=True,width='stretch')
+        pr=service.output(current,'profile')
+        if pr:st.dataframe(pd.DataFrame(pr['fields']).rename(columns={'field':'字段','dtype':'类型','missing_n':'缺失数','numeric':'数值字段','distinct_n':'唯一值数','likely_identifier':'疑似标识','infinite_n':'无穷值数'}),hide_index=True,width='stretch')
+        retrieval=service.output(current,'retrieval')
+        if retrieval:
+            with st.expander('本轮实际检索的方法依据'):show_sources(retrieval)
+        with st.expander('实际步骤与暂停恢复记录'):
+            rows=service.events(current)
+            st.dataframe([{'顺序':e['seq'],'步骤':NODES.get(e['node'],e['node']),'状态':STATES.get(e['status'],e['status']),'时间':e['created']} for e in rows],hide_index=True,width='stretch')
+            st.caption('记录来自实际节点和工具调用，不是对最终文字的模拟播放。')
+            st.download_button('下载流程记录（JSON）',json.dumps({'flow_id':current,'events':rows,'snapshot':service.snapshot(current)},ensure_ascii=False,indent=2),file_name='workflow-'+current+'.json',mime='application/json',key='graph_trace_'+current)
+    else:st.info('数据已登记。输入分析问题后，系统会检索方法并提出待审计划；不会在未审核前进行统计估计。')
+    runs=a.completed_runs(sid);refs={r['run_id']:r for r in runs}
+    if refs:
+        selected=a.selected_run(sid);rid=st.selectbox('结果展示与追问所依据的运行',list(refs),index=list(refs).index(selected) if selected in refs else 0,format_func=lambda x:refs[x]['method']+' · '+x[:8],key='graph_run_'+sid)
+        if rid!=selected:a.select_run(sid,rid)
+        with st.expander('查看完整图表与下载分析报告',expanded=bool(flows and service.output(current,'execution'))):show_run(a,refs[rid],sid)
+    modes={'自动选择请求类型':'auto','制定分析计划':'plan','方法咨询':'method','解释当前运行':'results','数据概况':'profile'}
+    mode=st.radio('本轮请求',list(modes),horizontal=True,key='graph_mode_'+sid)
+    q=st.chat_input('例如：分析这张表的缺失和分布；或解释当前结果的实际含义',key='graph_question_'+sid)
+    if q:
+        try:
+            with st.status('正在处理研究请求',expanded=True) as progress:
+                service.progress=lambda e:st.write(NODES.get(e['node'],e['node'])+' · '+STATES.get(e['status'],e['status']))
+                f=service.start(sid,q,mode=modes[mode]);progress.update(label=STATUS.get(f['status'],'处理结束'),state='complete')
+            st.session_state['_graph_pending_'+sid]=f['id'];st.rerun()
+        except (ValueError,RuntimeError,OSError) as exc:st.error(str(exc));st.info('未执行未批准的统计；已有结果保持不变。')

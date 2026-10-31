@@ -10,99 +10,44 @@
     "sha256": "3756806f3819f18443633903a6285d8c4016e005b697790e26d0a00e63070268"
   },
   {
+    "file": "application-wheel.json",
+    "bytes": 158,
+    "sha256": "85dc364378ab65127cd09153715cb690846a26846fd1a41a84e26da8c4a86adf"
+  },
+  {
     "file": "CONTRIBUTING.md",
     "bytes": 381,
     "sha256": "83e9c13af658a0b6081bcdec9f228b077f8832961c00e377eb1957553b2ea78c"
   },
   {
-    "file": "LICENSE",
-    "bytes": 1097,
-    "sha256": "37d163bbc8d8306f349ecb2f6e2c757c6ac213cb81a17f974c1743323b24efa8"
-  },
-  {
-    "file": "README.md",
-    "bytes": 8344,
-    "sha256": "9835383f390c5d0c01394977ee08a07c702fe47ac3b49644302d0c082d65b16c"
-  },
-  {
-    "file": "SECURITY.md",
-    "bytes": 627,
-    "sha256": "323b37dbe4eae0e0037e12186f2114b2afcdf12746d5ba2996cbfd7ab7b5a677"
-  },
-  {
-    "file": "THIRD_PARTY_NOTICES.md",
-    "bytes": 2782,
-    "sha256": "ebee48a38bfb05441b93007a30a6a3a50461ece7b8bf52b2addf1b873813ef91"
-  },
-  {
-    "file": "application-wheel.json",
-    "bytes": 158,
-    "sha256": "55efe23887ee25c7b546354d46564d2769ac3801eb392a4eef29ad5728959c16"
+    "file": "docs/architecture-sources.json",
+    "bytes": 5222,
+    "sha256": "98970364456ea71a793ecbf745e6fe5e45871c06517ae83bbb3f9dc488d0090f"
   },
   {
     "file": "docs/ARCHITECTURE.md",
-    "bytes": 7827,
-    "sha256": "51b8ea734905d5e084a9e3b5768420b6d2905d927ad0b9b1123fb1ee98aa3e21"
+    "bytes": 7883,
+    "sha256": "e1ee3747dfcac0fbab6625b7ee53af7807c938938a9d3e30f16e2e23ad5561f9"
   },
   {
     "file": "docs/ARCHITECTURE_REVIEW_0.7.0.md",
-    "bytes": 7798,
-    "sha256": "e5a307e4cb49fb6d044f9131a206e2cd16a64842c3f0fc3d2a078dbe79e7f898"
-  },
-  {
-    "file": "docs/BOUNDARIES_0.5.1.md",
-    "bytes": 3466,
-    "sha256": "320932d1de8c3cd49563f2c4cc3b1a28e9d17a99a95f2690a5681d9ac24d0816"
-  },
-  {
-    "file": "docs/EXTENSIONS_V050.md",
-    "bytes": 4851,
-    "sha256": "8a41ce1caa458179b88ef26f842f4b776e054d8e8cc02d26acbd0c1cd532f372"
-  },
-  {
-    "file": "docs/IMPLEMENTATION_0.7.0.md",
-    "bytes": 8312,
-    "sha256": "f641bc568f43900965bce6d2d2891324dfae50abd33fa2f1b845168f9e416918"
-  },
-  {
-    "file": "docs/LANGGRAPH_MIGRATION_PLAN.md",
-    "bytes": 15922,
-    "sha256": "b63b52b2f5c0a830fe4216c8f3c69ba90bd009842ab8ab96ceee50166b251d5d"
-  },
-  {
-    "file": "docs/METHOD_CONTRACTS.md",
-    "bytes": 3663,
-    "sha256": "07fa37494327f9584296253b127049f6a4829dd15c7761e075d86984b9da7ab8"
-  },
-  {
-    "file": "docs/ORCHESTRATION_0.6.0.md",
-    "bytes": 4137,
-    "sha256": "c1248452c3c89aee6c4b4dc39e3995a438d5ace5cbf38b5dfc28b7d0b922bb23"
-  },
-  {
-    "file": "docs/PROVIDERS_PROTOCOLS_0.7.0.md",
-    "bytes": 7409,
-    "sha256": "fbadecdf7f26f419c8f764ae18e39a01dce4d07a42fc53dfc0ae01e0a9c54673"
-  },
-  {
-    "file": "docs/REFERENCE_PROJECT_REVIEW.md",
-    "bytes": 8516,
-    "sha256": "3bb5a51e0a094f28a74cef7d0a41d054598e1dc70f7353616a2ddb2884abb1b4"
-  },
-  {
-    "file": "docs/architecture-sources.json",
-    "bytes": 5167,
-    "sha256": "ab90ef6d12c799ca060d21ed2a35e908fafc46713b704f62c76a9458ccf926dd"
+    "bytes": 8012,
+    "sha256": "df700b4a33244344d2fc813701ddeb481ec51233d32f6616d976fcdbd3a43a39"
   },
   {
     "file": "docs/assets/architecture-current.svg",
-    "bytes": 5302,
-    "sha256": "21355be8ec2e4e8abd6cd4da509fbdbe016e1819f8d59e86febe1f03fdd827f9"
+    "bytes": 4805,
+    "sha256": "13d19e1da17c787957949346d4e085bae42af012c254e95decefec0293f44ab6"
   },
   {
     "file": "docs/assets/architecture-target.svg",
     "bytes": 6353,
     "sha256": "550d9f0cbad52e7ab0d9119d0d1b8404edfb53d65ad9d213538a22326354243e"
+  },
+  {
+    "file": "docs/assets/architecture-v070.svg",
+    "bytes": 5302,
+    "sha256": "21355be8ec2e4e8abd6cd4da509fbdbe016e1819f8d59e86febe1f03fdd827f9"
   },
   {
     "file": "docs/assets/memory-boundaries-target.svg",
@@ -135,14 +80,14 @@
     "sha256": "6d8a4a60367eab95a632841fe00c1dece6786b41d43204d9ba456af36b8a7b23"
   },
   {
-    "file": "docs/diagrams/README.md",
-    "bytes": 4149,
-    "sha256": "d72852aa5a5f45e219802a31be5e7b7e95411def3a7c8279da1c2180a36b032e"
+    "file": "docs/BOUNDARIES_0.5.1.md",
+    "bytes": 3466,
+    "sha256": "320932d1de8c3cd49563f2c4cc3b1a28e9d17a99a95f2690a5681d9ac24d0816"
   },
   {
     "file": "docs/diagrams/current-architecture.mmd",
-    "bytes": 467,
-    "sha256": "7e89835fa98ac5937eed66db32f9d55f568b879d4b4e71363f6d3af5f9cde57c"
+    "bytes": 620,
+    "sha256": "4d4a51160535da1127edd562a5f0dcf685f4cc8b340fc79ef8e93a43d6729076"
   },
   {
     "file": "docs/diagrams/memory-boundaries-target.mmd",
@@ -153,6 +98,11 @@
     "file": "docs/diagrams/rag-evidence-target.mmd",
     "bytes": 583,
     "sha256": "8c441edbb3f8fddf5e878362cc4b2920a157b094b63e95dcdc2ec3adce42b55c"
+  },
+  {
+    "file": "docs/diagrams/README.md",
+    "bytes": 5637,
+    "sha256": "8998299f8c6cf4326679b3f9b44f38ad0431635e6bb7d563d7ee0951586eda32"
   },
   {
     "file": "docs/diagrams/research-workflow-target.mmd",
@@ -170,14 +120,69 @@
     "sha256": "3673aa3f3900c5aae6b2e53ca1c994e9894f21d5878605972cb51857de7f3ddd"
   },
   {
+    "file": "docs/diagrams/workflow-implemented-v080.mmd",
+    "bytes": 1237,
+    "sha256": "4fb5af574e3056fc5077a3c51270ebbfc2153c41c4f82af008f6248685effd8a"
+  },
+  {
+    "file": "docs/EXTENSIONS_V050.md",
+    "bytes": 4851,
+    "sha256": "8a41ce1caa458179b88ef26f842f4b776e054d8e8cc02d26acbd0c1cd532f372"
+  },
+  {
+    "file": "docs/IMPLEMENTATION_0.7.0.md",
+    "bytes": 8312,
+    "sha256": "f641bc568f43900965bce6d2d2891324dfae50abd33fa2f1b845168f9e416918"
+  },
+  {
+    "file": "docs/LANGGRAPH_IMPLEMENTATION_0.8.0.md",
+    "bytes": 6598,
+    "sha256": "0cddfd975f132c52f1f202c6d4fa761ad81cc84e159e44dea58e2fbac69d8bec"
+  },
+  {
+    "file": "docs/LANGGRAPH_MIGRATION_PLAN.md",
+    "bytes": 16297,
+    "sha256": "a780ef4e45080300e76dd652743e2c2eba337f90ad73756def35f898a78134a1"
+  },
+  {
     "file": "docs/method-extension-plan.json",
     "bytes": 3074,
     "sha256": "aa58ed9cb3de35b17e28d3db9bea92fbbb9f01467c6d125aba4746bab6f0bcb7"
   },
   {
+    "file": "docs/METHOD_CONTRACTS.md",
+    "bytes": 3663,
+    "sha256": "07fa37494327f9584296253b127049f6a4829dd15c7761e075d86984b9da7ab8"
+  },
+  {
+    "file": "docs/ORCHESTRATION_0.6.0.md",
+    "bytes": 4137,
+    "sha256": "c1248452c3c89aee6c4b4dc39e3995a438d5ace5cbf38b5dfc28b7d0b922bb23"
+  },
+  {
+    "file": "docs/PROVIDERS_PROTOCOLS_0.7.0.md",
+    "bytes": 7409,
+    "sha256": "fbadecdf7f26f419c8f764ae18e39a01dce4d07a42fc53dfc0ae01e0a9c54673"
+  },
+  {
+    "file": "docs/REFERENCE_PROJECT_REVIEW.md",
+    "bytes": 8504,
+    "sha256": "95250e31185f1cf7f870a1130bc14c617849361997dd05b7642905f2a6b3309c"
+  },
+  {
     "file": "docs/upstream-references.json",
     "bytes": 1046,
     "sha256": "fa7d81e77da83ab2568d716a804a9be27074da2f825f2b2db0a0b4960fc5e54e"
+  },
+  {
+    "file": "docs/validation-v080.json",
+    "bytes": 844,
+    "sha256": "c4a7948c515ae8a8e83af7a931d0a5c692345f7453c7acff59ee9e6ab74a18ee"
+  },
+  {
+    "file": "docs/workflow-dependency-provenance.json",
+    "bytes": 12309,
+    "sha256": "078294529dba3e1dcaebd84fe05d2f0aa0fd76503234faf9b5b4c190b404bfcb"
   },
   {
     "file": "examples/did-synthetic-ugc.json",
@@ -215,14 +220,24 @@
     "sha256": "fb60c00a6123ecc0f972cb6bc0d1049951e9eb5754cd417f82698f8625a02014"
   },
   {
+    "file": "LICENSE",
+    "bytes": 1097,
+    "sha256": "37d163bbc8d8306f349ecb2f6e2c757c6ac213cb81a17f974c1743323b24efa8"
+  },
+  {
     "file": "pyproject.toml",
-    "bytes": 1211,
-    "sha256": "0c34da49f884c020040b53bacc3da379faa3227ed6eee088ca5db53bd6b801bd"
+    "bytes": 1307,
+    "sha256": "7b0a177e9533791d0d0752af49eb3b3c355b0687b3c12187cc1616ecad6f7b81"
+  },
+  {
+    "file": "README.md",
+    "bytes": 9063,
+    "sha256": "22dc6d8db151e1a319d547ca0f11899630d1597a08a9dc5f8930012eb1ed6323"
   },
   {
     "file": "requirements-runtime-win-py311.txt",
-    "bytes": 2047,
-    "sha256": "0532ebb18934888cccc88801a086c200edb9b6eba789c27bed8fcefd8f2bb8df"
+    "bytes": 2452,
+    "sha256": "7b1a347cfb12296dd6270d5fec9bcef9bdcdb9b6b437f2d21e35d9d2d66fdda4"
   },
   {
     "file": "requirements-win-py311-offline.lock",
@@ -263,6 +278,11 @@
     "file": "scripts/start_portfolio.py",
     "bytes": 431,
     "sha256": "e607bf7aef64d87c429d1b53d3d028eb8ba2141e7b8e9a38b926f1b575ddece2"
+  },
+  {
+    "file": "scripts/start_workflow.py",
+    "bytes": 480,
+    "sha256": "0914241088bb34f719f9c5d49c0027c2b1f996145d2773a37f5e8541b0f2e5ce"
   },
   {
     "file": "scripts/verify_assistant_browser.cjs",
@@ -315,6 +335,11 @@
     "sha256": "3bd5847b84d35fd8c43665b314881087f915142db614d2cb7f081baa9d3c3663"
   },
   {
+    "file": "SECURITY.md",
+    "bytes": 627,
+    "sha256": "323b37dbe4eae0e0037e12186f2114b2afcdf12746d5ba2996cbfd7ab7b5a677"
+  },
+  {
     "file": "src/causalops/__init__.py",
     "bytes": 63,
     "sha256": "cb4c31ae35af12b93122d8166a31041dd29ac7963e0753082dd95d6b0a7292ab"
@@ -343,6 +368,21 @@
     "file": "src/causalops/agent.py",
     "bytes": 8329,
     "sha256": "1eea3e5b160dc089818cd57a124664ac1998877275de2ce43a470a70843e2d46"
+  },
+  {
+    "file": "src/causalops/application/__init__.py",
+    "bytes": 73,
+    "sha256": "e64942bea3b4cd601457ebb909f276a6c9f26d8af998f046f5c187949efa781c"
+  },
+  {
+    "file": "src/causalops/application/locking.py",
+    "bytes": 1071,
+    "sha256": "97976e8fd4cde903fb4fe07ad88129c43937e2eb33908e007e3171c01f623330"
+  },
+  {
+    "file": "src/causalops/application/research_service.py",
+    "bytes": 15397,
+    "sha256": "0253e201168e4e2f78b6527b037021946a7734fa7497260558ee7c7ef8690089"
   },
   {
     "file": "src/causalops/assistant/__init__.py",
@@ -376,8 +416,8 @@
   },
   {
     "file": "src/causalops/assistant/service.py",
-    "bytes": 40883,
-    "sha256": "3c22ee5aeb223d2f2831e5c6acccc997ba60de9ae7d879f97fbf7be543533a59"
+    "bytes": 42561,
+    "sha256": "4e313e7a9924e8c1e83e342f6d3625600573d5768b2d8e0b4bd98ef6b2609b96"
   },
   {
     "file": "src/causalops/audits/__init__.py",
@@ -605,6 +645,16 @@
     "sha256": "31eb967e577df20cc5c3625c758d747cb5bdd7aae04de30032d77d89445aaede"
   },
   {
+    "file": "src/causalops/integrations/__init__.py",
+    "bytes": 64,
+    "sha256": "12ae80b6a21592e31fce6ef08f47f3befaf06a1100bfe4ec57dd8be57389b836"
+  },
+  {
+    "file": "src/causalops/integrations/method_retriever.py",
+    "bytes": 1601,
+    "sha256": "479040a2e43fedee3ede6acb9c656f60952895bcc87ac14d7ab258b6c3ae1978"
+  },
+  {
     "file": "src/causalops/knowledge/__init__.py",
     "bytes": 60,
     "sha256": "84e9493e6e550d60aed10a4221fd6552bdcafc113fe8cc586be67cf789dfb604"
@@ -668,6 +718,16 @@
     "file": "src/causalops/metadata/presentation_zh.py",
     "bytes": 17555,
     "sha256": "6a35e29d65b2833de1f19e41b240d10e2627284ac8cb99a606b9baea29ee80b6"
+  },
+  {
+    "file": "src/causalops/orchestration/__init__.py",
+    "bytes": 75,
+    "sha256": "df6180493052a250652e1bad21e1e15079369f9a8da0c8562f01ed9403076926"
+  },
+  {
+    "file": "src/causalops/orchestration/research_graph.py",
+    "bytes": 6983,
+    "sha256": "067fb0ac8d4566525b8eeecfad01403310a10969ae48b089ff88985cf8101c06"
   },
   {
     "file": "src/causalops/protocols/__init__.py",
@@ -791,8 +851,8 @@
   },
   {
     "file": "src/causalops/ui/assistant_app.py",
-    "bytes": 36228,
-    "sha256": "eb0cd4b89176bc98eb24f5103d85524711070c5915ecc8e1f126b98d1221d2e5"
+    "bytes": 37550,
+    "sha256": "3ca1cd9f847314acc4404990bb4ba3f6eaa6ee1dec26a17eaabf7e10d2236df9"
   },
   {
     "file": "src/causalops/ui/controller.py",
@@ -808,6 +868,11 @@
     "file": "src/causalops/ui/general_app.py",
     "bytes": 16378,
     "sha256": "086fbfa8469acf9e4218b01ff92854efc9cd731dc761919d26ec0a57849af4ab"
+  },
+  {
+    "file": "src/causalops/ui/graph_app.py",
+    "bytes": 9562,
+    "sha256": "d1186110973c18d5c2776884e3783c8f318e5602402de43e81aa69470bf7d8c0"
   },
   {
     "file": "src/causalops/ui/portfolio_demo.py",
@@ -960,6 +1025,11 @@
     "sha256": "07489e220b2e76e595d30d3782625b42e11d06c5cca08351ec02e66bf60193e3"
   },
   {
+    "file": "tests/test_orchestration_v080.py",
+    "bytes": 12378,
+    "sha256": "9acdc5c44b909626127d65c6dde22c1f400b0f84b6de34245a0c32fe03543301"
+  },
+  {
     "file": "tests/test_portfolio_showcase.py",
     "bytes": 2777,
     "sha256": "26cc8a1ed85d60b8154c9f0f40da609b2175fd82cc029c0a104e594e3d63743b"
@@ -1033,5 +1103,10 @@
     "file": "tests/test_ui.py",
     "bytes": 15566,
     "sha256": "e13133232ed0fde7d340fd33fd6a114b2a15db5f1cf783870f0d2e6e583a1882"
+  },
+  {
+    "file": "THIRD_PARTY_NOTICES.md",
+    "bytes": 3662,
+    "sha256": "6e29e757288846c072693281985dcff2fc79a7eadbe17013c6414ae4bca59e61"
   }
 ]

@@ -1,13 +1,13 @@
-<!-- release: 0.7.0 -->
+<!-- release: 0.8.0 -->
 # CausalOps · 数据分析与研究工作台
 
 **将数据检查、研究设计、统计分析和证据解释组织在同一任务中。**
 
-当前为 **0.7.0 私有验证版本**，面向本机单用户。原始数据在本地处理；可选模型提出待审计划和解释，统计计算由本地工具完成。
+当前为 **0.8.0 私有验证版本**，面向本机单用户。原始数据在本地处理；可选模型提出待审计划和解释，统计计算由本地工具完成。
 
-> 当前主流程采用自建状态编排，尚未使用LangChain或LangGraph。下面分别展示当前实现和建议目标；目标设计不作为已完成能力或简历成果。
+> 已接入首个LangGraph闭环：请求路由、LangChain Core方法检索、候选计划、持久审核中断、原统计执行和证据问答。保留原工作台可切换；完整目标架构仍有未迁移部分。详见[0.8.0实现与验收](docs/LANGGRAPH_IMPLEMENTATION_0.8.0.md)。
 
-[快速开始](#快速开始) · [当前架构](#当前架构) · [目标架构](#目标架构建议尚未接入) · [完整功能与边界](docs/IMPLEMENTATION_0.7.0.md) · [迁移实施方案](docs/LANGGRAPH_MIGRATION_PLAN.md) · [三份参考项目核查](docs/REFERENCE_PROJECT_REVIEW.md)
+[快速开始](#快速开始) · [当前架构](#当前架构) · [目标架构](#完整目标架构部分已实现) · [完整功能与边界](docs/IMPLEMENTATION_0.7.0.md) · [迁移实施方案](docs/LANGGRAPH_MIGRATION_PLAN.md) · [三份参考项目核查](docs/REFERENCE_PROJECT_REVIEW.md)
 
 ## 适合解决什么问题
 
@@ -19,14 +19,15 @@
 
 ## 当前架构
 
-![CausalOps 0.7.0 当前真实架构](docs/assets/architecture-current.svg)
+![CausalOps 0.8.0 当前真实架构](docs/assets/architecture-current.svg)
 
 | 层 | 当前实现 | 责任 |
 |---|---|---|
 | 交互 | Streamlit | 导入、讨论、审核、图表和报告 |
-| 应用与编排 | AssistantWorkspace、TaskRuntime、EvidenceLoop | 版本、检查点、限次恢复与有界观察 |
+| 应用与编排 | ResearchService、LangGraph StateGraph、SQLite Saver | 结构化路由、持久审核中断、版本批准与真实步骤事件 |
+| 原执行协调 | AssistantWorkspace、TaskRuntime、EvidenceLoop | 统计执行权、结果调和、运行问答与原工作台 |
 | 模型 | 多服务商HTTP网关 | 接收配置授权、结构化输出与本地校验 |
-| 知识 | TF-IDF方法卡与章节检索 | 方法条件、来源位置、知识库版本 |
+| 知识 | LangChain Core Retriever适配TF-IDF方法卡 | 保留方法条件、来源位置、排名与知识库版本 |
 | 统计 | 17项方法、三类执行器、ToolResult | 设计检查、计算、诊断与运行归属 |
 | 存储 | SQLite、Parquet、JSON/HTML | 研究版本、数据副本、证据和成果 |
 | 协议 | MCP与A2A | 明确导出的只读方法/证据查询与规则审阅 |
@@ -46,9 +47,9 @@
 | 多模型 | DeepSeek、OpenAI、Anthropic、百炼、Gemini及HTTPS兼容接口 | DeepSeek真实API验收通过；其他预设为协议合同测试 |
 | MCP | 五项只读工具 | 不提供批准或统计执行权限 |
 | A2A | 独立本地规则审阅服务 | 不是第二个自主研究大模型，不验证因果假设 |
-| LangGraph / LangChain | 已形成目标架构与迁移方案 | 尚未安装或接入正式流程 |
+| LangGraph / LangChain Core | 首个闭环已接入；本地SQLite图检查点 | 完整子图、外部MCP客户端与HTTP/SSE仍在迁移计划中 |
 
-0.7.0上轮验收：源码与独立已安装wheel环境分别 **401项测试通过**，浏览器及MCP/A2A实际协议调用通过。测试数不等于开放任务准确率；独立用户效率与完成率仍待评测。[测试工作流](https://github.com/JiamWei624/CausalOps/actions)
+0.8.0源码回归 **432项测试通过**，其中31项覆盖新图、批准、恢复、模型合同与数值对照。真实浏览器已完成上传、审核、执行、报告下载、追问和方法咨询。旧版0.7.0的401项回归包含在其中。新增模型路由另在DeepSeek官方API合成任务中完成真实闭环（含本地引用超限后的有限修复），与测试替身记录分开；这些数字不是开放任务准确率，独立用户效率仍待评测。[测试工作流](https://github.com/JiamWei624/CausalOps/actions)
 
 ## 页面示例
 
@@ -65,7 +66,7 @@
 已有安装环境启动：
 
 ```powershell
-python -m causalops.launch --workspace "E:/my-causalops-workspace" --port 8510
+python -m causalops.launch --workspace "E:/my-causalops-workspace" --port 8513
 ```
 
 从源码安装可按[固定运行依赖](requirements-runtime-win-py311.txt)与[第三方许可说明](THIRD_PARTY_NOTICES.md)准备环境：
@@ -77,7 +78,7 @@ $env:PIP_CACHE_DIR = "E:/project-cache/pip"
 python -m venv "E:/causalops-venv"
 & "E:/causalops-venv/Scripts/python.exe" -m pip install -r requirements-runtime-win-py311.txt
 & "E:/causalops-venv/Scripts/python.exe" -m pip install --no-deps .
-& "E:/causalops-venv/Scripts/python.exe" -m causalops.launch --workspace "E:/causalops-work" --port 8510
+& "E:/causalops-venv/Scripts/python.exe" -m causalops.launch --workspace "E:/causalops-work" --port 8513
 ```
 
 以上从项目根目录执行，E盘目录需存在。离线发行包另附匹配wheel与安装脚本；Git仓库不包含大型依赖包。模型配置方法见[多模型接入说明](docs/PROVIDERS_PROTOCOLS_0.7.0.md)。密钥只在界面内存使用，不提交到Git。
@@ -90,16 +91,17 @@ python -m causalops.protocols.readonly_server --workspace "E:/my-causalops-works
 
 先在任务中明确导出证据；宿主仅读取该导出范围。宿主配置与权限由使用者确认，不自动继承工作台外发授权。
 
-## 目标架构（建议，尚未接入）
+## 完整目标架构（部分已实现）
 
-![LangGraph与LangChain目标架构：尚未实现](docs/assets/architecture-target.svg)
+![LangGraph与LangChain完整目标：仍有待实现部分](docs/assets/architecture-target.svg)
 
 建议采用 **ResearchService统一入口 + LangGraph结构化Supervisor与有界子图 + LangChain检索/工具适配 + 现有统计与证据内核**。ToolGateway统一检查工具效果、调用范围与授权；MCP/A2A保留明确协议边界。
 
 已通过口令读取三份授权参考文档并核对至末尾，具体比较见[阅读核查](docs/REFERENCE_PROJECT_REVIEW.md)。借鉴主流程、主管路由和工具连接，同时区分图状态、人工研究事实和运行证据。出行示例明确未使用RAG/Milvus；参考项目完整源码未运行，不直接采用其生产能力宣称。
 
-先保留Streamlit、SQLite与现有统计运行时。迁移顺序为服务解耦、结构化路由、检索子图、审核中断、真实进度与结果解释。框架尚未接入，不在当前环境直接升级依赖。
+首个闭环已在独立环境接入，完整目标中的补充检索子图、长期记忆治理和外部MCP客户端仍未全部实现。保留Streamlit、SQLite和原统计运行时，分阶段迁移；不在旧环境直接升级依赖。
 
+- [0.8.0已实现闭环与操作说明](docs/LANGGRAPH_IMPLEMENTATION_0.8.0.md)
 - [当前问题、参考模式与职责分工](docs/ARCHITECTURE_REVIEW_0.7.0.md)
 - [逐阶段迁移、输入输出与验收标准](docs/LANGGRAPH_MIGRATION_PLAN.md)
 - [研究工作流图](docs/assets/research-workflow-target.svg)

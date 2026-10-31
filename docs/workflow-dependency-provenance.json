@@ -1,0 +1,285 @@
+{
+  "checked_on": "2026-10-31",
+  "index": "https://pypi.org/simple",
+  "python": "3.11",
+  "installed_in": "isolated E drive environment",
+  "tracing": "disabled",
+  "packages": [
+    {
+      "name": "langgraph",
+      "version": "1.2.19",
+      "requires_python": ">=3.10",
+      "project_urls": [
+        "Homepage, https://docs.langchain.com/oss/python/langgraph/overview",
+        "Documentation, https://reference.langchain.com/python/langgraph/",
+        "Source, https://github.com/langchain-ai/langgraph/tree/main/libs/langgraph",
+        "Changelog, https://github.com/langchain-ai/langgraph/releases",
+        "Twitter, https://x.com/langchain_oss",
+        "Slack, https://www.langchain.com/join-community",
+        "Reddit, https://www.reddit.com/r/LangChain/"
+      ],
+      "url": "https://files.pythonhosted.org/packages/d7/9e/bd29e368fb16feea8d24270d377d56c34b49afea371717124f19cdfa890c/langgraph-1.2.19-py3-none-any.whl",
+      "hashes": {
+        "sha256": "6094a5cbed52a77d8c74c276fcd2056abde7b2836eab1c7a6b74bacbd1a269b3"
+      }
+    },
+    {
+      "name": "langchain-core",
+      "version": "1.7.3",
+      "requires_python": "<4.0.0,>=3.10.0",
+      "project_urls": [
+        "Homepage, https://docs.langchain.com/",
+        "Documentation, https://reference.langchain.com/python/langchain_core/",
+        "Repository, https://github.com/langchain-ai/langchain",
+        "Issues, https://github.com/langchain-ai/langchain/issues",
+        "Changelog, https://github.com/langchain-ai/langchain/releases?q=%22langchain-core%3D%3D1%22",
+        "Twitter, https://x.com/langchain_oss",
+        "Slack, https://www.langchain.com/join-community",
+        "Reddit, https://www.reddit.com/r/LangChain/"
+      ],
+      "url": "https://files.pythonhosted.org/packages/b4/c6/88bcc77899601e09a428d9c764e41ac3e7ede161384f85b9a2a8a828f81d/langchain_core-1.7.3-py3-none-any.whl",
+      "hashes": {
+        "sha256": "460c214bf31495d7b7e0a879e408dbfda677fd53fd879da786c1b966a4f6bff6"
+      }
+    },
+    {
+      "name": "langgraph-checkpoint",
+      "version": "4.3.1",
+      "requires_python": ">=3.10",
+      "project_urls": [
+        "Source, https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint",
+        "Twitter, https://x.com/langchain_oss",
+        "Slack, https://www.langchain.com/join-community",
+        "Reddit, https://www.reddit.com/r/LangChain/"
+      ],
+      "url": "https://files.pythonhosted.org/packages/f3/40/4251d676b5c585d42175c901175d4bff56e22939625e18bcef781fc3e893/langgraph_checkpoint-4.3.1-py3-none-any.whl",
+      "hashes": {
+        "sha256": "215a826935c8db4d9676e79fd95943e5b3847d78604390898e1d98581cc594e5"
+      }
+    },
+    {
+      "name": "langgraph-prebuilt",
+      "version": "1.1.1",
+      "requires_python": ">=3.10",
+      "project_urls": [
+        "Source, https://github.com/langchain-ai/langgraph/tree/main/libs/prebuilt",
+        "Twitter, https://x.com/langchain_oss",
+        "Slack, https://www.langchain.com/join-community",
+        "Reddit, https://www.reddit.com/r/LangChain/"
+      ],
+      "url": "https://files.pythonhosted.org/packages/38/26/4da2c6ae8b9fe73c3c09cf32c058415c5041e773fd00219c5e0d76588c23/langgraph_prebuilt-1.1.1-py3-none-any.whl",
+      "hashes": {
+        "sha256": "fae17c22562e501940eb7aa052a15c58a431febbabf33f8ad172e1b44354a7e4"
+      }
+    },
+    {
+      "name": "langgraph-sdk",
+      "version": "0.4.11",
+      "requires_python": ">=3.10",
+      "project_urls": [
+        "Source, https://github.com/langchain-ai/langgraph/tree/main/libs/sdk-py",
+        "Twitter, https://x.com/langchain_oss",
+        "Slack, https://www.langchain.com/join-community",
+        "Reddit, https://www.reddit.com/r/LangChain/"
+      ],
+      "url": "https://files.pythonhosted.org/packages/01/88/69899bb20b96b80468e98b90377e605c36658125e7e7fba401868a86138e/langgraph_sdk-0.4.11-py3-none-any.whl",
+      "hashes": {
+        "sha256": "6a65be4a8f825966a07317b8e34e3337cd227b9b58b185f0123fd13c3d0116fa"
+      }
+    },
+    {
+      "name": "langsmith",
+      "version": "0.14.16",
+      "requires_python": ">=3.10",
+      "project_urls": [
+        "Homepage, https://github.com/langchain-ai/langsmith-python",
+        "Repository, https://github.com/langchain-ai/langsmith-python"
+      ],
+      "url": "https://files.pythonhosted.org/packages/11/3a/9a072c02a22089ddf20f0f33ea95bee5a5951b31839f118b04f27b94be6e/langsmith-0.14.16-py3-none-any.whl",
+      "hashes": {
+        "sha256": "b9ea1a57622b0788b181d78605f974fb206c5f6f75793076ffec23cef4d904c8"
+      }
+    },
+    {
+      "name": "distro",
+      "version": "1.9.0",
+      "requires_python": ">=3.6",
+      "project_urls": [],
+      "url": "https://files.pythonhosted.org/packages/12/b3/231ffd4ab1fc9d679809f356cebee130ac7daa00d6d6f3206dd4fd137e9e/distro-1.9.0-py3-none-any.whl",
+      "hashes": {
+        "sha256": "7bffd925d65168f85027d8da9af6bddab658135b840670a223589bc0c8ef02b2"
+      }
+    },
+    {
+      "name": "uuid_utils",
+      "version": "0.19.0",
+      "requires_python": ">=3.10",
+      "project_urls": [
+        "Documentation, https://github.com/aminalaee/uuid-utils",
+        "Issues, https://github.com/aminalaee/uuid-utils/issues",
+        "Source, https://github.com/aminalaee/uuid-utils"
+      ],
+      "url": "https://files.pythonhosted.org/packages/3f/16/edfb8edc8a4624cfaf1387a57bf37cd53e5d7f213ebeb8dd6fbd2f6b2c64/uuid_utils-0.19.0-cp310-abi3-win_amd64.whl",
+      "hashes": {
+        "sha256": "b763ae8f23334ccd95d0b81fb19ee418f38f9e80ebfb521f313a9745280bc07c"
+      }
+    },
+    {
+      "name": "langgraph-checkpoint-sqlite",
+      "version": "3.1.3",
+      "requires_python": ">=3.10",
+      "project_urls": [
+        "Source, https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint-sqlite",
+        "Twitter, https://x.com/langchain_oss",
+        "Slack, https://www.langchain.com/join-community",
+        "Reddit, https://www.reddit.com/r/LangChain/"
+      ],
+      "url": "https://files.pythonhosted.org/packages/68/e7/574aee0a314fa1c72e62cef2cc22c4f97655a2a18c4031de08d903841b14/langgraph_checkpoint_sqlite-3.1.3-py3-none-any.whl",
+      "hashes": {
+        "sha256": "7ef55348754b8415e9b2bd2a9d6a385a2246c667a57ad34a591d4ab884a4b1a0"
+      }
+    },
+    {
+      "name": "aiosqlite",
+      "version": "0.22.1",
+      "requires_python": ">=3.9",
+      "project_urls": [
+        "Documentation, https://aiosqlite.omnilib.dev",
+        "Github, https://github.com/omnilib/aiosqlite"
+      ],
+      "url": "https://files.pythonhosted.org/packages/00/b7/e3bf5133d697a08128598c8d0abc5e16377b51465a33756de24fa7dee953/aiosqlite-0.22.1-py3-none-any.whl",
+      "hashes": {
+        "sha256": "21c002eb13823fad740196c5a2e9d8e62f6243bd9e7e4a1f87fb5e44ecb4fceb"
+      }
+    },
+    {
+      "name": "jsonpatch",
+      "version": "1.38",
+      "requires_python": ">=3.10",
+      "project_urls": [
+        "Website, https://github.com/stefankoegl/python-json-patch",
+        "Repository, https://github.com/stefankoegl/python-json-patch.git",
+        "Documentation, https://python-json-patch.readthedocs.org/",
+        "PyPI, https://pypi.org/pypi/jsonpatch",
+        "Tests, https://github.com/stefankoegl/python-json-patch/actions",
+        "Test Coverage, https://coveralls.io/github/stefankoegl/python-json-patch"
+      ],
+      "url": "https://files.pythonhosted.org/packages/c7/67/3589e1fae8c43bcb2b3ca28afca742ed7cded199dd9d95bc74f67b1e1991/jsonpatch-1.38-py3-none-any.whl",
+      "hashes": {
+        "sha256": "46260c5df952abd4734a098f94512dc00bc38539152ac3ef069ed0475e4f5695"
+      }
+    },
+    {
+      "name": "jsonpointer",
+      "version": "3.6",
+      "requires_python": ">=3.10",
+      "project_urls": [],
+      "url": "https://files.pythonhosted.org/packages/6e/34/cee746fb30473bfaa92f19267fcc102a1118eaec83e7e2b5652a91ead01c/jsonpointer-3.6-py3-none-any.whl",
+      "hashes": {
+        "sha256": "a45c858f8a9e171f6b3790ed9446c9382782f6c4cb4589176813c5a553f4cfcd"
+      }
+    },
+    {
+      "name": "langchain-protocol",
+      "version": "0.0.20",
+      "requires_python": "<4.0.0,>=3.10.0",
+      "project_urls": [
+        "Homepage, https://github.com/langchain-ai/agent-protocol/tree/main/streaming",
+        "Repository, https://github.com/langchain-ai/agent-protocol",
+        "Issues, https://github.com/langchain-ai/agent-protocol/issues"
+      ],
+      "url": "https://files.pythonhosted.org/packages/02/4b/f1c99a0b27c5ff8b4b131c0d6e62012c17cc424089efe213767db927afd2/langchain_protocol-0.0.20-py3-none-any.whl",
+      "hashes": {
+        "sha256": "3c935e5e46b0f6f9cb52f45ba7cfa53d1b9fa80c82c4a277d47f03e07f7385b1"
+      }
+    },
+    {
+      "name": "orjson",
+      "version": "3.13.0",
+      "requires_python": ">=3.10",
+      "project_urls": [
+        "changelog, https://github.com/ijl/orjson/blob/master/CHANGELOG.md",
+        "documentation, https://github.com/ijl/orjson",
+        "source, https://github.com/ijl/orjson"
+      ],
+      "url": "https://files.pythonhosted.org/packages/af/cf/be64b99ff75f7983488390d4ef5df72115119770eed295691c0a715d492a/orjson-3.13.0-cp311-cp311-win_amd64.whl",
+      "hashes": {
+        "sha256": "a0377d6962fa431c93ecd78fdea771bb62ec545b24ee0c5d4e32acf2260af259"
+      }
+    },
+    {
+      "name": "ormsgpack",
+      "version": "1.13.0",
+      "requires_python": ">=3.11",
+      "project_urls": [
+        "Homepage, https://github.com/ormsgpack/ormsgpack"
+      ],
+      "url": "https://files.pythonhosted.org/packages/15/b0/a6283210086037418ba2a8cb1e2795772eadce9f301c2c0669b90c9e34eb/ormsgpack-1.13.0-cp311-cp311-win_amd64.whl",
+      "hashes": {
+        "sha256": "dcc34f07b883d96681385517110182fe319ba8a5cdd40c990560c0fe1e01a27f"
+      }
+    },
+    {
+      "name": "requests-toolbelt",
+      "version": "1.0.0",
+      "requires_python": ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*",
+      "project_urls": [
+        "Changelog, https://github.com/requests/toolbelt/blob/master/HISTORY.rst",
+        "Source, https://github.com/requests/toolbelt"
+      ],
+      "url": "https://files.pythonhosted.org/packages/3f/51/d4db610ef29373b879047326cbf6fa98b6c1969d6f6dc423279de2b1be2c/requests_toolbelt-1.0.0-py2.py3-none-any.whl",
+      "hashes": {
+        "sha256": "cccfdd665f0a24fcf4726e690f65639d272bb0637b9b92dfd91a5568ccf6bd06"
+      }
+    },
+    {
+      "name": "sqlite-vec",
+      "version": "0.1.9",
+      "requires_python": null,
+      "project_urls": [],
+      "url": "https://files.pythonhosted.org/packages/42/89/81b2907cda14e566b9bf215e2ad82fc9b349edf07d2010756ffdb902f328/sqlite_vec-0.1.9-py3-none-win_amd64.whl",
+      "hashes": {
+        "sha256": "4a28dc12fa4b53d7b1dced22da2488fade444e96b5d16fd2d698cd670675cf32"
+      }
+    },
+    {
+      "name": "tenacity",
+      "version": "9.2.1",
+      "requires_python": ">=3.10",
+      "project_urls": [
+        "Homepage, https://github.com/jd/tenacity",
+        "Documentation, https://tenacity.readthedocs.io",
+        "Source, https://github.com/jd/tenacity",
+        "Issues, https://github.com/jd/tenacity/issues",
+        "Changelog, https://tenacity.readthedocs.io/en/latest/changelog.html"
+      ],
+      "url": "https://files.pythonhosted.org/packages/d6/26/1ff2b0721ac66a3ec5b1402b333110b352ab0a8724052ac279a7b82d40c4/tenacity-9.2.1-py3-none-any.whl",
+      "hashes": {
+        "sha256": "9e56f17539296baab7beabb08b92f6ee3d7be92d8be72d763360677c2ad6580e"
+      }
+    },
+    {
+      "name": "xxhash",
+      "version": "4.0.2",
+      "requires_python": ">=3.9",
+      "project_urls": [],
+      "url": "https://files.pythonhosted.org/packages/eb/20/6c0271610bec93dc62a24c15f023f81d1781bb1ee9df15daf8b649116d92/xxhash-4.0.2-cp311-cp311-win_amd64.whl",
+      "hashes": {
+        "sha256": "c60fa1038814c3c682a8e3b68aeca598e7b90eb4a65d4a48b7e0e6fbae825507"
+      }
+    },
+    {
+      "name": "zstandard",
+      "version": "0.25.0",
+      "requires_python": ">=3.9",
+      "project_urls": [
+        "Homepage, https://github.com/indygreg/python-zstandard",
+        "Documentation, https://python-zstandard.readthedocs.io/en/latest/"
+      ],
+      "url": "https://files.pythonhosted.org/packages/43/a3/c6155f5c1cce691cb80dfd38627046e50af3ee9ddc5d0b45b9b063bfb8c9/zstandard-0.25.0-cp311-cp311-win_amd64.whl",
+      "hashes": {
+        "sha256": "daab68faadb847063d0c56f361a289c4f268706b598afbf9ad113cbe5c38b6b2"
+      }
+    }
+  ]
+}

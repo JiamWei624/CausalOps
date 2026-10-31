@@ -1,6 +1,6 @@
 {
   "checked_on": "2026-10-31",
-  "runtime_version": "0.7.0",
+  "runtime_version": "0.8.0",
   "reference_access": [
     {
       "url": "https://dqej47nflyz.feishu.cn/wiki/Sjedw0wDSiFj6Dk3rc5c1Ioontf",
@@ -117,8 +117,9 @@
     }
   ],
   "secrets_included": false,
-  "langgraph_installed": false,
-  "runtime_code_modified": false,
+  "langgraph_installed": true,
+  "runtime_code_modified": true,
   "review_document": "REFERENCE_PROJECT_REVIEW.md",
-  "framework_migration_status": "design_only"
+  "framework_migration_status": "first_vertical_slice_implemented",
+  "langchain_core_installed": true
 }

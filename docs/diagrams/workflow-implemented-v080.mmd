@@ -1,0 +1,38 @@
+---
+config:
+  flowchart:
+    curve: linear
+---
+graph TD;
+	__start__([<p>__start__</p>]):::first
+	load_context(load_context)
+	route_intent(route_intent)
+	retrieve_methods(retrieve_methods)
+	draft_plan(draft_plan)
+	await_review(await_review)
+	execute_plan(execute_plan)
+	answer_results(answer_results)
+	answer_method(answer_method)
+	profile_data(profile_data)
+	clarify(clarify)
+	__end__([<p>__end__</p>]):::last
+	__start__ --> load_context;
+	await_review -. &nbsp;rejected&nbsp; .-> __end__;
+	await_review -. &nbsp;approved&nbsp; .-> execute_plan;
+	draft_plan --> await_review;
+	execute_plan -. &nbsp;end&nbsp; .-> __end__;
+	execute_plan -. &nbsp;answer&nbsp; .-> answer_results;
+	load_context --> route_intent;
+	retrieve_methods -. &nbsp;method&nbsp; .-> answer_method;
+	retrieve_methods -. &nbsp;results&nbsp; .-> answer_results;
+	retrieve_methods -. &nbsp;plan&nbsp; .-> draft_plan;
+	route_intent -.-> clarify;
+	route_intent -. &nbsp;profile&nbsp; .-> profile_data;
+	route_intent -. &nbsp;method&nbsp; .-> retrieve_methods;
+	answer_method --> __end__;
+	answer_results --> __end__;
+	clarify --> __end__;
+	profile_data --> __end__;
+	classDef default fill:#f2f0ff,line-height:1.2
+	classDef first fill-opacity:0
+	classDef last fill:#bfb6fc

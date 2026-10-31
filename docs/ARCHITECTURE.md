@@ -1,6 +1,6 @@
-# 系统架构与执行边界（0.7.0）
+# 系统架构与执行边界（0.8.0）
 
-[当前架构核查与目标图](ARCHITECTURE_REVIEW_0.7.0.md) · [LangGraph迁移方案（尚未实施）](LANGGRAPH_MIGRATION_PLAN.md) · [三份参考项目核查](REFERENCE_PROJECT_REVIEW.md)
+[首个LangGraph闭环](LANGGRAPH_IMPLEMENTATION_0.8.0.md) · [0.7.0架构核查与目标图](ARCHITECTURE_REVIEW_0.7.0.md) · [LangGraph迁移方案（尚未实施）](LANGGRAPH_MIGRATION_PLAN.md) · [三份参考项目核查](REFERENCE_PROJECT_REVIEW.md)
 
 ![当前真实架构](assets/architecture-current.svg)
 
@@ -8,9 +8,9 @@ CausalOps 是本机单用户的模块化研究工作台。统计估计在本地�
 
 ## 主流程
 
-`CSV/Parquet → GeneralWorkspace登记与双指纹 → AssistantWorkspace任务 → MethodLibrary检索 → Plan候选 → 人工接受/登记研究事实 → TaskRuntime检查点 → AnalysisTools适配器 → 原统计引擎 → ToolResult契约 → 运行选择/结果问答/报告`
+`CSV/Parquet → ResearchService登记 → LangGraph结构化路由 → LangChain Core方法检索 → Plan候选 → interrupt → 人工审核与领域批准 → TaskRuntime → 原统计引擎 → ToolResult → 运行证据问答/报告`
 
-界面为Streamlit；任务、版本、运行引用、执行尝试和对话保存在SQLite。原始数据副本为本地Parquet。无需LangChain/LangGraph；主流程使用明确的HTTP协议适配器（旧专业表单保留SDK）和本项目的受限状态机。
+界面为Streamlit；任务、版本、运行引用、执行尝试和对话保存在SQLite。原始数据副本为本地Parquet。首个闭环采用LangGraph和LangChain Core；原受限状态机入口仍可切换。多模型HTTP网关及旧专业表单保留原实现，科学假设仍由人工核对。
 
 ## 三类执行器与统一合同
 
