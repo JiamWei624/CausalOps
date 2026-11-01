@@ -229,6 +229,10 @@ class AssistantWorkspace:
             else:categorical=[target]+[x for x in categorical if x!=target][:5]
         if not numeric and not categorical:raise DesignError('没有可自动统计的非标识字段；请使用专业模式明确字段含义。')
         steps=[Step(config={'question':'数据质量、分布及可分析字段体检','method':'descriptive','numeric':numeric,'categorical':categorical},reason='先核对样本、缺失和分布，不改变原表。')]
+        declared=((guidance or {}).get('data_dictionary') or {}).get('definition',{})
+        if declared.get('time') in set(self.ws.load_upload(s['upload_id']).columns) and numeric:
+            steps[0].config['date']=declared['time']
+            steps[0].config['frequency']='Q' if '季度' in q+declared.get('analysis_unit','') else 'D'
         asked=[c for c in numeric if c.lower() in q.lower()]
         questions=[]
         if re.search('相关|correlat',q,re.I) and len(asked or numeric)>=2:

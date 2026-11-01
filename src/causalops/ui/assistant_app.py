@@ -27,6 +27,22 @@ def show_sources(hits):
             for span in h.get('matched_sections',[]):st.caption('命中章节：'+span['section']+' · 原创方法摘要指纹 '+span['note_sha256'][:12])
             st.caption('原文核对范围以来源登记为准；方法摘要不是论文逐字引文。')
 
+def chart_context(a,sid,rid):
+    from causalops.application.task_conclusions import source_dictionary
+    body,_=source_dictionary(a,sid,rid)
+    labels={f['field']:f['meaning']+'（'+f['field']+'）' for f in body.get('fields',[]) if f.get('meaning')}
+    units={f['field']:f['unit'] for f in body.get('fields',[]) if f.get('unit')}
+    target=body.get('outcome')
+    if target and body.get('metric_label'):labels[target]=body['metric_label']+'（'+target+'）'
+    if target and body.get('metric_unit'):units[target]=body['metric_unit']
+    return labels,units
+
+def primary_chart_key(bundle,focus,charts):
+    if bundle.get('regression'):return '关联系数'
+    if bundle['method']=='correlation':return '相关矩阵'
+    if bundle['summary']['trend']:return next((k for k in charts if k.startswith('时间汇总_')),None)
+    return next((k for k in charts if k in ('分布_'+str(focus),'频数_'+str(focus))),next(iter(charts),None))
+
 def show_run(a,ref,sid,*,compact=False):
     from causalops.assistant.export import attach_discussion
     rid=ref['run_id']
@@ -38,9 +54,9 @@ def show_run(a,ref,sid,*,compact=False):
         for section,text in conclusion['sections'].items():st.markdown('**'+conclusion.get('titles',TITLES)[section]+'：** '+safe_text(text))
         st.caption('解释来自保存运行；数据字典版本与证据指纹可追溯，未重新估计。')
     focus=(conclusion.get('focus') or {}).get('field')
-    if ref['kind']=='exploration' and focus and conclusion['focus']['available']:
-        saved=a.ex.load(rid);chart=next((f for k,f in figures(saved,focus=focus).items() if k in ('分布_'+focus,'频数_'+focus)),None)
-        if chart is not None:st.plotly_chart(chart,key='focus_preview_'+rid,width='stretch')
+    if ref['kind']=='exploration':
+        saved=a.ex.load(rid);labels,units=chart_context(a,sid,rid);charts=figures(saved,focus=focus,labels=labels,units=units);key=primary_chart_key(saved,focus,charts)
+        if key in charts:st.plotly_chart(charts[key],key='focus_preview_'+rid,width='stretch')
     report=make_report(a,ref,sid,conclusion)
     st.download_button('导出本次分析报告',report,file_name='CausalOps-'+rid+'.html',mime='text/html',key='primary_report_'+rid)
     if compact:
@@ -51,7 +67,8 @@ def make_report(a,ref,sid,conclusion):
     from causalops.assistant.export import attach_discussion
     from causalops.application.task_conclusions import attach_task_conclusion
     rid=ref['run_id'];focus=(conclusion.get('focus') or {}).get('field')
-    if ref['kind']=='exploration':report=render_report(a.ex.load(rid),focus=focus)
+    if ref['kind']=='exploration':
+        labels,units=chart_context(a,sid,rid);report=render_report(a.ex.load(rid),focus=focus,labels=labels,units=units)
     elif ref['kind']=='advanced':report=advanced_ui.report(a.advanced.load(rid))
     else:report=render_html_report(a.ws.bundle(rid)[0])
     return attach_discussion(attach_task_conclusion(report,conclusion),a.events(sid),rid,a.library)
@@ -73,8 +90,9 @@ def _show_run_details(a,ref,sid,conclusion,report):
             formats={c:st.column_config.NumberColumn(format='scientific' if c=='P值' else '%.4g') for c in table.select_dtypes(include='number').columns}
             st.dataframe(table,column_config=formats,hide_index=True,width='stretch');st.info(b['regression']['note'])
             if b['regression'].get('overdispersion_flag'):st.warning('Pearson离散度偏高；应检查计数均值设定、暴露与负二项等替代，当前不自动换模型。')
-        for name,f in list(figures(b,focus=(conclusion.get('focus') or {}).get('field')).items())[:5]:
-            if name not in ('分布_'+str((conclusion.get('focus') or {}).get('field')),'频数_'+str((conclusion.get('focus') or {}).get('field'))):st.plotly_chart(f,key='assist_'+rid+'_'+name,width='stretch')
+        labels,units=chart_context(a,sid,rid);focus=(conclusion.get('focus') or {}).get('field');charts=figures(b,focus=focus,labels=labels,units=units);primary=primary_chart_key(b,focus,charts)
+        for name,f in list(charts.items())[:5]:
+            if name!=primary:st.plotly_chart(f,key='assist_'+rid+'_'+name,width='stretch')
         with st.expander('完整数据质量与数值统计'):
             st.dataframe(display(b['summary']['columns']),hide_index=True,width='stretch');st.dataframe(display(b['summary']['numeric']),hide_index=True,width='stretch')
         x,y=st.columns(2);x.download_button('下载分析报告（HTML）',report,file_name='CausalOps-'+rid+'.html',mime='text/html',key='ah_'+rid);y.download_button('下载运行证据（JSON）',json.dumps(b,ensure_ascii=False,indent=2),file_name=rid+'.json',key='aj_'+rid)
@@ -129,7 +147,7 @@ def render_assistant():
         st.caption('模型已在首页配置；本任务仍需单独授权发送摘要。' if config and credential else '当前可用本地模式。智能问题推荐需到首页填写模型和密钥。')
         upload=st.file_uploader('CSV / Parquet（不超过50MB、10万行、200列）',type=['csv','parquet','pq'],key='assistant_file')
         with st.expander('文件编码与分隔符设置'):
-            enc=st.selectbox('编码',['utf-8-sig','gb18030'],key='assistant_enc');sep=st.selectbox('分隔符',[',',';','\t'],format_func=lambda v:{',':'逗号',';':'分号','\t':'制表符'}[v],key='assistant_sep')
+            enc=st.selectbox('编码',['utf-8-sig','gb18030'],key='assistant_enc');sep=st.selectbox('分隔符',['auto',',',';','\t'],format_func=lambda v:{'auto':'自动识别（不明确时提示确认）',',':'逗号',';':'分号','\t':'制表符'}[v],key='assistant_sep')
         title=st.text_input('任务名称（可选）',key='assistant_title',placeholder='例如：客户访问与转化研究')
         known=a.ws.uploads();uid=st.selectbox('或选择已导入的本地表',[None]+[x['upload_id'] for x in known],format_func=lambda x:'不使用已有表' if x is None else next(v['name']+' · '+x[-6:] for v in known if v['upload_id']==x),key='assistant_known')
         if st.button('创建任务并检查数据',type='primary',disabled=not upload and not uid):

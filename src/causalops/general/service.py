@@ -44,13 +44,29 @@ class GeneralDesign(BaseModel):
     panel_confirmed:bool=False
     metric:MetricDefinition
 
+def detect_csv_separator(text):
+    # Conservative delimiter detection: no transformations or silent guesses on ambiguity.
+    from itertools import islice
+    candidates=[];widths=[]
+    for sep in (',',';','\t'):
+        try:rows=list(islice(csv.reader(io.StringIO(text),delimiter=sep,strict=True),50))
+        except csv.Error:continue
+        rows=[row for row in rows if row]
+        if not rows:continue
+        width=len(rows[0]);widths.append(width)
+        if width>1 and len(rows)>1 and all(len(row)==width for row in rows):candidates.append(sep)
+    if len(candidates)==1:return candidates[0]
+    if not candidates and widths and all(w==1 for w in widths):return ','
+    raise DesignError('无法唯一识别CSV分隔符，请在文件设置中明确选择逗号、分号或制表符；未修改原文件。')
+
 def read_table(payload:bytes,name:str,encoding='utf-8-sig',separator=',',max_rows=100000)->pd.DataFrame:
     if len(payload)>50*1024*1024:raise DesignError('文件超过50MB。本版请在本地先准备分析表。')
     suffix=Path(name).suffix.lower()
     if suffix=='.csv':
-        if encoding not in ('utf-8-sig','gb18030') or separator not in (',',';','\t'):raise DesignError('CSV编码或分隔符不受支持。')
+        if encoding not in ('utf-8-sig','gb18030') or separator not in ('auto',',',';','\t'):raise DesignError('CSV编码或分隔符不受支持。')
         try:text=payload.decode(encoding)
         except UnicodeDecodeError:raise DesignError('CSV编码不匹配；请选择UTF-8或GB18030。') from None
+        if separator=='auto':separator=detect_csv_separator(text)
         header=next(csv.reader(io.StringIO(text),delimiter=separator),[])
         if not header or any(not x.strip() for x in header) or len(set(header))!=len(header):raise DesignError('列名为空或重复，请先修正文件表头。')
         frame=pd.read_csv(io.StringIO(text),sep=separator,nrows=max_rows+1)

@@ -13,5 +13,81 @@
   "license_url": "https://creativecommons.org/licenses/by/4.0/",
   "attribution": "Cortez, P., Cerdeira, A., Almeida, F., Matos, T., & Reis, J. (2009). Wine Quality. UCI Machine Learning Repository.",
   "changes": "原始 red CSV 原样分发；读取时使用分号；不去重、不改值。",
-  "checked_on": "2026-11-01"
+  "checked_on": "2026-11-01",
+  "onboarding": {
+    "analysis_unit": "一条红葡萄酒样本的检测与感官评分记录",
+    "target": "quality",
+    "metric_label": "质量评分",
+    "metric_unit": "分",
+    "description": "葡萄牙 Vinho Verde 红葡萄酒样本的理化检测与感官评分数据。当前发行包仅含红酒子集，不是 UCI 页面中的白酒样本。",
+    "target_definition": "quality 是感官质量评分，官方定义范围为 0–10 分，属于有序评分，不是销售额或购买概率。",
+    "question": "质量评分如何分布，数据是否存在缺失或重复记录？",
+    "fields": [
+      {
+        "field": "fixed acidity",
+        "meaning": "固定酸度",
+        "unit": ""
+      },
+      {
+        "field": "volatile acidity",
+        "meaning": "挥发性酸度",
+        "unit": ""
+      },
+      {
+        "field": "citric acid",
+        "meaning": "柠檬酸",
+        "unit": ""
+      },
+      {
+        "field": "residual sugar",
+        "meaning": "残糖",
+        "unit": ""
+      },
+      {
+        "field": "chlorides",
+        "meaning": "氯化物",
+        "unit": ""
+      },
+      {
+        "field": "free sulfur dioxide",
+        "meaning": "游离二氧化硫",
+        "unit": ""
+      },
+      {
+        "field": "total sulfur dioxide",
+        "meaning": "总二氧化硫",
+        "unit": ""
+      },
+      {
+        "field": "density",
+        "meaning": "密度",
+        "unit": ""
+      },
+      {
+        "field": "pH",
+        "meaning": "酸碱度",
+        "unit": ""
+      },
+      {
+        "field": "sulphates",
+        "meaning": "硫酸盐",
+        "unit": ""
+      },
+      {
+        "field": "alcohol",
+        "meaning": "酒精含量",
+        "unit": ""
+      },
+      {
+        "field": "quality",
+        "meaning": "质量评分",
+        "unit": "分"
+      }
+    ],
+    "limitations": [
+      "没有售价、成本、品牌或葡萄品种，不能计算利润。",
+      "没有随机分配或处理时点，不能据此证明调整配方会提高质量。",
+      "完全重复记录不自动等于错误，需根据采样过程决定是否保留。"
+    ]
+  }
 }

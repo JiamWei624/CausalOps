@@ -1,4 +1,4 @@
-# 安装、启动与故障恢复 · 0.14.0
+# 安装、启动与故障恢复 · 0.15.0
 
 本文面向第一次运行 CausalOps 的使用者。先完成本地示例，再选择是否接入模型。仓库公开只代表源码可获取，不代表把本机工作区公开或提供在线多人服务。
 
@@ -46,7 +46,7 @@ python install_offline.py --destination "E:/causalops-env-new"
 & "E:/causalops-env/Scripts/python.exe" -m causalops.launch --workspace "E:/causalops-work" --port 8513
 ```
 
-保留启动进程。使用终端本次显示的完整地址，形如 `http://127.0.0.1:8513/?route=home&release=0.14.0&build=...`；省略 `--port` 时同样使用 8513。首页与其他主页面顶部显示实际版本及构建号。源码快捷启动脚本和安装版均进入同一个工作台。若使用源码目录的双击脚本，请先为该次启动指定已经安装依赖的解释器，或把虚拟环境放在源码目录 `.venv` 中。脚本不再回退到作者机器的其他目录或旧版作品集。
+保留启动进程。使用终端本次显示的完整地址，形如 `http://127.0.0.1:8513/?route=home&release=0.15.0&build=...`；省略 `--port` 时同样使用 8513。首页与其他主页面顶部显示实际版本及构建号。源码快捷启动脚本和安装版均进入同一个工作台。若使用源码目录的双击脚本，请先为该次启动指定已经安装依赖的解释器，或把虚拟环境放在源码目录 `.venv` 中。脚本不再回退到作者机器的其他目录或旧版作品集。
 
 ```powershell
 $env:CAUSALOPS_PYTHON = "E:/causalops-env/Scripts/python.exe"

@@ -66,7 +66,10 @@ def describe(f,d):
         v=f[c];finite=v[np.isfinite(v.fillna(np.nan).astype(float))].astype(float);count=len(finite);q=finite.quantile([.25,.5,.75]) if count else pd.Series([np.nan]*3,index=[.25,.5,.75]);iqr=q[.75]-q[.25]
         result['numeric'].append({'field':c,'finite_n':count,'missing_n':int(v.isna().sum()),'infinite_n':int(np.isinf(v.fillna(0).astype(float)).sum()),'mean':finite.mean(),'std_ddof1':finite.std(ddof=1),'min':finite.min(),'q25':q[.25],'median':q[.5],'q75':q[.75],'max':finite.max(),'zero_n':int((finite==0).sum()),'iqr_flag_n':int(((finite<q[.25]-1.5*iqr)|(finite>q[.75]+1.5*iqr)).sum())})
         if count:
-            counts,edges=np.histogram(finite,bins=min(20,max(1,int(np.sqrt(count)))));result['histograms'].append({'field':c,'counts':counts.tolist(),'edges':edges.tolist()})
+            counts,edges=np.histogram(finite,bins=min(20,max(1,int(np.sqrt(count)))));hist={'field':c,'counts':counts.tolist(),'edges':edges.tolist()}
+            if finite.nunique()<=20 and bool((finite%1==0).all()):
+                freq=finite.value_counts().sort_index();hist.update(value_type='discrete',values=freq.index.tolist(),frequencies=freq.tolist())
+            result['histograms'].append(hist)
     for c in d.categorical:
         series=f[c].astype('string');vc=series.value_counts(dropna=False);rows=[]
         for val,k in vc.iloc[:20].items():rows.append({'value':None if pd.isna(val) else str(val),'is_missing':bool(pd.isna(val)),'n':int(k),'pct_of_all_rows':float(k/n*100)})

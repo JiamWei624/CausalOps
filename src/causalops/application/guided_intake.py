@@ -35,7 +35,7 @@ class GuidedIntake:
         body['analysis_unit']=unit
         self.s.contracts.save(sid,body,expected_sha=expected_sha,human_confirmed=True)
         self._step(sid,2)
-    def save_target(self,sid,field,label='',unit='',*,expected_sha=None,human_confirmed=False):
+    def save_target(self,sid,field,label='',unit='',*,expected_sha=None,human_confirmed=False,time_field=None):
         if human_confirmed is not True:raise DesignError('目标指标须由使用者确认。')
         body=self._body(sid,expected_sha);frame=self.s.ws.load_upload(self.s.a.session(sid)['upload_id'])
         safe={f['field'] for f in profile(frame)['fields'] if not f['likely_identifier']}
@@ -43,6 +43,13 @@ class GuidedIntake:
         if field and field in body['predictors']+body['covariates']+[body['treatment']]:raise DesignError('该字段已有其他分析角色，请先在高级设置核对角色；引导不会自动改写。')
         if body['outcome']!=field:
             body['method_facts']={};body['metric_kind']='unknown';body['metric_window']=''
+        if time_field is not None:
+            if time_field:
+                import pandas as pd
+                if time_field not in frame or pd.api.types.is_numeric_dtype(frame[time_field]):raise DesignError('请选择实际日期字段；年号、序号或数值编码不能直接当作日期。')
+                if not pd.to_datetime(frame[time_field],errors='coerce').notna().any():raise DesignError('所选字段没有可解析日期，请先核对时间格式。')
+            if body.get('time')!=(time_field or None):body['method_facts']={}
+            body['time']=time_field or None
         old=body['outcome'];body.update(outcome=field,metric_label=label.strip() if field else '',metric_unit=unit.strip() if field else '')
         for value in body['fields']:
             if value['field']==old and old!=field and value['role']=='outcome':value['role']='unspecified'
@@ -53,6 +60,17 @@ class GuidedIntake:
         if human_confirmed is not True:raise DesignError('分析目标须由使用者选择。')
         self._step(sid,4,intention)
         return self.question(sid,intention)
+    def use_example(self,sid,*,expected_sha=None,human_confirmed=False):
+        if human_confirmed is not True:raise DesignError('使用示例说明需要使用者明确确认。')
+        from causalops.sample_data import example_context
+        context=example_context(self.s.a,sid)
+        if context is None:raise DesignError('当前数据不是内容校验通过的内置示例，不能套用示例含义。')
+        body=self._body(sid,expected_sha);v=context['onboarding']
+        if body.get('method_facts') or body.get('predictors') or body.get('covariates') or body.get('treatment') or (body.get('outcome') and body['outcome']!=v['target']):raise DesignError('当前已有自定义研究设置，请保留并逐步核对，不覆盖已有研究事实。')
+        body.update(analysis_unit=v['analysis_unit'],outcome=v['target'],metric_label=v['metric_label'],metric_unit=v['metric_unit'],fields=[{'field':f['field'],'meaning':f['meaning'],'unit':f['unit'],'role':'outcome' if f['field']==v['target'] else 'measure','timing':'unknown'} for f in v['fields']])
+        self.s.contracts.save(sid,body,expected_sha=expected_sha,human_confirmed=True)
+        return self.finish(sid,'describe',human_confirmed=True)
+
     def question(self,sid,intention):
         row=self.s.contracts.latest(sid);target=(row['body'].get('outcome') if row else None)
         name=('目标指标 '+target) if target else '当前表的可用字段'

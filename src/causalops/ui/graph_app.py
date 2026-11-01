@@ -83,8 +83,9 @@ def render_graph_workspace(a,sid,frame,model):
         if refs:
             selected=a.selected_run(sid)
             with st.expander('历史分析结果'):
-                rid=st.selectbox('结果展示与追问所依据的运行',list(refs),index=list(refs).index(selected) if selected in refs else 0,format_func=lambda x:refs[x]['method']+' · '+x[:8],key='graph_run_'+sid)
+                rid=st.selectbox('结果展示与追问所依据的运行',list(refs),index=list(refs).index(selected) if selected in refs else 0,format_func=lambda x:a.tools.method(__import__('causalops.assistant.contracts',fromlist=['REGISTRY']).REGISTRY[refs[x]['method']].tool,refs[x]['method']).label+' · '+x[:8],key='graph_run_'+sid)
             if rid!=selected:a.select_run(sid,rid)
+            if f['status']=='awaiting_review' and refs[rid]['plan_id']!=f['plan_id']:st.info('以下为先前已完成的结果；当前待审计划尚未执行，不能把旧结论当作新计划的输出。')
             st.subheader('分析结果')
             show_run(a,refs[rid],sid,compact=True)
             followups=st.columns(2)
@@ -129,7 +130,7 @@ def render_graph_workspace(a,sid,frame,model):
                 for i,step in enumerate(v['steps']):
                     st.markdown('**步骤 '+str(i+1)+' · '+a.tools.method(step['tool'],step['config']['method']).label+'**')
                     st.write(safe_text(step['reason']))
-                    cfg=step['config'];st.caption('分析字段：'+', '.join(cfg.get('numeric',[])+cfg.get('predictors',[])+cfg.get('covariates',[]))+'；结果：'+str(cfg.get('outcome') or '分布/汇总'))
+                    cfg=step['config'];st.caption('分析字段：'+', '.join(list(dict.fromkeys(cfg.get('numeric',[])+cfg.get('categorical',[])+cfg.get('predictors',[])+cfg.get('covariates',[]))))+'；结果：'+str(cfg.get('outcome') or '分布/汇总'))
                 for q in v['required_questions']:st.info(safe_text(q))
                 with st.expander('核对完整配置、计划和数据版本'):
                     st.json(v);st.caption('计划指纹 '+p['sha']+'；数据指纹 '+f['request']['data']['frame_sha'])
@@ -180,7 +181,7 @@ def render_graph_workspace(a,sid,frame,model):
                     st.caption('解释范围：'+safe_text(d['limitation']))
                     if st.button('制定分析方案',key='direction_'+current+'_'+str(i)):
                         try:
-                            job=jobs.submit_start(sid,d['question'],mode='plan',parent_flow_id=current);st.session_state['_graph_pending_'+sid]=job['flow_id'];st.rerun()
+                            job=jobs.submit_start(sid,'采用第'+str(i+1)+'项建议',mode='plan',parent_flow_id=current);st.session_state['_graph_pending_'+sid]=job['flow_id'];st.rerun()
                         except (ValueError,RuntimeError) as exc:st.error(str(exc))
         pr=service.output(current,'profile')
         if pr:

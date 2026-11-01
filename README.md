@@ -1,13 +1,13 @@
-<!-- release: 0.14.0 -->
+<!-- release: 0.15.0 -->
 # CausalOps
 
 ### 数据分析与研究工作台
 
 CausalOps 是本地运行的数据分析助手。它帮助使用者理解表格、明确问题、制定分析计划，并调用统计工具生成可追溯的图表、结论和报告。模型负责建议与解释，数值计算由本地统计内核完成。
 
-**当前版本 0.14.0 · Windows x64 / Python 3.11 · 本地单用户。** 代码开放范围与数据发送许可相互独立；本地工作区不随源码分发。它不是能从任意表自动证明因果关系的系统。
+**当前版本 0.15.0 · Windows x64 / Python 3.11 · 本地单用户。** 代码开放范围与数据发送许可相互独立；本地工作区不随源码分发。它不是能从任意表自动证明因果关系的系统。
 
-[完整示例教程](docs/current/PUBLIC_TUTORIAL.md) · [安装与故障排查](docs/current/INSTALLATION.md) · [使用说明](docs/current/USER_GUIDE.md) · [系统架构](docs/current/ARCHITECTURE.md) · [模型与隐私](docs/current/PROVIDERS.md) · [验收与限制](docs/current/VALIDATION.md) · [版本历史](docs/HISTORY.md)
+[完整示例教程](docs/current/PUBLIC_TUTORIAL.md) · [安装与故障排查](docs/current/INSTALLATION.md) · [使用说明](docs/current/USER_GUIDE.md) · [系统架构](docs/current/ARCHITECTURE.md) · [模型与隐私](docs/current/PROVIDERS.md) · [验收与限制](docs/current/VALIDATION.md) · [版本历史](docs/HISTORY.md) · [五类真实数据体验](docs/current/REAL_DATA_EXPERIENCE.md)
 
 ![从数据到结论的用户路径](docs/assets/task-workflow-current.svg)
 
@@ -20,22 +20,22 @@ CausalOps 是本地运行的数据分析助手。它帮助使用者理解表格�
 | 业务问题已明确，分析方法待定 | 直接在分析对话中提问 | 检索方法条件、拟定候选计划，在需要的地方要求确认 |
 | 需要解读已有分析结果 | 继续问“幅度意味着什么”“有什么限制” | 读取选定运行的证据，核对引用，不重新估计 |
 
-首次导入后，只需依次说明一行代表什么、关注哪个指标、希望回答哪类问题。未知可留空。无需先懂所有方法名。描述统计可以一键启动；回归或因果研究仍需确认分析单位、字段口径以及与方法相关的事实。未知的事实可以保留未知，系统不得替人勾选。
+内置示例已提供可核对的说明和预填。导入自己的表后，只需依次说明一行代表什么、关注哪个指标、希望回答哪类问题。未知可留空。无需先懂所有方法名。描述统计可以一键启动；回归或因果研究仍需确认分析单位、字段口径以及与方法相关的事实。未知的事实可以保留未知，系统不得替人勾选。
 
 ## 交互界面
 
-[查看连续操作录屏](docs/assets/first-use-tutorial.webm) · [逐步图文教程](docs/current/PUBLIC_TUTORIAL.md)
+[查看连续操作录屏](docs/assets/example-015-guide.webm) · [逐步图文教程](docs/current/PUBLIC_TUTORIAL.md)
 
 截图来自真实浏览器验收，使用公开葡萄酒数据。没有展示密钥、个人研究数据或用户 ID。
 
-![首页：直接导入或体验示例，模型连接可选](docs/assets/first-use-01-home.png)
+![首页：直接导入或体验示例，模型连接可选](docs/assets/example-015-guide-01-home.png)
 
-![三步引导：确认目标指标](docs/assets/first-use-03-target.png)
+![示例说明：直接使用有来源的预填内容](docs/assets/example-015-guide-02-example.png)
 
 ## 首次使用与连续任务
 
 1. 首页载入示例或导入自己的表。
-2. 依次填写 **每行代表的对象 → 关注指标及单位 → 分析目标**。未知可留空，不自动认定随机实验。
+2. 内置示例可直接使用有来源的预填说明；自己的表依次确认 **每行代表的对象 → 关注指标及单位 → 分析目标**，日期可选。未知可留空，不自动认定随机实验。
 3. 阅读待审计划；可先询问适用条件，再通过 **返回待审计划** 继续审核。
 4. 明确核对后批准本次执行；普通聊天中的“同意”不能执行。
 5. 阅读目标结论与图表，点击 **导出本次分析报告**，或继续追问限制。
@@ -48,7 +48,7 @@ CausalOps 是本地运行的数据分析助手。它帮助使用者理解表格�
 - 结果优先展示分析结论。描述报告优先解释该次运行确认的目标指标，使用保存的统计量与证据引用；图表、诊断、完整方案和运行记录按需展开。
 - 结果追问引用选定运行，不重复计算。“同意”等普通对话文字不替代审核按钮。
 
-![分析结论与按需展开的支持材料](docs/assets/first-use-05-result.png)
+![分析结论与按需展开的支持材料](docs/assets/example-015-guide-04-result.png)
 
 ## 安装与启动
 

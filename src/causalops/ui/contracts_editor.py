@@ -24,9 +24,9 @@ def render_contract(service,sid,frame):
     with st.expander('数据字典与研究口径'+(' · V'+str(version) if version else ' · 尚未登记')):
         st.caption('字段口径和人工声明按数据与版本保存，后续计划可预填。声明不等于经验验证；修改后，旧候选和旧批准不能直接用于新版本。自由文字仅在本地保存。')
         basic,details,facts,history=st.tabs(['关键口径','字段说明','研究声明','版本记录'])
-        prefix='dict_'+sid+'_'+str(version);options=[None]+list(frame)
+        prefix='dict_'+sid+'_'+str(version);options=['']+list(frame)
         def choose(label,field):
-            value=body.get(field);return st.selectbox(label,options,index=options.index(value) if value in options else 0,format_func=lambda x:'未登记' if x is None else x,key=prefix+'_'+field)
+            value=body.get(field) or '';return st.selectbox(label,options,index=options.index(value) if value in options else 0,format_func=lambda x:'未登记' if x == '' else x,key=prefix+'_'+field) or None
         with basic:
             body['analysis_unit']=st.text_input('一行代表什么',value=body['analysis_unit'],key=prefix+'_unit',placeholder='例如：客户、会话、用户每天')
             structures=['unknown','cross_section','panel'];body['structure']=st.selectbox('数据结构',structures,index=structures.index(body['structure']),format_func=lambda x:{'unknown':'尚未确认','cross_section':'截面/每单位一行','panel':'面板/重复观测'}[x],key=prefix+'_structure')

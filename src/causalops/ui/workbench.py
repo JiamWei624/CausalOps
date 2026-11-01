@@ -50,8 +50,8 @@ def home():
         st.markdown('[数据来源与许可：UCI / CC BY 4.0](https://archive.ics.uci.edu/dataset/186/wine+quality)')
     with right:
         st.markdown('**操作步骤**')
-        st.write('1. 查看数据概览与初步建议。')
-        st.write('2. 生成基础报告，或选择建议制定计划。')
+        st.write('1. 阅读官方示例说明，已预填行含义与质量评分。')
+        st.write('2. 使用示例预设生成计划，核对后批准。')
         st.write('3. 查看结论，展开图表与报告，继续提问。')
         st.button('阅读完整使用说明',on_click=navigate,args=('guide',),width='stretch')
     render_model_setup()

@@ -6,7 +6,24 @@ from causalops.application.onboarding import start_basic_report
 
 def render_start_actions(service,jobs,sid,frame):
     a=service.a
-    if not service.flows(sid):
+    from causalops.sample_data import example_context
+    example=example_context(a,sid)
+    if example and not service.flows(sid):
+        preset=example['onboarding'];latest=service.contracts.latest(sid);body=latest['body'] if latest else {}
+        with st.container(border=True):
+            st.markdown('**示例说明 · 葡萄酒质量**');st.write(preset['description']);st.write('每行代表：'+preset['analysis_unit']);st.write(preset['target_definition']);st.markdown('**本例建议问题：** '+preset['question'])
+            st.markdown('[官方数据说明与许可]('+example['landing_url']+')');st.caption('示例含义依据官方数据说明提供；不自动确认独立性、随机化或因果识别条件。')
+            if not body.get('method_facts') and not body.get('predictors') and not body.get('covariates') and not body.get('treatment') and body.get('outcome') in (None,preset['target']):
+                if st.button('使用示例说明并生成分析计划',type='primary',key='example_defaults_'+sid):
+                    try:
+                        from causalops.application.guided_intake import GuidedIntake
+                        jobs.capacity();req=GuidedIntake(service).use_example(sid,expected_sha=latest['sha'] if latest else None,human_confirmed=True)
+                        job=jobs.submit_start(sid,req['question'],mode=req['mode']);st.session_state['_graph_pending_'+sid]=job['flow_id'];st.rerun()
+                    except (ValueError,RuntimeError,OSError) as exc:st.error(str(exc))
+            with st.expander('字段含义与使用边界'):
+                st.dataframe([{'字段':f['field'],'含义':f['meaning'],'单位':f['unit'] or '未在此处登记'} for f in preset['fields']],hide_index=True,width='stretch')
+                for line in preset['limitations']:st.write(line)
+    if not service.flows(sid) and not example:
         from causalops.assistant.service import profile
         from causalops.application.question_discovery import local_suggestions
         brief=profile(frame);safe=[x for x in brief['fields'] if not x['likely_identifier']]
@@ -15,11 +32,16 @@ def render_start_actions(service,jobs,sid,frame):
             st.write('已导入 '+format(brief['rows'],',')+' 条记录、'+str(brief['columns'])+' 个字段。其中可统计数值字段 '+str(sum(x['numeric'] for x in safe))+' 个。')
             missing=sum(x['missing_n'] for x in brief['fields'])
             st.write('缺失单元格 '+format(missing,',')+' 个；完全重复记录 '+format(brief['exact_duplicate_rows'],',')+' 条。原始记录保持不变。')
-            st.caption('主要字段：'+'、'.join(x['field'] for x in safe[:6]))
+            names={v['field']:v['meaning'] for v in example['onboarding']['fields']} if example else {}
+            st.caption('主要字段：'+'、'.join(names.get(x['field'],x['field']) for x in safe[:6]))
             st.caption('字段类型不等于业务含义；分析单位、指标单位与观测时点尚需按实际情况确认。')
-            st.caption('以上仅为本地数据结构检查，未调用模型、未执行统计。')
+            st.caption('以上为本地数据结构检查，未调用外部模型，尚未执行分析计划。')
     from causalops.ui.guided_intake import render_guided_intake
-    with st.container(border=True):render_guided_intake(service,jobs,sid,frame)
+    if example and not service.flows(sid):
+        with st.expander('逐项核对或修改示例设置'):
+            with st.container(border=True):render_guided_intake(service,jobs,sid,frame)
+    else:
+        with st.container(border=True):render_guided_intake(service,jobs,sid,frame)
     with st.expander('其他分析起点'):
         render_alternative_actions(service,jobs,sid,frame)
 

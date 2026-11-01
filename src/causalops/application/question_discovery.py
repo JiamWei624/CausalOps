@@ -16,15 +16,26 @@ class Suggestions(BaseModel):
     introduction:str=Field(min_length=8,max_length=500)
     directions:list[Direction]=Field(min_length=1,max_length=3)
 
-def local_suggestions(frame):
+def local_suggestions(frame,definition=None):
     pr=safe_profile(profile(frame));numeric=[x['field'] for x in pr['fields'] if x['numeric']]
     directions=[Direction(title='数据分布与缺失分析',question='请分析这张表的缺失和分布，并生成基础图表与报告。',fields=numeric[:6],needs_confirmation=[],limitation='只报告本表样本的特征，不能推断造成差异的原因。')]
     if len(numeric)>1:directions.append(Direction(title='数值字段关联分析',question='请根据已登记的字段含义，制定数值字段关联分析计划；角色不明确时先向我确认。',fields=numeric[:4],needs_confirmation=['分析单位的实际含义','目标指标及其单位'],limitation='相关关系不代表因果；重复观测和抽样方式仍需说明。'))
-    return Suggestions(introduction=overview(frame)['text']+' 以下建议依据字段结构生成，分析解释仍需结合实际口径。',directions=directions)
+    declared=definition or {};target=declared.get('outcome')
+    if target in {f['field'] for f in pr['fields']}:
+        label=declared.get('metric_label') or target
+        directions=[Direction(title=label+'的分布与缺失',question='请描述目标指标 '+target+' 的分布、频数与缺失情况，保留原始记录，不做因果推断。',fields=[target],limitation='只解释已登记目标的样本分布，不表示干预改善。')]
+        other=next((v for v in numeric if v!=target and v!=declared.get('time')),None)
+        if target in numeric and other:
+            directions.append(Direction(title=label+'与其他指标的关联',question='请分析 '+target+' 与 '+other+' 的Pearson和Spearman相关关系，不推断因果。',fields=[target,other],needs_confirmation=['两项指标的测量尺度与异常值含义'],limitation='展示实际变量对的相关程度；字段顺序不表示业务重要性。'))
+        if declared.get('time') in frame.columns and target in numeric:
+            directions.append(Direction(title=label+'的时间变化',question='请按已登记日期 '+declared['time']+' 描述 '+target+' 的分期均值与分布，不补缺期、不做预测。',fields=[target,declared['time']],needs_confirmation=['日期字段的业务含义与统计周期'],limitation='时间图描述已有观察期，不构成趋势外推或因果识别。'))
+    return Suggestions(introduction=overview(frame)['text']+' 以下建议优先使用已登记目标；尚未进行计算。',directions=directions)
+
 
 def discover(service,fid):
     f=service.flow(fid);a=service.a;frame=service.ws.load_upload(f['request']['data']['upload_id']);pr=safe_profile(profile(frame));fields=[x['field'] for x in pr['fields']];numeric=[x['field'] for x in pr['fields'] if x['numeric']]
-    local=local_suggestions(frame)
+    from causalops.application.task_readiness import public_contract_context
+    local=local_suggestions(frame,public_contract_context(service,f).get('definition',{}))
     source='本地字段规则（未调用模型）';value=local
     if service.model:
         from causalops.application.task_readiness import public_contract_context

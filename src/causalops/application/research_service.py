@@ -191,7 +191,16 @@ class ResearchService:
             if spec.tool=='research':
                 config['metric']={'label':body.get('metric_label') or body.get('outcome') or '已登记指标','unit':body.get('metric_unit') or '未登记单位','kind':body.get('metric_kind','unknown'),'window':body.get('metric_window') or '未登记观察窗口'}
             if m in ('logit','poisson'):config['covariance']='HC0'
-            if m=='correlation':config['numeric']=body.get('predictors',[])+([body['outcome']] if body.get('outcome') else [])
+            if m=='correlation':
+                chosen=body.get('predictors',[])+([body['outcome']] if body.get('outcome') else [])
+                if not body.get('predictors'):
+                    selected=(f['request'].get('conversation_ref') or {}).get('selected_direction')
+                    if selected:chosen=selected['fields']
+                    else:
+                        frame=self.ws.load_upload(f['request']['data']['upload_id']);safe=__import__('causalops.assistant.service',fromlist=['safe_profile']).safe_profile(__import__('causalops.assistant.service',fromlist=['profile']).profile(frame))
+                        chosen=[x['field'] for x in safe['fields'] if x['numeric'] and re.search(r'(?<![A-Za-z0-9_])'+re.escape(x['field'])+r'(?![A-Za-z0-9_])',f['request']['question'],re.I)]
+                    if body.get('outcome') and body['outcome'] not in chosen:raise DesignError('所选变量对未包含当前目标，请先核对目标口径。')
+                config['numeric']=list(dict.fromkeys(chosen))
             try:
                 self.a.validate_plan(f['request']['data']['upload_id'],Plan(objective=f['request']['question'],steps=[Step(tool=spec.tool,config=config,reason='按已确认字段口径与方法条件形成候选；尚未批准或执行。')],required_questions=(advice or {}).get('questions',[])[:3],citations=[h['card_id'] for h in retrieval['hits'][:8]]))
             except ValueError as exc:raise DesignError('已登记口径不足以形成所选方法的合法候选；请补充数据字典，不会替换成其他方法。'+str(exc)[:300]) from None
@@ -257,7 +266,7 @@ class ResearchService:
         if re.search(r'(?:直接|自动|替我|帮我|立即).{0,6}(?:批准|删除|跳过审核)|忽略.*(?:规则|权限)|绕过',q):return RouteDecision(route='clarify',reason='该请求涉及受限操作，请通过审核界面处理。')
         if (req.get('conversation_ref') or {}).get('selected_direction'):return RouteDecision(route='plan',reason='依据使用者选择的已展示建议形成待审计划。')
         if req['mode']!='auto':route=RouteDecision(route=req['mode'],reason='使用者明确选择的请求类型。')
-        elif re.search(r'能做什么|可以.{0,8}做什么|分析方向|研究方向|不知道.{0,6}(?:问|分析|研究)|推荐.{0,8}(?:问题|研究)',q):route=RouteDecision(route='explore',reason='先推荐当前数据可回答的问题，不执行分析。')
+        elif re.search(r'能做什么|可以.{0,8}做什么|(?:能|可以).{0,8}(?:研究|分析|探索)(?:什么|哪些|哪)|(?:能|可以).{0,8}回答(?:什么|哪些)问题|分析方向|研究方向|不知道.{0,6}(?:问|分析|研究)|推荐.{0,8}(?:问题|研究|方向)',q):route=RouteDecision(route='explore',reason='先推荐当前数据可回答的问题，不执行分析。')
         elif re.search(r'解释|解读',q) and re.search(r'当前结果|本次结果|分析结果|结果的',q) and not req['run_ids']:route=RouteDecision(route='clarify',reason='目前只完成了文件登记，还没有可解释的分析结果。点击“生成基础报告”后，即可查看图表、结论并继续追问。')
         elif req['run_ids'] and re.search(r'解释|解读|意味着|如何理解',q) and re.search(r'本次|当前|这个结果|这些结果|分布结果',q) and not re.search(r'重新|重算|修改|制定|新增|再做',q):route=RouteDecision(route='results',reason='解释已选运行，不产生新的统计计划。')
         elif re.search(r'分析|统计|报告|画图|直方图',q) and re.search(r'分布|缺失|频数|描述|基础报告',q) and not re.search(r'回归|相关|关联|影响|效应|对照|预测|效果|DID|PSM|OLS|logit|poisson|IPW|RDD|工具变量',q,re.I):route=RouteDecision(route='plan',methods=['descriptive'],reason='需要实际统计与图表，先形成描述分析计划。')
