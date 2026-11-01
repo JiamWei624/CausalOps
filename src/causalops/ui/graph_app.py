@@ -23,39 +23,77 @@ def render_graph_workspace(a,sid,frame,model):
             st.caption('当前状态：'+STATUS.get(overview_flow['status'],overview_flow['status']))
             next_step={'awaiting_review':'下一步：查看待审计划与必要口径，核对后再批准计算。','completed':'下一步：查看本次研究结论，继续追问或导出报告。','needs_clarification':'下一步：补充字段含义、分组依据或分析目标，再提出问题。','failed':'下一步：查看具体缺项或服务错误，修正后重新制定计划。','blocked':'下一步：核对被阻断步骤的设计要求；不要为了继续运行而确认未知事实。'}.get(overview_flow['status'],'下一步：等待后台状态更新；需要时可请求停止。')
             st.write(next_step)
-    else:st.info('文件已就绪。建议先生成基础报告；如果不知道要问什么，点击“推荐分析方向”。')
+    else:st.info('数据已导入。可参考下方初步建议，或直接输入分析目标。')
     from causalops.ui.onboarding import render_start_actions
-    render_start_actions(service,jobs,sid,frame)
+    if not overview:render_start_actions(service,jobs,sid,frame)
+    else:
+        with st.expander('新分析与口径设置'):render_start_actions(service,jobs,sid,frame)
     with st.expander('高级设置：完整数据字典与研究事实'):
         render_contract(service,sid,frame)
     st.session_state.setdefault('_job_signature_'+sid,tuple((j['id'],j['status']) for j in jobs.jobs(sid)))
-    st.subheader('分析对话与结果')
-    st.caption('可以直接说想了解什么。系统会区分问题推荐、分析计划和结果追问；需要计算时会说明方法与待确认事项。')
+    st.subheader('分析对话')
+    st.caption('输入分析目标、方案调整要求或结果解读问题。系统保留本轮对话关联，必要时提示补充关键信息。')
     flows=service.flows(sid);choice_key='graph_flow_'+sid
     pending=st.session_state.pop('_graph_pending_'+sid,None)
     if pending:st.session_state[choice_key]=pending
     if flows:
         ids=[f['id'] for f in flows]
         if st.session_state.get(choice_key) not in ids:st.session_state[choice_key]=ids[0]
-        current=st.selectbox('查看本轮或历史对话',ids,format_func=lambda x:STATUS.get(next(f['status'] for f in flows if f['id']==x),'处理中')+' · '+next(f['request']['question'][:45] for f in flows if f['id']==x),key=choice_key)
+        with st.expander('历史对话'):
+            current=st.selectbox('选择对话记录',ids,format_func=lambda x:STATUS.get(next(f['status'] for f in flows if f['id']==x),'处理中')+' · '+next(f['request'].get('user_question',f['request']['question'])[:45] for f in flows if f['id']==x),key=choice_key)
         f=service.flow(current)
+        from causalops.application.conversation import conversation_history
+        history=conversation_history(service,current)
+        if history:
+            with st.expander('前序对话 · '+str(len(history))+' 轮'):
+                for turn in history:
+                    with st.chat_message('user'):st.write(safe_text(turn['question']))
+                    if turn['answer']:
+                        with st.chat_message('assistant'):
+                            st.caption(turn['answer']['source']);st.write(safe_text(turn['answer']['text']))
+        with st.chat_message('user'):st.write(safe_text(f['request'].get('user_question',f['request']['question'])))
         current_jobs=[j for j in jobs.jobs(sid) if j['flow_id']==current]
         active=any(j['status'] in ACTIVE for j in current_jobs)
         if active:
             st.info('后台正在处理，页面可以继续操作。停止请求会在安全边界生效；正在进行的底层计算不会被强制中断。')
             if st.button('请求停止当前流程',key='graph_cancel_'+current):jobs.cancel(current,human_confirmed=True);st.rerun()
         elif current_jobs and current_jobs[0]['error_note']:st.warning(current_jobs[0]['error_note'])
+        runs=a.completed_runs(sid);refs={r['run_id']:r for r in runs}
+        if flows:
+            completed=service.output(current,'execution')
+            if completed and completed.get('completed') and completed.get('run_ids'):
+                last=completed.get('primary_run_ids',completed['run_ids'][-1:])[-1];stamp=(current,last)
+                if st.session_state.get('_graph_run_seen_'+sid)!=stamp and last in refs:
+                    st.session_state['_graph_run_seen_'+sid]=stamp
+                    st.session_state['graph_run_'+sid]=last;a.select_run(sid,last)
+        if refs:
+            selected=a.selected_run(sid)
+            with st.expander('历史分析结果'):
+                rid=st.selectbox('结果展示与追问所依据的运行',list(refs),index=list(refs).index(selected) if selected in refs else 0,format_func=lambda x:refs[x]['method']+' · '+x[:8],key='graph_run_'+sid)
+            if rid!=selected:a.select_run(sid,rid)
+            st.subheader('分析结果')
+            show_run(a,refs[rid],sid,compact=True)
+        answer=service.output(current,'answer')
+        if answer:
+            st.markdown('**'+{'method_only':'方法说明','question_options':'分析建议','data_overview':'数据概览'}.get(answer.get('scope'),'结果解读' if answer.get('run_ids') else '信息补充')+'**')
+            st.caption(answer['source']);st.write(safe_text(answer['text']))
+            if answer.get('facts'):
+                from causalops.assistant.service import friendly_fact_label,display_number
+                if answer['source'].startswith('本地'):
+                    for fact in answer['facts'][:4]:st.write(friendly_fact_label(fact['text'])+'：'+display_number(fact['value']))
+                with st.expander('核对回答使用的精确运行证据'):
+                    st.dataframe([{'指标':f['text'],'数值':str(f['value']),'证据标识':f['id'],'运行编号':f['run_id']} for f in answer['facts']],hide_index=True,width='stretch')
         advice=service.output(current,'method_research')
         if advice:
-            with st.expander('方法选择、依据覆盖与待确认条件',expanded=bool(advice['questions'])):
+            with st.expander('方法依据与适用条件',expanded=f['status']=='awaiting_review' and bool(advice['questions'])):
                 st.write('候选方法：'+ '、'.join(a.tools.method(__import__('causalops.assistant.contracts',fromlist=['REGISTRY']).REGISTRY[m].tool,m).label for m in advice['candidate_methods']))
                 st.caption('实际检索 '+str(advice['retrieval_passes'])+' 轮；停止原因：'+{'coverage_complete':'规则卡六个部分均有依据','unsupported_method':'当前尚未支持该方法','retrieval_budget':'达到三轮上限','no_new_evidence':'未获得新增依据'}.get(advice['stop_reason'],advice['stop_reason']))
                 if advice['conditions']:st.dataframe([{'检查内容':x['condition'],'状态':{'declared':'已登记声明（未证明）','structural':'结构核对','missing':'待补充','diagnostic_required':'待执行诊断'}[x['status']],'说明':x['detail']} for x in advice['conditions']],hide_index=True,width='stretch')
                 for question in advice['questions']:st.info(safe_text(question))
-        st.caption('流程 '+current[:8]+' · '+STATUS.get(f['status'],f['status']))
+        st.caption('分析状态：'+STATUS.get(f['status'],f['status']))
         if f['plan_id']:
             p=a.get_plan(f['plan_id']);v=p['plan']
-            with st.container(border=True):
+            with st.expander('分析方案 · V'+str(p['version']),expanded=f['status']=='awaiting_review'):
                 st.markdown('**待审计划 V'+str(p['version'])+'**' if f['status']=='awaiting_review' else '**来源计划 V'+str(p['version'])+'**')
                 st.write(safe_text(v['objective']))
                 for i,step in enumerate(v['steps']):
@@ -102,27 +140,17 @@ def render_graph_workspace(a,sid,frame,model):
         if execution:
             for t in execution['tasks']:
                 if t['state']!='completed':st.warning('步骤 '+str(t['ordinal']+1)+'：'+str((t['result'] or {}).get('error','未完成。请核对研究条件。')))
-        answer=service.output(current,'answer')
-        if answer:
-            st.markdown('**方法说明**' if answer.get('scope')=='method_only' else '**本轮结论与解释**')
-            st.caption(answer['source']);st.write(safe_text(answer['text']))
-            if answer.get('facts'):
-                from causalops.assistant.service import friendly_fact_label,display_number
-                if answer['source'].startswith('本地'):
-                    for fact in answer['facts'][:4]:st.write(friendly_fact_label(fact['text'])+'：'+display_number(fact['value']))
-                with st.expander('核对回答使用的精确运行证据'):
-                    st.dataframe([{'指标':f['text'],'数值':str(f['value']),'证据标识':f['id'],'运行编号':f['run_id']} for f in answer['facts']],hide_index=True,width='stretch')
         discovery=service.output(current,'discovery')
         if discovery:
             for i,d in enumerate(discovery['directions']):
                 with st.container(border=True):
                     st.markdown('**'+safe_text(d['title'])+'**');st.write(safe_text(d['question']))
                     st.caption('涉及字段：'+('、'.join(d['fields']) or '根据可用字段确定'))
-                    for question in d['needs_confirmation']:st.write('待你补充：'+safe_text(question))
+                    for question in d['needs_confirmation']:st.write('待确认：'+safe_text(question))
                     st.caption('解释范围：'+safe_text(d['limitation']))
-                    if st.button('沿这个方向继续',key='direction_'+current+'_'+str(i)):
+                    if st.button('制定分析方案',key='direction_'+current+'_'+str(i)):
                         try:
-                            job=jobs.submit_start(sid,d['question'],mode='plan');st.session_state['_graph_pending_'+sid]=job['flow_id'];st.rerun()
+                            job=jobs.submit_start(sid,d['question'],mode='plan',parent_flow_id=current);st.session_state['_graph_pending_'+sid]=job['flow_id'];st.rerun()
                         except (ValueError,RuntimeError) as exc:st.error(str(exc))
         pr=service.output(current,'profile')
         if pr:
@@ -136,27 +164,19 @@ def render_graph_workspace(a,sid,frame,model):
             st.caption('记录来自实际节点和工具调用，不是对最终文字的模拟播放。')
             st.download_button('下载流程记录（JSON）',json.dumps({'flow_id':current,'events':rows,'snapshot':service.snapshot(current)},ensure_ascii=False,indent=2),file_name='workflow-'+current+'.json',mime='application/json',key='graph_trace_'+current)
     else:st.info('数据已登记。输入分析问题后，系统会检索方法并提出待审计划；不会在未审核前进行统计估计。')
-    runs=a.completed_runs(sid);refs={r['run_id']:r for r in runs}
-    if flows:
-        completed=service.output(current,'execution')
-        if completed and completed.get('completed') and completed.get('run_ids'):
-            last=completed.get('primary_run_ids',completed['run_ids'][-1:])[-1];stamp=(current,last)
-            if st.session_state.get('_graph_run_seen_'+sid)!=stamp and last in refs:
-                st.session_state['_graph_run_seen_'+sid]=stamp
-                st.session_state['graph_run_'+sid]=last;a.select_run(sid,last)
-    if refs:
-        selected=a.selected_run(sid);rid=st.selectbox('结果展示与追问所依据的运行',list(refs),index=list(refs).index(selected) if selected in refs else 0,format_func=lambda x:refs[x]['method']+' · '+x[:8],key='graph_run_'+sid)
-        if rid!=selected:a.select_run(sid,rid)
-        with st.expander('查看完整图表与下载分析报告',expanded=bool(flows and service.output(current,'execution'))):show_run(a,refs[rid],sid)
+    if not flows and a.completed_runs(sid):
+        historical={r['run_id']:r for r in a.completed_runs(sid)}
+        rid=a.selected_run(sid) or next(iter(historical))
+        st.subheader('已保存的分析结果');show_run(a,historical[rid],sid,compact=True)
     modes={'自动选择请求类型':'auto','制定分析计划':'plan','方法咨询':'method','解释当前运行':'results','数据概况':'profile'}
     mode='自动选择请求类型'
     with st.expander('高级：手动指定请求类型'):
         manual=st.checkbox('本次由我指定请求类型',key='manual_route_v011_'+sid)
         if manual:mode=st.radio('本轮请求',list(modes),horizontal=True,key='graph_mode_v011_'+sid)
-    q=st.chat_input('例如：分析这张表的缺失和分布；或解释当前结果的实际含义',key='graph_question_'+sid)
+    q=st.chat_input('输入分析目标、方案调整要求或结果解读问题',key='graph_question_'+sid)
     if q:
         try:
-            job=jobs.submit_start(sid,q,mode=modes[mode])
+            job=jobs.submit_start(sid,q,mode=modes[mode],parent_flow_id=current if flows else None)
             st.session_state['_graph_pending_'+sid]=job['flow_id'];st.rerun()
         except (ValueError,RuntimeError,OSError) as exc:st.error(str(exc));st.info('未执行未批准的统计；已有结果保持不变。')
 

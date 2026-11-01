@@ -27,9 +27,9 @@ class BackgroundJobs:
             c.row_factory=__import__('sqlite3').Row;r=c.execute('SELECT * FROM workflow_jobs WHERE id=?',(jid,)).fetchone()
         if not r:raise DesignError('后台任务不存在。')
         return dict(r)
-    def submit_start(self,sid,question,*,mode='auto',run_ids=None):
+    def submit_start(self,sid,question,*,mode='auto',run_ids=None,parent_flow_id=None):
         self.capacity()
-        f=self.service.begin(sid,question,mode=mode,run_ids=run_ids)
+        f=self.service.begin(sid,question,mode=mode,run_ids=run_ids,parent_flow_id=parent_flow_id)
         return self.submit(f['id'])
     def capacity(self):
         with self.ws.connection() as c:n=c.execute("SELECT COUNT(*) FROM workflow_jobs WHERE status IN ('queued','running','cancel_requested')").fetchone()[0]

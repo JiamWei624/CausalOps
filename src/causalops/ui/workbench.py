@@ -19,29 +19,31 @@ def navigate(route):
 def sync_route():st.query_params['route']=st.session_state['showcase_route']
 
 def home():
-    st.markdown('<div class="eyebrow">CAUSALOPS / EVIDENCE TO DECISION</div>',unsafe_allow_html=True)
-    st.title('从一张表，走到有依据的分析')
-    st.markdown('<p class="hero-note">帮助你理解数据、提出可回答的问题，再完成可核对的分析。无需一开始就决定统计方法。</p>',unsafe_allow_html=True)
-    st.markdown('**使用顺序：** 连接助手 → 上传表格 → 了解数据与选问题 → 确认分析计划 → 阅读结论并追问。')
+    from causalops import __version__
+    st.caption('版本 '+__version__+' · 本地单用户工作区')
+    st.title('CausalOps',anchor=False)
+    st.markdown('<p class="hero-note">数据分析与研究工作台。支持数据理解、研究设计、统计分析与结果解读。</p>',unsafe_allow_html=True)
+    st.caption('数据导入 → 问题与方案 → 分析执行 → 结果解读')
     from causalops.ui.model_setup import render_model_setup
     render_model_setup()
-    st.subheader('2. 开始一个数据任务')
-    st.button('开始分析我的数据',type='primary',on_click=navigate,args=('assistant',),width='stretch')
-    st.info('没有密钥也可以先体验本地基础报告。导入后只需确认你知道的业务事实；不知道的内容可保持未知。')
-    st.subheader('示例分析')
-    cols=st.columns(3)
-    cards=[('experiment','01 · 随机实验','发一封营销邮件，访问概率差多少？','公开随机实验数据 · 42,613条分析观测','核对设计 → 确认运行 → 阅读提升幅度','进入随机实验'),
-           ('diagnostic','02 · 识别失败','估计很显著，就能说干预有效吗？','固定种子合成数据 · 专门设置前趋势问题','运行诊断 → 看趋势图 → 理解结论降级','进入识别失败演示'),
-           ('weibo','03 · 真实研究','AI回复与用户再次互动有什么关系？','本地真实研究 · 488,472条有效事件','回看已有证据 → 解读量化差异 → 看平台意义','进入真实研究回看')]
-    for col,(route,label,q,source,steps,button) in zip(cols,cards):
-        available=route=='diagnostic' or (Path(os.environ.get('CAUSALOPS_PUBLIC_CATALOG','E:/ugc_ai_portfolio_public_data/prepared/catalog.json')).is_file() if route=='experiment' else (ROOT/'artifacts/real-panel-20261030/full-summary.json').is_file())
-        with col,st.container(border=True,height=365):
-            st.markdown('### '+label);st.markdown('**'+q+'**');st.caption(source);st.write(steps)
-            st.button(button,key='go_'+route,on_click=navigate,args=(route,),width='stretch',disabled=not available)
-            if not available:st.caption('可选历史示例未附带；通用上传和合成示例不受影响。')
-    st.subheader('分析产出')
-    st.markdown('**分析结论**：样本参考水平、估计幅度、实际含义及后续建议。\n\n**运行证据**：样本口径、方法、诊断、区间和保存运行。\n\n**解释范围**：相关不自动等于因果；显著不自动等于值得推广。')
-    st.caption('本机单用户工作台。支持方法文献检索、只读MCP证据查询及本地A2A方法审阅；研究设计审批和数据发送授权仍由使用者控制。')
+    st.subheader('数据导入')
+    st.button('导入分析数据',type='primary',on_click=navigate,args=('assistant',),width='stretch')
+    st.info('支持 CSV 与 Parquet。系统先核查数据结构并提供分析建议，必要口径由使用者确认。')
+    with st.expander('示例分析与功能范围'):
+        st.subheader('示例分析')
+        cols=st.columns(3)
+        cards=[('experiment','01 · 随机实验','发一封营销邮件，访问概率差多少？','公开随机实验数据 · 42,613条分析观测','核对设计 → 确认运行 → 阅读提升幅度','进入随机实验'),
+               ('diagnostic','02 · 识别失败','估计很显著，就能说干预有效吗？','固定种子合成数据 · 专门设置前趋势问题','运行诊断 → 看趋势图 → 理解结论降级','进入识别失败演示'),
+               ('weibo','03 · 真实研究','AI回复与用户再次互动有什么关系？','本地真实研究 · 488,472条有效事件','回看已有证据 → 解读量化差异 → 看平台意义','进入真实研究回看')]
+        for col,(route,label,q,source,steps,button) in zip(cols,cards):
+            available=route=='diagnostic' or (Path(os.environ.get('CAUSALOPS_PUBLIC_CATALOG','E:/ugc_ai_portfolio_public_data/prepared/catalog.json')).is_file() if route=='experiment' else (ROOT/'artifacts/real-panel-20261030/full-summary.json').is_file())
+            with col,st.container(border=True,height=365):
+                st.markdown('### '+label);st.markdown('**'+q+'**');st.caption(source);st.write(steps)
+                st.button(button,key='go_'+route,on_click=navigate,args=(route,),width='stretch',disabled=not available)
+                if not available:st.caption('可选历史示例未附带；通用上传和合成示例不受影响。')
+        st.subheader('分析产出')
+        st.markdown('**分析结论**：样本参考水平、估计幅度、实际含义及后续建议。\n\n**运行证据**：样本口径、方法、诊断、区间和保存运行。\n\n**解释范围**：相关不自动等于因果；显著不自动等于值得推广。')
+        st.caption('本机单用户工作台。支持方法文献检索、只读MCP证据查询及本地A2A方法审阅；研究设计审批和数据发送授权仍由使用者控制。')
 
 def real_view():
     st.title('用户行为研究 · 已保存结果')
@@ -67,7 +69,7 @@ def real_view():
 
 def guide():
     st.title('使用说明与方法范围')
-    st.markdown('**首次使用：** 首页填写模型与密钥（可跳过） → 点击开始分析我的数据 → 上传表格 → 生成基础报告或推荐分析方向 → 选择问题 → 确认必要事实与计划 → 本地计算 → 阅读结论、下载报告并继续追问。无需先选A/B或回归。已有结果会保留，刷新不重新计算。')
+    st.markdown('**首次使用：** 首页填写模型与密钥（可跳过） → 点击导入分析数据 → 上传表格 → 生成基础报告或推荐分析方向 → 选择问题 → 确认必要事实与计划 → 本地计算 → 阅读结论、下载报告并继续追问。无需先选A/B或回归。已有结果会保留，刷新不重新计算。')
     st.subheader('常用统计概念')
     st.dataframe([{'概念':a,'说明':b} for a,b in [
        ('绝对变化 / 百分点','概率从20%到23%，绝对变化是3个百分点。相对变化是15%；两者不能混写。'),

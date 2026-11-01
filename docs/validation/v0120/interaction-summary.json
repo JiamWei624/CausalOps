@@ -1,0 +1,90 @@
+{
+  "version": "0.12.0",
+  "source_tests": {
+    "tests": "518",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0"
+  },
+  "installed_tests": {
+    "tests": "518",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0"
+  },
+  "browser": {
+    "exceptions": [],
+    "formal_home": true,
+    "config_collapsed": true,
+    "config_not_falsely_verified": true,
+    "automatic_brief": true,
+    "automatic_suggestions": 2,
+    "approval_still_required": true,
+    "conversation_link_visible": true,
+    "conclusion_visible": true,
+    "actual_statistics_visible": true,
+    "details_collapsed": true,
+    "followup_completed": true,
+    "downloaded": true,
+    "persisted": true,
+    "st_exceptions": 0,
+    "ok": true
+  },
+  "installed_browser": {
+    "exceptions": [],
+    "formal_home": true,
+    "config_collapsed": true,
+    "config_not_falsely_verified": true,
+    "automatic_brief": true,
+    "automatic_suggestions": 2,
+    "approval_still_required": true,
+    "conversation_link_visible": true,
+    "conclusion_visible": true,
+    "actual_statistics_visible": true,
+    "details_collapsed": true,
+    "followup_completed": true,
+    "downloaded": true,
+    "persisted": true,
+    "st_exceptions": 0,
+    "ok": true
+  },
+  "real_model": {
+    "provider": {
+      "provider": "deepseek",
+      "base_url": "https://api.deepseek.com",
+      "model": "deepseek-flash",
+      "api_mode": "responses",
+      "json_mode": "json_object",
+      "anthropic_version": null
+    },
+    "discovery_model_accepted": true,
+    "ordinal_resolved": true,
+    "candidate_waited_for_review": true,
+    "no_model_approval": true,
+    "proposal_had_parent_context": true,
+    "prior_plan_reference_available": true,
+    "result_source": "DeepSeek官方模型+本地证据校验",
+    "fact_references": true,
+    "no_reestimate": true,
+    "calls": [
+      {
+        "schema": "Suggestions",
+        "has_parent_context": false,
+        "has_prior_plan": false
+      },
+      {
+        "schema": "Plan",
+        "has_parent_context": true,
+        "has_prior_plan": false
+      },
+      {
+        "schema": "GroundedReply",
+        "has_parent_context": false,
+        "has_prior_plan": false
+      }
+    ],
+    "raw_rows_sent": false,
+    "direction_title": "单项数值字段分布概览"
+  },
+  "independent_user_study": "deferred"
+}

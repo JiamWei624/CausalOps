@@ -16,11 +16,15 @@ class Suggestions(BaseModel):
     introduction:str=Field(min_length=8,max_length=500)
     directions:list[Direction]=Field(min_length=1,max_length=3)
 
+def local_suggestions(frame):
+    pr=safe_profile(profile(frame));numeric=[x['field'] for x in pr['fields'] if x['numeric']]
+    directions=[Direction(title='数据分布与缺失分析',question='请分析这张表的缺失和分布，并生成基础图表与报告。',fields=numeric[:6],needs_confirmation=[],limitation='只报告本表样本的特征，不能推断造成差异的原因。')]
+    if len(numeric)>1:directions.append(Direction(title='数值字段关联分析',question='请根据已登记的字段含义，制定数值字段关联分析计划；角色不明确时先向我确认。',fields=numeric[:4],needs_confirmation=['分析单位的实际含义','目标指标及其单位'],limitation='相关关系不代表因果；重复观测和抽样方式仍需说明。'))
+    return Suggestions(introduction=overview(frame)['text']+' 以下建议依据字段结构生成，分析解释仍需结合实际口径。',directions=directions)
+
 def discover(service,fid):
     f=service.flow(fid);a=service.a;frame=service.ws.load_upload(f['request']['data']['upload_id']);pr=safe_profile(profile(frame));fields=[x['field'] for x in pr['fields']];numeric=[x['field'] for x in pr['fields'] if x['numeric']]
-    directions=[Direction(title='先了解分布与缺失',question='请分析这张表的缺失和分布，并生成基础图表与报告。',fields=numeric[:6],needs_confirmation=[],limitation='只报告本表样本的特征，不能推断造成差异的原因。')]
-    if len(numeric)>1:directions.append(Direction(title='探索数值字段之间的关联',question='请根据已登记的字段含义，制定数值字段关联分析计划；角色不明确时先向我确认。',fields=numeric[:4],needs_confirmation=['每一行代表什么对象？','最关心哪个结果指标，其单位是什么？'],limitation='相关关系不代表因果；重复观测和抽样方式仍需说明。'))
-    local=Suggestions(introduction=overview(frame)['text']+' 可以从以下问题开始，先描述，再按业务目标深入。',directions=directions)
+    local=local_suggestions(frame)
     source='本地字段规则（未调用模型）';value=local
     if service.model:
         from causalops.application.task_readiness import public_contract_context

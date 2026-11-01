@@ -54,15 +54,33 @@ def build_task_conclusion(a,sid,rid):
                     sections['magnitude']=term+'每增加1'+unit+'时，'+('购买等二元结果的条件优势比OR为' if b['method']=='logit' else '等暴露条件下的计数均值比为')+(fmt(ratio) if ratio is not None else '无法安全报告')+'；对应系数的95%置信区间为['+fmt(lo)+', '+fmt(hi)+']。'
                     sections['meaning']='优势比不是概率比，也不是增加多少个百分点。没有保存的概率边际效应，不能补写转化率提升。' if b['method']=='logit' else '这是条件计数关联，要求暴露口径可比；不代表投放或产品干预造成的增长。'
                 sections['action']='先结合变量量纲、测量时点、单位独立性及业务可行动性检查解释；若要回答干预收益，应另行设计可识别的实验或准实验，不能直接推广此系数。'
+        elif b['method']=='descriptive':
+            cite('summary.column_count');cite('summary.exact_duplicate_rows')
+            sections['baseline']='本次分析包含'+format(n,',')+'条记录、'+str(summary['column_count'])+'个字段；完全重复记录'+str(summary['exact_duplicate_rows'])+'条，未自动删除。'
+            lines=[]
+            # Stable report order, not significance or favourable-result selection.
+            for i,row in enumerate(summary['numeric'][:3]):
+                if row['finite_n'] and row['mean'] is not None and row['median'] is not None:
+                    for key in ('finite_n','mean','median','missing_n'):cite('summary.numeric['+str(i)+'].'+key)
+                    lines.append(row['field']+'：有效观测'+str(row['finite_n'])+'条，均值'+fmt(row['mean'])+'，中位数'+fmt(row['median'])+'，缺失'+str(row['missing_n'])+'条')
+            if not lines:
+                for i,row in enumerate(summary['categorical'][:3]):
+                    if row['top']:
+                        cite('summary.categorical['+str(i)+'].top[0].pct_of_all_rows')
+                        lines.append(row['field']+'最高频类别占全部记录的'+fmt(row['top'][0]['pct_of_all_rows'])+'%')
+            sections['magnitude']='；'.join(lines)+'。以上按报告字段顺序选取，完整统计见明细。' if lines else '所选字段未形成有效的数值汇总，未补写均值或中位数。类别频数与缺失情况见统计明细。'
+            sections['meaning']='以上结果描述当前样本内的分布。指标单位和分析单位以来源口径为准，不能据此确认变量之间的因果关系或推广至其他人群。'
+            sections['action']='先确认缺失与重复记录的业务含义及指标量纲，再根据具体目标开展分组比较或关联分析。'
         elif b['method']=='correlation' and summary['correlations']:
             row=summary['correlations'][0];cite('summary.correlations[0].pearson');cite('summary.correlations[0].pairwise_n')
             sections['magnitude']=row['x']+'与'+row['y']+'的成对有效样本为'+str(row['pairwise_n'])+'，Pearson相关系数为'+(fmt(row['pearson']) if row['pearson'] is not None else '未计算')+'。';sections['meaning']='相关描述共同变化，不能确认方向、排除共同原因或解释为干预收益。'
-    body={'version':'task_conclusion_v1','run_id':rid,'data_fingerprint':ref['contract']['data_fingerprint'] if ref.get('contract') else a.tools.envelope(a.session(sid)['upload_id'],ref).data_fingerprint,'contract_ref':contract_ref,'claim':claim,'sections':sections,'evidence':evidence,'source':'saved_run_deterministic_interpretation','no_reestimate':True}
+    body={'version':'task_conclusion_v2','run_id':rid,'data_fingerprint':ref['contract']['data_fingerprint'] if ref.get('contract') else a.tools.envelope(a.session(sid)['upload_id'],ref).data_fingerprint,'contract_ref':contract_ref,'claim':claim,'sections':sections,'evidence':evidence,'source':'saved_run_deterministic_interpretation','no_reestimate':True}
+    if ref['kind']=='exploration' and b['method']=='descriptive':body['titles']={'baseline':'样本范围与数据质量','magnitude':'主要统计结果','meaning':'结果解释','action':'后续分析建议'}
     body['sha256']=hashlib.sha256(json.dumps(body,ensure_ascii=False,sort_keys=True,allow_nan=False).encode()).hexdigest();return body
 
 def attach_task_conclusion(report,value):
     parts=['<section data-causalops-task-conclusion="1"><h2>研究问题的结论与下一步</h2><p>以下解释对应保存运行，未新增估计。运行编号：'+escape(value['run_id'])+'</p>']
-    for k,v in value['sections'].items():parts.append('<h3>'+TITLES[k]+'</h3><p>'+escape(v)+'</p>')
+    for k,v in value['sections'].items():parts.append('<h3>'+escape(value.get('titles',TITLES)[k])+'</h3><p>'+escape(v)+'</p>')
     parts.append('<details><summary>核对本节引用的运行证据</summary><pre>'+escape(json.dumps(value['evidence'],ensure_ascii=False,indent=2))+'</pre></details></section>')
     marker='</body>' if '</body>' in report else '</html>'
     return report.replace(marker,''.join(parts)+marker)

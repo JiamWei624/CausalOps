@@ -27,15 +27,23 @@ def show_sources(hits):
             for span in h.get('matched_sections',[]):st.caption('命中章节：'+span['section']+' · 原创方法摘要指纹 '+span['note_sha256'][:12])
             st.caption('原文核对范围以来源登记为准；方法摘要不是论文逐字引文。')
 
-def show_run(a,ref,sid):
+def show_run(a,ref,sid,*,compact=False):
     from causalops.assistant.export import attach_discussion
     rid=ref['run_id']
     from causalops.application.task_conclusions import build_task_conclusion,attach_task_conclusion,TITLES
     conclusion=build_task_conclusion(a,sid,rid)
     with st.container(border=True):
-        st.markdown('**本次研究结论**')
-        for section,text in conclusion['sections'].items():st.markdown('**'+TITLES[section]+'：** '+safe_text(text))
+        st.markdown('**分析结论**')
+        for section,text in conclusion['sections'].items():st.markdown('**'+conclusion.get('titles',TITLES)[section]+'：** '+safe_text(text))
         st.caption('解释来自保存运行；数据字典版本与证据指纹可追溯，未重新估计。')
+    if compact:
+        with st.expander('统计图表、诊断与报告'):_show_run_details(a,ref,sid,conclusion)
+    else:_show_run_details(a,ref,sid,conclusion)
+
+def _show_run_details(a,ref,sid,conclusion):
+    from causalops.assistant.export import attach_discussion
+    from causalops.application.task_conclusions import attach_task_conclusion
+    rid=ref['run_id']
     if ref['kind']=='advanced':
         b=a.advanced.load(rid);advanced_ui.display(b)
         st.download_button('下载研究报告（HTML）',attach_discussion(attach_task_conclusion(advanced_ui.report(b),conclusion),a.events(sid),rid,a.library),file_name='advanced-'+rid+'.html',mime='text/html',key='adv_report_'+rid)
@@ -80,10 +88,10 @@ def confirmations(step,index,pid,frame):
     return facts
 
 def render_assistant():
-    a=AssistantWorkspace();st.title('CausalOps · 数据分析与研究工作台')
+    a=AssistantWorkspace();st.title('分析工作台')
     from causalops import __version__
     st.caption('版本 '+__version__+' · 本地单用户工作区')
-    st.caption('从一张表开始：了解数据 → 明确问题 → 确认计划 → 查看分析与报告 → 继续追问。')
+    st.caption('在当前数据任务中完成问题定义、方案审核、分析执行与结果讨论。')
     sessions=a.sessions();byid={s['id']:s for s in sessions};sid=st.query_params.get('assistant')
     with st.sidebar:
         if byid:
@@ -97,8 +105,8 @@ def render_assistant():
                 st.rerun()
         if sid and st.button('新建分析任务',key='assistant_new'):st.query_params.pop('assistant',None);st.rerun()
     if sid not in byid:
-        st.subheader('2. 上传一张分析表')
-        st.info('不必先选统计方法。上传后会说明表的基本情况，再推荐下一步。每一行含义不清楚时可以先留空。')
+        st.subheader('数据导入')
+        st.info('导入后先核查数据结构并提供分析建议。无需预先指定统计方法；未明确的业务口径可后续补充。')
         from causalops.ui.model_setup import current_connection
         config,credential=current_connection()
         st.caption('模型已在首页配置；本任务仍需单独授权发送摘要。' if config and credential else '当前可用本地模式。智能问题推荐需到首页填写模型和密钥。')

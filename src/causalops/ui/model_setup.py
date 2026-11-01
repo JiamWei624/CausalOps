@@ -18,9 +18,18 @@ def current_connection():
     return cfg,st.session_state.get('_credential_memory_'+scope(p,cfg.base_url),m['keys'].get(scope(p,cfg.base_url),''))
 
 def render_model_setup():
+    cfg,key=current_connection();configured=bool(cfg and key)
+    st.subheader('模型连接')
+    if configured:
+        verified=st.session_state.get('_connection_test')==(cfg.fingerprint,hashlib.sha256(key.encode()).hexdigest())
+        st.caption(PRESETS[cfg.provider]['label']+' · '+cfg.model+' · '+('连接已验证' if verified else '已配置，尚未验证连接'))
+    else:st.caption('模型连接为可选配置；数据任务的发送许可需单独确认。')
+    with st.expander('连接配置',expanded=not configured):
+        _render_connection_editor()
+
+def _render_connection_editor():
     m=memory()
-    st.subheader('1. 连接分析助手')
-    st.write('选择模型服务，填写该服务的 API 密钥。也可以先用本地模式体验基础分析。')
+    st.write('配置模型服务与访问凭据。未配置模型时，可使用本地统计分析。')
     key='_connect_provider'
     if key not in st.session_state:st.session_state[key]=m['provider']
     def choose():memory()['provider']=st.session_state[key]
@@ -53,9 +62,9 @@ def render_model_setup():
     cfg,_=current_connection()
     if name and not cfg:st.warning('连接配置不完整或地址与服务商不匹配，请核对高级设置。')
     if defaults['docs']:st.link_button('服务商官方接入文档',defaults['docs'])
-    if st.button('保存连接设置（仅本次会话）',key='connection_save'):
+    if st.button('保存连接配置',key='connection_save'):
         st.session_state['_credential_memory_'+sk]=st.session_state[wk]
-        if cfg:st.success('连接设置已保存在内存中。可测试连接，或继续上传数据。')
+        if cfg:st.success('连接配置已保存于本次会话内存。')
         else:st.warning('请先完善服务地址和模型名称。')
     if st.button('测试模型连接',disabled=not(cfg and credential),key='connection_probe'):
         try:
@@ -69,24 +78,23 @@ def render_model_setup():
     st.caption('密钥只保存在当前浏览器连接的服务端内存中，刷新重连或关闭服务后可能需重填。不会写入数据库、报告或代码。连接测试只发送固定测试内容。')
 
 def task_model(a,sid):
-    cfg,key=current_connection();model=None
-    with st.container(border=True):
-        st.markdown('**模型连接与本任务授权**')
-        st.write((PRESETS[cfg.provider]['label']+' · '+cfg.model) if cfg and key else '本地模式：基础报告与统计工具可用。需要智能推荐时，请先到首页连接模型。')
-        def open_settings():
-            st.session_state['showcase_route']='home';st.query_params['route']='home'
-        st.button('到首页设置或更换模型',key='task_model_settings',on_click=open_settings)
+    cfg,key=current_connection();authorized=bool(cfg and key and a.consent_enabled(sid,cfg))
+    st.caption('模型：'+PRESETS[cfg.provider]['label']+' / '+cfg.model+' · '+('本任务已授权' if authorized else '本任务尚未授权') if cfg and key else '运行模式：本地统计分析')
+    def open_settings():
+        st.session_state['showcase_route']='home';st.query_params['route']='home'
+    with st.expander('模型连接与数据发送许可',expanded=bool(cfg and key and not authorized)):
+        st.button('管理模型连接',key='task_model_settings',on_click=open_settings)
         if cfg and key:
             ck='task_send_'+sid+'_'+cfg.fingerprint
             if ck not in st.session_state:st.session_state[ck]=a.consent_enabled(sid,cfg)
             def consent():a.consent(sid,st.session_state[ck],cfg)
             enabled=st.checkbox('允许本任务向以上模型发送字段摘要、研究问题及运行汇总',key=ck,on_change=consent)
             st.caption('不发送原始数据行、用户或帖子 ID 值、完整论文。更换服务、模型或协议后需重新授权。')
-            if st.button('查看本任务的发送内容示例',key='task_payload'):
-                st.json({'target':cfg.binding(),'payload':a.external_payload(sid,'请根据字段摘要推荐可回答的问题')})
-            if enabled and a.consent_enabled(sid,cfg):
-                old=st.session_state.get('_assistant_provider_client')
-                if old and (old.provider_config!=cfg or old._api_key!=key):old.close();old=None
-                if old is None:old=StructuredModelClient(cfg,key);st.session_state['_assistant_provider_client']=old
-                model=old
-    return model
+            if st.button('查看本任务的发送内容示例',key='task_payload'):st.json({'target':cfg.binding(),'payload':a.external_payload(sid,'请根据字段摘要推荐可回答的问题')})
+        else:st.caption('配置模型后可获取模型辅助建议；本地统计分析不受影响。')
+    if authorized:
+        old=st.session_state.get('_assistant_provider_client')
+        if old and (old.provider_config!=cfg or old._api_key!=key):old.close();old=None
+        if old is None:old=StructuredModelClient(cfg,key);st.session_state['_assistant_provider_client']=old
+        return old
+    return None

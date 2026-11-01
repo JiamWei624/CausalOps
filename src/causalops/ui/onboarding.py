@@ -6,7 +6,26 @@ from causalops.application.onboarding import start_basic_report
 
 def render_start_actions(service,jobs,sid,frame):
     a=service.a
-    st.markdown('**现在想先做什么？**')
+    if not service.flows(sid):
+        from causalops.assistant.service import profile
+        from causalops.application.question_discovery import local_suggestions
+        brief=profile(frame);safe=[x for x in brief['fields'] if not x['likely_identifier']]
+        with st.container(border=True):
+            st.markdown('**数据概览与初步建议**')
+            st.write('已导入 '+format(brief['rows'],',')+' 条记录、'+str(brief['columns'])+' 个字段。其中可统计数值字段 '+str(sum(x['numeric'] for x in safe))+' 个。')
+            missing=sum(x['missing_n'] for x in brief['fields'])
+            st.write('缺失单元格 '+format(missing,',')+' 个；完全重复记录 '+format(brief['exact_duplicate_rows'],',')+' 条。原始记录保持不变。')
+            st.caption('主要字段：'+'、'.join(x['field'] for x in safe[:6]))
+            st.caption('字段类型不等于业务含义；分析单位、指标单位与观测时点尚需按实际情况确认。')
+            for i,d in enumerate(local_suggestions(frame).directions):
+                st.markdown('**'+d.title+'**');st.write(d.question)
+                for item in d.needs_confirmation:st.caption('待确认：'+item)
+                if st.button('制定分析方案',key='initial_direction_'+sid+'_'+str(i)):
+                    try:
+                        job=jobs.submit_start(sid,d.question,mode='plan');st.session_state['_graph_pending_'+sid]=job['flow_id'];st.rerun()
+                    except (ValueError,RuntimeError) as exc:st.error(str(exc))
+            st.caption('以上为依据本地字段结构生成的初步建议，未调用模型、未执行统计估计。')
+    st.markdown('**分析起点**')
     left,right=st.columns(2)
     if left.button('生成基础报告',type='primary',key='basic_report_'+sid,width='stretch',help='点击即同意在本地计算缺失、分布、频数与图表；不运行回归或因果分析。'):
         try:
@@ -16,17 +35,17 @@ def render_start_actions(service,jobs,sid,frame):
         try:
             job=jobs.submit_start(sid,'我可以根据这张表做什么研究？请推荐可回答的问题。',mode='explore');st.session_state['_graph_pending_'+sid]=job['flow_id'];st.rerun()
         except (ValueError,RuntimeError,OSError) as exc:st.error(str(exc))
-    st.caption('基础报告：直接查看样本特征。分析方向：先得到问题建议，不会自动计算。已有目标时可在下方直接提问。')
+    st.caption('基础报告用于样本特征分析；分析建议用于明确研究目标。也可直接输入分析要求。')
     latest=service.contracts.latest(sid)
-    with st.expander('补充两项信息，让建议更贴合业务（可选）'):
-        st.write('不知道可以留空。这里保存的是你提供的含义，不会自动确认随机分组、独立性或因果条件。')
+    with st.expander('分析口径（可选）'):
+        st.write('未明确的信息可保留为空。以下内容作为使用者声明保存，不自动确认研究条件。')
         with st.form('simple_context_'+sid):
             body=copy.deepcopy(latest['body']) if latest else __import__('causalops.application.data_contracts',fromlist=['DataContract']).DataContract().model_dump()
-            unit=st.text_input('每一行代表什么？',value=body['analysis_unit'],placeholder='例如：一瓶酒的一次检测、一位客户、一天的门店记录')
+            unit=st.text_input('分析单位',value=body['analysis_unit'],placeholder='例如：一瓶酒的一次检测、一位客户、一天的门店记录')
             columns=[None]+list(frame)
-            outcome=st.selectbox('最关心哪个字段？',columns,index=columns.index(body['outcome']) if body['outcome'] in columns else 0,format_func=lambda x:'暂时不确定' if x is None else x)
-            metric_unit=st.text_input('这个字段的单位是什么？',value=body['metric_unit'],placeholder='例如：分、元、次；不知道请留空')
-            if st.form_submit_button('保存我提供的信息'):
+            outcome=st.selectbox('目标指标',columns,index=columns.index(body['outcome']) if body['outcome'] in columns else 0,format_func=lambda x:'尚未明确' if x is None else x)
+            metric_unit=st.text_input('指标单位',value=body['metric_unit'],placeholder='例如：分、元、次；不知道请留空')
+            if st.form_submit_button('保存分析口径'):
                 try:
                     body.update(analysis_unit=unit,outcome=outcome,metric_unit=metric_unit)
                     service.contracts.save(sid,body,human_confirmed=True,expected_sha=latest['sha'] if latest else None)
