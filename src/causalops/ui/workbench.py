@@ -31,13 +31,11 @@ def open_public_sample():
 
 def home():
     from causalops import __version__
-    st.caption('版本 '+__version__+' · 本地单用户工作区')
     st.title('CausalOps',anchor=False)
     st.markdown('<p class="hero-note">数据分析与研究工作台。支持数据理解、研究设计、统计分析与结果解读。</p>',unsafe_allow_html=True)
     st.caption('数据导入 → 问题与方案 → 分析执行 → 结果解读')
     from causalops.ui.model_setup import render_model_setup
-    render_model_setup()
-    st.subheader('数据导入')
+    st.subheader('开始分析')
     st.button('导入分析数据',type='primary',on_click=navigate,args=('assistant',),width='stretch')
     st.info('支持 CSV 与 Parquet。系统先核查数据结构并提供分析建议，必要口径由使用者确认。')
     st.subheader('公共示例')
@@ -56,6 +54,7 @@ def home():
         st.write('2. 生成基础报告，或选择建议制定计划。')
         st.write('3. 查看结论，展开图表与报告，继续提问。')
         st.button('阅读完整使用说明',on_click=navigate,args=('guide',),width='stretch')
+    render_model_setup()
     with st.expander('进阶示例与适用范围'):
         st.button('查看识别失败的合成演示',on_click=navigate,args=('diagnostic',))
         st.write('支持描述统计、关联分析、实验与受识别条件约束的因果分析。模型提供建议与解释，统计工具计算数值，使用者确认必要事实。')

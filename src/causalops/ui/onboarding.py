@@ -17,14 +17,14 @@ def render_start_actions(service,jobs,sid,frame):
             st.write('缺失单元格 '+format(missing,',')+' 个；完全重复记录 '+format(brief['exact_duplicate_rows'],',')+' 条。原始记录保持不变。')
             st.caption('主要字段：'+'、'.join(x['field'] for x in safe[:6]))
             st.caption('字段类型不等于业务含义；分析单位、指标单位与观测时点尚需按实际情况确认。')
-            for i,d in enumerate(local_suggestions(frame).directions):
-                st.markdown('**'+d.title+'**');st.write(d.question)
-                for item in d.needs_confirmation:st.caption('待确认：'+item)
-                if st.button('制定分析方案',key='initial_direction_'+sid+'_'+str(i)):
-                    try:
-                        job=jobs.submit_start(sid,d.question,mode='plan');st.session_state['_graph_pending_'+sid]=job['flow_id'];st.rerun()
-                    except (ValueError,RuntimeError) as exc:st.error(str(exc))
-            st.caption('以上为依据本地字段结构生成的初步建议，未调用模型、未执行统计估计。')
+            st.caption('以上仅为本地数据结构检查，未调用模型、未执行统计。')
+    from causalops.ui.guided_intake import render_guided_intake
+    with st.container(border=True):render_guided_intake(service,jobs,sid,frame)
+    with st.expander('其他分析起点'):
+        render_alternative_actions(service,jobs,sid,frame)
+
+def render_alternative_actions(service,jobs,sid,frame):
+    a=service.a
     st.markdown('**分析起点**')
     left,right=st.columns(2)
     if left.button('生成基础报告',type='primary',key='basic_report_'+sid,width='stretch',help='点击即同意在本地计算缺失、分布、频数与图表；不运行回归或因果分析。'):

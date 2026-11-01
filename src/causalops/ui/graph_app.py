@@ -15,6 +15,9 @@ def render_graph_workspace(a,sid,frame,model):
     from causalops.ui.contracts_editor import render_contract,render_fact_fields
     service=ResearchService(a,model=model);jobs=BackgroundJobs(service);jobs.reconcile(sid)
     overview=service.flows(sid)
+    latest_context=service.contracts.latest(sid)
+    if latest_context:
+        st.caption('当前关注指标：'+str(latest_context['body'].get('metric_label') or latest_context['body'].get('outcome') or '整体数据特征')+'；每行代表：'+(latest_context['body']['analysis_unit'] or '尚未明确')+'。')
     if overview:
         chosen=st.session_state.get('_graph_pending_'+sid) or st.session_state.get('graph_flow_'+sid)
         overview_flow=next((v for v in overview if v['id']==chosen),overview[0])
@@ -23,6 +26,11 @@ def render_graph_workspace(a,sid,frame,model):
             st.caption('当前状态：'+STATUS.get(overview_flow['status'],overview_flow['status']))
             next_step={'awaiting_review':'下一步：查看待审计划与必要口径，核对后再批准计算。','completed':'下一步：查看本次研究结论，继续追问或导出报告。','needs_clarification':'下一步：补充字段含义、分组依据或分析目标，再提出问题。','failed':'下一步：查看具体缺项或服务错误，修正后重新制定计划。','blocked':'下一步：核对被阻断步骤的设计要求；不要为了继续运行而确认未知事实。'}.get(overview_flow['status'],'下一步：等待后台状态更新；需要时可请求停止。')
             st.write(next_step)
+            pending_plans=[v for v in overview if v['status']=='awaiting_review' and v['id']!=overview_flow['id']]
+            if pending_plans:
+                def return_pending():st.session_state['_graph_pending_'+sid]=pending_plans[0]['id']
+                st.button('返回待审计划',key='return_pending_'+sid,on_click=return_pending,help='回到已有候选，不重新生成，也不自动批准。')
+
     else:st.info('数据已导入。可参考下方初步建议，或直接输入分析目标。')
     from causalops.ui.onboarding import render_start_actions
     if not overview:render_start_actions(service,jobs,sid,frame)
@@ -45,12 +53,18 @@ def render_graph_workspace(a,sid,frame,model):
         from causalops.application.conversation import conversation_history
         history=conversation_history(service,current)
         if history:
-            with st.expander('前序对话 · '+str(len(history))+' 轮'):
-                for turn in history:
+            with st.expander('前序对话 · 最近 '+str(min(3,len(history)))+' 轮',expanded=True):
+                for turn in history[-3:]:
                     with st.chat_message('user'):st.write(safe_text(turn['question']))
                     if turn['answer']:
                         with st.chat_message('assistant'):
-                            st.caption(turn['answer']['source']);st.write(safe_text(turn['answer']['text']))
+                            st.caption(turn['answer']['source']);st.write(safe_text(turn['answer']['text'][:360])+('…' if len(turn['answer']['text'])>360 else ''))
+                    elif turn['status']=='awaiting_review':
+                        with st.chat_message('assistant'):st.write('系统记录：本轮已形成待审计划，等待明确审核。')
+                    elif turn['status']=='completed':
+                        with st.chat_message('assistant'):st.write('系统记录：本轮流程已完成，历史结果保留。')
+                    def restore_turn(fid=turn['flow_id']):st.session_state['_graph_pending_'+sid]=fid
+                    st.button('查看该轮记录',key='restore_turn_'+turn['flow_id'],on_click=restore_turn)
         with st.chat_message('user'):st.write(safe_text(f['request'].get('user_question',f['request']['question'])))
         current_jobs=[j for j in jobs.jobs(sid) if j['flow_id']==current]
         active=any(j['status'] in ACTIVE for j in current_jobs)
@@ -104,6 +118,14 @@ def render_graph_workspace(a,sid,frame,model):
             with st.expander('分析方案 · V'+str(p['version']),expanded=f['status']=='awaiting_review'):
                 st.markdown('**待审计划 V'+str(p['version'])+'**' if f['status']=='awaiting_review' else '**来源计划 V'+str(p['version'])+'**')
                 st.write(safe_text(v['objective']))
+                from causalops.application.conversation import previous_plan,plan_differences
+                prior=previous_plan(service,f['request'])
+                if prior:
+                    differences=plan_differences(prior,v)
+                    with st.expander('与前序方案的差异',expanded=f['status']=='awaiting_review'):
+                        if differences:st.dataframe(differences,hide_index=True,width='stretch')
+                        else:st.info('本候选与前序方案没有配置变化；不会因此沿用执行批准。')
+
                 for i,step in enumerate(v['steps']):
                     st.markdown('**步骤 '+str(i+1)+' · '+a.tools.method(step['tool'],step['config']['method']).label+'**')
                     st.write(safe_text(step['reason']))

@@ -24,6 +24,9 @@ def public_contract_context(service,flow):
 
 def check_declared_roles(plan,context):
     definition=context.get('definition',{}) if context else {}
+    target=definition.get('outcome')
+    if target and plan.steps and all(step.config.get('method')=='descriptive' for step in plan.steps):
+        if not any(target in step.config.get('numeric',[])+step.config.get('categorical',[]) for step in plan.steps):raise DesignError('描述计划未覆盖已登记的目标指标，请补充该字段或由使用者调整目标。')
     for step in plan.steps:
         cfg=step.config
         if cfg.get('method')=='descriptive':continue

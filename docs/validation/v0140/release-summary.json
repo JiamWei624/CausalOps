@@ -1,0 +1,60 @@
+{
+  "version": "0.14.0",
+  "date": "2026-11-01",
+  "source": {
+    "tests": "540",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "191.951"
+  },
+  "independent_installation": {
+    "tests": "540",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "162.725"
+  },
+  "browser": {
+    "version": true,
+    "config_initially_closed": true,
+    "start_in_first_view": true,
+    "approval_required": true,
+    "return_pending": true,
+    "approval_still_required": true,
+    "target_conclusion": true,
+    "target_chart": true,
+    "primary_export": true,
+    "report_target_first": true,
+    "report_no_causal_claim": true,
+    "continuity_visible": true,
+    "restore": true,
+    "no_reestimate_persisted": true,
+    "persisted_run_count": 1,
+    "persisted_flow_count": 3,
+    "st_exceptions": 0,
+    "ok": true
+  },
+  "real_model": {
+    "provider": {
+      "provider": "deepseek",
+      "base_url": "https://api.deepseek.com",
+      "model": "deepseek-flash",
+      "api_mode": "responses",
+      "json_mode": "json_object",
+      "anthropic_version": null
+    },
+    "target_in_plan": true,
+    "waited_for_review": true,
+    "test_harness_approval": true,
+    "model_cannot_approve": true,
+    "frozen_target": "quality",
+    "result_source": "DeepSeek官方模型+本地证据校验",
+    "fact_references": true,
+    "no_reestimate": true,
+    "raw_rows_sent": false,
+    "ok": true
+  },
+  "independent_human_study": "not conducted; automated acceptance cannot establish human completion rate or time saved",
+  "video_bytes": 4463547
+}

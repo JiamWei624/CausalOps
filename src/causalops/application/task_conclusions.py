@@ -18,7 +18,7 @@ def source_dictionary(a,sid,rid):
     return (contract['body'],flow['request'].get('contract_ref')) if contract else ({},None)
 
 def build_task_conclusion(a,sid,rid):
-    facts,refs=a.facts(sid,run_ids=[rid]);ref=refs[0];dictionary,contract_ref=source_dictionary(a,sid,rid);evidence=[]
+    facts,refs=a.facts(sid,run_ids=[rid]);ref=refs[0];dictionary,contract_ref=source_dictionary(a,sid,rid);evidence=[];focus=None
     def cite(path):
         for key,fact in facts.items():
             if fact['path']==path:
@@ -57,24 +57,45 @@ def build_task_conclusion(a,sid,rid):
         elif b['method']=='descriptive':
             cite('summary.column_count');cite('summary.exact_duplicate_rows')
             sections['baseline']='本次分析包含'+format(n,',')+'条记录、'+str(summary['column_count'])+'个字段；完全重复记录'+str(summary['exact_duplicate_rows'])+'条，未自动删除。'
-            lines=[]
-            # Stable report order, not significance or favourable-result selection.
-            for i,row in enumerate(summary['numeric'][:3]):
+            lines=[];target=dictionary.get('outcome');label=dictionary.get('metric_label') or target;unit=dictionary.get('metric_unit') or ''
+            rows=list(enumerate(summary['numeric']))
+            target_rows=[(i,v) for i,v in rows if v['field']==target]
+            focus={'field':target,'label':label,'unit':unit,'available':False,'source':'source_run_contract','contract_ref':contract_ref} if target else None
+            ordered=(target_rows+[(i,v) for i,v in rows if v['field']!=target]) if not target or target_rows else []
+            for i,row in ordered[:1 if target_rows else 3]:
                 if row['finite_n'] and row['mean'] is not None and row['median'] is not None:
                     for key in ('finite_n','mean','median','missing_n'):cite('summary.numeric['+str(i)+'].'+key)
-                    lines.append(row['field']+'：有效观测'+str(row['finite_n'])+'条，均值'+fmt(row['mean'])+'，中位数'+fmt(row['median'])+'，缺失'+str(row['missing_n'])+'条')
+                    if target_rows:
+                        for key in ('min','max','q25','q75','infinite_n'):cite('summary.numeric['+str(i)+'].'+key)
+                        lines.append(str(label)+'（'+str(target)+'）：有效观测'+str(row['finite_n'])+'条，均值'+fmt(row['mean'])+unit+'，中位数'+fmt(row['median'])+unit+'，观测范围'+fmt(row['min'])+'至'+fmt(row['max'])+unit+'；缺失'+str(row['missing_n'])+'条，无穷值'+str(row['infinite_n'])+'条')
+                        focus['available']=True
+                    else:lines.append(row['field']+'：有效观测'+str(row['finite_n'])+'条，均值'+fmt(row['mean'])+'，中位数'+fmt(row['median'])+'，缺失'+str(row['missing_n'])+'条')
+                elif target_rows:
+                    for key in ('finite_n','missing_n','infinite_n'):cite('summary.numeric['+str(i)+'].'+key)
+                    lines.append(str(label)+'没有有限有效值，不能报告其均值或中位数；缺失'+str(row['missing_n'])+'条，无穷值'+str(row['infinite_n'])+'条')
+            if target and not target_rows:
+                # Do not substitute another metric when the frozen target was not computed.
+                lines=[]
+                category=next(((i,v) for i,v in enumerate(summary['categorical']) if v['field']==target),None)
+                if category:
+                    i,row=category;valid=[(j,v) for j,v in enumerate(row['top']) if not v['is_missing']]
+                    if valid:
+                        j,value=valid[0];lines=[str(label)+'为分类字段；非缺失类别中最高频项占全部记录的'+fmt(value['pct_of_all_rows'])+'%。未把类别编码当作连续指标计算均值。'];focus['available']=True
+                        path='summary.categorical['+str(i)+'].top['+str(j)+'].pct_of_all_rows'
+                        # Categorical labels may identify people: cite only the stored aggregate share.
+                        cite(path)
+                if not lines:lines=['本次保存结果未形成目标指标 '+str(target)+' 的有效汇总。请检查所选字段与计划；不能用其他字段的均值代替其结果。']
             if not lines:
                 for i,row in enumerate(summary['categorical'][:3]):
                     if row['top']:
-                        cite('summary.categorical['+str(i)+'].top[0].pct_of_all_rows')
                         lines.append(row['field']+'最高频类别占全部记录的'+fmt(row['top'][0]['pct_of_all_rows'])+'%')
-            sections['magnitude']='；'.join(lines)+'。以上按报告字段顺序选取，完整统计见明细。' if lines else '所选字段未形成有效的数值汇总，未补写均值或中位数。类别频数与缺失情况见统计明细。'
-            sections['meaning']='以上结果描述当前样本内的分布。指标单位和分析单位以来源口径为准，不能据此确认变量之间的因果关系或推广至其他人群。'
-            sections['action']='先确认缺失与重复记录的业务含义及指标量纲，再根据具体目标开展分组比较或关联分析。'
+            sections['magnitude']='；'.join(lines)+('。优先解释创建本次运行时已确认的目标指标，其他统计见明细。' if target else '。未指定目标指标，以上按原字段顺序展示，完整统计见明细。') if lines else '所选字段未形成有效的汇总，未补写均值或中位数。'
+            sections['meaning']=('本次回答“'+str(label)+'在当前样本中是什么水平、如何分布”。' if target else '')+'结果仅描述当前样本。均值不代表每条记录的取值，最小值和最大值不是置信区间；指标解释依赖其测量尺度。当前没有估计干预效果，不能据此解释为改动某项措施后必然提升。'
+            sections['action']=('围绕 '+str(label)+' 检查缺失、重复记录与量纲；如需研究相关因素，应先明确比较字段、观察单位与测量口径，再制定新的关联分析计划。' if target else '先确认关心的指标及分析单位，再根据具体目标开展比较或关联分析。')
         elif b['method']=='correlation' and summary['correlations']:
             row=summary['correlations'][0];cite('summary.correlations[0].pearson');cite('summary.correlations[0].pairwise_n')
             sections['magnitude']=row['x']+'与'+row['y']+'的成对有效样本为'+str(row['pairwise_n'])+'，Pearson相关系数为'+(fmt(row['pearson']) if row['pearson'] is not None else '未计算')+'。';sections['meaning']='相关描述共同变化，不能确认方向、排除共同原因或解释为干预收益。'
-    body={'version':'task_conclusion_v2','run_id':rid,'data_fingerprint':ref['contract']['data_fingerprint'] if ref.get('contract') else a.tools.envelope(a.session(sid)['upload_id'],ref).data_fingerprint,'contract_ref':contract_ref,'claim':claim,'sections':sections,'evidence':evidence,'source':'saved_run_deterministic_interpretation','no_reestimate':True}
+    body={'version':'task_conclusion_v3','run_id':rid,'data_fingerprint':ref['contract']['data_fingerprint'] if ref.get('contract') else a.tools.envelope(a.session(sid)['upload_id'],ref).data_fingerprint,'contract_ref':contract_ref,'claim':claim,'sections':sections,'evidence':evidence,'source':'saved_run_deterministic_interpretation','no_reestimate':True,'focus':focus}
     if ref['kind']=='exploration' and b['method']=='descriptive':body['titles']={'baseline':'样本范围与数据质量','magnitude':'主要统计结果','meaning':'结果解释','action':'后续分析建议'}
     body['sha256']=hashlib.sha256(json.dumps(body,ensure_ascii=False,sort_keys=True,allow_nan=False).encode()).hexdigest();return body
 
@@ -82,5 +103,6 @@ def attach_task_conclusion(report,value):
     parts=['<section data-causalops-task-conclusion="1"><h2>研究问题的结论与下一步</h2><p>以下解释对应保存运行，未新增估计。运行编号：'+escape(value['run_id'])+'</p>']
     for k,v in value['sections'].items():parts.append('<h3>'+escape(value.get('titles',TITLES)[k])+'</h3><p>'+escape(v)+'</p>')
     parts.append('<details><summary>核对本节引用的运行证据</summary><pre>'+escape(json.dumps(value['evidence'],ensure_ascii=False,indent=2))+'</pre></details></section>')
+    if '</h1>' in report:return report.replace('</h1>','</h1>'+''.join(parts),1)
     marker='</body>' if '</body>' in report else '</html>'
     return report.replace(marker,''.join(parts)+marker)

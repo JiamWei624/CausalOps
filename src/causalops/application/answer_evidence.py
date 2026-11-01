@@ -2,7 +2,7 @@
 from __future__ import annotations
 import re
 
-def select_answer_facts(facts,runs,q,budget=8):
+def select_answer_facts(facts,runs,q,budget=8,*,target_by_run=None):
     # Distribute the fixed budget across explicitly selected runs, preserving comparison coverage.
     per=max(1,budget//max(1,len(runs)));selected=[]
     sample=bool(re.search('样本|行数|多少条|多少人',q));correlation=bool(re.search('相关|correlation|pearson|spearman',q,re.I))
@@ -25,7 +25,10 @@ def select_answer_facts(facts,runs,q,budget=8):
             if 'relative_change_pct' in p or 'scaled_per_1000' in p or 'control_mean' in p:s+=50
             # Requested field names outrank background summaries; never rank by significance.
             field=text.split(' / ')[0]
-            if len(field)>1 and field.lower() in q.lower():s+=45
+            if field and ((len(field)>1 and field.lower() in q.lower()) or (len(field)==1 and re.search(r'(?<![A-Za-z0-9_])'+re.escape(field)+r'(?![A-Za-z0-9_])',q,re.I))):s+=160
+            if (target_by_run or {}).get(run['run_id'])==field:
+                s+=50
+                s+=30 if p.endswith('.mean') else 25 if p.endswith('.median') else 20 if p.endswith('.finite_n') else 10 if p.endswith(('.min','.max','.missing_n')) else 0
             return -s
         candidates=sorted(candidates,key=score)
         selected.extend(candidates[:per])

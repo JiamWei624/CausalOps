@@ -158,6 +158,9 @@ class AssistantWorkspace:
             if set(step.config)&PROTECTED:raise DesignError('模型不能写入人工确认或识别假设字段。')
             if step.tool=='exploration':
                 d=ExplorationDesign.model_validate(step.config);fields=d.numeric+d.categorical+d.predictors+[v for v in [d.outcome,d.group,d.date,d.cluster] if v]
+                if d.method in ('descriptive','correlation'):
+                    from causalops.general.exploration import validate_frame
+                    validate_frame(frame,d)
             elif step.tool=='advanced':
                 d=AdvancedDesign.model_validate(step.config);fields=roles(d)
             else:
@@ -216,9 +219,14 @@ class AssistantWorkspace:
                     return self.store_plan(sid,result,__import__('causalops.llm.providers',fromlist=['model_label']).model_label(model)+'模型候选',q,hits,request_key=request_key)
                 except (ValueError,RuntimeError) as exc:
                     if attempt:raise
-                    payload={**payload,'repair_required':str(exc)[:800],'repair_rule':'只修复明确问题，不确认人工事实，不执行。输出完整Plan对象。'}
+                    payload={**payload,'rejected_candidate':result,'repair_required':str(exc)[:800],'repair_rule':'以上rejected_candidate是你上一轮生成但被本地拒绝的候选，不是已批准计划。修复明确错误后返回完整Plan对象。numeric与categorical必须互斥，同一角色不得重复；不要改写研究问题或已登记目标，不确认人工事实，不执行。'}
         numeric=[c['field'] for c in p['fields'] if c['numeric'] and not c['likely_identifier']][:12]
         categorical=[c['field'] for c in p['fields'] if not c['numeric'] and not c['likely_identifier'] and c['distinct_n']<=30][:6]
+        target=((guidance or {}).get('data_dictionary') or {}).get('definition',{}).get('outcome')
+        info=next((c for c in p['fields'] if c['field']==target and not c['likely_identifier']),None)
+        if info:
+            if info['numeric']:numeric=[target]+[x for x in numeric if x!=target][:11]
+            else:categorical=[target]+[x for x in categorical if x!=target][:5]
         if not numeric and not categorical:raise DesignError('没有可自动统计的非标识字段；请使用专业模式明确字段含义。')
         steps=[Step(config={'question':'数据质量、分布及可分析字段体检','method':'descriptive','numeric':numeric,'categorical':categorical},reason='先核对样本、缺失和分布，不改变原表。')]
         asked=[c for c in numeric if c.lower() in q.lower()]
@@ -347,8 +355,15 @@ class AssistantWorkspace:
                     facts[base+'rows']={'text':'纳入表行数','value':b['summary']['row_count'],'run_id':rid,'path':'summary.row_count','claim':'descriptive'}
                     for i,row in enumerate(b['summary']['numeric']):
                         if SENSITIVE.search(row['field']):continue
-                        for key in ['finite_n','mean','median','missing_n','std_ddof1']:
+                        for key in ['finite_n','mean','median','missing_n','std_ddof1','min','q25','q75','max','infinite_n']:
                             facts[base+f'n{i}.{key}']={'text':row['field']+' / '+key,'value':row[key],'run_id':rid,'path':f'summary.numeric[{i}].{key}','claim':'descriptive'}
+                    for key in ('column_count','exact_duplicate_rows'):
+                        facts[base+key]={'text':{'column_count':'字段数','exact_duplicate_rows':'完全重复记录数'}[key],'value':b['summary'][key],'run_id':rid,'path':'summary.'+key,'claim':'descriptive'}
+                    for i,row in enumerate(b['summary']['categorical']):
+                        if SENSITIVE.search(row['field']):continue
+                        for j,value in enumerate(row['top']):
+                            for key in ('n','pct_of_all_rows'):
+                                facts[base+f'cat{i}.{j}.{key}']={'text':row['field']+' / '+('缺失项' if value['is_missing'] else '已保存类别项')+' / '+key,'value':value[key],'run_id':rid,'path':f'summary.categorical[{i}].top[{j}].{key}','claim':'descriptive'}
                     for i,row in enumerate(b['summary']['correlations']):
                         for key in ['pearson','spearman','pairwise_n']:facts[base+f'c{i}.{key}']={'text':row['x']+' 与 '+row['y']+' / '+key,'value':row[key],'run_id':rid,'path':f'summary.correlations[{i}].{key}','claim':'associational'}
                     if b['regression']:
@@ -410,7 +425,9 @@ class AssistantWorkspace:
             method_context=' '.join(r.get('method','') for r in runs)
             hits=self.library.search(q+' '+method_context)
             from causalops.application.answer_evidence import select_answer_facts,result_rules
-            selected=select_answer_facts(facts,runs,q)
+            from causalops.application.task_conclusions import source_dictionary
+            target_by_run={v['run_id']:source_dictionary(self,sid,v['run_id'])[0].get('outcome') for v in runs}
+            selected=select_answer_facts(facts,runs,q,target_by_run=target_by_run)
             if model:
                 aliases={'F'+str(i+1):key for i,(key,_) in enumerate(selected)}
                 reverse_alias={v:k for k,v in aliases.items()}
@@ -501,6 +518,16 @@ class AssistantWorkspace:
                 words=[w for w in re.split(r'\s+|，|。',q) if w];matching=[(i,f) for i,f in facts.items() if any(w.lower() in f['text'].lower() for w in words)]
                 chosen=(matching or selected)[:12]
                 answer={'source':'本地证据摘要（未调用模型）','text':'以下来自已保存运行，不新增估计。'+(' 尚无运行证据，请先执行一个计划。' if not facts else ' 关联和描述不自动说明干预收益。'),'facts':[dict(id=i,**f) for i,f in chosen],'citations':[h['card_id'] for h in hits['hits'][:3]]}
+                if len(runs)==1 and runs[0].get('method')=='descriptive':
+                    from causalops.application.task_conclusions import build_task_conclusion
+                    conclusion=build_task_conclusion(self,sid,runs[0]['run_id']);target=(conclusion.get('focus') or {}).get('field')
+                    fields={v['text'].split(' / ')[0] for v in facts.values() if v['path'].startswith('summary.numeric')}
+                    other_requested=any(field!=target and re.search(r'(?<![A-Za-z0-9_])'+re.escape(field)+r'(?![A-Za-z0-9_])',q,re.I) for field in fields)
+                    if target and not other_requested:
+                        limited=bool(re.search('限制|边界|下一步|注意|因果|能否|为什么',q))
+                        text=(conclusion['sections']['meaning']+' '+conclusion['sections']['action']) if limited else (conclusion['sections']['magnitude']+' '+conclusion['sections']['meaning'])
+                        answer.update(source='本地结果解释（未调用模型）',text=text,facts=[] if limited else [dict(id=i,**f) for i,f in selected],conclusion_ref={'run_id':conclusion['run_id'],'sha256':conclusion['sha256'],'contract_ref':conclusion['contract_ref']})
+
         if 'hits' in locals():
             answer['method_provenance']=[{'card_id':h['card_id'],'title':h['title'],'version':h['version'],'knowledge_sha256':self.library.digest,'sources':h['sources'],'matched_sections':h.get('matched_sections',[])} for h in hits['hits'] if h['card_id'] in answer.get('citations',[])]
         answer['knowledge_sha256']=self.library.digest

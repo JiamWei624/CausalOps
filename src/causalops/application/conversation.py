@@ -43,10 +43,26 @@ def conversation_history(service,fid,limit=6):
 
 
 def previous_plan(service,request):
-    ref=request.get('conversation_ref')
-    if not ref:return None
-    parent=service.flow(ref['parent_flow_id'])
-    if parent['request']['data']!=request['data']:raise DesignError('上文方案的数据来源不一致。')
-    if not parent['plan_id']:return None
-    plan=service.a.get_plan(parent['plan_id'])
-    return {'objective':plan['plan']['objective'],'steps':plan['plan']['steps'],'state':plan['state'],'scope':'historical_candidate_not_authority'}
+    ref=request.get('conversation_ref');seen=set()
+    for _ in range(6):
+        if not ref:return None
+        fid=ref['parent_flow_id']
+        if fid in seen:raise DesignError('上文方案引用存在循环。')
+        seen.add(fid);parent=service.flow(fid)
+        if parent['request']['data']!=request['data']:raise DesignError('上文方案的数据来源不一致。')
+        if parent['plan_id']:
+            plan=service.a.get_plan(parent['plan_id'])
+            return {'objective':plan['plan']['objective'],'steps':plan['plan']['steps'],'state':plan['state'],'scope':'historical_candidate_not_authority'}
+        ref=parent['request'].get('conversation_ref')
+    return None
+
+def plan_differences(prior,current):
+    if not prior:return []
+    rows=[]
+    if prior['objective']!=current['objective']:rows.append({'项目':'分析问题','修改前':prior['objective'],'修改后':current['objective']})
+    for i in range(max(len(prior['steps']),len(current['steps']))):
+        a=prior['steps'][i] if i<len(prior['steps']) else {};b=current['steps'][i] if i<len(current['steps']) else {}
+        if a!=b:
+            import json
+            rows.append({'项目':'步骤 '+str(i+1),'修改前':json.dumps(a,ensure_ascii=False,sort_keys=True),'修改后':json.dumps(b,ensure_ascii=False,sort_keys=True)})
+    return rows

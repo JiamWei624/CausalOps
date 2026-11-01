@@ -24,7 +24,7 @@ def render_model_setup():
         verified=st.session_state.get('_connection_test')==(cfg.fingerprint,hashlib.sha256(key.encode()).hexdigest())
         st.caption(PRESETS[cfg.provider]['label']+' · '+cfg.model+' · '+('连接已验证' if verified else '已配置，尚未验证连接'))
     else:st.caption('模型连接为可选配置；数据任务的发送许可需单独确认。')
-    with st.expander('连接配置',expanded=not configured):
+    with st.expander('连接配置',expanded=False):
         _render_connection_editor()
 
 def _render_connection_editor():
