@@ -19,9 +19,9 @@ def render_fact_fields(method,saved,prefix):
         else:result[field]=st.checkbox(label,value=saved.get(field,False),key=key)
     return result
 
-def render_contract(service,sid,frame):
+def render_contract(service,sid,frame,expanded=False):
     latest=service.contracts.latest(sid);body=DataContract.model_validate(latest['body'] if latest else {}).model_dump();version=latest['version'] if latest else 0
-    with st.expander('数据字典与研究口径'+(' · V'+str(version) if version else ' · 尚未登记')):
+    with st.expander('数据字典与研究口径'+(' · V'+str(version) if version else ' · 尚未登记'),expanded=expanded):
         st.caption('字段口径和人工声明按数据与版本保存，后续计划可预填。声明不等于经验验证；修改后，旧候选和旧批准不能直接用于新版本。自由文字仅在本地保存。')
         basic,details,facts,history=st.tabs(['关键口径','字段说明','研究声明','版本记录'])
         prefix='dict_'+sid+'_'+str(version);options=['']+list(frame)

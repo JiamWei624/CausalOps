@@ -1,0 +1,93 @@
+{
+  "version": "0.15.1",
+  "date": "2026-11-02",
+  "source_tests": {
+    "tests": "576",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "time": "198.826"
+  },
+  "installed_wheel_tests": {
+    "tests": "576",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "time": "180.862"
+  },
+  "installed_prefix": "E:/cops015-clean",
+  "pip_check": "passed",
+  "wheel_source_modules_matched": 130,
+  "wheel": {
+    "version": "0.15.1",
+    "wheel": "causalops_agent-0.15.1-py3-none-any.whl",
+    "sha256": "d4e97a7afcf82d35790e4b20ff21dfba25a1de36d296f0be8140ecdc2bcf3930"
+  },
+  "browser_cases": [
+    {
+      "case": "wine",
+      "ok": true,
+      "review_required": true,
+      "chart": true,
+      "report": true,
+      "qa": true,
+      "restored": true,
+      "page_exceptions": 0
+    },
+    {
+      "case": "bank",
+      "ok": true,
+      "review_required": true,
+      "chart": true,
+      "report": true,
+      "qa": true,
+      "restored": true,
+      "page_exceptions": 0
+    },
+    {
+      "case": "shop",
+      "ok": true,
+      "review_required": true,
+      "chart": true,
+      "report": true,
+      "qa": true,
+      "restored": true,
+      "page_exceptions": 0
+    },
+    {
+      "case": "mail",
+      "ok": true,
+      "review_required": true,
+      "chart": true,
+      "report": true,
+      "qa": true,
+      "restored": true,
+      "page_exceptions": 0
+    },
+    {
+      "case": "macro",
+      "ok": true,
+      "review_required": true,
+      "chart": true,
+      "report": true,
+      "qa": true,
+      "restored": true,
+      "page_exceptions": 0
+    }
+  ],
+  "manual": {
+    "chapters": 25,
+    "embedded_images": 6,
+    "offline_search": "passed",
+    "desktop_and_mobile_overflow": false,
+    "print_navigation_hidden": true,
+    "app_download_identical": true,
+    "sha256": "346d309d3dd7d95543079a637defec15f72793fc7af3faeb67d3695f03783950"
+  },
+  "focused_recovery_tests": 5,
+  "independent_human_study": "deferred_by_prior_agreement",
+  "new_live_model_test_this_patch": false,
+  "previous_model_evidence": "v0.15.0 fixed public DeepSeek task, not a new 0.15.1 provider qualification",
+  "privacy": "Only licensed public red wine CSV bundled; no private research data or credentials staged",
+  "large_environment_created": false
+}

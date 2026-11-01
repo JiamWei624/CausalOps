@@ -87,6 +87,10 @@ def real_view():
 
 def guide():
     st.title('使用说明与方法范围')
+    from importlib.resources import files
+    manual=files('causalops.help').joinpath('manual.html').read_bytes()
+    st.download_button('下载完整项目介绍与功能手册',manual,file_name='CausalOps_项目介绍与功能手册.html',mime='text/html')
+    st.caption('手册可离线阅读、搜索和按A4打印，包含架构、操作、方法、权限、错误恢复和验收边界。')
     st.markdown('**首次使用：** 首页填写模型与密钥（可跳过） → 点击导入分析数据 → 上传表格 → 生成基础报告或推荐分析方向 → 选择问题 → 确认必要事实与计划 → 本地计算 → 阅读结论、下载报告并继续追问。无需先选A/B或回归。已有结果会保留，刷新不重新计算。')
     st.subheader('常用统计概念')
     st.dataframe([{'概念':a,'说明':b} for a,b in [

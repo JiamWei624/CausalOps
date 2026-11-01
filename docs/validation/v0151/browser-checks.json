@@ -1,0 +1,52 @@
+[
+  {
+    "case": "wine",
+    "ok": true,
+    "review_required": true,
+    "chart": true,
+    "report": true,
+    "qa": true,
+    "restored": true,
+    "page_exceptions": 0
+  },
+  {
+    "case": "bank",
+    "ok": true,
+    "review_required": true,
+    "chart": true,
+    "report": true,
+    "qa": true,
+    "restored": true,
+    "page_exceptions": 0
+  },
+  {
+    "case": "shop",
+    "ok": true,
+    "review_required": true,
+    "chart": true,
+    "report": true,
+    "qa": true,
+    "restored": true,
+    "page_exceptions": 0
+  },
+  {
+    "case": "mail",
+    "ok": true,
+    "review_required": true,
+    "chart": true,
+    "report": true,
+    "qa": true,
+    "restored": true,
+    "page_exceptions": 0
+  },
+  {
+    "case": "macro",
+    "ok": true,
+    "review_required": true,
+    "chart": true,
+    "report": true,
+    "qa": true,
+    "restored": true,
+    "page_exceptions": 0
+  }
+]

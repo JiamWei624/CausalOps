@@ -17,6 +17,13 @@ def current_connection():
     except ValueError:return None,''
     return cfg,st.session_state.get('_credential_memory_'+scope(p,cfg.base_url),m['keys'].get(scope(p,cfg.base_url),''))
 
+def use_local_mode():
+    # Only affects future requests; no consent, key, plan or approval is rewritten.
+    memory()['local_only']=True
+
+def enable_model_mode():
+    memory()['local_only']=False
+
 def render_model_setup():
     cfg,key=current_connection();configured=bool(cfg and key)
     st.subheader('模型连接')
@@ -24,8 +31,18 @@ def render_model_setup():
         verified=st.session_state.get('_connection_test')==(cfg.fingerprint,hashlib.sha256(key.encode()).hexdigest())
         st.caption(PRESETS[cfg.provider]['label']+' · '+cfg.model+' · '+('连接已验证' if verified else '已配置，尚未验证连接'))
     else:st.caption('模型连接为可选配置；数据任务的发送许可需单独确认。')
-    with st.expander('连接配置',expanded=False):
+    if memory().get('local_only'):st.info('当前使用本地模式。连接配置和已保存任务仍保留，后续请求不调用外部模型。')
+    with st.expander('连接配置',expanded=bool(st.session_state.get('_connection_open'))):
         _render_connection_editor()
+    if st.session_state.get('_connection_probe_failed'):
+        st.warning('模型连接测试未完成；没有发送研究数据。连接配置与已有任务仍保留。可修改配置后重新测试，也可继续本地分析。')
+    left,right=st.columns(2)
+    if memory().get('local_only'):
+        left.button('恢复模型辅助',key='connection_enable_model',on_click=enable_model_mode,disabled=not configured)
+    else:left.button('使用本地模式继续',key='connection_use_local',on_click=use_local_mode)
+    def begin_import():st.session_state['showcase_route']='assistant';st.query_params['route']='assistant'
+    right.button('前往数据导入与已有任务',key='connection_to_data',on_click=begin_import)
+    st.caption('模式切换只影响后续请求；已启动任务应通过停止按钮单独处理。新的分析仍须审核，原模型流程不会被静默改为本地执行。')
 
 def _render_connection_editor():
     m=memory()
@@ -72,14 +89,19 @@ def _render_connection_editor():
             try:
                 with st.spinner('正在核验认证、接口与结构化输出'):result=client.probe()
             finally:client.close()
+            st.session_state['_connection_probe_failed']=False
             st.session_state['_connection_test']=(cfg.fingerprint,hashlib.sha256(credential.encode()).hexdigest())
             st.success('连接测试通过。可继续上传数据。')
-        except (ValueError,RuntimeError):st.error('连接未通过。请核对服务地址、模型名称、密钥和账户额度；没有发送研究数据。')
+        except (ValueError,RuntimeError):
+            st.session_state.pop('_connection_test',None)
+            st.session_state['_connection_probe_failed']=True
+            st.error('连接未通过。请核对服务地址、模型名称、密钥和账户额度；没有发送研究数据。')
     st.caption('密钥只保存在当前浏览器连接的服务端内存中，刷新重连或关闭服务后可能需重填。不会写入数据库、报告或代码。连接测试只发送固定测试内容。')
 
 def task_model(a,sid):
-    cfg,key=current_connection();authorized=bool(cfg and key and a.consent_enabled(sid,cfg))
-    st.caption('模型：'+PRESETS[cfg.provider]['label']+' / '+cfg.model+' · '+('本任务已授权' if authorized else '本任务尚未授权') if cfg and key else '运行模式：本地统计分析')
+    cfg,key=current_connection();local=bool(memory().get('local_only'));authorized=bool(not local and cfg and key and a.consent_enabled(sid,cfg))
+    if local:st.caption('运行模式：本地统计分析；当前任务的模型许可仍保留，但后续请求不发送给模型。')
+    else:st.caption('模型：'+PRESETS[cfg.provider]['label']+' / '+cfg.model+' · '+('本任务已授权' if authorized else '本任务尚未授权') if cfg and key else '运行模式：本地统计分析')
     def open_settings():
         st.session_state['showcase_route']='home';st.query_params['route']='home'
     with st.expander('模型连接与数据发送许可',expanded=bool(cfg and key and not authorized)):

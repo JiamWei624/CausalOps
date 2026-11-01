@@ -165,7 +165,9 @@ def render_assistant():
                         sid=a.create(uid,title or (upload.name if upload else '本地分析任务'));st.write('数据已登记，原始文件不作修改。')
                         p=a.propose(sid,'请先完成数据质量、缺失和分布的描述性体检');a.accept(p['id'],p['sha']);a.execute(p['id'],permit=True);status.update(label='数据质量检查已完成',state='complete')
                 st.query_params['assistant']=sid;st.rerun()
-            except (ValueError,RuntimeError,OSError) as exc:st.error(str(exc))
+            except (ValueError,RuntimeError,OSError) as exc:
+                st.error(str(exc));st.info('本次导入检查未完成，未执行回归或因果分析。原始文件与已有任务保留。编码问题请展开文件设置；格式或容量超限请准备新的分析表后再创建任务。')
+                st.button('返回首页与模型连接',key='import_recovery_home',on_click=lambda: (st.session_state.update(showcase_route='home'),st.query_params.update(route='home')))
         st.caption('此按钮只登记文件并核对结构，不执行回归或因果分析，不向模型发送数据。')
         return
     s=a.session(sid);frame=a.ws.load_upload(s['upload_id']);pr=profile(frame)

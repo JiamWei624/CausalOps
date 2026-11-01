@@ -16,8 +16,8 @@
   },
   {
     "file": "application-wheel.json",
-    "bytes": 160,
-    "sha256": "b13c55d061cee16a993f998684b5f00f59b8a53d39695995b557d79ea9a81f04"
+    "bytes": 165,
+    "sha256": "7810b0d9af573fc20578679d69325126cb1ac9d85f0a04be878afbf7483bed57"
   },
   {
     "file": "CONTRIBUTING.md",
@@ -78,6 +78,16 @@
     "file": "docs/assets/example-015-guide.webm",
     "bytes": 2743727,
     "sha256": "50c03fd9f1e60e0fdef02c3066f9e240b0017268de594bb4afb23746bd4a4714"
+  },
+  {
+    "file": "docs/assets/example-0151-guide-download.png",
+    "bytes": 193204,
+    "sha256": "39a1e7645289846b46204949925196af1f1b51de519c7bd1a168d92392c182ba"
+  },
+  {
+    "file": "docs/assets/example-0151-homepage-local-mode.png",
+    "bytes": 161270,
+    "sha256": "ac42348d09be76ee8bd5c1ec992b93dc45b34ba3558824587dfc65428b258c8e"
   },
   {
     "file": "docs/assets/experience-015-bank-chart.png",
@@ -276,28 +286,38 @@
   },
   {
     "file": "docs/current/ARCHITECTURE.md",
-    "bytes": 6514,
-    "sha256": "6aadf70b381a420b446ffc8a7603256ad320cdf3de2cbf58c382cc225920c0f6"
+    "bytes": 6940,
+    "sha256": "07d04833825427c8c30abeaa9ee19cece41bc4f42425286e2cfc4f48faf451dd"
+  },
+  {
+    "file": "docs/current/COMPLETE_MANUAL.html",
+    "bytes": 865506,
+    "sha256": "667e6221588c474aded7ee5cb26ed5d7d01c367095b74b36d34279b28a9fb616"
+  },
+  {
+    "file": "docs/current/COMPLETE_MANUAL.md",
+    "bytes": 49563,
+    "sha256": "c9d88d24a6a4b12970dca6ab49820c2d67d071ad71bcea27b0ab3e6a1261e417"
   },
   {
     "file": "docs/current/INSTALLATION.md",
     "bytes": 6454,
-    "sha256": "b333b6d8946df73370b368bfac5f867e6f0ce5f4022f4e4e0adde0072c7fe084"
+    "sha256": "8115aa6c3317947f2e7acd2da44759cf0fcf414b387c4070ad0a45e5221c076a"
   },
   {
     "file": "docs/current/PROVIDERS.md",
-    "bytes": 7737,
-    "sha256": "80013aca1fbf9048da0e7af826432c4b8e473cb0dc9741d6926c8e26bff1132c"
+    "bytes": 8128,
+    "sha256": "d144d940705d5b67fa6bdae918d8004d4d0b317c09d2a00531429efe1d49279c"
   },
   {
     "file": "docs/current/PUBLIC_TUTORIAL.md",
     "bytes": 5836,
-    "sha256": "82bf8a8ac7c42ed0b2a135aeaecb64fff38a6b2697556c57907ce2452e7967a8"
+    "sha256": "f05c476d958da73af622425a7a18ec25eddb73263e385eec46a3ad223b33c0ef"
   },
   {
     "file": "docs/current/REAL_DATA_EXPERIENCE.md",
     "bytes": 4195,
-    "sha256": "1affd4ce193eee8b2ebd930a28f7497d0dc03c1f17109a9cc23e786c3c1f5914"
+    "sha256": "952c72d2b4b75de263c081bda1ffb9b8ec475b4086d813c37a33748e62deceb4"
   },
   {
     "file": "docs/current/ROADMAP.md",
@@ -311,13 +331,13 @@
   },
   {
     "file": "docs/current/USER_GUIDE.md",
-    "bytes": 5081,
-    "sha256": "b2fa85e89f8e52083c7c94a34054972f66de17319eb5a40f5134482b0aa568ac"
+    "bytes": 5884,
+    "sha256": "ec1080425bf8258c6578e7ef44ba54bb381bee93cc6fa5b26534312d3882de2a"
   },
   {
     "file": "docs/current/VALIDATION.md",
-    "bytes": 2716,
-    "sha256": "916940cfc2e2cbb668fae215a6a3e69e2065a6d2c847e34faf1b87590a2e25ab"
+    "bytes": 2675,
+    "sha256": "489b051f46f3fdcbf888814d765372b0d4f99575482a9556bf5f5d4f05bab214"
   },
   {
     "file": "docs/diagrams/current-architecture.mmd",
@@ -381,8 +401,8 @@
   },
   {
     "file": "docs/HISTORY.md",
-    "bytes": 2762,
-    "sha256": "711b9039863b557379593821f7ca90bd60d456470514f14e5a89354bee4d00a6"
+    "bytes": 3149,
+    "sha256": "87e33e94aeb19574c552ec76c8f6322d9e560e9f4117ce805cabcc30769610ec"
   },
   {
     "file": "docs/IMPLEMENTATION_0.7.0.md",
@@ -421,8 +441,8 @@
   },
   {
     "file": "docs/README.md",
-    "bytes": 679,
-    "sha256": "783df4c1653fe3389c3080378c8a1cd1199f09b0dd8bdc80a8903c0081d23c89"
+    "bytes": 744,
+    "sha256": "173a7be94cb2770510536c4a26c3ed42a5c81423c3a2aa061e68589402bf1eea"
   },
   {
     "file": "docs/REFERENCE_PROJECT_REVIEW.md",
@@ -485,6 +505,16 @@
     "sha256": "312f1759f0766111b8d8f70402d4a23d589c6a511300acc1b7ba0ac898516ed5"
   },
   {
+    "file": "docs/validation/v0151/browser-checks.json",
+    "bytes": 884,
+    "sha256": "8bf556b73626e6064a1b8eb40f238ea409349109e1150d277f85f212a03d4077"
+  },
+  {
+    "file": "docs/validation/v0151/release-summary.json",
+    "bytes": 2284,
+    "sha256": "cc87e06a878ae25fdfbeb4844ef1490bf852850cecbe873101549e2aec42ccca"
+  },
+  {
     "file": "docs/validation-v080.json",
     "bytes": 844,
     "sha256": "c4a7948c515ae8a8e83af7a931d0a5c692345f7453c7acff59ee9e6ab74a18ee"
@@ -541,13 +571,13 @@
   },
   {
     "file": "pyproject.toml",
-    "bytes": 1355,
-    "sha256": "dd9ed80963bf6883fe49f2311bc705b49ed96e57471829d98e58f12af622d05c"
+    "bytes": 1391,
+    "sha256": "9624c155e6936010c7396fe3493ab6d2f021aa324ac4aebe6531a616f76aaa75"
   },
   {
     "file": "README.md",
-    "bytes": 8468,
-    "sha256": "7851ac4046cc7cdebb932519e852d76ad237fd75093f5d46dba60a1249cab734"
+    "bytes": 9055,
+    "sha256": "b53e456ac6f238d5c51361e1c3a26ca11483ef75f82109e34665101d07e6db62"
   },
   {
     "file": "requirements-runtime-win-py311.txt",
@@ -677,7 +707,7 @@
   {
     "file": "src/causalops/__init__.py",
     "bytes": 64,
-    "sha256": "8d3c414762bd1cd25cb929c475eb94fb5e399c1d66f72fdbee01574c52bf8f34"
+    "sha256": "337e2bf257e83347dc7fac5eeef7d964c1c46d50f814f027471cc0b6f99bb19f"
   },
   {
     "file": "src/causalops/advanced/__init__.py",
@@ -1020,6 +1050,16 @@
     "sha256": "87ad6c9cc68d668a8565a142cad5986c10195f1d4771b7feb050c612e697c222"
   },
   {
+    "file": "src/causalops/help/__init__.py",
+    "bytes": 56,
+    "sha256": "0d07e31cb387d0f488df1e51fda9a04da745ea9315661471b59d1cd81617115f"
+  },
+  {
+    "file": "src/causalops/help/manual.html",
+    "bytes": 865506,
+    "sha256": "667e6221588c474aded7ee5cb26ed5d7d01c367095b74b36d34279b28a9fb616"
+  },
+  {
     "file": "src/causalops/identification.py",
     "bytes": 9512,
     "sha256": "31eb967e577df20cc5c3625c758d747cb5bdd7aae04de30032d77d89445aaede"
@@ -1251,13 +1291,13 @@
   },
   {
     "file": "src/causalops/ui/assistant_app.py",
-    "bytes": 35375,
-    "sha256": "07ac4d9eea383c6050613ff8ae12f63e9466c78439cf1189c36ffcd86996511c"
+    "bytes": 35792,
+    "sha256": "34a8f7758876fb70994f49c842ed8cf5e7ea995a1b66d9affe72a5614ae66953"
   },
   {
     "file": "src/causalops/ui/contracts_editor.py",
-    "bytes": 9287,
-    "sha256": "069eb7a1c7e78ae80a1a4d13e406bcf54e3f0bb9cabee3debdcb710a69c26aaa"
+    "bytes": 9320,
+    "sha256": "3bf5201e67172d19b357b377864ddd2bd1e95fad6a4beba66bbb8d1e09b7925e"
   },
   {
     "file": "src/causalops/ui/controller.py",
@@ -1276,8 +1316,8 @@
   },
   {
     "file": "src/causalops/ui/graph_app.py",
-    "bytes": 20967,
-    "sha256": "52efb901745a05082ba26e2e82ce5a69f1548f8698217acafa3638c7e4083229"
+    "bytes": 21681,
+    "sha256": "62ba43cb13de11ed5c9a6fd69d5aafacd6f15728db38b1e3d44179b5cf8f79f2"
   },
   {
     "file": "src/causalops/ui/guided_intake.py",
@@ -1286,8 +1326,8 @@
   },
   {
     "file": "src/causalops/ui/model_setup.py",
-    "bytes": 7321,
-    "sha256": "2793e040c7dbe53baedcf360cca35251035e1c9ded22b33c4f5c864d6e8e20e9"
+    "bytes": 9019,
+    "sha256": "6fa9074887f28fc3e0e483a58129816d201665a7849af77ded0f8e9eea9e0a87"
   },
   {
     "file": "src/causalops/ui/onboarding.py",
@@ -1298,6 +1338,11 @@
     "file": "src/causalops/ui/portfolio_demo.py",
     "bytes": 10060,
     "sha256": "cb3fa98b4e98c7d44cf3b14c4e6c86d2e54aa4c31f52d63a0612b0bc3a985c61"
+  },
+  {
+    "file": "src/causalops/ui/recovery.py",
+    "bytes": 1961,
+    "sha256": "3cfec714745763b6fa71a18a016b1d21402451099c71787dcf6d03334c9d0655"
   },
   {
     "file": "src/causalops/ui/showcase_support.py",
@@ -1321,8 +1366,8 @@
   },
   {
     "file": "src/causalops/ui/workbench.py",
-    "bytes": 16970,
-    "sha256": "ddea60066fb183a43c55671ded9e3462f1dc2ac6607c4f8dbb034247eb69f17c"
+    "bytes": 17367,
+    "sha256": "fe09b5029c5d250356b96a9613aea538c7185e31dca9e98dd306abd1474ae70c"
   },
   {
     "file": "src/causalops/visualization.py",
@@ -1513,6 +1558,11 @@
     "file": "tests/test_real_regression.py",
     "bytes": 6081,
     "sha256": "ea0e379bf934f9646bf99d24d31647eb77b4d4e9f13eef8ea02b598be0c5276b"
+  },
+  {
+    "file": "tests/test_recovery_v0151.py",
+    "bytes": 4124,
+    "sha256": "8753475aaa49f42f1d0176bd2af21ccfc1f08a1a4489ae66dd3545e95901af78"
   },
   {
     "file": "tests/test_research_repository.py",

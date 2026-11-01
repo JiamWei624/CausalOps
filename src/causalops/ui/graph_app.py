@@ -36,8 +36,8 @@ def render_graph_workspace(a,sid,frame,model):
     if not overview:render_start_actions(service,jobs,sid,frame)
     else:
         with st.expander('新分析与口径设置'):render_start_actions(service,jobs,sid,frame)
-    with st.expander('高级设置：完整数据字典与研究事实'):
-        render_contract(service,sid,frame)
+    with st.expander('高级设置：完整数据字典与研究事实',expanded=bool(st.session_state.get('_open_contract_'+sid))):
+        render_contract(service,sid,frame,expanded=bool(st.session_state.get('_open_contract_'+sid)))
     st.session_state.setdefault('_job_signature_'+sid,tuple((j['id'],j['status']) for j in jobs.jobs(sid)))
     st.subheader('分析对话')
     st.caption('输入分析目标、方案调整要求或结果解读问题。系统保留本轮对话关联，必要时提示补充关键信息。')
@@ -72,6 +72,8 @@ def render_graph_workspace(a,sid,frame,model):
             st.info('后台正在处理，页面可以继续操作。停止请求会在安全边界生效；正在进行的底层计算不会被强制中断。')
             if st.button('请求停止当前流程',key='graph_cancel_'+current):jobs.cancel(current,human_confirmed=True);st.rerun()
         elif current_jobs and current_jobs[0]['error_note']:st.warning(current_jobs[0]['error_note'])
+        from causalops.ui.recovery import render_recovery
+        render_recovery(service,jobs,sid,f,active,has_error=bool(current_jobs and current_jobs[0]['error_note']))
         runs=a.completed_runs(sid);refs={r['run_id']:r for r in runs}
         if flows:
             completed=service.output(current,'execution')
@@ -139,6 +141,10 @@ def render_graph_workspace(a,sid,frame,model):
                     readiness=plan_readiness(service,f,v)
                     stale=f['request'].get('contract_ref')!=service.contracts.ref(sid) if 'contract_ref' in f['request'] else False
                     for error in readiness['errors']:st.warning(error)
+                    if readiness['errors'] or stale:
+                        st.caption('本候选尚未执行；已保存结果不受影响。请先补充任务上方的数据口径，保存后重新制定计划。')
+                        def edit_blocked():st.session_state['_open_contract_'+sid]=True
+                        st.button('打开本任务的口径设置',key='open_blocked_'+current,on_click=edit_blocked)
                     if stale:st.warning('数据字典已更新，本候选引用旧版本；请重新制定计划。')
                     if not readiness['configuration_ready'] or stale:
                         if st.button('按最新口径重新制定计划',key='replan_'+current):
