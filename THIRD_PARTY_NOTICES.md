@@ -35,3 +35,8 @@ The project LICENSE describes original CausalOps code, not a relicensing of depe
 - langchain-core 1.7.3: MIT, https://github.com/langchain-ai/langchain . BaseRetriever and Document adapt the existing provenance-checked method library; this is not an embedding or vector-database migration.
 
 Resolved wheel versions, official PyPI download addresses and SHA-256 are recorded in docs/workflow-dependency-provenance.json. Bundled dependency wheels retain their upstream license files. LangSmith SDK is a transitive dependency; tracing is explicitly disabled in this release. No cloud tracing account or data upload is enabled.
+
+
+## 随包公共示例（0.13.0 新增）
+
+`src/causalops/sample_data/winequality-red.csv` 是 UCI Wine Quality 的原始红酒 CSV，按 CC BY 4.0 分发，未修改数据值。作者：Cortez, P., Cerdeira, A., Almeida, F., Matos, T., & Reis, J. (2009)。来源：https://doi.org/10.24432/C56S3T；官方数据页：https://archive.ics.uci.edu/dataset/186/wine+quality；许可：https://creativecommons.org/licenses/by/4.0/。读取时使用分号，不自动去重。来源、许可、SHA-256 与核对日期见同目录 `wine-quality.json`。该数据许可与代码 MIT 许可独立。除这一按明确路径与哈希核对的公共样本外，发布扫描仍阻断 CSV/Parquet/数据库等研究数据文件。

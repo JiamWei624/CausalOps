@@ -73,6 +73,14 @@ def render_graph_workspace(a,sid,frame,model):
             if rid!=selected:a.select_run(sid,rid)
             st.subheader('分析结果')
             show_run(a,refs[rid],sid,compact=True)
+            followups=st.columns(2)
+            for col,label,question in [(followups[0],'解读本次结果','请解释本次保存结果的主要发现、幅度和实际含义，不要重新计算。'),(followups[1],'查看限制与下一步','请根据本次保存结果说明分析限制与可行的下一步，不要重新计算。')]:
+                if col.button(label,key='result_action_'+label+'_'+current,disabled=active,width='stretch'):
+                    try:
+                        job=jobs.submit_start(sid,question,mode='results',parent_flow_id=current)
+                        st.session_state['_graph_pending_'+sid]=job['flow_id'];st.rerun()
+                    except (ValueError,RuntimeError,OSError) as exc:st.error(str(exc))
+
         answer=service.output(current,'answer')
         if answer:
             st.markdown('**'+{'method_only':'方法说明','question_options':'分析建议','data_overview':'数据概览'}.get(answer.get('scope'),'结果解读' if answer.get('run_ids') else '信息补充')+'**')

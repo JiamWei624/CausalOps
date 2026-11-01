@@ -1,9 +1,6 @@
+"""Compatibility entry: all launches now use the main workbench."""
 from pathlib import Path
-import os,sys
-root=Path(__file__).resolve().parents[1]
-sys.path.insert(0,str(root/'src'))
-os.environ.setdefault('CAUSALOPS_HOME',str(root/'artifacts/general-workspace'))
-from causalops.launch import main
+import runpy
 if __name__=='__main__':
-    try:raise SystemExit(main(["--port","8510",*sys.argv[1:]],project_root=root))
-    except (OSError,RuntimeError) as e:raise SystemExit('启动未完成：'+str(e)) from None
+    print('历史作品集启动入口已迁移至统一 CausalOps 工作台。')
+    runpy.run_path(str(Path(__file__).with_name('start_workflow.py')),run_name='__main__')

@@ -1,0 +1,53 @@
+{
+  "version": "0.13.0",
+  "date": "2026-11-01",
+  "source_tests": {
+    "tests": "523",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "time": "157.480"
+  },
+  "installed_wheel_tests": {
+    "tests": "523",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "time": "149.094"
+  },
+  "browser": {
+    "ok": true,
+    "version": true,
+    "old_slogan": 0,
+    "private_route_hidden": true,
+    "pending_approval_disabled": true,
+    "saved_statistics": true,
+    "details_initially_closed": true,
+    "persisted": true,
+    "st_exceptions": 0,
+    "no_reestimate_persisted": true,
+    "persisted_run_count_after_followup": 1,
+    "video_bytes": 4633524
+  },
+  "model": {
+    "provider": {
+      "provider": "deepseek",
+      "base_url": "https://api.deepseek.com",
+      "model": "deepseek-flash",
+      "api_mode": "responses",
+      "json_mode": "json_object",
+      "anthropic_version": null
+    },
+    "discovery_model_accepted": true,
+    "ordinal_resolved": true,
+    "candidate_waited_for_review": true,
+    "no_model_approval": true,
+    "proposal_had_parent_context": true,
+    "fact_references": true,
+    "no_reestimate": true,
+    "raw_rows_sent": false
+  },
+  "independent_user_study": "deferred",
+  "tutorial_data": "UCI Wine Quality red / 1,599 rows / 12 columns",
+  "video": "unaccelerated actual local-mode Chrome recording; caption annotations; no credentials"
+}

@@ -18,6 +18,17 @@ def navigate(route):
 
 def sync_route():st.query_params['route']=st.session_state['showcase_route']
 
+def open_public_sample():
+    from causalops.assistant.service import AssistantWorkspace
+    from causalops.sample_data import create_wine_task
+    try:
+        sid=create_wine_task(AssistantWorkspace())
+        st.query_params['assistant']=sid
+        navigate('assistant')
+    except (ValueError,RuntimeError,OSError):
+        st.session_state['public_example_error']='公共示例未能载入。请在系统状态中检查样本完整性与工作区写入权限。'
+
+
 def home():
     from causalops import __version__
     st.caption('版本 '+__version__+' · 本地单用户工作区')
@@ -29,26 +40,34 @@ def home():
     st.subheader('数据导入')
     st.button('导入分析数据',type='primary',on_click=navigate,args=('assistant',),width='stretch')
     st.info('支持 CSV 与 Parquet。系统先核查数据结构并提供分析建议，必要口径由使用者确认。')
-    with st.expander('示例分析与功能范围'):
-        st.subheader('示例分析')
-        cols=st.columns(3)
-        cards=[('experiment','01 · 随机实验','发一封营销邮件，访问概率差多少？','公开随机实验数据 · 42,613条分析观测','核对设计 → 确认运行 → 阅读提升幅度','进入随机实验'),
-               ('diagnostic','02 · 识别失败','估计很显著，就能说干预有效吗？','固定种子合成数据 · 专门设置前趋势问题','运行诊断 → 看趋势图 → 理解结论降级','进入识别失败演示'),
-               ('weibo','03 · 真实研究','AI回复与用户再次互动有什么关系？','本地真实研究 · 488,472条有效事件','回看已有证据 → 解读量化差异 → 看平台意义','进入真实研究回看')]
-        for col,(route,label,q,source,steps,button) in zip(cols,cards):
-            available=route=='diagnostic' or (Path(os.environ.get('CAUSALOPS_PUBLIC_CATALOG','E:/ugc_ai_portfolio_public_data/prepared/catalog.json')).is_file() if route=='experiment' else (ROOT/'artifacts/real-panel-20261030/full-summary.json').is_file())
-            with col,st.container(border=True,height=365):
-                st.markdown('### '+label);st.markdown('**'+q+'**');st.caption(source);st.write(steps)
-                st.button(button,key='go_'+route,on_click=navigate,args=(route,),width='stretch',disabled=not available)
-                if not available:st.caption('可选历史示例未附带；通用上传和合成示例不受影响。')
-        st.subheader('分析产出')
-        st.markdown('**分析结论**：样本参考水平、估计幅度、实际含义及后续建议。\n\n**运行证据**：样本口径、方法、诊断、区间和保存运行。\n\n**解释范围**：相关不自动等于因果；显著不自动等于值得推广。')
-        st.caption('本机单用户工作台。支持方法文献检索、只读MCP证据查询及本地A2A方法审阅；研究设计审批和数据发送授权仍由使用者控制。')
+    st.subheader('公共示例')
+    st.write('首次使用可直接载入随发行包提供的 UCI 葡萄酒质量数据，无需下载文件或配置密钥。')
+    left,right=st.columns([2,1])
+    with left,st.container(border=True):
+        st.markdown('**葡萄酒质量分析**')
+        st.caption('1,599 条样本 · 12 个字段 · 公开观测数据')
+        st.write('了解样本分布、数据质量与质量评分相关的分析问题。示例不会将相关关系解释为生产配方的因果效果。')
+        st.button('载入葡萄酒示例',key='load_public_wine',type='primary',on_click=open_public_sample,width='stretch')
+        if st.session_state.get('public_example_error'):st.error(st.session_state.pop('public_example_error'))
+        st.markdown('[数据来源与许可：UCI / CC BY 4.0](https://archive.ics.uci.edu/dataset/186/wine+quality)')
+    with right:
+        st.markdown('**操作步骤**')
+        st.write('1. 查看数据概览与初步建议。')
+        st.write('2. 生成基础报告，或选择建议制定计划。')
+        st.write('3. 查看结论，展开图表与报告，继续提问。')
+        st.button('阅读完整使用说明',on_click=navigate,args=('guide',),width='stretch')
+    with st.expander('进阶示例与适用范围'):
+        st.button('查看识别失败的合成演示',on_click=navigate,args=('diagnostic',))
+        st.write('支持描述统计、关联分析、实验与受识别条件约束的因果分析。模型提供建议与解释，统计工具计算数值，使用者确认必要事实。')
+        if os.environ.get('CAUSALOPS_ENABLE_PRIVATE_EXAMPLES')=='1':
+            st.caption('已显式开启作者本地历史示例；这些文件不随发行包提供。')
+            st.button('打开本地研究回看',on_click=navigate,args=('weibo',))
+
 
 def real_view():
     st.title('用户行为研究 · 已保存结果')
     st.info('只读回看：本页不加载原始CSV、不重新估计、不修改原研究会话，也不向外部模型发送数据。')
-    if not (ROOT/'artifacts/real-panel-20261030/full-summary.json').is_file():st.info('发行包不包含作者的真实微博数据或研究派生记录。请使用“分析我的数据”上传自己的分析表。');return
+    if not (ROOT/'artifacts/real-panel-20261030/full-summary.json').is_file():st.info('发行包不包含作者的真实微博数据或研究派生记录。请从首页导入自己的分析表。');return
     bundle,path=read_real_run();e=bundle.evidence.get('estimator',{})
     st.markdown('**研究问题：在控制已登记的帖子与历史行为特征后，当前事件收到AI回复，与后续再次@AI的概率有什么关系？**')
     a,b,c=st.columns(3);a.metric('有效事件记录',f'{bundle.estimate.sample_size:,}');b.metric('用户聚类数',f"{e['cluster_count']:,}" if e.get('cluster_count') is not None else '未记录');c.metric('分析层级','用户发帖事件')
@@ -105,19 +124,34 @@ def status():
     elif loaded:st.success('启动代码指纹与当前磁盘一致。')
     else:st.info('本次不是由统一启动器启动，无法确认进程版本；建议使用“启动作品集.cmd”。')
     st.code('当前代码指纹：'+current[:16]+'\n启动代码指纹：'+(loaded[:16] if loaded else '未登记'))
-    required={'公开营销数据目录':Path('E:/ugc_ai_portfolio_public_data/prepared/catalog.json'),'真实研究汇总':ROOT/'artifacts/real-panel-20261030/full-summary.json'}
-    st.dataframe([{'检查项':k,'状态':'已就绪' if p.is_file() else '缺少本地文件'} for k,p in required.items()],hide_index=True,width='stretch')
-    st.markdown('**打不开网页：** 先双击项目目录的“启动作品集.cmd”，等待出现访问地址；不要先删除数据库。\n\n**导入错误或更新后界面不变：** 关闭启动窗口后重新启动，让进程重新加载模块。\n\n**端口已占用：** 启动器会说明是否是同一项目；只对本项目登记的进程提供重启，不自动关闭其他程序。\n\n**按钮灰色：** 先阅读设计并勾选核对框。生成候选不等于接受，接受也不等于批准。\n\n**模型不可用：** 本地分析、报告和证据仍能使用；不要把本地兜底当作模型回答。')
-    st.caption('上述数据检查仅针对可选历史示例；缺少这些文件不影响通用工作台。')
+    from causalops.sample_data import wine_example
+    try:
+        _,info=wine_example();st.success('内置公共示例完整，SHA-256 校验通过。')
+    except ValueError:st.error('公共示例校验失败，请重新安装同一发行包。')
+    st.markdown('**更新后仍显示旧页面：** 对照本页的版本与构建号，使用启动器本次输出的完整地址。地址带构建标识，旧书签仍可访问，但不能保证旧标签页已经重新加载。\n\n**打不开网页：** 按安装教程启动服务，等待访问地址出现。不要先删除数据库。\n\n**端口已占用：** 只有确认归属且没有后台任务时，启动器才会按 `--restart` 重启本项目进程；其他程序不受影响。\n\n**按钮不可用：** 先核对页面列出的具体缺项。不要确认未知研究事实以绕过检查。\n\n**模型不可用：** 本地分析、报告和证据仍能使用；模型失败与本地解释会分别标明。')
     st.caption('故障日志只记录异常类型和代码位置，不记录API密钥、问题正文或原始行。')
 
 def main():
     st.set_page_config(page_title='CausalOps · 数据分析与研究工作台',page_icon='◈',layout='wide');style()
-    initial=checked_route(st.query_params.get('route','home'))
+    from causalops import __version__
+    current_build=source_fingerprint()[:12]
+    st.caption('CausalOps '+__version__+' · 构建 '+current_build+' · 本机运行')
+    requested_build=st.query_params.get('build')
+    requested_release=st.query_params.get('release')
+    if (requested_build and requested_build!=current_build) or (requested_release and requested_release!=__version__):
+        st.warning('当前地址来自其他版本。请使用本次启动器显示的地址；下方显示的是本服务的实际版本。')
+        if st.button('使用当前版本地址'):
+            st.query_params.update(release=__version__,build=current_build,route='home')
+            st.session_state['showcase_route']='home';st.rerun()
+    allowed_routes={k:v for k,v in ROUTES.items() if k not in ('weibo','experiment') or os.environ.get('CAUSALOPS_ENABLE_PRIVATE_EXAMPLES')=='1'}
+    requested_route=checked_route(st.query_params.get('route','home'))
+    initial=requested_route if requested_route in allowed_routes else 'home'
+    if requested_route not in allowed_routes:st.info('此历史入口不属于默认发行版，已返回首页。可载入公共示例或导入自己的数据。')
+    if st.session_state.get('showcase_route') not in allowed_routes:st.session_state['showcase_route']=initial
     if 'showcase_route' not in st.session_state:st.session_state['showcase_route']=initial
     with st.sidebar:
         st.markdown('## CausalOps');st.caption('数据分析 · 研究设计 · 证据管理')
-        route=st.radio('工作台导航',list(ROUTES),format_func=lambda k:ROUTES[k][0],key='showcase_route',on_change=sync_route)
+        route=st.radio('工作台导航',list(allowed_routes),format_func=lambda k:allowed_routes[k][0],key='showcase_route',on_change=sync_route)
         st.divider();st.caption('操作流程：导入数据 → 制定计划 → 审核设计 → 执行分析 → 查阅报告。')
         st.caption('本地单用户工作区 · 数据发送须单独授权')
     try:

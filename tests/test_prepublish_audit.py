@@ -30,3 +30,17 @@ def test_audit_allows_small_clean_source(tmp_path) -> None:
     assert MODULE.audit(tmp_path) == []
     (tmp_path / "notes.txt").write_text("contact: " + "138" + "12345678", encoding="utf-8")
     assert "cn_mobile" in {x.code for x in MODULE.audit(tmp_path)}
+
+
+def test_public_data_exception_is_path_and_content_specific(tmp_path):
+    from causalops.sample_data import wine_example
+    raw,_=wine_example()
+    target=tmp_path/'src/causalops/sample_data/winequality-red.csv'
+    target.parent.mkdir(parents=True)
+    target.write_bytes(raw)
+    assert MODULE.audit(tmp_path)==[]
+    target.write_bytes(raw+b'\n')
+    assert 'private_data_file' in {x.code for x in MODULE.audit(tmp_path)}
+    target.write_bytes(raw)
+    (tmp_path/'users.csv').write_bytes(raw)
+    assert 'private_data_file' in {x.code for x in MODULE.audit(tmp_path)}

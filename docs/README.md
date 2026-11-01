@@ -1,3 +1,5 @@
+[完整公共示例教程](current/PUBLIC_TUTORIAL.md) · [安装与故障恢复](current/INSTALLATION.md)
+
 <!-- current: 0.12.0 -->
 # 文档入口
 

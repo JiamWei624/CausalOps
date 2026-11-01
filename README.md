@@ -1,13 +1,13 @@
-<!-- release: 0.12.0 -->
+<!-- release: 0.13.0 -->
 # CausalOps
 
 ### 数据分析与研究工作台
 
 CausalOps 是本地运行的数据分析助手。它帮助使用者理解表格、明确问题、制定分析计划，并调用统计工具生成可追溯的图表、结论和报告。模型负责建议与解释，数值计算由本地统计内核完成。
 
-**当前版本 0.12.0 · Windows x64 / Python 3.11 · 本地单用户。** 本仓库为准备公开的候选版本；最终公开前保留私有验证。它不是能从任意表自动证明因果关系的系统。
+**当前版本 0.13.0 · Windows x64 / Python 3.11 · 本地单用户。** 代码开放范围与数据发送许可相互独立；本地工作区不随源码分发。它不是能从任意表自动证明因果关系的系统。
 
-[五分钟上手](docs/current/USER_GUIDE.md) · [系统架构](docs/current/ARCHITECTURE.md) · [模型与隐私](docs/current/PROVIDERS.md) · [验收与限制](docs/current/VALIDATION.md) · [版本历史](docs/HISTORY.md)
+[完整示例教程](docs/current/PUBLIC_TUTORIAL.md) · [安装与故障排查](docs/current/INSTALLATION.md) · [使用说明](docs/current/USER_GUIDE.md) · [系统架构](docs/current/ARCHITECTURE.md) · [模型与隐私](docs/current/PROVIDERS.md) · [验收与限制](docs/current/VALIDATION.md) · [版本历史](docs/HISTORY.md)
 
 ![从数据到结论的用户路径](docs/assets/task-workflow-current.svg)
 
@@ -24,11 +24,13 @@ CausalOps 是本地运行的数据分析助手。它帮助使用者理解表格�
 
 ## 交互界面
 
+[查看连续操作录屏](docs/assets/public-tutorial.webm) · [逐步图文教程](docs/current/PUBLIC_TUTORIAL.md)
+
 截图来自真实浏览器验收，使用公开葡萄酒数据。没有展示密钥、个人研究数据或用户 ID。
 
-![首页：先连接模型，再上传数据](docs/assets/interaction-home.png)
+![首页：先连接模型，再上传数据](docs/assets/public-01-home.png)
 
-![数据导入后的概览与初步建议](docs/assets/interaction-intake.png)
+![数据导入后的概览与初步建议](docs/assets/public-02-intake.png)
 
 ## 连续任务与结果呈现
 
@@ -38,7 +40,7 @@ CausalOps 是本地运行的数据分析助手。它帮助使用者理解表格�
 - 结果优先展示分析结论。描述报告使用保存的统计量、固定字段顺序与证据引用；图表、诊断、完整方案和运行记录按需展开。
 - 结果追问引用选定运行，不重复计算。“同意”等普通对话文字不替代审核按钮。
 
-![分析结论与按需展开的支持材料](docs/assets/interaction-conclusion.png)
+![分析结论与按需展开的支持材料](docs/assets/public-05-result.png)
 
 ## 安装与启动
 
@@ -56,7 +58,7 @@ python -m venv "E:/causalops-venv"
 & "E:/causalops-venv/Scripts/python.exe" -m causalops.launch --workspace "E:/causalops-work" --port 8513
 ```
 
-打开启动器给出的本机地址。首页选择服务商、API 模型 ID、密钥并测试连接；没有密钥可先使用本地报告。随后上传 CSV / Parquet，每个数据任务分别控制模型外发许可。离线发行包另含固定 wheel、SHA-256 锁和安装器；Git 不存储大型依赖包。
+打开启动器给出的本机地址。首页选择服务商、API 模型 ID、密钥并测试连接；没有密钥可先使用本地报告。随后点击“载入葡萄酒示例”，或上传 CSV / Parquet，每个数据任务分别控制模型外发许可。离线发行包另含固定 wheel、SHA-256 锁和安装器；Git 不存储大型依赖包。
 
 ## 架构与职责
 

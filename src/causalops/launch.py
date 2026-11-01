@@ -3,6 +3,18 @@ from __future__ import annotations
 import argparse,os,json,subprocess,sys,time,socket,webbrowser
 from pathlib import Path
 from datetime import datetime
+from urllib.parse import urlencode
+
+def launch_url(port,version,fingerprint):
+    return f"http://127.0.0.1:{port}/?"+urlencode({"route":"home","release":version,"build":fingerprint[:12]})
+
+def active_jobs(home):
+    import sqlite3
+    db=home/"research.sqlite3"
+    if not db.is_file():return 0
+    with sqlite3.connect(db.as_uri()+"?mode=ro",uri=True) as c:
+        if not c.execute("SELECT 1 FROM sqlite_master WHERE name='workflow_jobs'").fetchone():return 0
+        return c.execute("SELECT COUNT(*) FROM workflow_jobs WHERE status IN ('queued','running','cancel_requested')").fetchone()[0]
 from urllib.request import build_opener,ProxyHandler
 
 def healthy(port):
@@ -26,7 +38,7 @@ def owned(record,app):
 
 def main(argv=None,project_root=None):
     p=argparse.ArgumentParser(description='CausalOps通用工作台，本机单用户')
-    p.add_argument('--port',type=int,default=8505);p.add_argument('--workspace',type=Path);p.add_argument('--restart',action='store_true');p.add_argument('--no-browser',action='store_true');p.add_argument('--diagnose',action='store_true');a=p.parse_args(argv)
+    p.add_argument('--port',type=int,default=8513);p.add_argument('--workspace',type=Path);p.add_argument('--restart',action='store_true');p.add_argument('--no-browser',action='store_true');p.add_argument('--diagnose',action='store_true');a=p.parse_args(argv)
     if not 1024<=a.port<=65535:raise SystemExit('端口须在1024到65535之间。')
     base=Path(project_root).resolve() if project_root else Path.cwd().resolve()
     home=(a.workspace or Path(os.environ.get('CAUSALOPS_HOME',str(base/'causalops-workspace')))).expanduser().resolve()
@@ -41,21 +53,23 @@ def main(argv=None,project_root=None):
         import streamlit
         from causalops.ui.showcase_support import source_fingerprint
         fingerprint=source_fingerprint()
+        from causalops import __version__
     except ImportError:raise SystemExit('依赖未就绪，请按安装说明安装工作台app依赖。') from None
-    runtime=home/'runtime';runtime.mkdir(exist_ok=True);state=runtime/f'service-{a.port}.json';url=f'http://127.0.0.1:{a.port}/'
+    runtime=home/'runtime';runtime.mkdir(exist_ok=True);state=runtime/f'service-{a.port}.json';url=launch_url(a.port,__version__,fingerprint)
     app=Path(__file__).resolve().parent/'ui/workbench.py'
-    if a.diagnose:print(json.dumps({'dependencies':'ok','workspace':str(home),'port':a.port,'occupied':occupied(a.port),'healthy':healthy(a.port),'source_fingerprint':fingerprint},ensure_ascii=False));return 0
+    if a.diagnose:print(json.dumps({'dependencies':'ok','workspace':str(home),'port':a.port,'occupied':occupied(a.port),'healthy':healthy(a.port),'source_fingerprint':fingerprint,'version':__version__,'url':url},ensure_ascii=False));return 0
     if occupied(a.port):
         legacy=base/'artifacts/portfolio-showcase-20261030/runtime'/f'service-{a.port}.json'
         record=json.loads(state.read_text(encoding='utf-8')) if state.is_file() else json.loads(legacy.read_text(encoding='utf-8')) if legacy.is_file() else {}
         if a.restart:
+            if active_jobs(home):raise SystemExit("当前工作区仍有后台任务；请先等待完成或在界面请求停止，再重启。")
             if not owned(record,app):raise SystemExit('端口不属于当前项目登记的进程，未关闭其他程序。请更换--port。')
             subprocess.run(['taskkill.exe','/PID',str(record['pid']),'/T','/F'],capture_output=True,check=True,creationflags=subprocess.CREATE_NO_WINDOW)
             for _ in range(30):
                 if not occupied(a.port):break
                 time.sleep(.1)
         elif healthy(a.port) and owned(record,app) and record.get('source_fingerprint')==fingerprint:
-            print('工作台已运行：'+url)
+            print('CausalOps '+__version__+' 已运行：'+url)
             if not a.no_browser:webbrowser.open(url)
             return 0
         else:raise SystemExit('端口已占用或版本已更新。关闭原启动窗口，或用--restart重启登记的本项目服务。')
@@ -65,14 +79,14 @@ def main(argv=None,project_root=None):
     flags=(subprocess.CREATE_NEW_PROCESS_GROUP|subprocess.CREATE_NO_WINDOW) if os.name=='nt' else 0
     with log.open('w',encoding='utf-8') as output:
         child=subprocess.Popen(command,cwd=home,env=env,stdin=subprocess.DEVNULL,stdout=output,stderr=output,creationflags=flags)
-        who=identity(child.pid) or {};state.write_text(json.dumps({'pid':child.pid,'process_created':who.get('Created'),'source_fingerprint':fingerprint,'workspace':str(home),'port':a.port},ensure_ascii=False,indent=2),encoding='utf-8')
+        who=identity(child.pid) or {};state.write_text(json.dumps({'pid':child.pid,'process_created':who.get('Created'),'source_fingerprint':fingerprint,'workspace':str(home),'port':a.port,'version':__version__,'url':url},ensure_ascii=False,indent=2),encoding='utf-8')
         try:
             for _ in range(150):
                 if child.poll() is not None:raise RuntimeError('启动进程提前退出；请查看工作区runtime日志。')
                 if healthy(a.port):break
                 time.sleep(.2)
             else:raise RuntimeError('启动超时，请检查本地端口。')
-            print('CausalOps通用工作台：'+url,flush=True);print('工作区：'+str(home),flush=True);print('默认本地处理，不需要API；关闭窗口后数据仍保留。',flush=True)
+            print('CausalOps '+__version__+'：'+url,flush=True);print('工作区：'+str(home),flush=True);print('默认本地处理，不需要API；关闭窗口后数据仍保留。',flush=True)
             if not a.no_browser:webbrowser.open(url)
             child.wait()
         except KeyboardInterrupt:print('正在停止服务，保留本地研究记录。')

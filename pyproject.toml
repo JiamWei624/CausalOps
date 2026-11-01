@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "causalops-agent"
-version = "0.12.0"
+version = "0.13.0"
 description = "Evidence-gated causal analytics and decision agent."
 readme = "README.md"
 license = "MIT"
@@ -50,3 +50,5 @@ addopts = "-q"
 
 [tool.setuptools.package-data]
 "causalops.knowledge" = ["catalog.json"]
+
+"causalops.sample_data" = ["*.csv", "*.json"]

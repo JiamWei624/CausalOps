@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 from dataclasses import asdict, dataclass
@@ -8,6 +9,8 @@ from pathlib import Path
 
 
 SKIP_DIRS = {".git", ".pytest_cache", "__pycache__", ".venv", "artifacts", "htmlcov"}
+PUBLIC_SAMPLE_SHA256 = '4a402cf041b025d4566d954c3b9ba8635a3a8a01e039005d97d6a710278cf05e'
+
 PRIVATE_SUFFIXES = {".csv", ".parquet", ".pq", ".duckdb", ".sqlite", ".db", ".pkl", ".pickle"}
 TEXT_SUFFIXES = {".py", ".toml", ".md", ".json", ".yaml", ".yml", ".txt", ".sql", ".ps1"}
 MAX_PUBLIC_FILE_BYTES = 5 * 1024 * 1024
@@ -50,7 +53,7 @@ def audit(root: Path) -> list[Finding]:
         size = path.stat().st_size
         if size > MAX_PUBLIC_FILE_BYTES:
             findings.append(Finding("blocker", "large_file", relative, None, f"File is {size} bytes (>5 MiB)."))
-        if path.suffix.lower() in PRIVATE_SUFFIXES:
+        if path.suffix.lower() in PRIVATE_SUFFIXES and not (relative == 'src/causalops/sample_data/winequality-red.csv' and hashlib.sha256(path.read_bytes()).hexdigest() == PUBLIC_SAMPLE_SHA256):
             findings.append(Finding("blocker", "private_data_file", relative, None, "Data/binary artifact must not enter the public repository."))
         if path.suffix.lower() not in TEXT_SUFFIXES or size > MAX_PUBLIC_FILE_BYTES:
             continue
