@@ -50,6 +50,8 @@ def render_graph_workspace(a,sid,frame,model):
         with st.expander('历史对话'):
             current=st.selectbox('选择对话记录',ids,format_func=lambda x:STATUS.get(next(f['status'] for f in flows if f['id']==x),'处理中')+' · '+next(f['request'].get('user_question',f['request']['question'])[:45] for f in flows if f['id']==x),key=choice_key)
         f=service.flow(current)
+        from causalops.ui.research_quality import render_research_quality
+        render_research_quality(service,f,jobs)
         from causalops.application.conversation import conversation_history
         history=conversation_history(service,current)
         if history:
@@ -132,6 +134,12 @@ def render_graph_workspace(a,sid,frame,model):
                 for i,step in enumerate(v['steps']):
                     st.markdown('**步骤 '+str(i+1)+' · '+a.tools.method(step['tool'],step['config']['method']).label+'**')
                     st.write(safe_text(step['reason']))
+                    from causalops.application.research_quality import method_contract
+                    mc=method_contract(step['config']['method'])
+                    st.caption('估计对象：'+mc['estimand']+'；适用样本：'+mc['population'])
+                    with st.expander('本方法的诊断、推断与来源'):
+                        st.write(mc['diagnostics']);st.write(mc['limits']);st.write(mc['inference'])
+                        for source in mc['sources']:st.link_button(source['title'],source['url'])
                     cfg=step['config'];st.caption('分析字段：'+', '.join(list(dict.fromkeys(cfg.get('numeric',[])+cfg.get('categorical',[])+cfg.get('predictors',[])+cfg.get('covariates',[]))))+'；结果：'+str(cfg.get('outcome') or '分布/汇总'))
                 for q in v['required_questions']:st.info(safe_text(q))
                 with st.expander('核对完整配置、计划和数据版本'):

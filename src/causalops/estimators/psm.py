@@ -16,13 +16,14 @@ from .base import EstimatorOutput
 
 
 def _standardized_mean_difference(
-    treated: pd.DataFrame, control: pd.DataFrame, covariates: list[str]
+    treated: pd.DataFrame, control: pd.DataFrame, covariates: list[str], denominators=None
 ) -> dict[str, float]:
     values: dict[str, float] = {}
     for column in covariates:
         pooled = math.sqrt((treated[column].var(ddof=1) + control[column].var(ddof=1)) / 2)
+        if denominators is not None: pooled=denominators[column]
         difference = float(treated[column].mean() - control[column].mean())
-        values[column] = 0.0 if pooled == 0 or not math.isfinite(pooled) else difference / pooled
+        values[column] = (0.0 if difference == 0 else None) if pooled == 0 or not math.isfinite(pooled) else difference / pooled
     return values
 
 
@@ -45,6 +46,12 @@ def estimate_psm_att(frame: pd.DataFrame, spec: CausalSpec, seed: int = 20261027
         if not pd.api.types.is_numeric_dtype(data[column]):
             raise ValueError(f"PSM requires numeric outcome/covariates: {column}")
 
+    if not np.isfinite(data[required].to_numpy(dtype=float)).all():
+        raise ValueError("PSM requires finite inputs")
+    if spec.entity_id_column and spec.entity_id_column in frame:
+        units=frame.loc[frame[required].notna().all(axis=1), spec.entity_id_column]
+        if units.isna().any() or units.duplicated().any():
+            raise ValueError("PSM currently requires unique independent units")
     propensity_model = Pipeline(
         [
             ("scale", StandardScaler()),
@@ -98,13 +105,15 @@ def estimate_psm_att(frame: pd.DataFrame, spec: CausalSpec, seed: int = 20261027
     estimate = float(np.mean(outcome_differences))
     standard_error = float(np.std(outcome_differences, ddof=1) / math.sqrt(len(pairs)))
     z_score = estimate / standard_error if standard_error > 0 else math.inf
-    p_value = float(2 * norm.sf(abs(z_score))) if math.isfinite(z_score) else 0.0
-    ci = (estimate - 1.96 * standard_error, estimate + 1.96 * standard_error)
+    p_value = float(2 * norm.sf(abs(z_score))) if standard_error > 0 else None
+    ci = (estimate - 1.96 * standard_error, estimate + 1.96 * standard_error) if standard_error > 0 else None
 
     balance_before = _standardized_mean_difference(treated, control, spec.covariates)
-    balance_after = _standardized_mean_difference(matched_treated, matched_control, spec.covariates)
-    max_before = max(abs(value) for value in balance_before.values())
-    max_after = max(abs(value) for value in balance_after.values())
+    denominators={c:math.sqrt((treated[c].var(ddof=1)+control[c].var(ddof=1))/2) for c in spec.covariates}
+    balance_after = _standardized_mean_difference(matched_treated, matched_control, spec.covariates,denominators)
+    undefined_balance=any(v is None for v in list(balance_before.values())+list(balance_after.values()))
+    max_before = max((abs(value) for value in balance_before.values() if value is not None),default=0.0)
+    max_after = max((abs(value) for value in balance_after.values() if value is not None),default=0.0)
     match_rate = len(pairs) / len(treated)
     diagnostics = [
         DiagnosticResult(
@@ -123,12 +132,13 @@ def estimate_psm_att(frame: pd.DataFrame, spec: CausalSpec, seed: int = 20261027
         ),
         DiagnosticResult(
             name="maximum_absolute_smd_after_matching",
-            passed=max_after <= 0.10,
+            passed=not undefined_balance and max_after <= 0.10,
             value=max_after,
             threshold="<= 0.10",
             message="Maximum absolute standardized mean difference after matching.",
         ),
     ]
+    diagnostics.append(DiagnosticResult(name="conditional_pair_variance",passed=standard_error>0,value=standard_error,threshold="> 0",message="Zero matched-pair variance does not justify a zero p-value or a zero-width interval."))
     warnings = [
         "PSM adjusts only for observed pre-treatment covariates; unmeasured confounding remains possible.",
         "The paired-difference standard error is conditional on the estimated match and does not account "
@@ -141,7 +151,7 @@ def estimate_psm_att(frame: pd.DataFrame, spec: CausalSpec, seed: int = 20261027
             estimand="ATT among 1:1 propensity-score matched treated observations",
             estimate=estimate,
             standard_error=standard_error,
-            confidence_interval=(float(ci[0]), float(ci[1])),
+            confidence_interval=(float(ci[0]), float(ci[1])) if ci else None,
             p_value=p_value,
             sample_size=2 * len(pairs),
         ),
@@ -151,6 +161,12 @@ def estimate_psm_att(frame: pd.DataFrame, spec: CausalSpec, seed: int = 20261027
             "treated_count": len(treated),
             "control_count": len(control),
             "matched_pairs": len(pairs),
+            "unmatched_treated": len(treated)-len(pairs),
+            "matching_replacement": False,
+            "matching_ratio": "1:1",
+            "smd_denominator": "pooled_before_matching_sd_fixed_for_before_and_after",
+            "undefined_balance": undefined_balance,
+            "inference_scope": "conditional_on_estimated_match_not_full_matching_inference",
             "caliper_logit_sd_units": 0.2,
             "caliper_value": caliper,
             "support_interval": [float(support_lower), float(support_upper)],

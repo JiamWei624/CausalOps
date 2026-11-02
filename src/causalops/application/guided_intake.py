@@ -68,6 +68,12 @@ class GuidedIntake:
         body=self._body(sid,expected_sha);v=context['onboarding']
         if body.get('method_facts') or body.get('predictors') or body.get('covariates') or body.get('treatment') or (body.get('outcome') and body['outcome']!=v['target']):raise DesignError('当前已有自定义研究设置，请保留并逐步核对，不覆盖已有研究事实。')
         body.update(analysis_unit=v['analysis_unit'],outcome=v['target'],metric_label=v['metric_label'],metric_unit=v['metric_unit'],fields=[{'field':f['field'],'meaning':f['meaning'],'unit':f['unit'],'role':'outcome' if f['field']==v['target'] else 'measure','timing':'unknown'} for f in v['fields']])
+        # Content-verified public sample metadata only; retain any human-entered scope.
+        scope=body.setdefault('research',{})
+        defaults={'population':'当前 UCI 红葡萄酒子集中的检测样本；不代表全部葡萄酒或消费者。','inclusion':'保留全部原始记录，不自动删除重复值或极端值。','provenance':context['attribution']+' '+context['landing_url']+'；许可：'+context['license'],'limitations':'观察性数据；质量评分与理化指标的关联不能直接解释为调整成分后的因果效果。'}
+        for name,value in defaults.items():
+            if not scope.get(name):scope[name]=value
+        for field in body['fields']:field['source']=context['doi']
         self.s.contracts.save(sid,body,expected_sha=expected_sha,human_confirmed=True)
         return self.finish(sid,'describe',human_confirmed=True)
 

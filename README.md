@@ -1,11 +1,11 @@
-<!-- release: 0.15.1 -->
+<!-- release: 0.16.0 -->
 # CausalOps
 
 ### 数据分析与研究工作台
 
 CausalOps 是本地运行的数据分析助手。它帮助使用者理解表格、明确问题、制定分析计划，并调用统计工具生成可追溯的图表、结论和报告。模型负责建议与解释，数值计算由本地统计内核完成。
 
-**当前版本 0.15.1 · Windows x64 / Python 3.11 · 本地单用户。** 代码开放范围与数据发送许可相互独立；本地工作区不随源码分发。它不是能从任意表自动证明因果关系的系统。
+**当前版本 0.16.0 · Windows x64 / Python 3.11 · 本地单用户。** 代码开放范围与数据发送许可相互独立；本地工作区不随源码分发。它不是能从任意表自动证明因果关系的系统。
 
 [完整项目介绍与功能手册](docs/current/COMPLETE_MANUAL.md) · [完整示例教程](docs/current/PUBLIC_TUTORIAL.md) · [安装与故障排查](docs/current/INSTALLATION.md) · [使用说明](docs/current/USER_GUIDE.md) · [系统架构](docs/current/ARCHITECTURE.md) · [模型与隐私](docs/current/PROVIDERS.md) · [验收与限制](docs/current/VALIDATION.md) · [版本历史](docs/HISTORY.md) · [五类真实数据体验](docs/current/REAL_DATA_EXPERIENCE.md)
 
@@ -24,9 +24,11 @@ CausalOps 是本地运行的数据分析助手。它帮助使用者理解表格�
 
 ## 交互界面
 
-[查看连续操作录屏](docs/assets/example-015-guide.webm) · [逐步图文教程](docs/current/PUBLIC_TUTORIAL.md)
+[0.16.0 实际操作录屏](docs/assets/research-016-demo.webm)：本地模式，公开葡萄酒数据，涵盖示例导入、明确审核、结果解读、下一轮关联计划与刷新恢复。无配音；研究质量面板见下方图文。
 
-截图来自真实浏览器验收，使用公开葡萄酒数据。没有展示密钥、个人研究数据或用户 ID。
+[0.15.0 基础流程录屏](docs/assets/example-015-guide.webm) · [逐步图文教程](docs/current/PUBLIC_TUTORIAL.md)
+
+基础截图来自 0.15.0 的真实浏览器验收；下方研究质量截图和新版录屏来自 0.16.0，均使用公开葡萄酒数据。没有展示密钥、个人研究数据或用户 ID。
 
 ![首页：直接导入或体验示例，模型连接可选](docs/assets/example-015-guide-01-home.png)
 
@@ -50,11 +52,15 @@ CausalOps 是本地运行的数据分析助手。它帮助使用者理解表格�
 
 ![分析结论与按需展开的支持材料](docs/assets/example-015-guide-04-result.png)
 
-## 本轮补充（0.15.1）
+## 研究质量与用户体验升级（0.16.0）
 
-完整手册包含25章，可在工作台“使用说明与方法范围”下载为离线HTML。新增本地模式切换、连接失败后的明确操作，以及条件不足时直接补充口径和建立新待审计划的入口。既有数据、计划和运行记录保留。
+新增研究范围登记、四层数据质量检查、方法合同、运行绑定的研究报告，以及诊断后的具体下一步建议。用户可以核对系统理解、资料依据、实际计算、适用对象与未解决问题。
 
-![本地模式与数据入口](docs/assets/example-0151-homepage-local-mode.png)
+![研究范围与后续建议](docs/assets/research-016-result.png)
+
+[本轮功能与操作](docs/current/RESEARCH_QUALITY.md) · [统计核查与限制](docs/current/STATISTICAL_AUDIT.md)
+
+![研究质量与运行证据路径](docs/assets/research-quality-current.svg)
 
 ## 安装与启动
 
@@ -83,7 +89,7 @@ python -m venv "E:/causalops-venv"
 | 用户交互 | Streamlit 首页连接、引导动作、问题卡片、待审计划、报告与追问 |
 | 应用服务 | ResearchService 绑定数据、口径、计划、批准、运行与版本 |
 | 工作流 | LangGraph 主图 + 方法研究子图；有限检索、检查点和人工中断 |
-| 方法知识 | LangChain Core BaseRetriever + 字符 TF-IDF；20 张方法/实证卡、27 条来源 |
+| 方法知识 | LangChain Core BaseRetriever + 字符 TF-IDF；20 张方法/实证卡、29 条来源 |
 | 计算内核 | 三类执行器、17 项注册方法；本地统计、诊断与解释范围限制 |
 | 证据 | SQLite 保存运行与工作流；结论绑定实际运行、口径及引用 |
 | 模型连接 | 六类服务预设与结构化协议适配；密钥仅存内存，无静默换服务 |

@@ -2,10 +2,10 @@
 
 [完整公共示例教程](current/PUBLIC_TUTORIAL.md) · [五类真实数据体验](current/REAL_DATA_EXPERIENCE.md) · [安装与故障恢复](current/INSTALLATION.md)
 
-<!-- current: 0.15.1 -->
+<!-- current: 0.16.0 -->
 # 文档入口
 
-当前版本为 **0.15.1**。请优先使用下面的当前说明，带版本号的旧文档仅记录对应阶段。
+当前版本为 **0.16.0**。请优先使用下面的当前说明，带版本号的旧文档仅记录对应阶段。
 
 - [操作说明](current/USER_GUIDE.md)
 - [当前架构与代码职责](current/ARCHITECTURE.md)
@@ -14,3 +14,6 @@
 - [方法合同](METHOD_CONTRACTS.md)
 - [尚未实现或尚未证明的事项](current/ROADMAP.md)
 - [版本历史与原始验收记录](HISTORY.md)
+
+- [研究质量与用户体验升级](current/RESEARCH_QUALITY.md)
+- [统计核查与限制](current/STATISTICAL_AUDIT.md)

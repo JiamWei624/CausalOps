@@ -1,10 +1,12 @@
 # CausalOps 项目介绍与功能手册
 
-版本 0.15.1　核对日期 2026年11月2日
+版本 0.16.0　核对日期 2026年11月2日
 
 本手册覆盖 CausalOps 数据分析与研究工作台。它帮助使用者从一张表明确一个可回答的问题，制定分析计划，经过必要审核后调用本地统计工具，并围绕保存的结果持续提问。本文同时面向试用者、项目维护者和需要解释项目实现的作者。用户行为预测项目另行维护。
 
 当前定位为 Windows x64、Python 3.11 的本地单用户预览版。界面操作、统计执行和模型解释是三个独立层次；模型辅助是可选项。因果解释需要具体设计依据，无法由表格或模型自行确认。仓库目前保持私有，公开发布需另行决定。
+
+0.16.0新增内容请先阅读[研究质量与用户体验升级](RESEARCH_QUALITY.md)和[统计核查与限制](STATISTICAL_AUDIT.md)。本手册后续章节说明基础流程；历史版本测试数量不代表当前版。
 
 ## 1 项目解决什么问题
 
@@ -26,6 +28,36 @@
 | 解读与报告 | 按保存证据解释幅度、区间、边界，生成图表和报告 | 判断业务阈值、成本和场景是否支持行动 |
 
 ## 2 本轮优化清单核对
+
+### 0.16.0 研究质量与用户体验升级
+
+本轮按A—D阶段完成研究定义、统计核查、研究协作和交付验证。系统理解的问题、依据、实际计算、适用对象和缺项分别展示。首次使用仍可从公共示例开始，无需填写完整研究设计。
+
+| 阶段 | 使用者实际看到的内容 | 解释边界 |
+|---|---|---|
+| A 研究定义 | 问题、单位、目标、来源、适用范围；结构、统计、关系、研究四层质量清单 | 类型和数值不能代替业务事实；最多先呈现三项需确认问题 |
+| B 统计核查 | 方法合同、实际样本与诊断；PSM、DoubleML及A/B输入与推断修正 | 17个注册方法并非均完成独立统计认证；PSM推断仍有限制 |
+| C 研究协作 | 结果先回答目标，随后列适用对象、保存配置、来源与后续建议 | 建议不会自行批准或执行；新研究范围不重写历史报告 |
+| D 文档与验收 | 五类真实公开数据页面回归，源码与安装包测试，离线手册 | 开发者脚本不等于独立用户验收，本轮没有新模型API实测 |
+
+### 如何理解研究摘要
+
+确认葡萄酒示例说明后，UCI来源、当前红酒子集的适用范围和保留原始记录的口径会自动登记。其他上传数据不套用这些含义。打开“研究摘要与待确认事项”，核对系统理解的具体问题；点“补充研究范围与字段口径”可以填写对象、比较、估计目标、期间、来源与限制。填写筛选说明不会自动筛选原表。
+
+![0.16.0 研究摘要](../assets/research-016-brief.png)
+
+### 如何阅读运行结果
+
+先看目标结论与主图，再展开“研究范围、计算依据与待解决问题”。实际样本来自本次保存结果；描述统计逐字段计数，不能混为共同回归样本。原始问题、计划配置、方法来源和运行版本会随HTML报告保存。新计划仍需重新审核。
+
+![0.16.0 结果范围与建议](../assets/research-016-result.png)
+
+### 本轮统计证据的含义
+
+共完成90次固定真值模拟：A/B30次、CUPED30次、DID12次、DML6次、PSM6次、IPW6次。PSM区间仅4/6覆盖真值，提示当前条件配对标准误不应包装为已充分校准；其他方法的小样本高覆盖也不是普遍保证。完整逐次记录在仓库docs/validation/v0160/statistical-benchmark.json，单独运行代码在tests/test_statistical_benchmark_v016.py。
+
+### 原有使用体验清单（0.15.1 已完成，继续保持）
+
 
 | 原清单 | 当前状态 | 实际实现与证据 |
 |---|---|---|
@@ -427,7 +459,6 @@ A2A本地服务提供独立进程的任务审阅，使用Agent Card、JSON-RPC�
 
 模型服务接入应使用各服务商当前文档和账户允许的模型，不用本手册的示例名称代替实际可用性核查。
 
-
 ## 25 当前知识库来源目录
 
 下表来自本版本实际catalog。核对日期和访问范围是条目的记录，不代表本轮重新阅读全文。方法卡内容是原创提炼，引用到当前研究仍需核对适用性。
@@ -461,5 +492,7 @@ A2A本地服务提供独立进程的任务审阅，使用Agent Card、JSON-RPC�
 | [statsmodels：线性约束联合检验](https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.RegressionResults.wald_test.html) | official_documentation | wald_test：限制矩阵、cov_p、use_f=False与渐近卡方分布；public_documentation | 2026-10-31 |
 | [statsmodels：稳健协方差估计](https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.RegressionResults.get_robustcov_results.html) | official_documentation | HC1与单向cluster参数、use_correction及渐近条件；public_documentation | 2026-10-31 |
 | [Mikusheva & Sun：Weak Identification with Many Instruments](https://economics.mit.edu/sites/default/files/2023-08/paper.pdf) | author_method_paper | 仅核对第4.1节Robust AR关于Y−beta0*D与工具的矩条件；本实现限少量固定工具，不实现论文的多工具jackknife扩展；public_selected_section | 2026-10-31 |
+| [DoubleML：样本分割与交叉拟合](https://docs.doubleml.org/stable/guide/resampling.html) |  | 9. Sample-splitting；set_sample_splitting；official_documentation_selected_sections | 2026-11-02 |
+| [MatchIt：匹配后效应与解释对象](https://kosukeimai.github.io/MatchIt/articles/estimating-effects.html) |  | Identifying the estimand；matched sample and uncertainty；official_documentation_selected_sections | 2026-11-02 |
 
-知识目录版本：2026-10-31.3。共27条来源。内部检索得分用于相关性排序，不是因果可信度评分。
+知识目录版本：2026-11-02.1。共29条来源。内部检索得分用于相关性排序，不是因果可信度评分。

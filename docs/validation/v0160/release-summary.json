@@ -1,0 +1,182 @@
+{
+  "version": "0.16.0",
+  "date": "2026-11-02",
+  "phase": "研究质量与用户体验升级",
+  "source_tests": {
+    "tests": "618",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "time": "206.897"
+  },
+  "installed_wheel_tests": {
+    "tests": "618",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "time": "200.768"
+  },
+  "installed_prefix": "E:/cops015-clean",
+  "pip_check": "passed",
+  "wheel_source_modules_matched": 133,
+  "wheel": {
+    "version": "0.16.0",
+    "wheel": "causalops_agent-0.16.0-py3-none-any.whl",
+    "sha256": "cffbb9937991c44830138e0b7cc795ed58a5b71576a8eeb6762f42bb019d7fc9"
+  },
+  "browser_cases": [
+    {
+      "id": "wine",
+      "tester_context": "For non-bundled data, unit and metric meaning entered from official data documentation; no scientific facts were pre-approved.",
+      "errors": [],
+      "unit_prefilled": true,
+      "sid": "efd0622f6f294cb2af941987a7a260cc",
+      "review_required": true,
+      "target_caption": true,
+      "binary_readable": true,
+      "category_readable": true,
+      "chart": true,
+      "plot_rendered": true,
+      "report": true,
+      "qa": true,
+      "targeted_suggestions": true,
+      "old_result_marked": true,
+      "heatmap_primary": true,
+      "restored": true,
+      "exceptions": 0,
+      "ok": true
+    },
+    {
+      "id": "bank",
+      "tester_context": "For non-bundled data, unit and metric meaning entered from official data documentation; no scientific facts were pre-approved.",
+      "errors": [],
+      "no_wine_preset": true,
+      "sid": "49015c2751ee4aa4885798c79ef9874c",
+      "review_required": true,
+      "target_caption": true,
+      "binary_readable": true,
+      "category_readable": true,
+      "chart": true,
+      "plot_rendered": true,
+      "report": true,
+      "qa": true,
+      "restored": true,
+      "exceptions": 0,
+      "ok": true
+    },
+    {
+      "id": "shop",
+      "tester_context": "For non-bundled data, unit and metric meaning entered from official data documentation; no scientific facts were pre-approved.",
+      "errors": [],
+      "no_wine_preset": true,
+      "sid": "682e416dcc124ee3a320afffc79c166e",
+      "review_required": true,
+      "target_caption": true,
+      "binary_readable": true,
+      "category_readable": true,
+      "chart": true,
+      "plot_rendered": true,
+      "report": true,
+      "qa": true,
+      "restored": true,
+      "exceptions": 0,
+      "ok": true
+    },
+    {
+      "id": "mail",
+      "tester_context": "For non-bundled data, unit and metric meaning entered from official data documentation; no scientific facts were pre-approved.",
+      "errors": [],
+      "no_wine_preset": true,
+      "sid": "76239c4a983945359a6daad749550ced",
+      "review_required": true,
+      "target_caption": true,
+      "binary_readable": true,
+      "category_readable": true,
+      "chart": true,
+      "plot_rendered": true,
+      "report": true,
+      "qa": true,
+      "restored": true,
+      "exceptions": 0,
+      "ok": true
+    },
+    {
+      "id": "macro",
+      "tester_context": "For non-bundled data, unit and metric meaning entered from official data documentation; no scientific facts were pre-approved.",
+      "errors": [],
+      "no_wine_preset": true,
+      "time_registered_via_ui": true,
+      "sid": "2f1f163daaa14a39a85b7968fc22fdd1",
+      "review_required": true,
+      "target_caption": true,
+      "binary_readable": true,
+      "category_readable": true,
+      "chart": true,
+      "plot_rendered": true,
+      "time_chart": true,
+      "report": true,
+      "qa": true,
+      "restored": true,
+      "exceptions": 0,
+      "ok": true
+    }
+  ],
+  "statistical_benchmark": {
+    "replications": 90,
+    "type": "limited synthetic smoke benchmark",
+    "psm_95_interval_coverage": "4/6; not adequately calibrated"
+  },
+  "manual": {
+    "chapters": 25,
+    "embedded_images": 8,
+    "visual_check": {
+      "chapters": 25,
+      "images": [
+        {
+          "ok": true,
+          "alt": "0.16.0 研究摘要"
+        },
+        {
+          "ok": true,
+          "alt": "0.16.0 结果范围与建议"
+        },
+        {
+          "ok": true,
+          "alt": "当前系统架构"
+        },
+        {
+          "ok": true,
+          "alt": "首页"
+        },
+        {
+          "ok": true,
+          "alt": "示例说明"
+        },
+        {
+          "ok": true,
+          "alt": "审核计划"
+        },
+        {
+          "ok": true,
+          "alt": "目标结果"
+        },
+        {
+          "ok": true,
+          "alt": "检索与运行证据"
+        }
+      ],
+      "overflow": false,
+      "search": [
+        "18 停止 恢复和故障处理"
+      ],
+      "mobile_overflow": false,
+      "print_nav_hidden": true
+    },
+    "app_download_identical": true,
+    "sha256": "a067d6703ba1ebe29a6970613cfeda30b95cc4d32cf3c4b5017211109bd242b1"
+  },
+  "independent_human_study": "deferred_by_prior_agreement",
+  "new_live_model_test_this_patch": false,
+  "large_environment_created": false,
+  "privacy": "Only licensed public red wine CSV bundled; private research data, credentials and workspaces excluded"
+}

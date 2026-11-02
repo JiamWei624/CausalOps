@@ -56,6 +56,7 @@ QUESTION_LABELS = {
     "What is the causal effect of the selected treatment on the selected outcome?": "所选干预对所选结果的因果效应是什么？",
 }
 DIAGNOSTIC_LABELS = {
+    "conditional_pair_variance": "匹配配对差方差检查",
     "aipw_score_identity":"AIPW得分复算一致性", "aipw_clipping_share":"倾向得分截断比例",
     "baseline_balance_not_assessed":"基线协变量平衡检查（未实施）",
     'clustered_regression_groups':'聚类数量检查','regression_finite_inference':'估计与推断数值检查',
@@ -76,6 +77,7 @@ DIAGNOSTIC_LABELS = {
     "cuped_variance_reduction": "基线调整后的方差降低比例",
 }
 MESSAGES = {
+    "Zero matched-pair variance does not justify a zero p-value or a zero-width interval.": "匹配配对差方差为零时，不能据此报告零P值或零宽置信区间。",
     "Multiple treatment dates require a staggered-adoption estimator before causal interpretation.": "存在多个处理日期，作因果解释前需采用合适的交错处理估计方法。",
     "No estimable pre-treatment event-time indicators were available.": "没有可估计的处理前事件时间指标，无法进行联合检验。",
     "Pre-treatment indicators were absorbed by the fixed effects.": "处理前指标被固定效应吸收，无法进行联合检验。",
@@ -127,6 +129,7 @@ CHECK_LABELS = {
     "domain_pack": "领域约束",
 }
 CHECK_MESSAGES = {
+    "Zero matched-pair variance does not justify a zero p-value or a zero-width interval.": "匹配配对差方差为零时，不能据此报告零P值或零宽置信区间。",
     "pass": "该项前置结构或声明已具备；识别假设仍需后续诊断与人工判断。",
     "needs_review": "该项仍需补充定义、研究依据或人工声明。",
     "blocked": "该项缺失或与方法要求不符，需完善研究设计后继续。",

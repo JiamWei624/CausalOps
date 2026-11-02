@@ -17,7 +17,12 @@ def _validate_randomized(frame: pd.DataFrame, spec: CausalSpec) -> pd.DataFrame:
     missing = sorted(set(required) - set(frame.columns))
     if missing:
         raise ValueError(f"Randomized analysis is missing columns: {missing}")
-    data = frame[required].dropna().reset_index(drop=True).copy()
+    valid=frame[required].notna().all(axis=1)
+    data = frame.loc[valid,required].reset_index(drop=True).copy()
+    if not np.isfinite(data.to_numpy(dtype=float)).all():raise ValueError("Randomized inputs must be finite")
+    if spec.entity_id_column:
+        units=frame.loc[valid,spec.entity_id_column]
+        if units.isna().any() or units.duplicated().any():raise ValueError("Randomized estimator requires unique independent units; use a cluster-aware design for repeated units")
     if not set(data[spec.treatment].unique()).issubset({0, 1, False, True}):
         raise ValueError("Randomized treatment must be binary")
     data[spec.treatment] = data[spec.treatment].astype(int)
@@ -34,11 +39,13 @@ def _difference_in_means(
 ) -> EstimateResult:
     treated = data.loc[data[treatment] == 1, outcome].to_numpy(dtype=float)
     control = data.loc[data[treatment] == 0, outcome].to_numpy(dtype=float)
+    if min(len(treated),len(control))<2:raise ValueError("Each randomized group requires at least two observations")
     estimate = float(treated.mean() - control.mean())
     standard_error = float(
         math.sqrt(treated.var(ddof=1) / len(treated) + control.var(ddof=1) / len(control))
     )
-    z_score = estimate / standard_error if standard_error > 0 else math.inf
+    if not math.isfinite(standard_error) or standard_error<=0:raise ValueError("Outcome variation is insufficient for randomized inference")
+    z_score = estimate / standard_error
     p_value = float(2 * norm.sf(abs(z_score))) if math.isfinite(z_score) else 0.0
     return EstimateResult(
         estimand=estimand,

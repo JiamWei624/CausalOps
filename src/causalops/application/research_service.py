@@ -112,8 +112,15 @@ class ResearchService:
         self.a.facts(sid,run_ids=run_ids)
         request={'question':question,'mode':mode,'run_ids':list(dict.fromkeys(run_ids)),'data':binding,'contract_ref':self.contracts.ref(sid)}
         if conversation_ref:request.update(user_question=original_question,conversation_ref=conversation_ref)
+        from causalops.application.research_quality import audit_research,research_brief
+        bound=self.contracts.latest(sid);body=bound['body'] if bound else {}
+        if (self.contracts.ref(sid))!=request['contract_ref']:raise DesignError('研究口径已改变，请重新提出问题。')
+        audit=audit_research(self.ws.load_upload(binding['upload_id']),body)
         fid=uuid.uuid4().hex
-        with self.ws.connection() as c:c.execute('INSERT INTO workflow_flows(id,session_id,request,plan_id,status,created) VALUES(?,?,?,?,?,?)',(fid,sid,json.dumps(request,ensure_ascii=False),None,'created',now()))
+        with self.ws.connection() as c:
+            c.execute('INSERT INTO workflow_flows(id,session_id,request,plan_id,status,created) VALUES(?,?,?,?,?,?)',(fid,sid,json.dumps(request,ensure_ascii=False),None,'created',now()))
+            quality={'data_ref':binding,'contract_ref':request['contract_ref'],'audit':audit,'brief':research_brief(body,question=original_question,audit=audit)}
+            c.execute('INSERT INTO workflow_outputs VALUES(?,?,?)',(fid,'research_quality',json.dumps(quality,ensure_ascii=False,allow_nan=False)))
         return self.flow(fid)
     def start(self,sid,question,*,mode='auto',run_ids=None,parent_flow_id=None):
         fid=self.begin(sid,question,mode=mode,run_ids=run_ids,parent_flow_id=parent_flow_id)['id']

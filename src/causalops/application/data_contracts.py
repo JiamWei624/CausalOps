@@ -7,12 +7,26 @@ from causalops.assistant.service import digest,now,PROTECTED
 from causalops.assistant.contracts import REGISTRY
 from causalops.general.service import DesignError
 
+class ResearchScope(BaseModel):
+    """Human-supplied scope; it never authorizes filtering, execution or causal claims."""
+    model_config=ConfigDict(extra='forbid',strict=True)
+    population:str=Field(default='',max_length=600)
+    inclusion:str=Field(default='',max_length=600)
+    comparison:str=Field(default='',max_length=600)
+    estimand:str=Field(default='',max_length=400)
+    observation_period:str=Field(default='',max_length=300)
+    decision:str=Field(default='',max_length=600)
+    provenance:str=Field(default='',max_length=800)
+    limitations:str=Field(default='',max_length=800)
+
 class FieldMeaning(BaseModel):
     model_config=ConfigDict(extra='forbid',strict=True)
     field:str=Field(min_length=1,max_length=200)
     meaning:str=Field(default='',max_length=600)
     unit:str=Field(default='',max_length=80)
     role:Literal['unspecified','identifier','time','treatment','outcome','covariate','measure','category']='unspecified'
+    source:str=Field(default='',max_length=400)
+    derivation:str=Field(default='',max_length=600)
     timing:Literal['unknown','pre_treatment','post_treatment','future','time_invariant']='unknown'
 
 class DataContract(BaseModel):
@@ -37,6 +51,7 @@ class DataContract(BaseModel):
     metric_unit:str=Field(default='',max_length=80)
     metric_kind:Literal['unknown','continuous','binary','count']='unknown'
     metric_window:str=Field(default='',max_length=220)
+    research:ResearchScope=Field(default_factory=ResearchScope)
     fields:list[FieldMeaning]=Field(default_factory=list,max_length=200)
     method_facts:dict[str,dict]=Field(default_factory=dict)
     notes:str=Field(default='',max_length=1200)

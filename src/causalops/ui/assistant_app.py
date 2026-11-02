@@ -57,6 +57,19 @@ def show_run(a,ref,sid,*,compact=False):
     if ref['kind']=='exploration':
         saved=a.ex.load(rid);labels,units=chart_context(a,sid,rid);charts=figures(saved,focus=focus,labels=labels,units=units);key=primary_chart_key(saved,focus,charts)
         if key in charts:st.plotly_chart(charts[key],key='focus_preview_'+rid,width='stretch')
+    from causalops.application.research_report import run_quality
+    rq=run_quality(a,sid,rid)
+    st.caption('结论适用对象：'+rq['brief']['population'])
+    with st.expander('研究范围、计算依据与待解决问题'):
+        st.write('估计对象：'+rq['method']['estimand'])
+        st.write('解释限制：'+rq['method']['limits'])
+        st.write('数据依据：'+rq['brief']['source'])
+        st.write('观察期间：'+rq['brief']['window'])
+        for label,value in rq['sample_flow'].items():st.write(label+'：'+str(value))
+        for issue in rq['failed_diagnostics']:st.warning(issue)
+        st.caption('说明来自该运行绑定的口径；修改当前口径不会覆盖历史结果。')
+        st.markdown('**后续研究建议**')
+        for item in rq['next_steps']:st.write('• '+item)
     report=make_report(a,ref,sid,conclusion)
     st.download_button('导出本次分析报告',report,file_name='CausalOps-'+rid+'.html',mime='text/html',key='primary_report_'+rid)
     if compact:
@@ -71,6 +84,8 @@ def make_report(a,ref,sid,conclusion):
         labels,units=chart_context(a,sid,rid);report=render_report(a.ex.load(rid),focus=focus,labels=labels,units=units)
     elif ref['kind']=='advanced':report=advanced_ui.report(a.advanced.load(rid))
     else:report=render_html_report(a.ws.bundle(rid)[0])
+    from causalops.application.research_report import run_quality,append_quality
+    report=append_quality(report,run_quality(a,sid,rid))
     return attach_discussion(attach_task_conclusion(report,conclusion),a.events(sid),rid,a.library)
 
 

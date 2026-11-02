@@ -29,6 +29,7 @@ def check_declared_roles(plan,context):
         if not any(target in step.config.get('numeric',[])+step.config.get('categorical',[]) for step in plan.steps):raise DesignError('描述计划未覆盖已登记的目标指标，请补充该字段或由使用者调整目标。')
     for step in plan.steps:
         cfg=step.config
+        if cfg.get('outcome') and cfg.get('outcome') in cfg.get('covariates',[])+cfg.get('predictors',[]):raise DesignError('结果字段不能同时作为本次模型的解释或调整变量。')
         if cfg.get('method')=='descriptive':continue
         for key in ('outcome','treatment','entity','time','treatment_time'):
             if cfg.get(key) and definition.get(key) and cfg[key]!=definition[key]:raise DesignError('候选的'+LABELS[key]+'与已登记口径不同，请按已登记字段修复或由使用者先修改字典。')

@@ -23,7 +23,7 @@ def render_contract(service,sid,frame,expanded=False):
     latest=service.contracts.latest(sid);body=DataContract.model_validate(latest['body'] if latest else {}).model_dump();version=latest['version'] if latest else 0
     with st.expander('数据字典与研究口径'+(' · V'+str(version) if version else ' · 尚未登记'),expanded=expanded):
         st.caption('字段口径和人工声明按数据与版本保存，后续计划可预填。声明不等于经验验证；修改后，旧候选和旧批准不能直接用于新版本。自由文字仅在本地保存。')
-        basic,details,facts,history=st.tabs(['关键口径','字段说明','研究声明','版本记录'])
+        basic,scope,details,facts,history=st.tabs(['关键口径','研究范围','字段说明','研究声明','版本记录'])
         prefix='dict_'+sid+'_'+str(version);options=['']+list(frame)
         def choose(label,field):
             value=body.get(field) or '';return st.selectbox(label,options,index=options.index(value) if value in options else 0,format_func=lambda x:'未登记' if x == '' else x,key=prefix+'_'+field) or None
@@ -47,13 +47,18 @@ def render_contract(service,sid,frame,expanded=False):
                 body['instruments']=st.multiselect('工具变量',list(frame),default=body['instruments'],key=prefix+'_iv',placeholder='请选择工具变量');body['running']=choose('断点运行变量','running');body['cohort']=choose('首次处理期/批次','cohort')
                 known=st.checkbox('已明确登记断点阈值',value=body['cutoff'] is not None,key=prefix+'_cutoff_known')
                 body['cutoff']=st.number_input('断点阈值',value=float(body['cutoff'] or 0),key=prefix+'_cutoff') if known else None
+        with scope:
+            from causalops.application.research_quality import SCOPE_LABELS
+            st.caption('这里记录研究意图和适用范围，不自动筛选原表，不代表研究条件已经满足。不确定的内容可以留空。')
+            for field,label in SCOPE_LABELS.items():
+                body['research'][field]=st.text_area(label,value=body['research'][field],key=prefix+'_research_'+field,max_chars=800 if field in ('provenance','limitations') else 300 if field=='observation_period' else 400 if field=='estimand' else 600)
         with details:
             existing={v['field']:v for v in body['fields']}
-            rows=[existing.get(c,{'field':c,'meaning':'','unit':'','role':'unspecified','timing':'unknown'}) for c in frame]
-            edited=st.data_editor(pd.DataFrame(rows).rename(columns={'field':'字段','meaning':'含义','unit':'单位','role':'角色','timing':'测量时点'}),disabled=['字段'],hide_index=True,width='stretch',key=prefix+'_fields',column_config={'角色':st.column_config.SelectboxColumn(options=['unspecified','identifier','time','treatment','outcome','covariate','measure','category']),'测量时点':st.column_config.SelectboxColumn(options=['unknown','pre_treatment','post_treatment','future','time_invariant'])})
+            rows=[existing.get(c,{'field':c,'meaning':'','unit':'','role':'unspecified','timing':'unknown','source':'','derivation':''}) for c in frame]
+            edited=st.data_editor(pd.DataFrame(rows).rename(columns={'field':'字段','meaning':'含义','unit':'单位','role':'角色','timing':'测量时点','source':'口径来源','derivation':'派生公式/生成逻辑'}),disabled=['字段'],hide_index=True,width='stretch',key=prefix+'_fields',column_config={'角色':st.column_config.SelectboxColumn(options=['unspecified','identifier','time','treatment','outcome','covariate','measure','category']),'测量时点':st.column_config.SelectboxColumn(options=['unknown','pre_treatment','post_treatment','future','time_invariant'])})
             body['fields']=[]
-            for row in edited.fillna('').rename(columns={'字段':'field','含义':'meaning','单位':'unit','角色':'role','测量时点':'timing'}).to_dict('records'):
-                if row['meaning'] or row['unit'] or row['role']!='unspecified' or row['timing']!='unknown':body['fields'].append(row)
+            for row in edited.fillna('').rename(columns={'字段':'field','含义':'meaning','单位':'unit','角色':'role','测量时点':'timing','口径来源':'source','派生公式/生成逻辑':'derivation'}).to_dict('records'):
+                if row.get('source') or row.get('derivation') or row['meaning'] or row['unit'] or row['role']!='unspecified' or row['timing']!='unknown':body['fields'].append(row)
             st.caption('pre_treatment=处理前；post_treatment=处理后；future=未来；unknown=待确认。程序不会按字段名自动确认时序。')
         with facts:
             methods=st.multiselect('需要保存声明的方法',list(REGISTRY),default=list(body['method_facts']),format_func=lambda m:REGISTRY[m].label,key=prefix+'_methods',placeholder='请选择需要登记声明的方法')

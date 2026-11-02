@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-31.3",
+  "version": "2026-11-02.1",
   "sources": {
     "pandas": {
       "source_id": "pandas",
@@ -270,6 +270,24 @@
       "checked_on": "2026-10-31",
       "access_scope": "public_selected_section",
       "reuse": "原创方法说明，保留来源链接，不转载全文。"
+    },
+    "doubleml_resampling": {
+      "source_id": "doubleml_resampling",
+      "title": "DoubleML：样本分割与交叉拟合",
+      "url": "https://docs.doubleml.org/stable/guide/resampling.html",
+      "locator": "9. Sample-splitting；set_sample_splitting",
+      "checked_on": "2026-11-02",
+      "access_scope": "official_documentation_selected_sections",
+      "version": "web-2026-11-02"
+    },
+    "matchit_estimand": {
+      "source_id": "matchit_estimand",
+      "title": "MatchIt：匹配后效应与解释对象",
+      "url": "https://kosukeimai.github.io/MatchIt/articles/estimating-effects.html",
+      "locator": "Identifying the estimand；matched sample and uncertainty",
+      "checked_on": "2026-11-02",
+      "access_scope": "official_documentation_selected_sections",
+      "version": "web-2026-11-02"
     }
   },
   "cards": [
@@ -507,17 +525,18 @@
         "overlap"
       ],
       "source_ids": [
-        "doubleml"
+        "doubleml",
+        "matchit_estimand"
       ],
       "scope": "method_rule",
-      "version": "2026-10-31.1",
+      "version": "2026-11-02.1",
       "sections": {
         "适用问题": "在可观测混杂假设下比较二元处理。",
         "数据要求": "一实体一行、处理前协变量；处理与结果明确。",
         "识别条件": "无未测混杂、共同支撑与处理定义需研究依据。",
-        "诊断方法": "倾向分布、平衡、极端权重、匹配损失。",
+        "诊断方法": "倾向分布、平衡、极端权重、匹配损失。 匹配前后SMD使用同一处理前合并标准差；零分母且均值不同应标为不可定义，不能报告为平衡。",
         "失败情形": "缺乏重叠或混杂信息不足；不能靠p值证明无混杂。",
-        "结果解释": "匹配/加权只是估计步骤；须说明目标人群与ATT/ATE。"
+        "结果解释": "匹配/加权只是估计步骤；须说明目标人群与ATT/ATE。 卡尺或共同支撑排除处理样本后，解释对象是保留的匹配样本，不能自动称为原总体ATT/ATE。当前实现提供条件配对差推断，不包含全部匹配估计不确定性。"
       },
       "estimand": "按方法约定的匹配ATT或加权ATE",
       "formula": "IPW-ATE用T·Y/e(X)-(1-T)·Y/(1-e(X))的样本平均；权重稳定化与归一化须报告。",
@@ -541,15 +560,16 @@
       ],
       "source_ids": [
         "doubleml",
-        "crossfit"
+        "crossfit",
+        "doubleml_resampling"
       ],
       "scope": "method_rule",
-      "version": "2026-10-31.1",
+      "version": "2026-11-02.1",
       "sections": {
         "适用问题": "使用灵活模型拟合干扰项并估计指定目标。",
         "数据要求": "一独立单位一行；交叉拟合，处理前协变量。",
         "识别条件": "IRM ATE需可交换性与重叠；PLR有额外结构。",
-        "诊断方法": "交叉拟合预测、倾向截断、支撑、目标量核对。",
+        "诊断方法": "交叉拟合预测、倾向截断、支撑、目标量核对。 固定并记录实际交叉拟合分折；重叠检查使用同一次DoubleML拟合的折外处理概率，不能另起随机划分替代。",
         "失败情形": "双重稳健不消除未测混杂；过拟合或不重叠。",
         "结果解释": "PLR系数不自动等于异质处理总体ATE。"
       },
@@ -820,17 +840,18 @@
         "commercial"
       ],
       "source_ids": [
-        "isr_caps_full"
+        "isr_caps_full",
+        "matchit_estimand"
       ],
       "scope": "empirical_example",
-      "version": "2026-10-31.2",
+      "version": "2026-11-02.1",
       "sections": {
         "适用问题": "评估平台政策是否达到目标及其他群体的反应。",
         "数据要求": "作者案例区分政策生效时点、餐厅类型与需求/净收入指标。",
         "识别条件": "作者采用匹配与批次DID；当前数据仍须独立论证可比对照、无预期和干扰。",
-        "诊断方法": "方法页说明干净比较、动态聚合，稳健性页比较扩展样本与替代匹配。",
+        "诊断方法": "方法页说明干净比较、动态聚合，稳健性页比较扩展样本与替代匹配。 匹配前后SMD使用同一处理前合并标准差；零分母且均值不同应标为不可定义，不能报告为平衡。",
         "失败情形": "只看直接群体收益，忽略平台行为调整；匹配不自动解决不可观测混杂。",
-        "结果解释": "商业报告应同时看目标指标、净指标和可能的溢出；没有本数据证据不量化收益。"
+        "结果解释": "商业报告应同时看目标指标、净指标和可能的溢出；没有本数据证据不量化收益。 卡尺或共同支撑排除处理样本后，解释对象是保留的匹配样本，不能自动称为原总体ATT/ATE。当前实现提供条件配对差推断，不包含全部匹配估计不确定性。"
       },
       "full_text_reviewed": true,
       "review_scope": "所列方法与结论相关完整页面，非所有附录或复现"

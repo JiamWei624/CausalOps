@@ -4,7 +4,8 @@ import numpy as np
 import pandas as pd
 from doubleml import DoubleMLData, DoubleMLPLR
 from sklearn.ensemble import HistGradientBoostingClassifier, HistGradientBoostingRegressor
-from sklearn.model_selection import StratifiedKFold, cross_val_predict
+from sklearn.model_selection import StratifiedKFold
+import hashlib
 
 from causalops.schemas import CausalSpec, DiagnosticResult, EstimateResult
 
@@ -21,6 +22,13 @@ def estimate_double_ml_plr(
     if not spec.covariates:
         raise ValueError("DoubleML requires pre-treatment covariates")
     data = frame[required].dropna().reset_index(drop=True).copy()
+    if not set(data[spec.treatment].unique()).issubset({0, 1, False, True}):
+        raise ValueError("DoubleML treatment must be binary before conversion")
+    if not np.isfinite(data.to_numpy(dtype=float)).all():
+        raise ValueError("DoubleML requires finite numeric inputs")
+    if spec.entity_id_column and spec.entity_id_column in frame:
+        if frame.loc[frame[required].notna().all(axis=1), spec.entity_id_column].isna().any() or frame.loc[frame[required].notna().all(axis=1), spec.entity_id_column].duplicated().any():
+            raise ValueError("DoubleML PLR currently requires unique independent units; clustered cross-fitting is not implemented")
     data[spec.treatment] = data[spec.treatment].astype(int)
     if set(data[spec.treatment].unique()) != {0, 1}:
         raise ValueError("DoubleML treatment must contain binary treatment and control observations")
@@ -44,19 +52,17 @@ def estimate_double_ml_plr(
         n_folds=folds,
         n_rep=1,
         score="partialling out",
+        draw_sample_splitting=False,
     )
+    splitter = StratifiedKFold(n_splits=folds, shuffle=True, random_state=seed)
+    splits = list(splitter.split(data[spec.covariates], data[spec.treatment]))
+    model.set_sample_splitting(splits)
     model.fit(store_predictions=True)
     confidence_interval = model.confint(level=0.95).iloc[0].to_numpy(dtype=float)
 
-    splitter = StratifiedKFold(n_splits=folds, shuffle=True, random_state=seed)
-    propensity = cross_val_predict(
-        treatment_learner,
-        data[spec.covariates],
-        data[spec.treatment],
-        cv=splitter,
-        method="predict_proba",
-        n_jobs=1,
-    )[:, 1]
+    # Diagnose the actual nuisance predictions used by this estimator, not another fit.
+    propensity = np.asarray(model.predictions["ml_m"])[:, 0, 0]
+    split_sha = hashlib.sha256(b"".join(test.astype("<i8").tobytes() for _, test in splits)).hexdigest()
     overlap_rate = float(np.mean((propensity >= 0.05) & (propensity <= 0.95)))
     diagnostics = [
         DiagnosticResult(
@@ -91,6 +97,10 @@ def estimate_double_ml_plr(
         diagnostics=diagnostics,
         evidence={
             "n_folds": folds,
+            "split_seed": seed,
+            "split_sha256": split_sha,
+            "fold_sizes": [len(test) for _,test in splits],
+            "overlap_prediction_source": "same_DoubleMLPLR_ml_m_out_of_fold_predictions",
             "out_of_fold_propensity_min": float(propensity.min()),
             "out_of_fold_propensity_max": float(propensity.max()),
             "out_of_fold_overlap_rate": overlap_rate,
