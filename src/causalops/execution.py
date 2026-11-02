@@ -157,6 +157,10 @@ def execute_analysis(
     )
     from causalops.results.interpretation import collect_interpretation_inputs
     bundle.evidence['interpretation_inputs'] = collect_interpretation_inputs(frame, spec, study_context)
+    from causalops.results.rate_units import rate_contrast
+    units = rate_contrast(bundle)
+    if units:
+        bundle.evidence['rate_contrast'] = units
     output_dir = output_dir.resolve()
     output_dir.mkdir(parents=True, exist_ok=True)
     target = output_dir / f"run-{run_id}.json"

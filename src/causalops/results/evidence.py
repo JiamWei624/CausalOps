@@ -67,6 +67,13 @@ def build_run_evidence(bundle: ResultBundle) -> dict[str, Any]:
         if bundle.evidence.get('estimator',{}).get('outcome_binary'):
             add('E015','二元结果的百分点差异',f'本次线性概率模型对应{100*estimate.estimate:.6g}个百分点的条件差异；不是相对百分比增长或已识别的因果提升。',
                 '/estimate/estimate',100*estimate.estimate)
+    units = bundle.evidence.get("rate_contrast")
+    if units:
+        from causalops.results.rate_units import RATE_LABELS
+        for name, label in RATE_LABELS.items():
+            if units.get(name) is not None:
+                add("rate."+name, label, f"{label}为 {units[name]}。",
+                    "/evidence/rate_contrast/"+name, units[name])
     for index, diagnostic in enumerate(bundle.diagnostics):
         key = f"D{index + 1:03d}"
         text = message_zh(diagnostic.message)

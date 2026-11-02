@@ -271,6 +271,17 @@ class ResearchService:
     def decide_route(self,fid):
         f=self.flow(fid);req=f['request'];q=req['question']
         if re.search(r'(?:直接|自动|替我|帮我|立即).{0,6}(?:批准|删除|跳过审核)|忽略.*(?:规则|权限)|绕过',q):return RouteDecision(route='clarify',reason='该请求涉及受限操作，请通过审核界面处理。')
+        from causalops.application.report_scope import PROFIT, YEAR, METRICS, UNITS, report_scope, scope_message
+        inquiry = req.get('user_question', q)
+        explicit_analysis = re.search(r'新建计划|另建计划|制定.*计划|(?:使用|采用|进行)\s*(?:A/B|随机实验|回归|双重差分).{0,16}(?:比较|分析|估计)',inquiry,re.I)
+        if req['run_ids'] and req['mode'] in ('auto','results') and not explicit_analysis:
+            if PROFIT.search(inquiry) or YEAR.search(inquiry) or any(re.search(p,inquiry,re.I) for p in METRICS.values()):
+                scopes = [report_scope(self.a,f['session_id'],{'run_id':rid}) for rid in req['run_ids']]
+                missing = scope_message(inquiry,scopes)
+                if missing:
+                    return RouteDecision(route='clarify',reason=missing[:400])
+            if (UNITS.search(inquiry) or re.search(r'(?:解释|解读|理解).{0,12}(?:本次|这份|当前|已选).{0,12}(?:结果|访问|购买)',inquiry)) and not re.search('重新|重算|新分析|制定|新增',inquiry):
+                return RouteDecision(route='results',reason='按已选报告的估计量和基准解释单位。')
         if (req.get('conversation_ref') or {}).get('selected_direction'):return RouteDecision(route='plan',reason='依据使用者选择的已展示建议形成待审计划。')
         if req['mode']!='auto':route=RouteDecision(route=req['mode'],reason='使用者明确选择的请求类型。')
         elif re.search(r'能做什么|可以.{0,8}做什么|(?:能|可以).{0,8}(?:研究|分析|探索)(?:什么|哪些|哪)|(?:能|可以).{0,8}回答(?:什么|哪些)问题|分析方向|研究方向|不知道.{0,6}(?:问|分析|研究)|推荐.{0,8}(?:问题|研究|方向)',q):route=RouteDecision(route='explore',reason='先推荐当前数据可回答的问题，不执行分析。')

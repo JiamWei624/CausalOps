@@ -12,6 +12,7 @@ def select_answer_facts(facts,runs,q,budget=8,*,target_by_run=None):
             key,f=item;p=f['path'];text=f['text'];s=0
             if p=='summary.row_count' or p=='regression.n' or p=='/estimate/sample_size':s+=90 if sample else 25
             if '/estimate/' in p:s+=60
+            if '/rate_contrast/' in p:s+=75 if any(x in p for x in ('/pp','/relative_pct','/control_rate','/treated_rate')) else 45
             if p.endswith('.coefficient') or p.endswith('.exp_coefficient'):s+=65
             if p.endswith('.ci95_low') or p.endswith('.ci95_high'):s+=5
             if p.endswith('.ci95') or p.endswith('.exp_ci95'):s+=55
@@ -39,9 +40,12 @@ def result_rules(a,sid,runs):
     result=[]
     for run in runs:
         dictionary,ref=source_dictionary(a,sid,run['run_id'])
-        result.append({'run_id':run['run_id'],'method':run['method'],'dictionary_ref':ref,'metric':{k:dictionary[k] for k in ('metric_label','metric_unit','metric_kind','metric_window') if dictionary.get(k)},'source_roles':{k:dictionary[k] for k in ('analysis_unit','entity','outcome','treatment','time','treatment_time','predictors','covariates') if dictionary.get(k)},'reading_rules':['按本运行来源计划解释，不能使用新字典改写旧结果','关联不等于干预效果；OR不等于概率比或百分点','没有成本和业务阈值，不报告利润、ROI或直接推广建议','所有正文数字只能引用本轮提供的事实；不重跑、不批准']})
+        result.append({'run_id':run['run_id'],'method':run['method'],'dictionary_ref':ref,'metric':{k:dictionary[k] for k in ('metric_label','metric_unit','metric_kind','metric_window') if dictionary.get(k)},'source_roles':{k:dictionary[k] for k in ('analysis_unit','entity','outcome','treatment','time','treatment_time','predictors','covariates') if dictionary.get(k)},'reading_rules':['按本运行来源计划解释，不能使用新字典改写旧结果','关联结果须按关联解释','没有成本和业务阈值，不报告利润、ROI或直接推广建议','所有正文数字只能引用本轮提供的事实；不重跑、不批准']})
+        if run['method']=='logit':result[-1]['reading_rules'].append('优势比不能直接解释为概率比或百分点。')
         if run['kind']=='research':
             bundle,_=a.ws.bundle(run['run_id'])
+            if bundle.evidence.get('rate_contrast'):
+                result[-1]['reading_rules'].append('二元未调整实验的概率差可乘以100换算为百分点。相对增长按对照组概率为分母；二者分别引用对应证据。')
             result[-1]['actual_claim']=bundle.claim_level.value
             result[-1]['saved_diagnostics']=[{'name':d.name,'passed':d.passed,'claim_blocking':d.claim_blocking} for d in bundle.diagnostics]
             result[-1]['reading_rules'].append('saved_diagnostics是已实际执行的检查结果，优先说明失败且限制主张的检查；不得把失败写成尚未检查或已通过。p值数值舍入为零不是概率严格为零。')

@@ -107,8 +107,10 @@ def render_graph_workspace(a,sid,frame,model):
                     st.session_state['graph_run_'+sid]=last;a.select_run(sid,last)
         if refs:
             selected=a.selected_run(sid)
-            with st.expander('历史分析结果'):
-                rid=st.selectbox('结果展示与追问所依据的运行',list(refs),index=list(refs).index(selected) if selected in refs else 0,format_func=lambda x:a.tools.method(__import__('causalops.assistant.contracts',fromlist=['REGISTRY']).REGISTRY[refs[x]['method']].tool,refs[x]['method']).label+' · '+x[:8],key='graph_run_'+sid)
+            from causalops.application.report_scope import report_scope
+            scopes = {key:report_scope(a,sid,run) for key,run in refs.items()}
+            with st.expander('选择报告（按指标与观察期）',expanded=len(refs)>1):
+                rid=st.selectbox('结果展示与追问所依据的运行',list(refs),index=list(refs).index(selected) if selected in refs else 0,format_func=lambda x:' · '.join(v for v in scopes[x] if v)+' · '+a.tools.method(__import__('causalops.assistant.contracts',fromlist=['REGISTRY']).REGISTRY[refs[x]['method']].tool,refs[x]['method']).label+' · '+x[:8],key='graph_run_'+sid)
             if rid!=selected:a.select_run(sid,rid)
             if f['status']=='awaiting_review' and refs[rid]['plan_id']!=f['plan_id']:st.info('以下为先前已完成的结果；当前待审计划尚未执行，不能把旧结论当作新计划的输出。')
             if completed and rid in completed.get('run_ids',[]):

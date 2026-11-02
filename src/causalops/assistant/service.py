@@ -398,10 +398,19 @@ class AssistantWorkspace:
 
                 else:
                     from causalops.results.qa import ResultQAService
-                    _,snap=ResultQAService(self.ws.repo,None).prepare(session_id=ref['study_id'],run_id=rid)
+                    bundle,snap=ResultQAService(self.ws.repo,None).prepare(session_id=ref['study_id'],run_id=rid)
                     claim=snap['claim_level']
+                    from causalops.results.rate_units import RATE_LABELS, rate_contrast
+                    units = bundle.evidence.get('rate_contrast') or rate_contrast(bundle)
+                    if units:
+                        for name, label in RATE_LABELS.items():
+                            if units.get(name) is not None:
+                                facts[rid+':rate.'+name] = {'text':label,'value':units[name],
+                                    'path':('/evidence/rate_contrast/' if 'rate_contrast' in bundle.evidence else 'derived:interpretation_inputs/rate_contrast/')+name,
+                                    'run_id':rid,'claim':claim,'unit':label,'derivation':units['formulas'].get(name,'saved probability scale')}
                     facts[rid+':claim']={'text':'当前允许解释等级','value':claim,'run_id':rid,'path':'claim_level','claim':claim}
                     for fact in snap['facts']:
+                        if rid+':'+fact['evidence_id'] in facts:continue
                         value=fact['value']
                         numeric=isinstance(value,(int,float,bool)) or (isinstance(value,list) and all(isinstance(v,(int,float)) for v in value))
                         if not numeric:continue
@@ -423,8 +432,18 @@ class AssistantWorkspace:
         scope=compare_run_ids if compare_run_ids is not None else ([run_id] if run_id else None)
         facts,runs=self.facts(sid,run_ids=scope)
         scope_ids=[r['run_id'] for r in runs]
-        if re.search('重新估计|执行|删除|修改数据|接受草案|批准|换成|跑一下',q):
+        from causalops.application.report_scope import report_scope, scope_message, unit_answer, UNITS
+        scopes = [report_scope(self,sid,r) for r in runs]
+        missing = scope_message(q,scopes)
+        rates = None
+        if len(runs)==1 and not missing and (UNITS.search(q) or re.search('幅度|实际含义|区间',q)):
+            rates = unit_answer(facts,runs[0],*scopes[0])
+        if missing:
+            answer={'source':'本地报告口径核对','text':missing,'facts':[],'citations':[]}
+        elif re.search('重新估计|执行|删除|修改数据|接受草案|批准|换成|跑一下',q):
             answer={'source':'local','text':'本轮是结果解释，不执行或修改。请在任务计划中生成新版本并核对。','facts':[],'citations':[]}
+        elif rates is not None:
+            answer=rates
         else:
             method_context=' '.join(r.get('method','') for r in runs)
             hits=self.library.search(q+' '+method_context)
@@ -444,7 +463,7 @@ class AssistantWorkspace:
                     'fact_ids仅可引用提供的事实，最多八条，citations仅可引用本轮知识card_id；用户要求新分析时明确须新计划。'
                     '请用中文回答，最多四个短段，依次为结论、关键证据、局限、下一步，总体尽量简洁。只引用与本轮问题直接相关的少量事实；不要把所有均值、中位数和标准差都列出。'
                     '事实占位符会由本地插入指标名称和数值。fact_catalog是本轮唯一可用事实，近期对话中的旧编号不能引用。至少引用一条当前运行证据，正文最多选择四条关键事实；若用户问效应大小和区间，优先主要系数/差异和对应区间，不要堆砌。不要说具体数值此处不重复。'
-                    '先回答用户原问题，区分统计差异、可行动性与上线决策；有区间时结合区间，不把显著性当业务阈值。Logit优势比不是概率比或提升百分点；未计算边际效应时不能报告概率提升。没有成本或干预设计时不能报告ROI、利润或直接推广结论。'
+                    '先回答用户原问题，区分统计差异、可行动性与上线决策；有区间时结合区间，不把显著性当业务阈值。按本次运行的估计量单位解释，已登记的概率差可乘以100表示百分点。没有成本或干预设计时不能报告ROI、利润或直接推广结论。'
                     '不要将文献中的效率收益当作此项目的收益，也不把模型系数当因果。每增加一个原始单位请用中文表达，不写未引用的单位变动数字；置信区间直接引用一个完整区间事实。模型设定里的HC3等标签不是结果，不必在业务结论中重复。')
                 schema=GroundedReply.model_json_schema()
                 allowed_cards=[h['card_id'] for h in hits['hits']]
@@ -535,6 +554,6 @@ class AssistantWorkspace:
         if 'hits' in locals():
             answer['method_provenance']=[{'card_id':h['card_id'],'title':h['title'],'version':h['version'],'knowledge_sha256':self.library.digest,'sources':h['sources'],'matched_sections':h.get('matched_sections',[])} for h in hits['hits'] if h['card_id'] in answer.get('citations',[])]
         answer['knowledge_sha256']=self.library.digest
-        if model:answer['provider_binding']=__import__('causalops.llm.providers',fromlist=['model_binding']).model_binding(model)
+        if model and 'hits' in locals():answer['provider_binding']=__import__('causalops.llm.providers',fromlist=['model_binding']).model_binding(model)
         answer.update(run_ids=scope_ids,upload_id=self.session(sid)['upload_id'],scope='explicit_comparison' if compare_run_ids is not None else 'selected_run')
         self.event(sid,'user',{'question':q,'run_ids':scope_ids});self.event(sid,'answer',answer);return answer
