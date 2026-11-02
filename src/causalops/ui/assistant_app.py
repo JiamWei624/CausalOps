@@ -3,6 +3,7 @@ from __future__ import annotations
 import json,copy,re
 import pandas as pd
 import streamlit as st
+from causalops.ui.source_labels import show_source
 from causalops.assistant.service import AssistantWorkspace,profile,PROTECTED,Plan
 from causalops.general.service import METHODS
 from causalops.general.exploration import LABELS
@@ -22,7 +23,7 @@ def show_sources(hits):
         with st.expander(h['title']+' · '+(('实证文献（已核对相关全文页）' if h.get('full_text_reviewed') else '实证案例（摘要）') if h['scope']=='empirical_example' else '方法规则')):
             for title,text in h['sections'].items():st.markdown('**'+title+'：** '+text)
             if h.get('estimand'):st.markdown('**目标量：** '+h['estimand']);st.code(h['formula'],language='text');st.caption(h['implementation'])
-            for source in h['sources']:st.markdown('['+source['title']+']('+source['url']+')');st.caption(source['locator']+' · 核对日期 '+source['checked_on'])
+            for source in h['sources']:show_source(source);st.caption(source['locator']+' · 核对日期 '+source['checked_on'])
             st.caption('知识卡 '+h['card_id']+' · 版本 '+h['version'])
             for span in h.get('matched_sections',[]):st.caption('命中章节：'+span['section']+' · 原创方法摘要指纹 '+span['note_sha256'][:12])
             st.caption('原文核对范围以来源登记为准；方法摘要不是论文逐字引文。')
@@ -179,12 +180,14 @@ def render_assistant():
                         if upload:uid=a.ws.ingest(upload.getvalue(),upload.name,encoding=enc,separator=sep)
                         sid=a.create(uid,title or (upload.name if upload else '本地分析任务'));st.write('数据已登记，原始文件不作修改。')
                         p=a.propose(sid,'请先完成数据质量、缺失和分布的描述性体检');a.accept(p['id'],p['sha']);a.execute(p['id'],permit=True);status.update(label='数据质量检查已完成',state='complete')
-                st.query_params['assistant']=sid;st.rerun()
+                st.session_state['_open_overview']=True;st.query_params['assistant']=sid;st.query_params.pop('flow',None);st.rerun()
             except (ValueError,RuntimeError,OSError) as exc:
                 st.error(str(exc));st.info('本次导入检查未完成，未执行回归或因果分析。原始文件与已有任务保留。编码问题请展开文件设置；格式或容量超限请准备新的分析表后再创建任务。')
                 st.button('返回首页与模型连接',key='import_recovery_home',on_click=lambda: (st.session_state.update(showcase_route='home'),st.query_params.update(route='home')))
         st.caption('此按钮只登记文件并核对结构，不执行回归或因果分析，不向模型发送数据。')
         return
+    from causalops.ui.reading import landmark
+    landmark('overview', move=st.session_state.pop('_open_overview', False))
     s=a.session(sid);frame=a.ws.load_upload(s['upload_id']);pr=profile(frame)
     top=st.columns(3);top[0].metric('数据行数',f'{pr["rows"]:,}');top[1].metric('字段数',pr['columns']);top[2].metric('分析任务',s['title'][:28])
     from causalops.application.onboarding import overview
@@ -235,7 +238,7 @@ def render_assistant():
                         if card:
                             st.caption('方法依据：'+card['title']+' · '+('实证案例（摘要）' if card['scope']=='empirical_example' else '方法规则'))
                             for source_id in card['source_ids']:
-                                source=a.library.catalog['sources'][source_id];st.markdown('['+source['title']+']('+source['url']+')')
+                                source=a.library.catalog['sources'][source_id];show_source(source)
             if event['kind']=='proposal':
                 with st.chat_message('assistant'):st.write('待审计划 V'+str(event['body']['version'])+'，来源：'+event['body']['source']+'。请审阅下方计划及变量设定。')
         if plans:

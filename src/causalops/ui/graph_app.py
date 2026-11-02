@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import pandas as pd
 import streamlit as st
+from causalops.ui.source_labels import show_source
 from causalops.application.research_service import ResearchService
 
 STATUS={'cancelled':'已停止，可继续','created':'准备中','awaiting_review':'待人工审核','approved':'已批准','executing':'统计执行中','executed':'正在解释结果','completed':'已完成','rejected':'已放弃','blocked':'执行条件不满足','failed':'处理失败，可核对记录','needs_clarification':'需要补充说明'}
@@ -38,18 +39,38 @@ def render_graph_workspace(a,sid,frame,model):
         with st.expander('新分析与口径设置'):render_start_actions(service,jobs,sid,frame)
     with st.expander('高级设置：完整数据字典与研究事实',expanded=bool(st.session_state.get('_open_contract_'+sid))):
         render_contract(service,sid,frame,expanded=bool(st.session_state.get('_open_contract_'+sid)))
-    st.session_state.setdefault('_job_signature_'+sid,tuple((j['id'],j['status']) for j in jobs.jobs(sid)))
+    st.session_state['_job_signature_'+sid]=tuple((j['id'],j['status']) for j in jobs.jobs(sid))
     st.subheader('分析对话')
     st.caption('输入分析目标、方案调整要求或结果解读问题。系统保留本轮对话关联，必要时提示补充关键信息。')
     flows=service.flows(sid);choice_key='graph_flow_'+sid
     pending=st.session_state.pop('_graph_pending_'+sid,None)
     if pending:st.session_state[choice_key]=pending
     if flows:
+        from causalops.ui.reading import landmark
         ids=[f['id'] for f in flows]
-        if st.session_state.get(choice_key) not in ids:st.session_state[choice_key]=ids[0]
+        if st.session_state.get(choice_key) not in ids:
+            requested=st.query_params.get('flow')
+            st.session_state[choice_key]=requested if requested in ids else ids[0]
         with st.expander('历史对话'):
             current=st.selectbox('选择对话记录',ids,format_func=lambda x:STATUS.get(next(f['status'] for f in flows if f['id']==x),'处理中')+' · '+next(f['request'].get('user_question',f['request']['question'])[:45] for f in flows if f['id']==x),key=choice_key)
+        if st.query_params.get('flow') != current:
+            st.query_params['flow']=current
         f=service.flow(current)
+        tracking='_follow_flow_'+sid
+        manual_jump=bool(pending)
+        if manual_jump:
+            st.session_state[tracking]=current
+        waiting=f['status'] in ('created','approved','executing','executed')
+        advance=not manual_jump and st.session_state.get(tracking)==current
+        if not waiting:
+            st.session_state.pop(tracking,None)
+        def destination(name):
+            landmark(name, move=manual_jump or advance, from_wait=advance)
+        if waiting:
+            landmark('wait',move=manual_jump)
+            st.info('请求已登记，正在处理。完成后可在本任务中查看结果。')
+        elif f['status'] in ('failed','blocked','needs_clarification'):
+            destination('issue')
         from causalops.ui.research_quality import render_research_quality
         render_research_quality(service,f,jobs)
         from causalops.application.conversation import conversation_history
@@ -90,6 +111,8 @@ def render_graph_workspace(a,sid,frame,model):
                 rid=st.selectbox('结果展示与追问所依据的运行',list(refs),index=list(refs).index(selected) if selected in refs else 0,format_func=lambda x:a.tools.method(__import__('causalops.assistant.contracts',fromlist=['REGISTRY']).REGISTRY[refs[x]['method']].tool,refs[x]['method']).label+' · '+x[:8],key='graph_run_'+sid)
             if rid!=selected:a.select_run(sid,rid)
             if f['status']=='awaiting_review' and refs[rid]['plan_id']!=f['plan_id']:st.info('以下为先前已完成的结果；当前待审计划尚未执行，不能把旧结论当作新计划的输出。')
+            if completed and rid in completed.get('run_ids',[]):
+                destination('result')
             st.subheader('分析结果')
             show_run(a,refs[rid],sid,compact=True)
             followups=st.columns(2)
@@ -100,8 +123,18 @@ def render_graph_workspace(a,sid,frame,model):
                         st.session_state['_graph_pending_'+sid]=job['flow_id'];st.rerun()
                     except (ValueError,RuntimeError,OSError) as exc:st.error(str(exc))
 
+            if refs[rid]['method']=='descriptive':
+                st.caption('从描述统计进入下一步：可围绕分布中的差异提出问题，也可直接输入自己的业务目标。')
+                if st.button('根据这张表推荐后续问题',key='from_description_'+current,disabled=active):
+                    try:
+                        job=jobs.submit_start(sid,'根据当前字段推荐两个可进一步分析的问题，说明每个问题还需补充哪些信息。',mode='explore',parent_flow_id=current)
+                        st.session_state['_graph_pending_'+sid]=job['flow_id'];st.rerun()
+                    except (ValueError,RuntimeError,OSError) as exc:st.error(str(exc))
+
         answer=service.output(current,'answer')
         if answer:
+            if not completed and f['status']=='completed':
+                destination('answer')
             st.markdown('**'+{'method_only':'方法说明','question_options':'分析建议','data_overview':'数据概览'}.get(answer.get('scope'),'结果解读' if answer.get('run_ids') else '信息补充')+'**')
             st.caption(answer['source']);st.write(safe_text(answer['text']))
             if answer.get('facts'):
@@ -120,6 +153,7 @@ def render_graph_workspace(a,sid,frame,model):
         st.caption('分析状态：'+STATUS.get(f['status'],f['status']))
         if f['plan_id']:
             p=a.get_plan(f['plan_id']);v=p['plan']
+            if f['status']=='awaiting_review':destination('plan')
             with st.expander('分析方案 · V'+str(p['version']),expanded=f['status']=='awaiting_review'):
                 st.markdown('**待审计划 V'+str(p['version'])+'**' if f['status']=='awaiting_review' else '**来源计划 V'+str(p['version'])+'**')
                 st.write(safe_text(v['objective']))
@@ -139,7 +173,7 @@ def render_graph_workspace(a,sid,frame,model):
                     st.caption('估计对象：'+mc['estimand']+'；适用样本：'+mc['population'])
                     with st.expander('本方法的诊断、推断与来源'):
                         st.write(mc['diagnostics']);st.write(mc['limits']);st.write(mc['inference'])
-                        for source in mc['sources']:st.link_button(source['title'],source['url'])
+                        for source in mc['sources']:show_source(source)
                     cfg=step['config'];st.caption('分析字段：'+', '.join(list(dict.fromkeys(cfg.get('numeric',[])+cfg.get('categorical',[])+cfg.get('predictors',[])+cfg.get('covariates',[]))))+'；结果：'+str(cfg.get('outcome') or '分布/汇总'))
                 for q in v['required_questions']:st.info(safe_text(q))
                 with st.expander('核对完整配置、计划和数据版本'):
@@ -171,6 +205,7 @@ def render_graph_workspace(a,sid,frame,model):
                         try:
                             service.review(current,accept=True,expected_plan_id=p['id'],expected_plan_sha=p['sha'],expected_data_sha=f['request']['data']['frame_sha'],human_confirmed=True,confirmations=facts,dispatch=False,use_contract_facts=bool(bound))
                             jobs.submit(current)
+                            st.session_state['_graph_pending_'+sid]=current
                             st.rerun()
                         except (ValueError,RuntimeError,OSError) as exc:st.error(str(exc))
                     if no.button('放弃本候选计划',key='graph_reject_'+current):

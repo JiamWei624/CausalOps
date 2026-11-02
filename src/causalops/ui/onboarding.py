@@ -4,10 +4,81 @@ import copy
 import streamlit as st
 from causalops.application.onboarding import start_basic_report
 
+def render_first_look(frame, sid, preset, brief):
+    import numpy as np
+    import pandas as pd
+    fields = [f for f in brief['fields'] if not f['likely_identifier'] and f['numeric']]
+    st.write(f"全表 {len(frame):,} 行；缺失单元格 {sum(f['missing_n'] for f in brief['fields']):,} 个，完全重复记录 {brief['exact_duplicate_rows']:,} 条。重复记录保留在样本中。")
+    if not fields:
+        categories = [f['field'] for f in brief['fields']
+                      if not f['likely_identifier'] and 1 <= f['distinct_n'] <= min(20, max(1, len(frame)//2))]
+        if categories:
+            category = st.selectbox('查看类别分布', categories, key='preview_category_'+sid)
+            freq = frame[category].dropna().value_counts().rename('记录数')
+            st.dataframe(freq.to_frame(), width='stretch')
+            st.caption('频数仅计入该字段非缺失的记录；未合并相似类别。')
+        else:
+            st.caption('缺少可预览的数值或低基数类别字段。可生成完整报告，查看字段完整性。')
+        return
+    names = {f['field']: f['meaning'] for f in preset.get('fields', [])}
+    choices = [f['field'] for f in fields]
+    target = preset.get('target')
+    col = st.selectbox('查看指标分布', choices, index=choices.index(target) if target in choices else 0,
+        format_func=lambda x: names.get(x, x), key='preview_field_'+sid)
+    values = frame[col].replace([np.inf, -np.inf], np.nan).dropna()
+    if values.empty:
+        st.info('所选指标没有有限数值，可切换字段。')
+        return
+    unit = preset.get('metric_unit', '') if col == target else ''
+    st.write(f"{names.get(col,col)}有 {len(values):,} 个有效值，中位数 {values.median():.4g}{unit}，范围 {values.min():.4g} 至 {values.max():.4g}{unit}。")
+    if values.nunique() <= 20:
+        counts = values.value_counts().sort_index()
+        labels = [f'{v:g}' for v in counts.index]
+    else:
+        counts = pd.cut(values, bins=12, duplicates='drop').value_counts().sort_index()
+        labels = [str(v) for v in counts.index]
+    chart = pd.DataFrame({'取值或区间':labels, '记录数':counts.to_numpy()})
+    import plotly.express as px
+    fig = px.bar(chart, x='取值或区间', y='记录数')
+    fig.update_xaxes(type='category')
+    fig.update_layout(height=250, margin=dict(t=10,b=30))
+    st.plotly_chart(fig, key='preview_chart_'+sid, width='stretch')
+    st.caption('横轴为取值或分组区间，纵轴为原始记录数。图中只使用当前字段的有限数值。')
+
+def basic_report_button(a,sid, *, sample_service=None):
+    use_sample = sample_service is not None and not sample_service.contracts.latest(sid)
+    if use_sample:
+        st.caption('生成报告时采用此示例的公开定义，以质量评分为主要指标。')
+    if st.button('生成完整描述统计报告',type='primary',key='basic_report_'+sid,help='在本地计算并保存描述统计，可继续追问或导出。'):
+        try:
+            if use_sample:
+                from causalops.application.guided_intake import GuidedIntake
+                GuidedIntake(sample_service).use_example(sid,expected_sha=None,human_confirmed=True)
+            result=start_basic_report(a,sid,user_requested=True)
+            st.session_state['_graph_pending_'+sid]=result['flow_id']
+            st.rerun()
+        except (ValueError,RuntimeError,OSError) as exc:
+            st.error(str(exc))
+
 def render_start_actions(service,jobs,sid,frame):
     a=service.a
     from causalops.sample_data import example_context
     example=example_context(a,sid)
+    from causalops.assistant.service import profile
+    first_look=st.radio('选择分析起点',['先了解数据','已有明确问题'],horizontal=True,key='start_path_'+sid)
+    if first_look=='先了解数据':
+        preset=example['onboarding'] if example else {}
+        if preset:
+            st.write(preset['description'])
+            st.caption(preset['analysis_unit']+'。'+preset['target_definition'])
+        render_first_look(frame,sid,preset,profile(frame))
+        basic_report_button(a,sid,sample_service=service if example else None)
+        if example:
+            st.caption('可继续研究：质量评分集中在哪些分值？酒精含量与评分是否相关？这些样本仅支持描述和关联解释。')
+        else:
+            st.caption('可继续研究：哪个指标分布最集中？是否存在缺失或分组差异？')
+        st.caption('已有业务或研究问题时，可切换到“已有明确问题”，或直接在下方提问。')
+        return
     if example and not service.flows(sid):
         preset=example['onboarding'];latest=service.contracts.latest(sid);body=latest['body'] if latest else {}
         with st.container(border=True):
@@ -49,10 +120,7 @@ def render_alternative_actions(service,jobs,sid,frame):
     a=service.a
     st.markdown('**分析起点**')
     left,right=st.columns(2)
-    if left.button('生成基础报告',type='primary',key='basic_report_'+sid,width='stretch',help='点击即同意在本地计算缺失、分布、频数与图表；不运行回归或因果分析。'):
-        try:
-            result=start_basic_report(a,sid,user_requested=True);st.session_state['_graph_pending_'+sid]=result['flow_id'];st.rerun()
-        except (ValueError,RuntimeError,OSError) as exc:st.error(str(exc))
+    with left:basic_report_button(a,sid)
     if right.button('推荐分析方向',key='find_questions_'+sid,width='stretch'):
         try:
             job=jobs.submit_start(sid,'我可以根据这张表做什么研究？请推荐可回答的问题。',mode='explore');st.session_state['_graph_pending_'+sid]=job['flow_id'];st.rerun()

@@ -35,3 +35,10 @@ dist/
 # Machine-local host connections; generate per installation
 .codex/
 .mcp.json
+
+# Local research and validation material
+backups/
+*.sqlite3
+*.sqlite3-*
+*.sqlite-wal
+*.sqlite-shm

@@ -214,14 +214,14 @@ def write_html_report(bundle: ResultBundle, output_dir: Path) -> Path:
 
 
 def _business_markdown(bundle):
-    lines=['## 一页读懂：主要结论','']
+    lines=['## 主要结论','']
     for title,paragraphs in business_sections(bundle):
         lines.extend(['### '+title,'',*paragraphs,''])
     return lines
 
 
 def _business_html(bundle):
-    return '<section class="note"><h2>一页读懂：主要结论</h2>'+''.join('<h3>'+escape(title)+'</h3>'+''.join('<p>'+escape(p)+'</p>' for p in paragraphs) for title,paragraphs in business_sections(bundle))+'</section>'
+    return '<section class="note"><h2>主要结论</h2>'+''.join('<h3>'+escape(title)+'</h3>'+''.join('<p>'+escape(p)+'</p>' for p in paragraphs) for title,paragraphs in business_sections(bundle))+'</section>'
 
 
 def _write_interpretation_evidence(bundle,output_dir):

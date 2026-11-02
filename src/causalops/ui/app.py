@@ -421,7 +421,7 @@ def _show_result(result: object, known_effect: float | None) -> None:
         m3.metric("概率值（P值）", format_p_value_zh(estimate.p_value))
         m4.metric("主张等级", claim_label_zh(bundle.claim_level))
         with st.container(border=True):
-            st.subheader("一页读懂：主要结论")
+            st.subheader("主要结论")
             for title, paragraphs in business_sections(bundle):
                 st.markdown("**" + title + "**")
                 for paragraph in paragraphs: st.write(paragraph)

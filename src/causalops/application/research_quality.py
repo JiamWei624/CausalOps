@@ -103,7 +103,7 @@ def method_contract(method):
     sources=list(dict.fromkeys(s for c in cards for s in c['source_ids']))
     return {'method':method,'label':REGISTRY[method].label,'estimand':e,'population':p,'diagnostics':d,'limits':l,
        'inference':'标准误、区间和检验以保存运行中的实际设置为准；无数值时不补写。',
-       'source_ids':sources,'knowledge_sha256':library.digest,'sources':[{'title':library.catalog['sources'][s]['title'],'url':library.catalog['sources'][s]['url'],'access_scope':library.catalog['sources'][s]['access_scope']} for s in sources]}
+       'source_ids':sources,'knowledge_sha256':library.digest,'sources':[{'source_id':s,'title':library.catalog['sources'][s]['title'],'url':library.catalog['sources'][s]['url'],'access_scope':library.catalog['sources'][s]['access_scope']} for s in sources]}
 
 
 def next_research_steps(body,audit):

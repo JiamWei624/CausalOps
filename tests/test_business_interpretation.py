@@ -100,8 +100,8 @@ def test_sidecar_tampering_and_immutable_version(bundle,tmp_path,monkeypatch):
 
 def test_summary_precedes_statistical_table_in_both_formats(bundle):
  b=bundle[2];html=render_html_report(b);md=render_markdown_report(b)
- assert html.index('一页读懂')<html.index('主分析估计')
- assert md.index('一页读懂')<md.index('## 估计结果')
+ assert html.index('主要结论')<html.index('主分析估计')
+ assert md.index('主要结论')<md.index('## 估计结果')
  assert '成本' in html and 'ROI' in html
 
 def test_previous_snapshot_history_is_preserved(bundle,tmp_path):

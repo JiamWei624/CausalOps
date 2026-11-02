@@ -16,17 +16,38 @@ OUT=workspace_root()/'system'
 def navigate(route):
     st.session_state['showcase_route']=route;st.query_params['route']=route
 
-def sync_route():st.query_params['route']=st.session_state['showcase_route']
+def new_import():
+    st.query_params.pop('assistant',None)
+    st.query_params.pop('flow',None)
+    navigate('assistant')
 
 def open_public_sample():
     from causalops.assistant.service import AssistantWorkspace
     from causalops.sample_data import create_wine_task
     try:
         sid=create_wine_task(AssistantWorkspace())
+        st.session_state['_open_overview']=True
+        st.query_params.pop('flow',None)
         st.query_params['assistant']=sid
         navigate('assistant')
     except (ValueError,RuntimeError,OSError):
         st.session_state['public_example_error']='公共示例未能载入。请在系统状态中检查样本完整性与工作区写入权限。'
+
+
+def render_examples():
+    st.subheader('分析示例')
+    wine, policy = st.columns(2)
+    with wine:
+        st.markdown('**葡萄酒质量分布**')
+        st.write('1,599 条公开检测记录。查看质量评分的分布，并探索评分与理化指标的关系。')
+        st.button('载入葡萄酒示例', key='load_public_wine', on_click=open_public_sample)
+        st.markdown('[数据说明与许可（UCI）](https://archive.ics.uci.edu/dataset/186/wine+quality)')
+        if st.session_state.get('public_example_error'):
+            st.error(st.session_state.pop('public_example_error'))
+    with policy:
+        st.markdown('**政策实施效果**')
+        st.write('180 家机构、20 天的合成教学数据。比较处理前趋势相同和不同的两种情形，判断何时可以解释政策效果。')
+        st.button('进入政策评估示例', on_click=navigate, args=('diagnostic',))
 
 
 def home():
@@ -36,27 +57,11 @@ def home():
     st.caption('数据导入 → 问题与方案 → 分析执行 → 结果解读')
     from causalops.ui.model_setup import render_model_setup
     st.subheader('开始分析')
-    st.button('导入分析数据',type='primary',on_click=navigate,args=('assistant',),width='stretch')
+    st.button('导入分析数据',type='primary',on_click=new_import,width='stretch')
     st.info('支持 CSV 与 Parquet。系统先核查数据结构并提供分析建议，必要口径由使用者确认。')
-    st.subheader('公共示例')
-    st.write('首次使用可直接载入随发行包提供的 UCI 葡萄酒质量数据，无需下载文件或配置密钥。')
-    left,right=st.columns([2,1])
-    with left,st.container(border=True):
-        st.markdown('**葡萄酒质量分析**')
-        st.caption('1,599 条样本 · 12 个字段 · 公开观测数据')
-        st.write('了解样本分布、数据质量与质量评分相关的分析问题。示例不会将相关关系解释为生产配方的因果效果。')
-        st.button('载入葡萄酒示例',key='load_public_wine',type='primary',on_click=open_public_sample,width='stretch')
-        if st.session_state.get('public_example_error'):st.error(st.session_state.pop('public_example_error'))
-        st.markdown('[数据来源与许可：UCI / CC BY 4.0](https://archive.ics.uci.edu/dataset/186/wine+quality)')
-    with right:
-        st.markdown('**操作步骤**')
-        st.write('1. 阅读官方示例说明，已预填行含义与质量评分。')
-        st.write('2. 使用示例预设生成计划，核对后批准。')
-        st.write('3. 查看结论，展开图表与报告，继续提问。')
-        st.button('阅读完整使用说明',on_click=navigate,args=('guide',),width='stretch')
+    render_examples()
     render_model_setup()
     with st.expander('进阶示例与适用范围'):
-        st.button('查看识别失败的合成演示',on_click=navigate,args=('diagnostic',))
         st.write('支持描述统计、关联分析、实验与受识别条件约束的因果分析。模型提供建议与解释，统计工具计算数值，使用者确认必要事实。')
         if os.environ.get('CAUSALOPS_ENABLE_PRIVATE_EXAMPLES')=='1':
             st.caption('已显式开启作者本地历史示例；这些文件不随发行包提供。')
@@ -150,11 +155,12 @@ def main():
     requested_route=checked_route(st.query_params.get('route','home'))
     initial=requested_route if requested_route in allowed_routes else 'home'
     if requested_route not in allowed_routes:st.info('此历史入口不属于默认发行版，已返回首页。可载入公共示例或导入自己的数据。')
-    if st.session_state.get('showcase_route') not in allowed_routes:st.session_state['showcase_route']=initial
-    if 'showcase_route' not in st.session_state:st.session_state['showcase_route']=initial
+    route = initial
     with st.sidebar:
-        st.markdown('## CausalOps');st.caption('数据分析 · 研究设计 · 证据管理')
-        route=st.radio('工作台导航',list(allowed_routes),format_func=lambda k:allowed_routes[k][0],key='showcase_route',on_change=sync_route)
+        st.markdown('## CausalOps')
+        for dest, label in [('home','开始分析'), ('assistant','我的分析'), ('analysis','专业分析'), ('examples','分析示例'), ('guide','使用帮助'), ('status','系统状态与故障排查')]:
+            st.button(label, key='nav_'+dest, type='primary' if route==dest else 'secondary',
+                      on_click=navigate, args=(dest,), width='stretch')
         st.divider();st.caption('操作流程：导入数据 → 制定计划 → 审核设计 → 执行分析 → 查阅报告。')
         st.caption('本地单用户工作区 · 数据发送须单独授权')
     try:
@@ -162,6 +168,7 @@ def main():
             from causalops.ui.assistant_app import render_assistant
             render_assistant()
         elif route=='home':home()
+        elif route=='examples':render_examples()
         elif route=='analysis':
             options=['causal','descriptive','correlation','ols'];labels={'causal':'研究与效应分析','descriptive':'描述性统计分析','correlation':'相关分析','ols':'线性关联回归'}
             requested=st.query_params.get('mode','descriptive');kind=st.radio('分析任务类型',options,index=options.index(requested) if requested in options else 0,format_func=lambda x:labels[x],horizontal=True,key='analysis_kind')
@@ -172,8 +179,14 @@ def main():
                 from causalops.ui.exploration_app import render_exploration
                 render_exploration(kind)
         elif route in ('experiment','diagnostic'):
-            st.caption(ROUTES[route][1]);from causalops.ui.portfolio_demo import render_demo
-            render_demo('hillstrom_men_visit' if route=='experiment' else 'did_bad_trend')
+            from causalops.ui.portfolio_demo import render_demo
+            if route=='diagnostic':
+                scenario=st.radio('比较两种政策评估情形',['did','did_bad_trend'],
+                    format_func=lambda x:'处理前趋势不同' if x=='did_bad_trend' else '处理前趋势相同（合成设定）',
+                    horizontal=True,key='policy_demo_scenario')
+                render_demo(scenario)
+            else:
+                render_demo('hillstrom_men_visit')
         elif route=='weibo':real_view()
         elif route=='guide':guide()
         else:status()
@@ -183,6 +196,6 @@ def main():
             f.write(json.dumps({'fault_id':fault,'route':route,'at':datetime.now(timezone.utc).isoformat(),'exception_type':type(exc).__name__,
                     'frames':[{'file':Path(x.filename).name,'function':x.name,'line':x.lineno} for x in traceback.extract_tb(exc.__traceback__)]})+'\n')
         hint=safe_error(exc);st.error(hint['title']);st.write(hint['action']);st.caption('故障编号：'+fault)
-        st.button('查看系统状态',on_click=navigate,args=('status',))
+        st.button('查看故障详情',on_click=navigate,args=('status',))
 
 if __name__=='__main__':main()
