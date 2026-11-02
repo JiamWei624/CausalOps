@@ -7,11 +7,11 @@ CausalOps 是本地运行的数据分析助手。它帮助使用者理解表格�
 
 **当前版本 0.16.0 · Windows x64 / Python 3.11 · 本地单用户。** 代码开放范围与数据发送许可相互独立；本地工作区不随源码分发。它不是能从任意表自动证明因果关系的系统。
 
-[完整项目介绍与功能手册](docs/current/COMPLETE_MANUAL.md) · [完整示例教程](docs/current/PUBLIC_TUTORIAL.md) · [安装与故障排查](docs/current/INSTALLATION.md) · [使用说明](docs/current/USER_GUIDE.md) · [系统架构](docs/current/ARCHITECTURE.md) · [模型与隐私](docs/current/PROVIDERS.md) · [验收与限制](docs/current/VALIDATION.md) · [版本历史](docs/HISTORY.md) · [五类真实数据体验](docs/current/REAL_DATA_EXPERIENCE.md)
+[完整项目介绍与功能手册](docs/current/COMPLETE_MANUAL.md) · [完整示例教程](docs/current/PUBLIC_TUTORIAL.md) · [安装与故障排查](docs/current/INSTALLATION.md) · [使用说明](docs/current/USER_GUIDE.md) · [系统架构](docs/current/ARCHITECTURE.md) · [模型与隐私](docs/current/PROVIDERS.md) · [验收与限制](docs/current/VALIDATION.md) · [版本历史](docs/HISTORY.md) · [五类真实数据体验](docs/current/REAL_DATA_EXPERIENCE.md) · [近期项目对比与优化路线](docs/current/PROJECT_REVIEW_2026-11-03.md)
 
-![从数据到结论的用户路径](docs/assets/task-workflow-current.svg)
+![营销邮件实验中可以回答和需要另立计划的问题](docs/assets/task-workflow-current.svg)
 
-**图 1**　用户操作流程。首页可导入自己的表，也可直接载入示例。
+**图 1**　营销实验示例。相同的两组客户，访问率的百分点差与相对变化回答两个不同的问题。若改问下一年净利润，需要重新定义指标和观察期。
 
 ## 公开预览与首次试用
 
@@ -95,7 +95,7 @@ python -m venv "E:/causalops-venv"
 
 ![CausalOps 实现架构](docs/assets/architecture-current.svg)
 
-**图 5**　系统架构。模型提出计划与解释，本地统计内核负责计算。
+**图 5**　组件与权限。沿实线可以找到谁提出计划、谁批准计算，以及追问时数值从哪里取回。
 
 | 层 | 实现与职责 |
 |---|---|
