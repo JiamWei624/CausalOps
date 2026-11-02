@@ -1,6 +1,6 @@
 flowchart TD
   UI[Streamlit 当前任务与下一步] --> Service[ResearchService]
-  Contract[冻结DataContract 人工登记] --> Service
+  Contract[数据口径与研究范围] --> Service
   Service --> Router[安全元数据结构化路由]
   Router --> Methods[LangGraph 方法研究子图]
   Methods --> Retrieve[LangChain TF-IDF 通用及定向补检]
@@ -10,5 +10,5 @@ flowchart TD
   Review -->|使用者批准| Jobs[后台队列与TaskRuntime]
   Jobs --> Stats[原统计内核 17项方法]
   Stats --> Run[ToolResult 运行证据]
-  Run --> Conclusion[来源字典绑定的量化解释]
+  Run --> Conclusion[目标指标与适用范围绑定的量化解释]
   Conclusion --> QA[有界事实引用问答与报告]

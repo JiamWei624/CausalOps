@@ -26,8 +26,8 @@
   },
   {
     "file": "README.md",
-    "bytes": 10536,
-    "sha256": "1637b066fc21b85562d127b37c4c6a6f570014211f28756986f660d3e6740abc"
+    "bytes": 10596,
+    "sha256": "0b9ccbb6d8df3e20c10db8739bce9013fc4e882d5f21392d1d6deba165428026"
   },
   {
     "file": "SECURITY.md",
@@ -126,8 +126,8 @@
   },
   {
     "file": "docs/assets/architecture-current.svg",
-    "bytes": 3675,
-    "sha256": "3d206a765c51511fb772a6e51e3cf4df66a8ef17cd7f2a6aae3834553ed5b19c"
+    "bytes": 3673,
+    "sha256": "16fd14c82b689aa0e5f9303a1712b27a99f9d90ac804e104b12c90ce90c2453e"
   },
   {
     "file": "docs/assets/architecture-target.svg",
@@ -321,8 +321,8 @@
   },
   {
     "file": "docs/assets/rag-evidence-current.svg",
-    "bytes": 2539,
-    "sha256": "c7f2f606ebd5e53244d4b7e3fcf29645c302facdd645226a3cbb6be36d2f968b"
+    "bytes": 2552,
+    "sha256": "7d0dcd07f04dc9fe8513754ff3221cd39b5d142c60e5c644d26c9b9087cee13d"
   },
   {
     "file": "docs/assets/rag-evidence-target.svg",
@@ -346,8 +346,8 @@
   },
   {
     "file": "docs/assets/research-quality-current.svg",
-    "bytes": 1801,
-    "sha256": "7c77ccffdb22899f921b4bfa16abb8f9061dc4990565b144e5d7915e07790bd2"
+    "bytes": 1799,
+    "sha256": "cd611066c9820b9e6211fb8873f04af5c51c3e93a6b9584f0161a00bf4ff696d"
   },
   {
     "file": "docs/assets/research-workflow-target.svg",
@@ -356,8 +356,8 @@
   },
   {
     "file": "docs/assets/task-workflow-current.svg",
-    "bytes": 3570,
-    "sha256": "794601406b5775ae5fced7646e7d5e26d00765ad17268d76502959b4eb820c63"
+    "bytes": 3580,
+    "sha256": "f90c33e969d9f8326df35cac8ecec941b85c1ffd554f482cbcd4a7c01a88bd12"
   },
   {
     "file": "docs/assets/tool-gateway-target.svg",
@@ -416,8 +416,8 @@
   },
   {
     "file": "docs/current/RESEARCH_QUALITY.md",
-    "bytes": 6656,
-    "sha256": "2a7c20d3b6e1c0a139ccd013200f9a5256f1eb0ada87fc501b619351eb9d68bd"
+    "bytes": 6668,
+    "sha256": "4866e6fabfe40a4679436496695174aef93b2cca55020c755b39a7bde241bf7f"
   },
   {
     "file": "docs/current/ROADMAP.md",
@@ -441,8 +441,8 @@
   },
   {
     "file": "docs/current/VALIDATION.md",
-    "bytes": 3127,
-    "sha256": "18fb695dc5ebde079c70fcde83e0cd787aade61865bf0681c1a07145ab856233"
+    "bytes": 3139,
+    "sha256": "155c04a153709f24cf492caba21a9d381c022cdda7fd4104cdd3931680d2baf2"
   },
   {
     "file": "docs/diagrams/HISTORY.md",
@@ -456,8 +456,8 @@
   },
   {
     "file": "docs/diagrams/current-architecture.mmd",
-    "bytes": 730,
-    "sha256": "429ed8ff0a59defb0fbcf644d3195540f7e0c071524392540971c5a734898632"
+    "bytes": 741,
+    "sha256": "e8228f0fb47fe8d1128334370277db18593143a78fcfed596b931e4d020ef31d"
   },
   {
     "file": "docs/diagrams/memory-boundaries-target.mmd",
@@ -486,8 +486,8 @@
   },
   {
     "file": "docs/diagrams/task-workflow-current.mmd",
-    "bytes": 335,
-    "sha256": "8900d18e33509dbb70917ea97213b0b96d38444a4da63629df0ef474bdb8ca66"
+    "bytes": 499,
+    "sha256": "a2ea0e46bca109c86b267a4bc59651a2564a65cbdadb937a11c34d7013d53c14"
   },
   {
     "file": "docs/diagrams/tool-gateway-target.mmd",
