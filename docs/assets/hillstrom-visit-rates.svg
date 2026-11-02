@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="255" viewBox="0 0 820 255" role="img" aria-labelledby="title desc">
+<title id="title">Hillstrom 营销实验：分配后两周访问率</title><desc id="desc">未发邮件组 10.62%，男装邮件组 18.28%。两组共 42613 人，绝对差约 7.66 个百分点，相对变化约 72.14%。</desc>
+
+<style>text{font-family:'Microsoft YaHei','Noto Sans CJK SC',sans-serif;fill:#203541}.title{font-size:22px;font-weight:700}.node{font-size:18px;font-weight:650}.desc{font-size:15px}.tag{font-size:14px;fill:#4c606b}.conn{fill:none;stroke:#385061;stroke-width:1.6;marker-end:url(#arrow)}</style>
+<rect width="820" height="255" fill="#fff"/>
+<text x="18" y="31" class="title">Hillstrom 邮件实验：分配后两周访问率</text>
+<text x="18" y="64" class="tag">比较样本共 42,613 人　｜　组内访问率 = 访问人数 / 组内人数</text>
+<path d="M179 82 V174" stroke="#dde3e6"/><text x="175" y="197" class="tag">0%</text>
+<path d="M309 82 V174" stroke="#dde3e6"/><text x="305" y="197" class="tag">5%</text>
+<path d="M439 82 V174" stroke="#dde3e6"/><text x="435" y="197" class="tag">10%</text>
+<path d="M569 82 V174" stroke="#dde3e6"/><text x="565" y="197" class="tag">15%</text>
+<path d="M699 82 V174" stroke="#dde3e6"/><text x="695" y="197" class="tag">20%</text>
+<text x="22" y="111" class="desc">未发邮件组</text>
+<text x="22" y="156" class="desc">男装邮件组</text>
+<rect x="179" y="90" width="276.12" height="25" fill="#80949e"/><rect x="179" y="136" width="475.28" height="25" fill="#196b72"/>
+<text x="464" y="111" class="node">10.62%</text>
+<text x="664" y="157" class="node">18.28%</text>
+<text x="18" y="235" class="desc">绝对差　+7.66 个百分点　　　　相对未发邮件组　+72.14%</text>
+</svg>

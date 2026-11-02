@@ -1,14 +1,10 @@
-flowchart TD
-  UI[Streamlit 当前任务与下一步] --> Service[ResearchService]
-  Contract[数据口径与研究范围] --> Service
-  Service --> Router[安全元数据结构化路由]
-  Router --> Methods[LangGraph 方法研究子图]
-  Methods --> Retrieve[LangChain TF-IDF 通用及定向补检]
-  Retrieve --> Plan[候选计划与就绪检查]
-  Plan -->|缺少口径| Clarify[具体澄清与重新制定]
-  Plan -->|配置完整| Review[持久审核中断]
-  Review -->|使用者批准| Jobs[后台队列与TaskRuntime]
-  Jobs --> Stats[原统计内核 17项方法]
-  Stats --> Run[ToolResult 运行证据]
-  Run --> Conclusion[目标指标与适用范围绑定的量化解释]
-  Conclusion --> QA[有界事实引用问答与报告]
+flowchart TB
+  subgraph Local[本地工作台]
+    ui[Streamlit 交互界面] -->|请求或人工批准| svc[ResearchService 研究服务]
+    svc -->|组织计划| graph[LangGraph 研究编排]
+    graph -->|检索方法依据| retriever[LangChain 方法检索]
+    svc -->|派发已批准任务| runtime[任务运行时与统计内核]
+    runtime -->|保存结果| records[(运行记录与证据)]
+    svc -->|解释结果时按运行标识读取| records
+  end
+  graph -->|经许可调用| model[外部模型服务]

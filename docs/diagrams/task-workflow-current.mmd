@@ -1,13 +1,11 @@
-flowchart LR
-  A[导入表格或载入内置示例] --> Profile[查看数据概况]
-  Profile -->|先了解样本| Summary[生成基础分布报告]
-  Summary --> B[选择指标与分析问题]
-  Profile -->|已有目标| B
-  B --> C[选择主要分析并检索条件]
-  C --> D{口径是否完整}
-  D -->|否| E[说明具体缺项]
-  E --> A
-  D -->|是| F[审阅并批准计划]
-  F --> G[本地后台计算]
-  G --> H[目标指标 幅度 适用范围 下一步]
-  H --> I[继续追问或导出]
+flowchart TD
+  import[导入数据] --> profile[查看数据概况]
+  profile -->|目标尚未确定| summary[查看基础分布报告]
+  profile -->|已有目标| scope[确认分析问题与指标]
+  summary --> scope
+  scope --> plan[生成待审计划]
+  plan -->|资料不足或口径变化| scope
+  plan -->|人工批准| run[执行统计分析并保存运行]
+  run --> report[查看报告]
+  report -->|解释已有结果| qa[读取选定运行的证据]
+  report -->|修改目标或观察期| scope

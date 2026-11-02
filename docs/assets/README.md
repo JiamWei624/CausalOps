@@ -1,5 +1,9 @@
 # 图示索引
 
-当前0.10.0图示：architecture-current.svg、task-workflow-current.svg、rag-evidence-current.svg，以及本轮重新核对的workbench截图。
+| 0.16.0 文档插图 | 用途 |
+|---|---|
+| [分析任务与人工审核](task-workflow-current.svg) | 首次试用时的操作与响应 |
+| [组件与调用关系](architecture-current.svg) | 研究服务、编排、执行与证据的责任边界 |
+| [两组客户的网站访问率](hillstrom-visit-rates.svg) | Hillstrom 实验的组间绝对差与相对变化 |
 
-文件名带target或implemented-v080的图源/图示为历史方案。旧图保留用于解释迁移过程，不表示当前已实现能力。当前图源见../diagrams/README.md。
+[逐步截图](../current/PUBLIC_TUTORIAL.md) · [操作录屏](research-016-demo.webm) · [图源索引](../diagrams/README.md)。文件名含 target 或 implemented-v080 的图示记录历史设计。
