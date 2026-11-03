@@ -2,6 +2,16 @@
 
 版本 0.16.0。本页展示源码中的操作、边界与统计输出。每张图可查看矢量文件、PNG 或可编辑的关系定义。
 
+## 当前运行的界面图
+
+| 任务阶段 | 实机截图 |
+|---|---|
+| 选择案例与导入 | [首页](../assets/phase2-home.png) · [营销实验文件与口径](../assets/phase2-case.png) |
+| 准备与审批 | [待审方案](../assets/phase2-plan.png) · [人工审核](../assets/phase2-review.png) |
+| 结果与导出 | [统计结果](../assets/phase2-result.png) · [离线报告](../assets/phase2-report.png) |
+
+以下图示解释流程、组件和权限。界面位置以实机截图为准。
+
 ## 研究设计与结果复核（第二轮）
 ![研究流程](../assets/phase2-research-cycle.svg)
 [可编辑关系定义](../diagrams/phase2-research-cycle.mmd)

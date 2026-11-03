@@ -99,9 +99,12 @@ py -3.11 -m venv E:/causalops-venv
 
 ## 完整文档
 
-| 读者 | 文档 |
+| 使用场景 | 推荐阅读 |
 |---|---|
-| 首次使用 | [逐步图文教程](docs/current/PUBLIC_TUTORIAL.md) · [用户指南](docs/current/USER_GUIDE.md) · [完整功能手册](docs/current/COMPLETE_MANUAL.md) |
-| 研究与复核 | [研究质量检查](docs/current/RESEARCH_QUALITY.md) · [五类真实数据体验](docs/current/REAL_DATA_EXPERIENCE.md) · [验证记录与限制](docs/current/VALIDATION.md) |
-| 开发与贡献 | [系统架构](docs/current/ARCHITECTURE.md) · [流程与技术图集](docs/current/FIGURES.md) · [版本记录](docs/HISTORY.md) · [贡献说明](CONTRIBUTING.md) |
-| 评审与许可 | [界面与安全复核](docs/current/DESIGN_REVIEW.md) · [项目对比评审](docs/current/PROJECT_REVIEW_2026-11-03.md) · [代码许可](LICENSE) · [第三方许可](THIRD_PARTY_NOTICES.md) |
+| 第一次运行 | [安装与更新](docs/current/INSTALLATION.md) → [营销实验图文教程](docs/current/PUBLIC_TUTORIAL.md) → [日常操作与故障恢复](docs/current/USER_GUIDE.md) |
+| 核对样本与结论 | [实验来源、筛选与复算](docs/current/PHASE2_ACCEPTANCE.md) · [研究质量与声明核对](docs/current/RESEARCH_QUALITY.md) · [真实数据测试范围](docs/current/REAL_DATA_EXPERIENCE.md) |
+| 核对发布与限制 | [当前验收记录](docs/current/VALIDATION.md) · [界面与权限复核](docs/current/DESIGN_REVIEW.md) · [统计方法与限制](docs/METHOD_CONTRACTS.md) |
+| 理解实现 | [系统架构与代码职责](docs/current/ARCHITECTURE.md) · [研究流程、证据与权限图集](docs/current/FIGURES.md) · [完整功能手册](docs/current/COMPLETE_MANUAL.md) |
+| 参与开发或复用 | [贡献步骤](CONTRIBUTING.md) · [代码许可](LICENSE) · [公共数据与第三方许可](THIRD_PARTY_NOTICES.md) |
+
+[版本历史](docs/HISTORY.md) · [项目对比评审（含评审时的源码基线）](docs/current/PROJECT_REVIEW_2026-11-03.md) · [全部文档索引](docs/README.md)

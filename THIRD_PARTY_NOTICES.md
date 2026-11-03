@@ -1,5 +1,15 @@
 # 上游技术来源与引用
 
+## 当前首页案例的来源与分发范围
+
+| 案例 | 数据来源 | 源码仓库中的内容 |
+|---|---|---|
+| 葡萄酒质量评分 | [UCI Wine Quality](https://archive.ics.uci.edu/dataset/186/wine+quality)，CC BY 4.0 | 原始红酒 CSV、署名与校验信息；详见本页末尾 |
+| 营销邮件与两周访问率 | [Hillstrom 实验](https://blog.minethatdata.com/2008/03/minethatdata-e-mail-analytics-and-data.html) | 公开汇总、校验值与处理代码；使用者自行获取指定压缩包，未重新分发客户记录。[来源与取样](docs/current/PHASE2_ACCEPTANCE.md) |
+| 政策效果教学 | 本项目按固定种子生成的合成面板 | 生成与演示代码；结果仅用于教学 |
+
+## 方法与工具来源
+
 新增AIPW通过已安装的DoubleML官方接口执行，没有把外部仓库源码拼接成自己的算法实现。
 
 - DoubleML: https://github.com/DoubleML/doubleml-for-py （BSD-3-Clause），IRM模型、交叉拟合与ATE正交得分；统计结果依赖DoubleML安装版本。
