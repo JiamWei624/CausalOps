@@ -44,71 +44,75 @@ def render_general():
     try:frame=ws.load_upload(uid)
     except (ValueError,OSError) as exc:st.error(str(exc));return
     a,b,c=st.columns(3);a.metric('原表行数',f'{len(frame):,}');b.metric('字段数',len(frame.columns));c.metric('工作区','本机持久化')
-    with st.expander('1. 数据检查：列类型、缺失与重复',expanded=not bool(current)):
-        st.dataframe([{'字段':col,'类型':str(frame[col].dtype),'缺失数':int(frame[col].isna().sum()),'不同取值数':int(frame[col].nunique())} for col in frame],hide_index=True,width='stretch')
-        st.caption('检查不能证明字段的业务含义、随机化或测量时序。原表不会被直接改写。')
-        if st.checkbox('显示前5行（仅本机，可能含敏感信息）',key='preview_'+uid):st.dataframe(frame.head(),hide_index=True,width='stretch')
-    saved=GeneralDesign.model_validate(current.research_notes['general_design']) if current else None
-    prefix='gd_'+(current.revision_id if current else uid[:16])
-    def key(s):return prefix+'_'+s
-    cols=list(frame.columns)
-    def pick(label,field):
-        old=getattr(saved,field,None) if saved else None
-        return st.selectbox(label,[None]+cols,index=cols.index(old)+1 if old in cols else 0,key=key(field),format_func=lambda v:'请选择字段' if v is None else v)
-    st.subheader('2. 明确字段、方法和指标口径')
-    question=st.text_area('你希望回答的研究问题（至少8个字）',value=saved.question if saved else '',key=key('question'),placeholder='例如：在当前样本中，某干预与后续结果有什么差异？')
-    unit=st.text_input('每行/分析单位是什么',value=saved.analysis_unit if saved else '',key=key('unit'),placeholder='例如：客户、教师、企业—日')
-    method=st.selectbox('分析方法',list(METHODS),index=list(METHODS).index(saved.method) if saved else 0,key=key('method'),format_func=lambda v:METHODS[v])
-    assignment=st.selectbox('处理如何分配', ['unknown','randomized','observational'],index=['unknown','randomized','observational'].index(saved.assignment) if saved else 0,key=key('assignment'),format_func=lambda v:{'unknown':'尚不清楚','randomized':'确有随机分配依据','observational':'观察性分组/非随机'}[v])
-    st.caption('不知道分配机制时不要选择随机。观察性回归只作条件关联；PSM/IPW/DML仍需要识别依据，不会因使用机器学习自动得到因果。')
-    a,b=st.columns(2)
-    with a:treatment=pick('处理/分组字段','treatment')
-    with b:outcome=pick('结果字段','outcome')
-    values=sorted(frame[treatment].dropna().map(str).unique().tolist()) if treatment else []
-    if len(values)>20:st.warning('分组值较多；首版只接受恰有两个组别的分析表，不自动按阈值二分。');values=[]
-    a,b=st.columns(2)
-    def group(box,label,field):
-        old=getattr(saved,field,None) if saved else None
-        return box.selectbox(label,[None]+values,index=values.index(old)+1 if old in values else 0,key=key(field),format_func=lambda v:'请选择组别' if v is None else v)
-    control=group(a,'对照/参考组取值（编码为0）','control_value');treated=group(b,'处理/比较组取值（编码为1）','treated_value')
-    a,b=st.columns(2)
-    with a:entity=pick('分析实体/随机化单位ID','entity')
-    with b:cluster=pick('聚类单位（观察性回归默认使用实体）','cluster')
-    cov_options=[c for c in cols if c not in {treatment,outcome,entity,cluster}]
-    cov=st.multiselect('控制变量 / 处理前协变量',cov_options,default=[x for x in saved.covariates if x in cov_options] if saved else [],key=key('covariates'))
-    cov_review=st.checkbox('已核对控制变量角色与测量时点，没有把结果或未来信息当作控制',value=saved.covariates_reviewed if saved else False,key=key('cov_review'))
-    allow=st.checkbox('必要字段缺失时，明确采用完整案例分析，并在报告保留排除数量',value=saved.allow_complete_case if saved else False,key=key('missing'))
-    a,b=st.columns(2)
-    label=a.text_input('结果指标的通俗名称',value=saved.metric.label if saved else '',key=key('metric_label'))
-    kinds=['binary','continuous','count'];kind=b.selectbox('结果指标类型',kinds,index=kinds.index(saved.metric.kind) if saved and saved.metric.kind in kinds else 0,key=key('kind'),format_func=lambda v:{'binary':'二元结果（0/1）','continuous':'连续数值','count':'非负整数计数'}[v])
-    a,b=st.columns(2);metric_unit=a.text_input('结果数值单位',value=saved.metric.unit if saved else '',key=key('metric_unit'),placeholder='二元结果填概率；其他如美元/客户、分、次')
-    window=b.text_input('观察窗口与口径',value=saved.metric.window if saved else '',key=key('window'),placeholder='例如：分配后两周、该年度九个月薪酬')
-    direction=st.selectbox('业务方向',['neutral','higher_is_better','lower_is_better'],index=['neutral','higher_is_better','lower_is_better'].index(saved.metric.direction) if saved else 0,key=key('direction'),format_func=lambda v:{'neutral':'暂不定义好坏','higher_is_better':'越高越符合目标','lower_is_better':'越低越符合目标'}[v])
-    ratio=st.checkbox('指标有可解释的绝对零点，可在同口径前提下讨论比例变化',value=saved.metric.ratio_scale if saved else False,key=key('ratio'))
-    overlap=exchange=parallel=anticipation=panel=False;time=treatment_time=None;pre=post=7
-    if method in ('psm','ipw','double_ml','aipw'):
-        exchange=st.checkbox('有依据支持给定已选处理前协变量后的条件可交换性（声明，不是已验证）',value=saved.exchangeability_declared if saved else False,key=key('exchange'))
-        overlap=st.checkbox('有依据认为两组有共同支撑；仍须进行诊断（声明，不是已验证）',value=saved.overlap_declared if saved else False,key=key('overlap'))
-    if method=='did':
-        st.info('本入口的DID适用于共同处理日期、含从未处理对照的完整日级面板。交错处理请使用“分析工作台—进阶研究设计”，并显式登记整数期序与首次处理期。')
+    form_col,meta_col=st.columns(2,gap='medium')
+    with meta_col.container(key='panel_pro_fields'):
+        st.subheader('字段说明与数据检查')
+        with st.expander('1. 数据检查：列类型、缺失与重复',expanded=not bool(current)):
+            st.dataframe([{'字段':col,'类型':str(frame[col].dtype),'缺失数':int(frame[col].isna().sum()),'不同取值数':int(frame[col].nunique())} for col in frame],hide_index=True,width='stretch')
+            st.caption('检查不能证明字段的业务含义、随机化或测量时序。原表不会被直接改写。')
+            if st.checkbox('显示前5行（仅本机，可能含敏感信息）',key='preview_'+uid):st.dataframe(frame.head(),hide_index=True,width='stretch')
+    with form_col.container(key='panel_pro_design'):
+        saved=GeneralDesign.model_validate(current.research_notes['general_design']) if current else None
+        prefix='gd_'+(current.revision_id if current else uid[:16])
+        def key(s):return prefix+'_'+s
+        cols=list(frame.columns)
+        def pick(label,field):
+            old=getattr(saved,field,None) if saved else None
+            return st.selectbox(label,[None]+cols,index=cols.index(old)+1 if old in cols else 0,key=key(field),format_func=lambda v:'请选择字段' if v is None else v)
+        st.subheader('2. 明确字段、方法和指标口径')
+        question=st.text_area('你希望回答的研究问题（至少8个字）',value=saved.question if saved else '',key=key('question'),placeholder='例如：在当前样本中，某干预与后续结果有什么差异？')
+        unit=st.text_input('每条记录代表的分析单位',value=saved.analysis_unit if saved else '',key=key('unit'),placeholder='例如：客户、教师、企业—日')
+        method=st.selectbox('分析方法',list(METHODS),index=list(METHODS).index(saved.method) if saved else None,placeholder='请选择分析方法',key=key('method'),format_func=lambda v:METHODS[v])
+        assignment=st.selectbox('处理如何分配', ['unknown','randomized','observational'],index=['unknown','randomized','observational'].index(saved.assignment) if saved else 0,key=key('assignment'),format_func=lambda v:{'unknown':'尚不清楚','randomized':'确有随机分配依据','observational':'观察性分组/非随机'}[v])
+        st.caption('不知道分配机制时不要选择随机。观察性回归只作条件关联；PSM/IPW/DML仍需要识别依据，不会因使用机器学习自动得到因果。')
         a,b=st.columns(2)
-        with a:time=pick('日级观测日期字段','time')
-        with b:treatment_time=pick('首次处理日期字段（从未处理者留空）','treatment_time')
-        a,b=st.columns(2);pre=int(a.number_input('处理前天数',min_value=2,max_value=365,value=saved.pre_days if saved else 7,key=key('pre')));post=int(b.number_input('处理后天数（含处理当日）',min_value=2,max_value=365,value=saved.post_days if saved else 7,key=key('post')))
-        panel=st.checkbox('已确认每个实体每天一行，且当前窗口完整',value=saved.panel_confirmed if saved else False,key=key('panel'))
-        parallel=st.checkbox('已提供平行趋势的研究依据；执行后仍需经验诊断',value=saved.parallel_declared if saved else False,key=key('parallel'))
-        anticipation=st.checkbox('已评估并声明无预期效应；不能判断时不应勾选',value=saved.no_anticipation_declared if saved else False,key=key('anticipation'))
-    draft=None;issue=None
-    if all(v is not None and str(v).strip() for v in [question,unit,treatment,outcome,control,treated,entity,label,metric_unit,window]):
-        try:draft=GeneralDesign(question=question,analysis_unit=unit,method=method,treatment=treatment,control_value=control,treated_value=treated,outcome=outcome,entity=entity,cluster=cluster,covariates=cov,assignment=assignment,time=time,treatment_time=treatment_time,pre_days=pre,post_days=post,allow_complete_case=allow,covariates_reviewed=cov_review,overlap_declared=overlap,exchangeability_declared=exchange,parallel_declared=parallel,no_anticipation_declared=anticipation,panel_confirmed=panel,metric=MetricDefinition(label=label,unit='概率' if kind=='binary' else metric_unit,kind=kind,direction=direction,ratio_scale=ratio,window=window,source='user_registered_metric_definition'))
-        except ValidationError:issue='研究问题至少8个字；请核对指标与设计字段。'
-    else:issue='请先补齐问题、单位、处理和结果字段、两个组别、实体ID，以及指标名称、单位与窗口。'
-    if st.button('保存研究草案',type='primary'):
-        if issue:st.error(issue)
-        else:
-            try:
-                sid,current=ws.save(uid,draft,sid);st.query_params['study']=sid;st.success('草案已保存，尚未批准或执行。');st.rerun()
-            except (ValueError,OSError) as exc:st.error(str(exc))
+        with a:treatment=pick('处理/分组字段','treatment')
+        with b:outcome=pick('结果字段','outcome')
+        values=sorted(frame[treatment].dropna().map(str).unique().tolist()) if treatment else []
+        if len(values)>20:st.warning('分组值较多；首版只接受恰有两个组别的分析表，不自动按阈值二分。');values=[]
+        a,b=st.columns(2)
+        def group(box,label,field):
+            old=getattr(saved,field,None) if saved else None
+            return box.selectbox(label,[None]+values,index=values.index(old)+1 if old in values else 0,key=key(field)+'_'+str(treatment),format_func=lambda v:'请选择组别' if v is None else v)
+        control=group(a,'对照/参考组取值（编码为0）','control_value');treated=group(b,'处理/比较组取值（编码为1）','treated_value')
+        a,b=st.columns(2)
+        with a:entity=pick('分析实体/随机化单位ID','entity')
+        with b:cluster=pick('聚类单位（观察性回归默认使用实体）','cluster')
+        cov_options=[c for c in cols if c not in {treatment,outcome,entity,cluster}]
+        cov=st.multiselect('控制变量 / 处理前协变量',cov_options,default=[x for x in saved.covariates if x in cov_options] if saved else [],placeholder='选择已核对的处理前字段',key=key('covariates'))
+        cov_review=st.checkbox('已核对控制变量角色与测量时点，没有把结果或未来信息当作控制',value=saved.covariates_reviewed if saved else False,key=key('cov_review'))
+        allow=st.checkbox('必要字段缺失时，明确采用完整案例分析，并在报告保留排除数量',value=saved.allow_complete_case if saved else False,key=key('missing'))
+        a,b=st.columns(2)
+        label=a.text_input('结果指标的通俗名称',value=saved.metric.label if saved else '',key=key('metric_label'))
+        kinds=['binary','continuous','count'];kind=b.selectbox('结果指标类型',kinds,index=kinds.index(saved.metric.kind) if saved and saved.metric.kind in kinds else None,placeholder='请选择指标类型',key=key('kind'),format_func=lambda v:{'binary':'二元结果（0/1）','continuous':'连续数值','count':'非负整数计数'}[v])
+        a,b=st.columns(2);metric_unit=a.text_input('结果数值单位',value=saved.metric.unit if saved else '',key=key('metric_unit'),placeholder='二元结果填概率；其他如美元/客户、分、次')
+        window=b.text_input('观察窗口与口径',value=saved.metric.window if saved else '',key=key('window'),placeholder='例如：分配后两周、该年度九个月薪酬')
+        direction=st.selectbox('业务方向',['neutral','higher_is_better','lower_is_better'],index=['neutral','higher_is_better','lower_is_better'].index(saved.metric.direction) if saved else 0,key=key('direction'),format_func=lambda v:{'neutral':'暂不定义好坏','higher_is_better':'越高越符合目标','lower_is_better':'越低越符合目标'}[v])
+        ratio=st.checkbox('指标有可解释的绝对零点，可在同口径前提下讨论比例变化',value=saved.metric.ratio_scale if saved else False,key=key('ratio'))
+        overlap=exchange=parallel=anticipation=panel=False;time=treatment_time=None;pre=post=7
+        if method in ('psm','ipw','double_ml','aipw'):
+            exchange=st.checkbox('有依据支持给定已选处理前协变量后的条件可交换性（声明，不是已验证）',value=saved.exchangeability_declared if saved else False,key=key('exchange'))
+            overlap=st.checkbox('有依据认为两组有共同支撑；仍须进行诊断（声明，不是已验证）',value=saved.overlap_declared if saved else False,key=key('overlap'))
+        if method=='did':
+            st.info('本入口的DID适用于共同处理日期、含从未处理对照的完整日级面板。交错处理请使用“分析工作台—进阶研究设计”，并显式登记整数期序与首次处理期。')
+            a,b=st.columns(2)
+            with a:time=pick('日级观测日期字段','time')
+            with b:treatment_time=pick('首次处理日期字段（从未处理者留空）','treatment_time')
+            a,b=st.columns(2);pre=int(a.number_input('处理前天数',min_value=2,max_value=365,value=saved.pre_days if saved else 7,key=key('pre')));post=int(b.number_input('处理后天数（含处理当日）',min_value=2,max_value=365,value=saved.post_days if saved else 7,key=key('post')))
+            panel=st.checkbox('已确认每个实体每天一行，且当前窗口完整',value=saved.panel_confirmed if saved else False,key=key('panel'))
+            parallel=st.checkbox('已提供平行趋势的研究依据；执行后仍需经验诊断',value=saved.parallel_declared if saved else False,key=key('parallel'))
+            anticipation=st.checkbox('已评估并声明无预期效应；不能判断时不应勾选',value=saved.no_anticipation_declared if saved else False,key=key('anticipation'))
+        draft=None;issue=None
+        if all(v is not None and str(v).strip() for v in [question,unit,method,treatment,outcome,control,treated,entity,kind,label,metric_unit,window]):
+            try:draft=GeneralDesign(question=question,analysis_unit=unit,method=method,treatment=treatment,control_value=control,treated_value=treated,outcome=outcome,entity=entity,cluster=cluster,covariates=cov,assignment=assignment,time=time,treatment_time=treatment_time,pre_days=pre,post_days=post,allow_complete_case=allow,covariates_reviewed=cov_review,overlap_declared=overlap,exchangeability_declared=exchange,parallel_declared=parallel,no_anticipation_declared=anticipation,panel_confirmed=panel,metric=MetricDefinition(label=label,unit='概率' if kind=='binary' else metric_unit,kind=kind,direction=direction,ratio_scale=ratio,window=window,source='user_registered_metric_definition'))
+            except ValidationError:issue='研究问题至少8个字；请核对指标与设计字段。'
+        else:issue='请先选择方法和指标类型，并补齐问题、单位、处理和结果字段、两个组别、实体ID，以及指标名称、单位与窗口。'
+        if st.button('保存研究草案',type='primary'):
+            if issue:st.error(issue)
+            else:
+                try:
+                    sid,current=ws.save(uid,draft,sid);st.query_params['study']=sid;st.success('草案已保存，尚未批准或执行。');st.rerun()
+                except (ValueError,OSError) as exc:st.error(str(exc))
     if not current:return
     st.subheader('3. 核对已保存草案并执行')
     st.caption(f'当前草案V{current.version_number}；批准只适用于这个草案和对应的数据版本。')

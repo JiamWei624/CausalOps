@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t d" width="800" height="373" viewBox="0 0 800 373"><title id="t">目标指标与运行证据</title><desc id="d">比例差可换算为百分点。相对变化还需要有定义且非零的基线。</desc>
+<style>text{font-family:Microsoft YaHei,sans-serif;fill:#1c2d3b}.h{font-size:23px;font-weight:bold}.a{font-size:17px}.b{font-size:14px;fill:#405c64}</style>
+<rect width="800" height="373" fill="white"/><text x="22" y="36" class="h">目标指标与运行证据</text><path d="M22 54 H778" stroke="#176b65" stroke-width="2"/>
+<rect x="22" y="70" width="206" height="44" rx="3" fill="#eff5f4"/><text x="34" y="98" class="a">登记指标与观察期</text>
+<text x="308" y="85" text-anchor="middle" class="b">绑定</text><path d="M239 96 H377 l-6 -4 M377 96 l-6 4" fill="none" stroke="#527b82"/>
+<text x="396" y="99" class="a">数据口径与方案版本</text>
+<rect x="22" y="132" width="206" height="44" rx="3" fill="#eff5f4"/><text x="34" y="160" class="a">已批准运行</text>
+<text x="308" y="147" text-anchor="middle" class="b">保存</text><path d="M239 158 H377 l-6 -4 M377 158 l-6 4" fill="none" stroke="#527b82"/>
+<text x="396" y="161" class="a">样本分母、统计量与诊断</text>
+<rect x="22" y="194" width="206" height="44" rx="3" fill="#eff5f4"/><text x="34" y="222" class="a">报告或结果追问</text>
+<text x="308" y="209" text-anchor="middle" class="b">选择运行</text><path d="M239 220 H377 l-6 -4 M377 220 l-6 4" fill="none" stroke="#527b82"/>
+<text x="396" y="223" class="a">对应单位与证据引用</text>
+<rect x="22" y="256" width="206" height="44" rx="3" fill="#eff5f4"/><text x="34" y="284" class="a">更换指标或期间</text>
+<text x="308" y="271" text-anchor="middle" class="b">检查范围</text><path d="M239 282 H377 l-6 -4 M377 282 l-6 4" fill="none" stroke="#527b82"/>
+<text x="396" y="285" class="a">澄清缺失数据或另立计划</text>
+<text x="22" y="358" class="b">比例差可换算为百分点。相对变化还需要有定义且非零的基线。</text>
+</svg>

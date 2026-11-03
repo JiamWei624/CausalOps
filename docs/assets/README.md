@@ -7,3 +7,5 @@
 | [两组客户的网站访问率](hillstrom-visit-rates.svg) | Hillstrom 实验的组间绝对差与相对变化 |
 
 [逐步截图](../current/PUBLIC_TUTORIAL.md) · [操作录屏](research-016-demo.webm) · [图源索引](../diagrams/README.md)。文件名含 target 或 implemented-v080 的图示记录历史设计。
+
+[研究流程和技术图集](../current/FIGURES.md)包含十一组 SVG、PNG 及可编辑关系定义。[本轮界面截图与操作验收](../current/DESIGN_REVIEW.md)。

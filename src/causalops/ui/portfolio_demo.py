@@ -87,7 +87,7 @@ def render_demo(preset=None):
    if st.button('接受候选但不批准',disabled=stale):
     repo.accept_candidate(cid);st.session_state.pop('demo_candidate_'+title,None);st.rerun()
  existing=repo.list_analysis_runs(revision_id=rev.revision_id,dataset_version_id=rev.dataset_version_id)
- st.progress(1.0 if existing else .35,text='已有保存结果：可直接阅读结论和提问，无需重新运行。' if existing else '下一步：核对研究设计，确认适用范围后运行。')
+ st.caption('运行状态：已有保存结果，可继续查看或追问。' if existing else '运行状态：等待核对研究设计与适用范围。')
  if existing:st.info('已恢复已有运行。仅在确需重新计算时点击下方运行按钮；改变研究问题应先保存并接受候选。')
  with st.form('run_review_'+rev.revision_id):
   reviewed=st.checkbox('我已核对当前字段、设计与适用范围；理解合成演示和真实业务效果的区别',key='demo_review_'+rev.revision_id)
@@ -119,7 +119,7 @@ def render_demo(preset=None):
  st.markdown('**估计值与诊断**')
  st.caption('刷新或重新打开页面会恢复该运行，不会自动重跑。运行编号：'+run.run_id)
  a,b,c=st.columns(3);a.metric('估计值',f'{bundle.estimate.estimate:.6g}');b.metric('实际估计行数',f'{bundle.estimate.sample_size:,}');c.metric('结论等级',claim_label_zh(bundle.claim_level))
- with st.expander('查看诊断：为什么允许或限制这个结论',expanded=bundle.claim_level.value in ('associational','descriptive')):
+ with st.expander('统计诊断与结论边界',expanded=bundle.claim_level.value in ('associational','descriptive')):
   st.dataframe(diagnostic_rows_zh(diagnostics_for_display(bundle)),hide_index=True,width='stretch')
  for title,figure in {**build_regression_diagnostic_figures(bundle),**build_did_diagnostic_figures(bundle)}.items():st.plotly_chart(figure,key='demo_'+title)
  for path,label,mime in [(result.html_report_path,'下载完整分析报告','text/html'),(Path(run.result_bundle_path),'下载运行证据','application/json'),(trace,'下载执行轨迹','application/json')]:

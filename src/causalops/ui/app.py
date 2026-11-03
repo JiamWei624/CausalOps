@@ -95,16 +95,28 @@ def _format_enum(value: object) -> str:
     return getattr(value, "value", str(value))
 
 
-def _default_spec(frame: pd.DataFrame, question: str) -> CausalSpec:
-    columns = list(frame.columns)
-    if len(columns) < 2:
-        raise ValueError("因果设计至少需要两个不同字段（处理变量与结果变量）。")
-    return CausalSpec(
-        question=question,
-        analysis_unit="user",
-        treatment=columns[0],
-        outcome=columns[1],
-    )
+def _request_initial_spec(frame: pd.DataFrame, dataset_key: str) -> CausalSpec | None:
+    """Collect explicit field roles before persisting the first uploaded-data draft."""
+    if len(frame.columns) < 2:
+        st.info("至少需要两个字段才能建立处理与结果的研究设计。单变量分析请使用描述统计。")
+        return None
+    with st.form("initial_design_" + dataset_key):
+        st.subheader("新数据的研究定义")
+        question = st.text_input("研究问题")
+        unit = st.text_input("每条记录代表的分析单位")
+        treatment = st.selectbox("处理字段", list(frame.columns), index=None, placeholder="请选择字段")
+        outcome = st.selectbox("结果字段", list(frame.columns), index=None, placeholder="请选择字段")
+        submitted = st.form_submit_button("建立待审草案")
+    if not submitted:
+        return None
+    if not question.strip() or not unit.strip() or treatment is None or outcome is None or treatment == outcome:
+        st.error("请填写问题与分析单位，并选择两个不同的字段。")
+        return None
+    try:
+        return CausalSpec(question=question.strip(), analysis_unit=unit.strip(), treatment=treatment, outcome=outcome)
+    except ValueError:
+        st.error("研究定义未通过校验。请核对问题、分析单位和字段。")
+        return None
 
 
 def _seed_editor_state(spec: CausalSpec) -> None:
@@ -1169,11 +1181,11 @@ def _load_registered_frame(path: str, mtime_ns: int, expected_sha256: str) -> pd
 
 def main() -> None:
     st.set_page_config(page_title="CausalOps", page_icon="📐", layout="wide")
-    st.title("CausalOps｜证据门控因果分析Agent")
+    st.title("CausalOps · 因果研究工作台")
     st.caption("输入问题 → 设计研究 → 识别门控 → 人工确认 → 执行分析 → 自动报告")
     with st.expander("安全与结论边界", expanded=False):
         st.markdown(
-            "上传数据仅在本地进程处理；Agent没有网络、Shell或任意代码工具。"
+            "原始数据行在本机处理。允许外发的摘要按模型配置发送；统计执行限于注册工具。"
             "识别或诊断失败会阻止执行或降低主张等级，显著性不能覆盖设计缺陷。"
         )
 
@@ -1253,19 +1265,13 @@ def main() -> None:
     if st.checkbox("显示前5行（可能包含敏感字段）", value=False):
         st.dataframe(frame.head(), width="stretch")
 
-    preliminary_question = (
-        initial_spec.question
-        if initial_spec is not None
-        else "What is the causal effect of the selected treatment on the selected outcome?"
-    )
-    try:
-        preliminary_spec = initial_spec or _default_spec(frame, preliminary_question)
-    except ValueError as exc:
-        st.error(str(exc))
-        return
     dataset_key = _dataset_content_fingerprint(frame)
     repository = ResearchRepository(UI_STATE_DB)
     research_session = repository.find_latest_session_by_dataset(dataset_key)
+    if research_session is None or not research_session.current_draft_revision_id:
+        preliminary_spec = initial_spec or _request_initial_spec(frame, dataset_key)
+        if preliminary_spec is None:
+            return
     if research_session is None:
         research_session = repository.create_session(
             title=source_description,

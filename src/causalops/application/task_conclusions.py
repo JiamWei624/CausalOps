@@ -100,7 +100,7 @@ def build_task_conclusion(a,sid,rid):
                 idx,row=eligible[0];cite('summary.correlations['+str(idx)+'].pearson');cite('summary.correlations['+str(idx)+'].spearman');cite('summary.correlations['+str(idx)+'].pairwise_n')
                 sections['magnitude']=row['x']+'与'+row['y']+'的成对有效样本为'+str(row['pairwise_n'])+'，Pearson相关系数为'+(fmt(row['pearson']) if row['pearson'] is not None else '未计算')+'，Spearman系数为'+(fmt(row['spearman']) if row['spearman'] is not None else '未计算')+'。优先报告保存顺序中首个涉及目标的变量对，不按显著性挑选。'
             else:sections['magnitude']='本次相关矩阵未包含已登记的目标指标，不能将其他变量对替代目标结果。'
-            sections['meaning']='系数描述变量共同变化，不表示改动某变量后能提高多少结果。相关矩阵中的各变量对可能使用不同有效样本。'
+            sections['meaning']='系数描述变量共同变化，不表示改动某变量后能提高多少结果。各变量对按各自的成对有效观测计算。'
             sections['action']='结合字段含义、异常值、时间顺序和散点分布核查；若要研究干预收益，需要新的研究设计。'
             focus={'field':target,'label':dictionary.get('metric_label') or target,'unit':dictionary.get('metric_unit') or '', 'available':bool(eligible),'source':'source_run_contract','contract_ref':contract_ref} if target else None
     body={'version':'task_conclusion_v3','run_id':rid,'data_fingerprint':ref['contract']['data_fingerprint'] if ref.get('contract') else a.tools.envelope(a.session(sid)['upload_id'],ref).data_fingerprint,'contract_ref':contract_ref,'claim':claim,'sections':sections,'evidence':evidence,'source':'saved_run_deterministic_interpretation','no_reestimate':True,'focus':focus}
@@ -108,7 +108,7 @@ def build_task_conclusion(a,sid,rid):
     body['sha256']=hashlib.sha256(json.dumps(body,ensure_ascii=False,sort_keys=True,allow_nan=False).encode()).hexdigest();return body
 
 def attach_task_conclusion(report,value):
-    parts=['<section data-causalops-task-conclusion="1"><h2>研究问题的结论与下一步</h2><p>以下解释对应保存运行，未新增估计。运行编号：'+escape(value['run_id'])+'</p>']
+    parts=['<section data-causalops-task-conclusion="1"><h2>研究结论与适用范围</h2><p>以下解释对应保存运行，未新增估计。运行编号：'+escape(value['run_id'])+'</p>']
     for k,v in value['sections'].items():parts.append('<h3>'+escape(value.get('titles',TITLES)[k])+'</h3><p>'+escape(v)+'</p>')
     parts.append('<details><summary>核对本节引用的运行证据</summary><pre>'+escape(json.dumps(value['evidence'],ensure_ascii=False,indent=2))+'</pre></details></section>')
     if '</h1>' in report:return report.replace('</h1>','</h1>'+''.join(parts),1)

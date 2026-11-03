@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t d" width="800" height="373" viewBox="0 0 800 373"><title id="t">本机数据与模型权限</title><desc id="d">模型配置和数据外发许可分别管理。模型不持有统计执行批准权限。</desc>
+<style>text{font-family:Microsoft YaHei,sans-serif;fill:#1c2d3b}.h{font-size:23px;font-weight:bold}.a{font-size:17px}.b{font-size:14px;fill:#405c64}</style>
+<rect width="800" height="373" fill="white"/><text x="22" y="36" class="h">本机数据与模型权限</text><path d="M22 54 H778" stroke="#176b65" stroke-width="2"/>
+<rect x="22" y="70" width="206" height="44" rx="3" fill="#eff5f4"/><text x="34" y="98" class="a">本机上传表</text>
+<text x="308" y="85" text-anchor="middle" class="b">保存</text><path d="M239 96 H377 l-6 -4 M377 96 l-6 4" fill="none" stroke="#527b82"/>
+<text x="396" y="99" class="a">本地工作区</text>
+<rect x="22" y="132" width="206" height="44" rx="3" fill="#eff5f4"/><text x="34" y="160" class="a">任务级发送许可</text>
+<text x="308" y="147" text-anchor="middle" class="b">按配置发送</text><path d="M239 158 H377 l-6 -4 M377 158 l-6 4" fill="none" stroke="#527b82"/>
+<text x="396" y="161" class="a">允许范围内的字段摘要</text>
+<rect x="22" y="194" width="206" height="44" rx="3" fill="#eff5f4"/><text x="34" y="222" class="a">模型建议</text>
+<text x="308" y="209" text-anchor="middle" class="b">结构与权限校验</text><path d="M239 220 H377 l-6 -4 M377 220 l-6 4" fill="none" stroke="#527b82"/>
+<text x="396" y="223" class="a">解释或待审计划</text>
+<rect x="22" y="256" width="206" height="44" rx="3" fill="#eff5f4"/><text x="34" y="284" class="a">人工批准</text>
+<text x="308" y="271" text-anchor="middle" class="b">版本核对</text><path d="M239 282 H377 l-6 -4 M377 282 l-6 4" fill="none" stroke="#527b82"/>
+<text x="396" y="285" class="a">本地注册统计执行器</text>
+<text x="22" y="358" class="b">模型配置和数据外发许可分别管理。模型不持有统计执行批准权限。</text>
+</svg>

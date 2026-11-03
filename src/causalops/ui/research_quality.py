@@ -9,11 +9,11 @@ def render_research_quality(service,flow,jobs=None):
     brief=value['brief'];audit=value['audit']
     question=resolved_research_question(service,flow,brief)
     with st.expander('研究摘要与待确认事项',expanded=flow['status'] in ('awaiting_review','needs_clarification')):
-        st.markdown('**系统理解的研究问题**');st.write(question)
+        st.markdown('**本次研究问题**');st.write(question)
         st.write(brief['question_type']+'；每行代表：'+brief['unit']+'；目标指标：'+brief['metric'])
         st.markdown('**依据与适用范围**');st.write('数据来源：'+brief['source']);st.write('结论对象：'+brief['population']);st.write('比较对象：'+brief['comparison']);st.write('估计目标：'+brief['estimand']);st.write('观察期间：'+brief['window'])
         st.caption('本摘要对应本轮的数据和口径版本。这里的声明不是识别假设的验证结果。')
-        st.markdown('**建议先确认的事项**')
+        st.markdown('**待核对事项**')
         if brief['next_questions']:
             for q in brief['next_questions']:st.write('• '+q)
         else:st.write('当前结构检查未发现需补充项；仍须核对具体方法条件。')

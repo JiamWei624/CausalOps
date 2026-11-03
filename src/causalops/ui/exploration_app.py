@@ -72,6 +72,16 @@ def render_exploration(method):
     if b['design_version']!=saved['version']:st.warning('此运行属于历史配置，保留原口径。')
     st.caption('探索分析运行编号：'+rid+'；配置V'+str(b['design_version']))
     for line in b['conclusions']:st.write(line)
+    charts = iter(figures(b).items())
+    primary = next(charts, None)
+    if primary:
+        title, fig = primary
+        st.plotly_chart(fig, key=rid+'_'+title, width='stretch')
+    secondary = list(charts)
+    if secondary:
+        with st.expander('补充图表'):
+            for title, fig in secondary:
+                st.plotly_chart(fig, key=rid+'_'+title, width='stretch')
     summary=b['summary']
     for label,field in [('数据质量','columns'),('数值描述','numeric'),('分组描述','grouped'),('时间汇总','trend'),('探索性相关','correlations')]:
         if summary[field]:
@@ -80,6 +90,6 @@ def render_exploration(method):
         with st.expander('分类频数：'+c['field']):st.caption('分母为全表'+str(c['denominator'])+'行；剩余类别'+str(c['remaining_n'])+'行。');st.dataframe(display(c['top']),hide_index=True,width='stretch')
     if summary.get('date_quality'):st.caption('日期不可用行数：'+str(summary['date_quality']['unusable_rows'])+'；时间汇总不补缺期。')
     if b['regression']:st.subheader('关联回归结果');st.dataframe(display(b['regression']['coefficients']),hide_index=True,width='stretch');st.caption(b['regression']['note'])
-    for title,fig in figures(b).items():st.plotly_chart(fig,key=rid+'_'+title,width='stretch')
+
     for warning in b['warnings']:st.caption(warning)
     a,c=st.columns(2);a.download_button('下载探索分析图文报告',render_report(b),file_name=method+'-'+rid+'.html',mime='text/html');c.download_button('下载探索分析证据JSON',json.dumps(b,ensure_ascii=False,indent=2),file_name=rid+'.json',mime='application/json')

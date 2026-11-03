@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t d" width="800" height="373" viewBox="0 0 800 373"><title id="t">方法选择与待核对条件</title><desc id="d">图中列出候选方向；条件不足时保留缺项，返回研究设计。</desc>
+<style>text{font-family:Microsoft YaHei,sans-serif;fill:#1c2d3b}.h{font-size:23px;font-weight:bold}.a{font-size:17px}.b{font-size:14px;fill:#405c64}</style>
+<rect width="800" height="373" fill="white"/><text x="22" y="36" class="h">方法选择与待核对条件</text><path d="M22 54 H778" stroke="#176b65" stroke-width="2"/>
+<rect x="22" y="70" width="206" height="44" rx="3" fill="#eff5f4"/><text x="34" y="98" class="a">样本分布或关联</text>
+<text x="308" y="85" text-anchor="middle" class="b">明确变量</text><path d="M239 96 H377 l-6 -4 M377 96 l-6 4" fill="none" stroke="#527b82"/>
+<text x="396" y="99" class="a">描述统计、相关或关联回归</text>
+<rect x="22" y="132" width="206" height="44" rx="3" fill="#eff5f4"/><text x="34" y="160" class="a">随机分配研究</text>
+<text x="308" y="147" text-anchor="middle" class="b">核对分配单位</text><path d="M239 158 H377 l-6 -4 M377 158 l-6 4" fill="none" stroke="#527b82"/>
+<text x="396" y="161" class="a">A/B；有处理前指标可评估 CUPED</text>
+<rect x="22" y="194" width="206" height="44" rx="3" fill="#eff5f4"/><text x="34" y="222" class="a">观察性组间比较</text>
+<text x="308" y="209" text-anchor="middle" class="b">核对混杂与重叠</text><path d="M239 220 H377 l-6 -4 M377 220 l-6 4" fill="none" stroke="#527b82"/>
+<text x="396" y="223" class="a">匹配、加权等候选设计</text>
+<rect x="22" y="256" width="206" height="44" rx="3" fill="#eff5f4"/><text x="34" y="284" class="a">处理前后面板</text>
+<text x="308" y="271" text-anchor="middle" class="b">核对时点及对照</text><path d="M239 282 H377 l-6 -4 M377 282 l-6 4" fill="none" stroke="#527b82"/>
+<text x="396" y="285" class="a">DID；另行评估平行趋势</text>
+<text x="22" y="358" class="b">图中列出候选方向；条件不足时保留缺项，返回研究设计。</text>
+</svg>

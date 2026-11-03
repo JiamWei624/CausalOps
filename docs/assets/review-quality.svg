@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t d" width="800" height="373" viewBox="0 0 800 373"><title id="t">研究质量检查</title><desc id="d">结构检查通过仅表示相应检查未阻断；研究假设仍需有独立依据。</desc>
+<style>text{font-family:Microsoft YaHei,sans-serif;fill:#1c2d3b}.h{font-size:23px;font-weight:bold}.a{font-size:17px}.b{font-size:14px;fill:#405c64}</style>
+<rect width="800" height="373" fill="white"/><text x="22" y="36" class="h">研究质量检查</text><path d="M22 54 H778" stroke="#176b65" stroke-width="2"/>
+<rect x="22" y="70" width="206" height="44" rx="3" fill="#eff5f4"/><text x="34" y="98" class="a">数据结构</text>
+<text x="308" y="85" text-anchor="middle" class="b">核对</text><path d="M239 96 H377 l-6 -4 M377 96 l-6 4" fill="none" stroke="#527b82"/>
+<text x="396" y="99" class="a">类型、缺失、重复与有效值</text>
+<rect x="22" y="132" width="206" height="44" rx="3" fill="#eff5f4"/><text x="34" y="160" class="a">实体与时间</text>
+<text x="308" y="147" text-anchor="middle" class="b">核对</text><path d="M239 158 H377 l-6 -4 M377 158 l-6 4" fill="none" stroke="#527b82"/>
+<text x="396" y="161" class="a">记录粒度、重复观测与时间顺序</text>
+<rect x="22" y="194" width="206" height="44" rx="3" fill="#eff5f4"/><text x="34" y="222" class="a">研究设计</text>
+<text x="308" y="209" text-anchor="middle" class="b">核对</text><path d="M239 220 H377 l-6 -4 M377 220 l-6 4" fill="none" stroke="#527b82"/>
+<text x="396" y="223" class="a">分组依据与待确认的识别条件</text>
+<rect x="22" y="256" width="206" height="44" rx="3" fill="#eff5f4"/><text x="34" y="284" class="a">估计结果</text>
+<text x="308" y="271" text-anchor="middle" class="b">诊断</text><path d="M239 282 H377 l-6 -4 M377 282 l-6 4" fill="none" stroke="#527b82"/>
+<text x="396" y="285" class="a">适用范围与可报告的解释等级</text>
+<text x="22" y="358" class="b">结构检查通过仅表示相应检查未阻断；研究假设仍需有独立依据。</text>
+</svg>

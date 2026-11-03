@@ -39,7 +39,7 @@ def render_first_look(frame, sid, preset, brief):
         labels = [str(v) for v in counts.index]
     chart = pd.DataFrame({'取值或区间':labels, '记录数':counts.to_numpy()})
     import plotly.express as px
-    fig = px.bar(chart, x='取值或区间', y='记录数')
+    fig = px.bar(chart, x='取值或区间', y='记录数', color_discrete_sequence=['#0e7772'])
     fig.update_xaxes(type='category')
     fig.update_layout(height=250, margin=dict(t=10,b=30))
     st.plotly_chart(fig, key='preview_chart_'+sid, width='stretch')

@@ -128,6 +128,13 @@ def compute(frame,d):
 
 def conclusions(b):
     s=b['summary'];lines=[f"本表包含{s['row_count']:,}行、{s['column_count']}列；发现{s['exact_duplicate_rows']}行完全重复记录，未自动删除。"]
+    if b['method'] == 'correlation' and len(s['correlations']) == 1:
+        pair = s['correlations'][0]
+        names = f"{pair['x']} 与 {pair['y']}"
+        if pair['pearson'] is None or pair['spearman'] is None:
+            lines.append(f"{names}：{pair['pairwise_n']} 对有效观测，样本不足或变量为常量，未计算相关系数。")
+        else:
+            lines.append(f"{names}：成对有效样本 {pair['pairwise_n']}，Pearson 系数 {pair['pearson']:.4g}，Spearman 系数 {pair['spearman']:.4g}。系数描述样本内关联。")
     for row in s['numeric'][:5]:
         if row['finite_n']:lines.append(f"{row['field']}：有效数{row['finite_n']}，均值{row['mean']:.4g}，中位数{row['median']:.4g}，缺失{row['missing_n']}，无穷值{row['infinite_n']}。")
         else:lines.append(f"{row['field']}没有有限有效值，未补写均值或中位数。")

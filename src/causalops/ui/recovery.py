@@ -4,8 +4,15 @@ import streamlit as st
 def render_recovery(service,jobs,sid,flow,active,has_error=False):
     if active or (flow['status'] not in ('failed','blocked','needs_clarification') and not has_error):return
     key='recover_'+sid+'_'+flow['id']
-    with st.container(border=True):
-        st.markdown('**本轮处理尚未完成**')
+    with st.container(key="panel_"+key):
+        st.subheader('研究流程暂停')
+        condition,preserved,action=st.columns(3)
+        condition.markdown('**当前状态**')
+        condition.write({'failed':'步骤失败','blocked':'执行被阻断','needs_clarification':'需要补充研究信息'}.get(flow['status'],'需核对运行状态'))
+        preserved.markdown('**已保存的数据**')
+        preserved.write('分析任务、研究方案及已有运行')
+        action.markdown('**恢复条件**')
+        action.write('核对缺项、版本与任务发送许可')
         st.write('本任务已保存 '+str(len(service.a.completed_runs(sid)))+' 次统计运行，仍可在历史结果中查看。原始数据未修改，失败流程和原计划保留；以下操作不代表研究条件已满足。')
         first,second=st.columns(2)
         def edit_context():st.session_state['_open_contract_'+sid]=True

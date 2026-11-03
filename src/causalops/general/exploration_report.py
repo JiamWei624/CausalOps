@@ -40,7 +40,25 @@ def figures(b,focus=None,labels=None,units=None):
             f.update_layout(title=dict(text=escape(label(field))+' · 分期有效值均值（未补缺期）<br><sup>单位：'+unit_text+'</sup>',font=dict(size=15)),xaxis_title='观察期',yaxis_title='均值',template='plotly_white',height=380,margin=dict(l=75,r=30,t=105,b=65))
             f.update_xaxes(type='category',tickmode='array',tickvals=shown,tickangle=0,automargin=True);f.update_yaxes(automargin=True,tickformat=',.0f' if g['mean'].abs().max()>=1000 else None)
             result['时间汇总_'+field]=f
-    if s['correlations']:
+    pairs = s['correlations']
+    if len(pairs) == 1:
+        pair = pairs[0]
+        terms = [('Pearson', pair['pearson']), ('Spearman', pair['spearman'])]
+        finite = [(name, value) for name, value in terms if value is not None]
+        f = go.Figure()
+        if finite:
+            names, values = zip(*finite)
+            f.add_trace(go.Scatter(x=values, y=names, mode='markers', marker=dict(size=12, color='#176b65'),
+                                   hovertemplate='%{y}：%{x:.4f}<extra></extra>'))
+            f.add_vline(x=0, line_dash='dot', line_color='#586d75')
+        else:
+            f.add_annotation(text='成对样本不足或变量为常量，相关系数未定义', showarrow=False,
+                             x=.5, y=.5, xref='paper', yref='paper')
+        field_pair = ' 与 '.join(escape(str(label(pair[k]))) for k in ('x', 'y'))
+        f.update_layout(title=field_pair + ' · 成对有效样本 ' + str(pair['pairwise_n']),
+                        xaxis_title='相关系数（无量纲）', xaxis_range=[-1.08, 1.08], template='plotly_white', height=290)
+        result['两变量相关系数'] = f
+    elif pairs:
         fields=list(dict.fromkeys([r['x'] for r in s['correlations']]+[r['y'] for r in s['correlations']]))
         z=[[None]*len(fields) for _ in fields];counts=[[None]*len(fields) for _ in fields]
         for r in s['correlations']:
@@ -57,7 +75,7 @@ def figures(b,focus=None,labels=None,units=None):
             f.add_vline(x=0,line_dash='dash',line_color='#889499');f.update_layout(title='关联回归系数与95%置信区间（非干预收益）',xaxis_title='线性系数' if b['method']=='ols' else '链接函数尺度系数（非概率变化）',template='plotly_white',height=max(300,len(rows)*36+100));f.update_yaxes(autorange='reversed');result['关联系数']=f
     priority=[]
     if b.get('regression'):priority=['关联系数']
-    elif b['method']=='correlation':priority=['相关矩阵']
+    elif b['method']=='correlation':priority=['两变量相关系数','相关矩阵']
     elif s['trend']:priority=['时间汇总_'+focus] if focus else [k for k in result if k.startswith('时间汇总_')][:1]
     return {**{k:result[k] for k in priority if k in result},**{k:v for k,v in result.items() if k not in priority}}
 
@@ -70,6 +88,6 @@ def render_report(b,focus=None,labels=None,units=None):
     if s.get('date_quality'):parts+=['<p>时间字段不可用行数：'+str(s['date_quality']['unusable_rows'])+'；'+escape(s['date_quality']['rule'])+'</p>']
     if b['regression']:parts+=['<h2>关联回归</h2><p>'+escape(b['regression']['note'])+' 协方差：'+escape(b['regression']['covariance'])+'</p>',tbl(b['regression']['coefficients'])]
     figs=figures(b,focus=focus,labels=labels,units=units)
-    if figs:parts+=['<h2>图表（由保存汇总数据绘制）</h2>','<script>'+get_plotlyjs()+'</script>']+[f.to_html(full_html=False,include_plotlyjs=False) for f in figs.values()]
+    if figs:parts[3:3]=['<h2>图表（由保存汇总数据绘制）</h2>','<script>'+get_plotlyjs()+'</script>']+[f.to_html(full_html=False,include_plotlyjs=False) for f in figs.values()]
     parts+=['<h2>边界与统计口径</h2>',''.join('<p>'+escape(x)+'</p>' for x in b['warnings']),'<h2>来源</h2>',''.join('<p><a href="'+escape(u,quote=True)+'">'+escape(u)+'</a></p>' for u in b['sources'])]
     return '<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+escape(LABELS[b['method']])+'</title><style>body{font-family:Microsoft YaHei,Arial;max-width:1180px;margin:40px auto;padding:0 24px;line-height:1.85;color:#21343a}table{border-collapse:collapse;width:100%;font-size:13px;overflow-wrap:anywhere}th,td{border:1px solid #d1dbd8;padding:8px;text-align:left}h2{margin-top:32px;border-bottom:1px solid #8ba7a0}p{overflow-wrap:anywhere}@page{size:A4;margin:16mm}@media print{table{font-size:8pt}h2{break-after:avoid}tr{break-inside:avoid}}</style>'+''.join(parts)+'</html>'

@@ -81,7 +81,7 @@ def test_streamlit_app_renders_without_exception(tmp_path: Path, monkeypatch) ->
     app_path = Path(__file__).resolve().parents[1] / "src" / "causalops" / "ui" / "app.py"
     app = AppTest.from_file(str(app_path)).run(timeout=30)
     assert not app.exception
-    assert app.title[0].value == "CausalOps｜证据门控因果分析Agent"
+    assert app.title[0].value == "CausalOps · 因果研究工作台"
     proposal_button = next(item for item in app.button if item.label == "生成AI研究设计草案")
     assert proposal_button.disabled is True
     method_selector = next(item for item in app.selectbox if item.label == "候选方法")

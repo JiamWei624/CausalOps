@@ -11,7 +11,9 @@ def style():
     .block-container{max-width:1240px;padding-top:4.5rem;padding-bottom:3rem}
     h1{font-size:2rem!important;font-weight:650!important;letter-spacing:0;line-height:1.45!important} h2,h3{letter-spacing:0;line-height:1.55!important} [data-testid=stMarkdownContainer] p{line-height:1.8}
     .eyebrow{font-size:.78rem;letter-spacing:.13em;color:#527a78;font-weight:700}
-    .hero-note{font-size:1.04rem;line-height:1.85;max-width:900px;color:#637274}
+    .hero-note{font-size:1.25rem;line-height:1.5;max-width:52rem;color:#304e57;margin-bottom:8px}
+    [data-testid=stMainBlockContainer]{overflow-wrap:anywhere}
+    [data-testid=stSidebar] button{min-height:40px}
     .flow{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 24px}
     .flow span{border:1px solid #b8cdcb;padding:8px 14px;border-radius:5px;font-size:.88rem}
     .flow .active{background:#176b65;color:white;border-color:#176b65}

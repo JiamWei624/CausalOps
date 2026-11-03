@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t d" width="800" height="311" viewBox="0 0 800 311"><title id="t">方法依据与运行证据</title><desc id="d">方法资料说明设计依据。数值必须能够追溯至选定运行。</desc>
+<style>text{font-family:Microsoft YaHei,sans-serif;fill:#1c2d3b}.h{font-size:23px;font-weight:bold}.a{font-size:17px}.b{font-size:14px;fill:#405c64}</style>
+<rect width="800" height="311" fill="white"/><text x="22" y="36" class="h">方法依据与运行证据</text><path d="M22 54 H778" stroke="#176b65" stroke-width="2"/>
+<rect x="22" y="70" width="206" height="44" rx="3" fill="#eff5f4"/><text x="34" y="98" class="a">方法资料</text>
+<text x="308" y="85" text-anchor="middle" class="b">受控检索</text><path d="M239 96 H377 l-6 -4 M377 96 l-6 4" fill="none" stroke="#527b82"/>
+<text x="396" y="99" class="a">方法卡、来源及适用条件</text>
+<rect x="22" y="132" width="206" height="44" rx="3" fill="#eff5f4"/><text x="34" y="160" class="a">已批准的计划</text>
+<text x="308" y="147" text-anchor="middle" class="b">本地计算</text><path d="M239 158 H377 l-6 -4 M377 158 l-6 4" fill="none" stroke="#527b82"/>
+<text x="396" y="161" class="a">统计量、诊断与样本口径</text>
+<rect x="22" y="194" width="206" height="44" rx="3" fill="#eff5f4"/><text x="34" y="222" class="a">选定运行</text>
+<text x="308" y="209" text-anchor="middle" class="b">引用校验</text><path d="M239 220 H377 l-6 -4 M377 220 l-6 4" fill="none" stroke="#527b82"/>
+<text x="396" y="223" class="a">基于该次运行的解释</text>
+<text x="22" y="296" class="b">方法资料说明设计依据。数值必须能够追溯至选定运行。</text>
+</svg>

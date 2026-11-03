@@ -40,7 +40,7 @@ def chart_context(a,sid,rid):
 
 def primary_chart_key(bundle,focus,charts):
     if bundle.get('regression'):return '关联系数'
-    if bundle['method']=='correlation':return '相关矩阵'
+    if bundle['method']=='correlation':return next((key for key in ('两变量相关系数','相关矩阵') if key in charts),None)
     if bundle['summary']['trend']:return next((k for k in charts if k.startswith('时间汇总_')),None)
     return next((k for k in charts if k in ('分布_'+str(focus),'频数_'+str(focus))),next(iter(charts),None))
 
@@ -49,30 +49,80 @@ def show_run(a,ref,sid,*,compact=False):
     rid=ref['run_id']
     from causalops.application.task_conclusions import build_task_conclusion,attach_task_conclusion,TITLES
     conclusion=build_task_conclusion(a,sid,rid)
-    with st.container(border=True):
-        st.markdown('**分析结论**')
-        if conclusion.get('focus'):st.caption('本次结果对应指标：'+str(conclusion['focus']['label'])+'（'+str(conclusion['focus']['field'])+'）')
-        for section,text in conclusion['sections'].items():st.markdown('**'+conclusion.get('titles',TITLES)[section]+'：** '+safe_text(text))
-        st.caption('解释来自保存运行；数据字典版本与证据指纹可追溯，未重新估计。')
-    focus=(conclusion.get('focus') or {}).get('field')
-    if ref['kind']=='exploration':
-        saved=a.ex.load(rid);labels,units=chart_context(a,sid,rid);charts=figures(saved,focus=focus,labels=labels,units=units);key=primary_chart_key(saved,focus,charts)
-        if key in charts:st.plotly_chart(charts[key],key='focus_preview_'+rid,width='stretch')
+    saved=a.ex.load(rid) if ref['kind']=='exploration' else None
     from causalops.application.research_report import run_quality
     rq=run_quality(a,sid,rid)
-    st.caption('结论适用对象：'+rq['brief']['population'])
-    with st.expander('研究范围、计算依据与待解决问题'):
-        st.write('估计对象：'+rq['method']['estimand'])
-        st.write('解释限制：'+rq['method']['limits'])
-        st.write('数据依据：'+rq['brief']['source'])
-        st.write('观察期间：'+rq['brief']['window'])
-        for label,value in rq['sample_flow'].items():st.write(label+'：'+str(value))
+    focus=(conclusion.get('focus') or {}).get('field')
+    titles=conclusion.get('titles',TITLES)
+    sections=conclusion['sections']
+    headline = []
+    if saved and saved['method']=='descriptive' and focus:
+        field=next((r for r in saved['summary']['numeric'] if r['field']==focus),None)
+        if field and field['finite_n']:
+            headline=[('有效样本',f"{field['finite_n']:,}"),('均值',f"{field['mean']:.3f}"),('中位数',f"{field['median']:g}")]
+    elif ref['kind']=='research':
+        from causalops.ui.showcase_support import overview_numbers
+        values=overview_numbers(a.ws.bundle(rid)[0])
+        if values['estimate'] is not None:
+            headline=[('估计差异',f"{values['estimate']:.4g} {values['unit']}")]
+    with st.container(key='panel_conclusion_'+rid):
+        text_col,stat_col=st.columns([3,1],vertical_alignment='center')
+        text_col.markdown('**分析结论**')
+        text_col.text(rq['brief']['question'])
+        text_col.write(safe_text(sections['magnitude']))
+        text_col.caption('结论适用对象：'+rq['brief']['population'])
+        if headline:
+            label,value=headline[1] if len(headline)>1 else headline[0]
+            stat_col.metric(label,value)
+    left,right=st.columns(2,gap='medium')
+    with left.container(key='panel_mainchart_'+rid):
+        st.subheader('统计图表')
+        if saved is not None:
+            labels,units=chart_context(a,sid,rid)
+            charts=figures(saved,focus=focus,labels=labels,units=units)
+            key=primary_chart_key(saved,focus,charts)
+            if key in charts:st.plotly_chart(charts[key],key='focus_preview_'+rid,width='stretch')
+            else:st.caption('本次运行没有可绘制的主图。')
+        elif ref['kind']!='advanced':
+            from causalops.ui.showcase_support import conclusion_figures
+            charts=conclusion_figures(a.ws.bundle(rid)[0])
+            if charts:st.plotly_chart(next(iter(charts.values())),key='focus_preview_'+rid,width='stretch')
+            else:st.caption('本次运行未保存可绘制的效应估计。')
+        else:
+            st.write(safe_text(sections['baseline']))
+            st.caption('进阶方法的专用输出见下方统计诊断。')
+    with right.container(key='panel_summary_'+rid):
+        st.subheader('关键结果与指标')
+        if headline:
+            for col,(name,value) in zip(st.columns(len(headline)),headline):col.metric(name,value)
+        if focus:st.caption('本次结果对应指标：'+str(conclusion['focus']['label'])+'（'+str(focus)+'）')
+        for section in ('baseline','meaning'):
+            st.markdown('**'+titles[section]+'**')
+            st.write(safe_text(sections[section]))
+    bounds,follow=st.columns(2,gap='medium')
+    with bounds.container(key='panel_limits_'+rid):
+        st.subheader('适用范围与限制')
+        st.write(rq['method']['limits'])
         for issue in rq['failed_diagnostics']:st.warning(issue)
-        st.caption('说明来自该运行绑定的口径；修改当前口径不会覆盖历史结果。')
-        st.markdown('**后续研究建议**')
-        for item in rq['next_steps']:st.write('• '+item)
+        with st.expander('数据来源与样本口径'):
+            st.write('估计对象：'+rq['method']['estimand'])
+            st.write('数据依据：'+rq['brief']['source'])
+            st.write('观察期间：'+rq['brief']['window'])
+            for label,value in rq['sample_flow'].items():st.write(label+'：'+str(value))
+    with follow.container(key='panel_next_'+rid):
+        st.subheader('后续分析')
+        st.write(safe_text(sections['action']))
+        with st.expander('后续研究建议'):
+            for item in rq['next_steps']:st.write('• '+item)
     report=make_report(a,ref,sid,conclusion)
     st.download_button('导出本次分析报告',report,file_name='CausalOps-'+rid+'.html',mime='text/html',key='primary_report_'+rid)
+    with st.expander('研究报告预览',expanded=False):
+        from html import escape
+        pairs=[('研究对象',rq['brief']['population']),('观察期间',rq['brief']['window']),('估计目标',rq['method']['estimand']),('数据来源',rq['brief']['source'])]
+        rows=''.join('<div><dt>'+name+'</dt><dd>'+escape(str(value))+'</dd></div>' for name,value in pairs)
+        paper_title=(str(conclusion['focus']['label'])+'分布') if saved and saved['method']=='descriptive' and focus else str(rq['brief']['question'])
+        paper_metrics='<div class="co-paper-metrics">'+''.join('<div><strong>'+escape(str(value))+'</strong><small>'+escape(label)+'</small></div>' for label,value in headline)+'</div>' if headline else ''
+        st.html('<article class="co-paper"><small>CAUSALOPS / 研究报告</small><h2>'+escape(paper_title)+'</h2><hr><h3>主要发现</h3>'+paper_metrics+'<p>'+escape(str(sections['magnitude']))+'</p><h3>研究范围与方法</h3><dl class="co-kv">'+rows+'</dl><h3>不确定性与使用边界</h3><p>'+escape(str(rq['method']['limits']))+'</p><div class="co-note">运行编号：'+escape(rid)+'</div></article>')
     if compact:
         with st.expander('统计图表、诊断与报告'):_show_run_details(a,ref,sid,conclusion,report)
     else:_show_run_details(a,ref,sid,conclusion,report)
@@ -87,7 +137,9 @@ def make_report(a,ref,sid,conclusion):
     else:report=render_html_report(a.ws.bundle(rid)[0])
     from causalops.application.research_report import run_quality,append_quality
     report=append_quality(report,run_quality(a,sid,rid))
-    return attach_discussion(attach_task_conclusion(report,conclusion),a.events(sid),rid,a.library)
+    report=attach_discussion(attach_task_conclusion(report,conclusion),a.events(sid),rid,a.library)
+    from causalops.ui.visual_layout import report_paper
+    return report_paper(report)
 
 
 def _show_run_details(a,ref,sid,conclusion,report):
@@ -140,62 +192,79 @@ def confirmations(step,index,pid,frame):
     return facts
 
 def render_assistant():
-    a=AssistantWorkspace();st.title('分析工作台')
+    a=AssistantWorkspace()
     from causalops import __version__
-    st.caption('在当前数据任务中完成问题定义、方案审核、分析执行与结果讨论。')
+    from causalops.ui.visual_layout import steps
     sessions=a.sessions();byid={s['id']:s for s in sessions};sid=st.query_params.get('assistant')
-    with st.sidebar:
-        if byid:
-            if st.session_state.get('assistant_history_url')!=sid or 'assistant_history' not in st.session_state:
-                st.session_state['assistant_history']=sid if sid in byid else None
-                st.session_state['assistant_history_url']=sid
-            chosen=st.selectbox('历史分析任务',[None]+list(byid),format_func=lambda x:'新建任务' if x is None else byid[x]['title']+' · '+x[-6:],key='assistant_history')
-            if chosen!=sid:
-                if chosen:st.query_params['assistant']=chosen
-                else:st.query_params.pop('assistant',None)
-                st.rerun()
-        if sid and st.button('新建分析任务',key='assistant_new'):st.query_params.pop('assistant',None);st.rerun()
     if sid not in byid:
-        st.subheader('数据导入')
-        st.info('导入后先核查数据结构并提供分析建议。无需预先指定统计方法；未明确的业务口径可后续补充。')
-        from causalops.ui.model_setup import current_connection
-        config,credential=current_connection()
-        st.caption('模型已在首页配置；本任务仍需单独授权发送摘要。' if config and credential else '当前可用本地模式。智能问题推荐需到首页填写模型和密钥。')
-        upload=st.file_uploader('CSV / Parquet（不超过50MB、10万行、200列）',type=['csv','parquet','pq'],key='assistant_file')
-        with st.expander('文件编码与分隔符设置'):
-            enc=st.selectbox('编码',['utf-8-sig','gb18030'],key='assistant_enc');sep=st.selectbox('分隔符',['auto',',',';','\t'],format_func=lambda v:{'auto':'自动识别（不明确时提示确认）',',':'逗号',';':'分号','\t':'制表符'}[v],key='assistant_sep')
-        title=st.text_input('任务名称（可选）',key='assistant_title',placeholder='例如：客户访问与转化研究')
-        known=a.ws.uploads();uid=st.selectbox('或选择已导入的本地表',[None]+[x['upload_id'] for x in known],format_func=lambda x:'不使用已有表' if x is None else next(v['name']+' · '+x[-6:] for v in known if v['upload_id']==x),key='assistant_known')
-        if st.button('创建任务并检查数据',type='primary',disabled=not upload and not uid):
+        st.title('创建研究任务',anchor=False)
+        st.caption('登记数据与研究口径。此阶段不执行统计估计。')
+        steps(['导入与数据检查','确认指标与研究对象','提出研究问题'],0)
+        left,right=st.columns([.96,1],gap='medium')
+        with left.container(key='panel_upload'):
+            st.subheader('导入分析表')
+            upload=st.file_uploader('CSV / Parquet（不超过50MB、10万行、200列）',type=['csv','parquet','pq'],key='assistant_file',label_visibility='collapsed')
+            with st.expander('文件编码与分隔符设置'):
+                enc=st.selectbox('编码',['utf-8-sig','gb18030'],key='assistant_enc');sep=st.selectbox('分隔符',['auto',',',';','\t'],format_func=lambda v:{'auto':'自动识别（不明确时提示确认）',',':'逗号',';':'分号','\t':'制表符'}[v],key='assistant_sep')
+        with left.container(key='panel_intake'):
+            st.subheader('研究任务设置')
+            title=st.text_input('任务名称（可选）',key='assistant_title',placeholder='例如：客户访问与转化研究')
+            known=a.ws.uploads();uid=st.selectbox('或选择已导入的本地表',[None]+[x['upload_id'] for x in known],format_func=lambda x:'不使用已有表' if x is None else next(v['name']+' · '+x[-6:] for v in known if v['upload_id']==x),key='assistant_known')
+            question=st.text_area('初步研究问题（可选）',value=st.session_state.get('_intake_question',''),key='intake_draft_question',placeholder='可先导入数据，再确定研究问题。')
+        with right.container(key='panel_field_preview'):
+            st.subheader('数据概况与字段目录')
+            preview=None
             try:
-                with st.status('正在登记数据并检查质量',expanded=True) as status:
-                    from importlib.util import find_spec
-                    graph_ready=find_spec('langgraph') is not None and find_spec('langchain_core') is not None
-                    if graph_ready:
-                        from causalops.application.research_service import ResearchService
-                        sid=ResearchService(a).create_task(payload=upload.getvalue() if upload else None,name=upload.name if upload else None,upload_id=None if upload else uid,title=title or (upload.name if upload else '本地分析任务'),encoding=enc,separator=sep)
-                        st.write('数据已登记，原始文件不作修改。分析计划将在审核后执行。')
-                        status.update(label='字段与数据结构检查已完成',state='complete')
-                    else:
-                        if upload:uid=a.ws.ingest(upload.getvalue(),upload.name,encoding=enc,separator=sep)
-                        sid=a.create(uid,title or (upload.name if upload else '本地分析任务'));st.write('数据已登记，原始文件不作修改。')
-                        p=a.propose(sid,'请先完成数据质量、缺失和分布的描述性体检');a.accept(p['id'],p['sha']);a.execute(p['id'],permit=True);status.update(label='数据质量检查已完成',state='complete')
-                st.session_state['_open_overview']=True;st.query_params['assistant']=sid;st.query_params.pop('flow',None);st.rerun()
+                if upload:
+                    from causalops.general.service import read_table
+                    preview=read_table(upload.getvalue(),upload.name,encoding=enc,separator=sep)
+                elif uid:
+                    preview=a.ws.load_upload(uid)
             except (ValueError,RuntimeError,OSError) as exc:
-                st.error(str(exc));st.info('本次导入检查未完成，未执行回归或因果分析。原始文件与已有任务保留。编码问题请展开文件设置；格式或容量超限请准备新的分析表后再创建任务。')
-                st.button('返回首页与模型连接',key='import_recovery_home',on_click=lambda: (st.session_state.update(showcase_route='home'),st.query_params.update(route='home')))
-        st.caption('此按钮只登记文件并核对结构，不执行回归或因果分析，不向模型发送数据。')
+                st.error(str(exc))
+            if preview is None:
+                st.info('选择文件后显示真实行数、字段类型与缺失情况。')
+            else:
+                k=st.columns(3)
+                k[0].metric('数据行数',f'{len(preview):,}');k[1].metric('字段数',len(preview.columns));k[2].metric('缺失单元格',int(preview.isna().sum().sum()))
+                st.dataframe(pd.DataFrame({'字段':list(preview),'类型':preview.dtypes.astype(str).tolist(),'缺失数':preview.isna().sum().tolist()}),hide_index=True,width='stretch')
+            st.caption('字段目录仅说明数据结构，分析单位与变量含义须按实际口径确认。')
+        with right:
+            if st.button('创建任务并检查数据',type='primary',disabled=preview is None):
+                try:
+                    with st.status('正在登记数据并检查质量',expanded=True) as status:
+                        from importlib.util import find_spec
+                        graph_ready=find_spec('langgraph') is not None and find_spec('langchain_core') is not None
+                        if graph_ready:
+                            from causalops.application.research_service import ResearchService
+                            sid=ResearchService(a).create_task(payload=upload.getvalue() if upload else None,name=upload.name if upload else None,upload_id=None if upload else uid,title=title or (upload.name if upload else '本地分析任务'),encoding=enc,separator=sep)
+                            st.write('数据已登记，原始文件不作修改。分析计划将在审核后执行。')
+                            status.update(label='字段与数据结构检查已完成',state='complete')
+                        else:
+                            if upload:uid=a.ws.ingest(upload.getvalue(),upload.name,encoding=enc,separator=sep)
+                            sid=a.create(uid,title or (upload.name if upload else '本地分析任务'));st.write('数据已登记，原始文件不作修改。')
+                            status.update(label='数据已登记，等待制定分析计划',state='complete')
+                    st.session_state['_open_overview']=True;st.query_params['assistant']=sid;st.query_params.pop('flow',None);st.rerun()
+                except (ValueError,RuntimeError,OSError) as exc:
+                    st.error(str(exc));st.info('本次导入检查未完成，未执行回归或因果分析。原始文件与已有任务保留。编码问题请展开文件设置；格式或容量超限请准备新的分析表后再创建任务。')
+                    st.button('返回首页与模型连接',key='import_recovery_home',on_click=lambda: (st.session_state.update(showcase_route='home'),st.query_params.update(route='home')))
+            st.caption('此按钮只登记文件并核对结构，不执行回归或因果分析，不向模型发送数据。')
         return
     from causalops.ui.reading import landmark
     landmark('overview', move=st.session_state.pop('_open_overview', False))
     s=a.session(sid);frame=a.ws.load_upload(s['upload_id']);pr=profile(frame)
-    top=st.columns(3);top[0].metric('数据行数',f'{pr["rows"]:,}');top[1].metric('字段数',pr['columns']);top[2].metric('分析任务',s['title'][:28])
-    from causalops.application.onboarding import overview
-    st.write(overview(frame)['text'])
-    with st.expander('数据概况与字段目录'):
-        st.dataframe(pd.DataFrame(pr['fields']).rename(columns={'field':'字段','dtype':'类型','missing_n':'缺失数','distinct_n':'非缺失唯一值数','numeric':'是否数值','likely_identifier':'疑似标识/敏感字段','infinite_n':'无穷值数'}),hide_index=True,width='stretch');st.caption(pr['meaning'])
-    from causalops.ui.model_setup import task_model
-    model=task_model(a,sid)
+    st.title(s['title'],anchor=False)
+    st.caption('研究问题、方案版本与运行记录均保存在当前任务。')
+    with st.sidebar.expander('当前任务 · 数据与权限'):
+        with st.expander('数据概况与字段目录'):
+            top=st.columns(3)
+            top[0].metric('数据行数',f'{pr["rows"]:,}');top[1].metric('字段数',pr['columns'])
+            dataset_name=next((item['name'] for item in a.ws.uploads() if item['upload_id']==s['upload_id']),None)
+            if dataset_name:top[2].text(dataset_name)
+            st.dataframe(pd.DataFrame(pr['fields']).rename(columns={'field':'字段','dtype':'类型','missing_n':'缺失数','distinct_n':'非缺失唯一值数','numeric':'是否数值','likely_identifier':'疑似标识/敏感字段','infinite_n':'无穷值数'}),hide_index=True,width='stretch')
+            st.caption(pr['meaning'])
+        from causalops.ui.model_setup import task_model
+        model=task_model(a,sid)
     from importlib.util import find_spec
     if find_spec('langgraph') is not None and find_spec('langchain_core') is not None:
         use_graph=True
@@ -271,7 +340,7 @@ def render_assistant():
                             cfg['numeric']=st.multiselect('统计数值字段',numeric,default=[c for c in cfg.get('numeric',[]) if c in numeric],key=key('numeric'))
                             cfg['categorical']=st.multiselect('统计分类字段',options,default=cfg.get('categorical',[]),key=key('cat'))
                             if cfg.get('method') in ('ols','logit','poisson'):
-                                current=cfg.get('outcome');cfg['outcome']=st.selectbox('结果字段',numeric,index=numeric.index(current) if current in numeric else 0,key=key('outcome')) if numeric else None
+                                current=cfg.get('outcome');cfg['outcome']=st.selectbox('结果字段',numeric,index=numeric.index(current) if current in numeric else None,placeholder='请选择结果字段',key=key('outcome')) if numeric else None
                                 cfg['predictors']=st.multiselect('自变量（不要选ID/未来结果）',[c for c in options if c!=cfg.get('outcome')],default=[c for c in cfg.get('predictors',[]) if c!=cfg.get('outcome')],key=key('predictors'))
                         elif step['tool']=='advanced':
                             st.caption('扩展方法映射请使用“进阶研究设计”选项卡生成新候选，避免静默改动研究口径。')

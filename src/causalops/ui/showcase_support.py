@@ -11,6 +11,8 @@ ROUTES={
  'home':('首页与模型连接','首次使用引导、连接模型并开始分析。'),
  'assistant':('分析工作台','上传、对话、方法检索、受控执行与证据解释。'),
  'analysis':('专业分析','上传自己的表、确认研究设计、执行并恢复分析。'),
+ 'settings':('模型与隐私','模型连接及任务授权'),
+ 'history':('研究记录','恢复已保存研究'),
  'examples':('分析示例','载入葡萄酒公开样本或进入政策评估教学案例。'),
  'experiment':('营销实验示例','营销邮件是否提高访问概率？读懂绝对变化、区间和实际意义。'),
  'diagnostic':('政策评估示例','如果处理前趋势已经不同，为什么不能把估计称为因果效应？'),
@@ -64,7 +66,7 @@ def conclusion_figures(bundle:ResultBundle)->dict[str,go.Figure]:
         f=go.Figure();ci=n['ci'];err={} if ci is None else {'error_x':{'type':'data','symmetric':False,'array':[ci[1]-n['estimate']],'arrayminus':[n['estimate']-ci[0]]}}
         f.add_trace(go.Scatter(x=[n['estimate']],y=['主估计'],mode='markers',marker={'size':15,'color':'#176b65'},**err,hovertemplate='估计差异：%{x:.4g} '+n['unit']+'<extra></extra>'))
         f.add_vline(x=0,line_dash='dash',line_color='#89959b')
-        f.update_layout(title='差异有多大？横线为95%置信区间',xaxis_title=n['unit'],height=250,template='plotly_white',margin={'l':45,'r':45,'t':65,'b':45})
+        f.update_layout(title='估计值与 95% 置信区间' if ci is not None else '估计值（本次运行未提供区间）',xaxis_title=n['unit'],height=250,template='plotly_white',margin={'l':45,'r':45,'t':65,'b':45})
         # Zoom to the estimate and its uncertainty, always keep zero visible.
         points=[0,n['estimate']]+(ci or []);width=max(max(points)-min(points),.1);f.update_xaxes(range=[min(points)-width*.15,max(points)+width*.15])
         figures['幅度与不确定性']=f
