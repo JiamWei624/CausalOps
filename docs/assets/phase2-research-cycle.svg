@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 360" role="img" aria-labelledby="title desc">
+<title id="title">研究设计与结果复核</title><desc id="desc">用户先登记口径并审核计划，执行器只执行已批准的计划。解释读取保存的运行，改变样本、指标或观察期必须新建计划并重新审核。</desc>
+<style>text{font:16px 'Microsoft YaHei',sans-serif;fill:#183a40}.head{font-weight:bold;font-size:19px}.note{font-size:14px;fill:#48636b}.line{fill:none;stroke:#16756d;stroke-width:2;marker-end:url(#arrow)}</style><defs><marker id="arrow" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 1L8 5L0 9" fill="none" stroke="#16756d" stroke-width="2"/></marker></defs>
+<rect x="0" y="0" width="920" height="360" rx="14" fill="#f5f8f8"/>
+<text x="30" y="41" class="head">研究设计</text><text x="30" y="69" class="note">数据与方案版本</text>
+<g fill="white" stroke="#bdd6d3"><rect x="186" y="40" width="154" height="57" rx="9"/><rect x="419" y="40" width="154" height="57" rx="9"/><rect x="661" y="40" width="192" height="57" rx="9"/></g>
+<text x="212" y="75">登记指标与样本</text><text x="446" y="75">生成待审方案</text><text x="699" y="75">核对事实并批准</text>
+<path class="line" d="M340 68H414M573 68H656M749 97V170"/><path class="line" d="M670 98V121H263V99"/><text x="352" y="144" class="note">口径待补或方案需修订</text>
+<text x="30" y="202" class="head">结果复核</text><text x="30" y="230" class="note">选定一次运行</text>
+<g fill="#e4f2ef" stroke="#9cc9c2"><rect x="186" y="176" width="154" height="58" rx="9"/><rect x="419" y="176" width="154" height="58" rx="9"/><rect x="661" y="176" width="192" height="58" rx="9"/></g>
+<text x="213" y="211">核查报告与引用</text><text x="444" y="211">保存结果与诊断</text><text x="688" y="211">本地统计工具执行</text>
+<path class="line" d="M661 205H578M419 205H345M255 235V263H492V237"/><text x="262" y="288" class="note">追问同一结果时读取运行证据</text>
+<path d="M27 309H891" stroke="#cbdad9"/><text x="30" y="337" class="note">更换样本、指标或观察期后须重新制定和审核方案。已有报告保留其原始版本与运行记录。</text></svg>

@@ -55,6 +55,9 @@ def show_run(a,ref,sid,*,compact=False):
     focus=(conclusion.get('focus') or {}).get('field')
     titles=conclusion.get('titles',TITLES)
     sections=conclusion['sections']
+    from causalops.results.rate_units import rate_contrast
+    from causalops.ui.group_chart import group_chart
+    rates=rate_contrast(a.ws.bundle(rid)[0]) if ref["kind"]=="research" else None
     headline = []
     if saved and saved['method']=='descriptive' and focus:
         field=next((r for r in saved['summary']['numeric'] if r['field']==focus),None)
@@ -65,19 +68,25 @@ def show_run(a,ref,sid,*,compact=False):
         values=overview_numbers(a.ws.bundle(rid)[0])
         if values['estimate'] is not None:
             headline=[('估计差异',f"{values['estimate']:.4g} {values['unit']}")]
+    if rates:
+        headline=[('对照组比例',f"{rates['control_rate']:.2%}"),('处理组比例',f"{rates['treated_rate']:.2%}"),
+                  ('绝对差',f"{rates['pp']:+.2f} 个百分点")]
     with st.container(key='panel_conclusion_'+rid):
-        text_col,stat_col=st.columns([3,1],vertical_alignment='center')
-        text_col.markdown('**分析结论**')
-        text_col.text(rq['brief']['question'])
-        text_col.write(safe_text(sections['magnitude']))
-        text_col.caption('结论适用对象：'+rq['brief']['population'])
-        if headline:
-            label,value=headline[1] if len(headline)>1 else headline[0]
-            stat_col.metric(label,value)
+        st.subheader('本次分析结果')
+        st.text(rq['brief']['question'])
+        if rates:
+            st.write('处理组的观测比例'+('高于' if rates['pp']>0 else '低于' if rates['pp']<0 else '等于')+'对照组。')
+        else:
+            st.write(safe_text(sections['meaning']))
+        st.caption('适用对象：'+rq['brief']['population'])
+    if headline:
+        for col,(label,value) in zip(st.columns(len(headline)),headline):col.metric(label,value)
     left,right=st.columns(2,gap='medium')
     with left.container(key='panel_mainchart_'+rid):
         st.subheader('统计图表')
-        if saved is not None:
+        if rates:
+            st.html(group_chart(rates))
+        elif saved is not None:
             labels,units=chart_context(a,sid,rid)
             charts=figures(saved,focus=focus,labels=labels,units=units)
             key=primary_chart_key(saved,focus,charts)
@@ -92,13 +101,15 @@ def show_run(a,ref,sid,*,compact=False):
             st.write(safe_text(sections['baseline']))
             st.caption('进阶方法的专用输出见下方统计诊断。')
     with right.container(key='panel_summary_'+rid):
-        st.subheader('关键结果与指标')
-        if headline:
-            for col,(name,value) in zip(st.columns(len(headline)),headline):col.metric(name,value)
-        if focus:st.caption('本次结果对应指标：'+str(conclusion['focus']['label'])+'（'+str(focus)+'）')
-        for section in ('baseline','meaning'):
-            st.markdown('**'+titles[section]+'**')
-            st.write(safe_text(sections[section]))
+        st.subheader('指标口径与不确定性')
+        if rates:
+            st.write('绝对差按处理组比例减去对照组比例计算，单位为百分点。')
+            if rates['ci_pp']:
+                lo,hi=rates['ci_pp']
+                st.write(f'差值的置信区间为 {lo:.2f} 至 {hi:.2f} 个百分点，采用本次运行的区间设置。')
+        else:
+            st.write(safe_text(sections['magnitude']))
+        if focus:st.caption('目标指标：'+str(conclusion['focus']['label']))
     bounds,follow=st.columns(2,gap='medium')
     with bounds.container(key='panel_limits_'+rid):
         st.subheader('适用范围与限制')
@@ -139,6 +150,15 @@ def make_report(a,ref,sid,conclusion):
     report=append_quality(report,run_quality(a,sid,rid))
     report=attach_discussion(attach_task_conclusion(report,conclusion),a.events(sid),rid,a.library)
     from causalops.ui.visual_layout import report_paper
+    if ref['kind']=='research':
+        from causalops.results.rate_units import rate_contrast
+        from causalops.ui.group_chart import group_chart
+        from html import escape
+        rates=rate_contrast(a.ws.bundle(rid)[0])
+        if rates and '</h1>' in report:
+            study=run_quality(a,sid,rid)['brief']['question']
+            cover='<section><h2>'+escape(study)+'</h2><p>处理组与对照组绝对差为 '+f"{rates['pp']:+.2f}"+' 个百分点。</p>'+group_chart(rates)+'</section>'
+            report=report.replace('</h1>', '</h1>'+cover,1)
     return report_paper(report)
 
 

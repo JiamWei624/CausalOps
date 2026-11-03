@@ -28,9 +28,11 @@ python -m venv "E:/causalops-env"
 
 不使用系统 Python 的 site-packages，不需要管理员方式运行。不确定解释器位置时，用 `where.exe python` 检查；带引号的完整解释器路径前使用 PowerShell 调用符 `&`。
 
+如已有 0.16.0 安装，更新代码后请在新源码根目录用同一虚拟环境再次执行上面的安装命令，再重启服务。第二轮首页应显示营销邮件预览与三张案例卡；原版号未变，仅核对版本号不足以判断构建。葡萄酒样本随包提供；营销案例需另取[指定公开压缩包](PHASE2_ACCEPTANCE.md)。
+
 ## 3. 离线安装
 
-完整离线包包含 wheelhouse、依赖哈希锁、应用 wheel 哈希、许可证资料与安装器。仅源码 ZIP 没有依赖包，不能冒充离线安装包。解压后在该目录执行：
+本轮发布对象是 GitHub 源码；此前同版本号的离线包对应其自身构建。如使用单独制作的完整离线包，其中包含 wheelhouse、依赖哈希锁、应用 wheel 哈希、许可证资料与安装器。仅源码 ZIP 没有依赖包，不能冒充离线安装包。解压后在该目录执行：
 
 ```powershell
 python install_offline.py --destination "E:/causalops-env-new"

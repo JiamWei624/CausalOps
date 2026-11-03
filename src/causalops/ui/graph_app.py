@@ -39,7 +39,7 @@ def render_graph_workspace(a,sid,frame,model):
         design=col_plan.container(key='panel_design')
         approval=col_audit.container(key='panel_approval')
         design.subheader('拟批准的方案')
-        approval.subheader('必须完成的核对')
+        approval.subheader('研究方案审核')
         discussion=st.container()
     elif review_layout:
         col_chat,col_plan=st.columns([.84,1],gap='medium')
@@ -69,6 +69,15 @@ def render_graph_workspace(a,sid,frame,model):
         with st.expander('高级设置：完整数据字典与研究事实',expanded=bool(st.session_state.get('_open_contract_'+sid))):
             render_contract(service,sid,frame,expanded=bool(st.session_state.get('_open_contract_'+sid)))
     with discussion:
+        if not overview:
+            st.caption('当前仅有数据概况。研究方案获批并运行后，统计结果才会出现在本任务中。')
+            with st.expander('查看数据质量'):
+                st.write(f'记录 {len(frame):,} 条，字段 {len(frame.columns)} 个。')
+                st.dataframe(frame.isna().sum().rename('缺失记录数').rename_axis('字段').reset_index(),hide_index=True)
+            if st.button('推荐研究问题',key='starter_discover_'+sid):
+                job=jobs.submit_start(sid,'这份数据可以回答哪些研究问题？',mode='explore')
+                st.session_state['_graph_pending_'+sid]=job['flow_id']
+                st.rerun()
         if latest_context:
             st.caption('当前指标：'+str(latest_context['body'].get('metric_label') or latest_context['body'].get('outcome') or '整体数据特征'))
         if overview_flow:
@@ -157,8 +166,7 @@ def render_graph_workspace(a,sid,frame,model):
             with (primary_results if primary_results is not None else st.container()):
                 if completed and rid in completed.get('run_ids',[]):
                     destination('result')
-                st.subheader('分析结果')
-                st.caption('报告依据：计划 V'+str(refs[rid]['plan_version'])+'　｜　运行 '+rid[:8])
+                st.caption('报告依据：计划 V'+str(refs[rid]['plan_version']))
                 show_run(a,refs[rid],sid,compact=True)
                 followups=st.columns(2)
                 for col,label,question in [(followups[0],'解读本次结果','请解释本次保存结果的主要发现、幅度和实际含义，不要重新计算。'),(followups[1],'查看限制与下一步','请根据本次保存结果说明分析限制与可行的下一步，不要重新计算。')]:
@@ -241,6 +249,10 @@ def render_graph_workspace(a,sid,frame,model):
                 from causalops.application.task_readiness import plan_readiness
                 readiness=plan_readiness(service,f,v)
                 stale=f['request'].get('contract_ref')!=service.contracts.ref(sid) if 'contract_ref' in f['request'] else False
+                st.markdown('**程序核对**')
+                st.write('配置可执行，且口径版本一致。' if readiness['configuration_ready'] and not stale else '当前配置或口径版本仍需处理。')
+                st.markdown('**研究声明与识别限制**')
+                st.caption('分组如何产生、指标何时测量，应按数据来源确认。结构检查无法证明组间不存在干扰或未观测混杂。')
                 for error in readiness['errors']:st.warning(error)
                 if readiness['errors'] or stale:
                     st.caption('本候选尚未执行；已保存结果不受影响。请先补充任务上方的数据口径，保存后重新制定计划。')

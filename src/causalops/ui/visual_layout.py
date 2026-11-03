@@ -109,6 +109,8 @@ def shell_style():
     }
     [data-testid=stElementContainer]:has(.co-top){position:sticky;top:0;z-index:6;pointer-events:none}
     [class*="st-key-panel_conclusion_"],.co-paper{scroll-margin-top:80px}
+    .st-key-home_actions button[kind=primary],[data-testid=stMain] button[kind=primary]:enabled{background:#126e67;color:white;border-color:#126e67}
+    [class*="st-key-panel_case_"]{height:100%;border-top:3px solid #78aca1}
     .co-paper-metrics{display:flex;gap:30px;flex-wrap:wrap}.co-paper-metrics strong{display:block;font-size:32px}.co-paper-metrics small{letter-spacing:0;color:var(--co-muted)}
     </style>""")
 

@@ -35,19 +35,20 @@ def open_public_sample():
 
 
 def render_examples():
-    st.subheader('分析示例')
-    wine, policy = st.columns(2)
-    with wine:
-        st.markdown('**葡萄酒质量分布**')
-        st.write('1,599 条公开检测记录。查看质量评分的分布，并探索评分与理化指标的关系。')
-        st.button('载入葡萄酒示例', key='load_public_wine', on_click=open_public_sample)
-        st.markdown('[数据说明与许可（UCI）](https://archive.ics.uci.edu/dataset/186/wine+quality)')
-        if st.session_state.get('public_example_error'):
-            st.error(st.session_state.pop('public_example_error'))
-    with policy:
-        st.markdown('**政策实施效果**')
-        st.write('180 家机构、20 天的合成教学数据。比较处理前趋势相同和不同的两种情形，判断何时可以解释政策效果。')
-        st.button('进入政策评估示例', on_click=navigate, args=('diagnostic',))
+    st.subheader('公开研究案例')
+    cards = [
+        ('基础数据分析', '葡萄酒质量评分分布', '1,599 条检测记录。查看评分分布、重复记录与样本范围。', '载入葡萄酒示例', open_public_sample, ()),
+        ('实验效果评估', '营销邮件与两周访问率', '比较随机分配的两组客户。核对实验口径后，审核方案并计算访问率差。', '查看营销实验', navigate, ('marketing',)),
+        ('进阶教学', '政策实施与处理前趋势', '合成面板数据。比较两种趋势设定，观察识别条件如何限制解释。', '进入政策评估示例', navigate, ('diagnostic',)),
+    ]
+    for col, (tag, title, detail, label, action, args) in zip(st.columns(3), cards):
+        with col.container(key='panel_case_'+('wine' if not args else args[0])):
+            st.caption(tag)
+            st.markdown('**'+title+'**')
+            st.write(detail)
+            st.button(label, on_click=action, args=args)
+    if st.session_state.get('public_example_error'):
+        st.error(st.session_state.pop('public_example_error'))
 
 
 def _upload_blank():
@@ -118,7 +119,7 @@ def render_history():
 
 
 def home():
-    from causalops.ui.visual_layout import wine_card
+    from causalops.ui.marketing_case import preview as marketing_preview
     with st.container(key='home_grid'):
         intro, preview = st.columns([1.163, 1], gap='medium')
         with intro:
@@ -128,19 +129,12 @@ def home():
                 entry.text_input('研究问题',placeholder='例如：营销邮件是否提高了两周访问率？',key='home_question',label_visibility='collapsed')
                 send.form_submit_button('→',help='保留问题并进入数据导入',on_click=_start_question)
             with st.container(horizontal=True,key='home_actions'):
-                st.button('载入葡萄酒示例',key='load_public_wine',type='primary',on_click=open_public_sample)
-                st.button('导入分析数据',on_click=_upload_blank)
-            st.caption('✓ 本地描述统计无需模型密钥　　 ✓ 研究方案需人工审核')
-            if st.session_state.get('public_example_error'):
-                st.error(st.session_state.pop('public_example_error'))
+                st.button('导入分析数据', type='primary', on_click=_upload_blank)
+                st.button('查看公开案例', on_click=navigate, args=('examples',))
+            st.caption('本地分析无需模型密钥。统计执行前需审核研究方案。')
         with preview:
-            wine_card()
-    st.html('<div class="co-foothead">研究方向<small>可先导入数据，再选择分析问题</small></div>')
-    with st.container(key='directions'):
-        first,second,third = st.columns(3)
-        first.button('**了解数据**  \n样本分布、缺失与主要指标',icon=':material/bar_chart:',on_click=_professional,args=('descriptive',),width='stretch')
-        second.button('**比较差异**  \n两组指标与研究口径',icon=':material/swap_horiz:',on_click=_professional,args=('causal',),width='stretch')
-        third.button('**评估干预**  \n政策实施与效果诊断',icon=':material/trending_up:',on_click=navigate,args=('diagnostic',),width='stretch')
+            marketing_preview()
+    render_examples()
     from causalops.ui.model_setup import render_model_setup
     with st.expander('模型连接与隐私设置'):
         render_model_setup()
@@ -176,7 +170,7 @@ def guide():
     manual=files('causalops.help').joinpath('manual.html').read_bytes()
     st.download_button('下载完整项目介绍与功能手册',manual,file_name='CausalOps_项目介绍与功能手册.html',mime='text/html')
     st.caption('手册可离线阅读、搜索和按A4打印，包含架构、操作、方法、权限、错误恢复和验收边界。')
-    st.markdown('**首次使用：** 首页填写模型与密钥（可跳过） → 点击导入分析数据 → 上传表格 → 生成基础报告或推荐分析方向 → 选择问题 → 确认必要事实与计划 → 本地计算 → 阅读结论、下载报告并继续追问。无需先选A/B或回归。已有结果会保留，刷新不重新计算。')
+    st.markdown('**首次使用**　首页可直接导入数据或选择公开案例。葡萄酒可查看样本分布；营销实验需核对原始文件和实验口径，再审核方案并计算；政策教学使用合成数据。结果页可导出报告，再针对同一运行追问。模型连接为可选项。')
     st.subheader('常用统计概念')
     st.dataframe([{'概念':a,'说明':b} for a,b in [
        ('绝对变化 / 百分点','概率从20%到23%，绝对变化是3个百分点。相对变化是15%；两者不能混写。'),
@@ -274,6 +268,9 @@ def main():
                 st.button('查看研究任务',on_click=navigate,args=('history',))
         elif route=='history':render_history()
         elif route=='examples':render_examples()
+        elif route=='marketing':
+            from causalops.ui.marketing_case import render
+            render()
         elif route=='analysis':
             options=['causal','descriptive','correlation','ols'];labels={'causal':'研究与效应分析','descriptive':'描述性统计分析','correlation':'相关分析','ols':'线性关联回归'}
             requested=st.query_params.get('mode','descriptive');kind=st.radio('分析任务类型',options,index=options.index(requested) if requested in options else 0,format_func=lambda x:labels[x],horizontal=True,key='analysis_kind')

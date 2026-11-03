@@ -1,6 +1,8 @@
 # 当前验收与限制 · 0.16.0
 
-日期：2026-11-02。[结构化验收记录](../validation/v0160/release-summary.json) · [统计核查](STATISTICAL_AUDIT.md) · [完整手册](COMPLETE_MANUAL.md)
+第二轮最新记录见[公开实验与界面验收](PHASE2_ACCEPTANCE.md)。
+
+上一轮记录日期：2026-11-02。[结构化验收记录](../validation/v0160/release-summary.json) · [统计核查](STATISTICAL_AUDIT.md) · [完整手册](COMPLETE_MANUAL.md)
 
 | 验收范围 | 实际结果 | 解释边界 |
 |---|---|---|

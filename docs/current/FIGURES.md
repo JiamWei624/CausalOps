@@ -2,6 +2,10 @@
 
 版本 0.16.0。本页展示源码中的操作、边界与统计输出。每张图可查看矢量文件、PNG 或可编辑的关系定义。
 
+## 研究设计与结果复核（第二轮）
+![研究流程](../assets/phase2-research-cycle.svg)
+[可编辑关系定义](../diagrams/phase2-research-cycle.mmd)
+
 ## 分析任务与人工审核
 ![分析任务与人工审核](../assets/task-workflow-current.svg)
 [PNG](../assets/task-workflow-current.png) · [图源](../diagrams/task-workflow-current.mmd)

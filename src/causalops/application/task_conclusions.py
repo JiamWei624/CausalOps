@@ -108,9 +108,9 @@ def build_task_conclusion(a,sid,rid):
     body['sha256']=hashlib.sha256(json.dumps(body,ensure_ascii=False,sort_keys=True,allow_nan=False).encode()).hexdigest();return body
 
 def attach_task_conclusion(report,value):
-    parts=['<section data-causalops-task-conclusion="1"><h2>研究结论与适用范围</h2><p>以下解释对应保存运行，未新增估计。运行编号：'+escape(value['run_id'])+'</p>']
+    parts=['<section data-causalops-task-conclusion="1"><h2>研究结论与适用范围</h2><p>以下解释对应本次保存的运行。</p>']
     for k,v in value['sections'].items():parts.append('<h3>'+escape(value.get('titles',TITLES)[k])+'</h3><p>'+escape(v)+'</p>')
-    parts.append('<details><summary>核对本节引用的运行证据</summary><pre>'+escape(json.dumps(value['evidence'],ensure_ascii=False,indent=2))+'</pre></details></section>')
+    parts.append('<details><summary>运行证据与复现信息</summary><p>运行编号：'+escape(value['run_id'])+'</p><pre>'+escape(json.dumps(value['evidence'],ensure_ascii=False,indent=2))+'</pre></details></section>')
     if '</h1>' in report:return report.replace('</h1>','</h1>'+''.join(parts),1)
     marker='</body>' if '</body>' in report else '</html>'
     return report.replace(marker,''.join(parts)+marker)
