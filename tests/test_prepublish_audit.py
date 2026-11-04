@@ -51,7 +51,7 @@ def test_credentials_still_block_outside_transport_fixture(tmp_path):
     from secrets import token_hex
 
     target = tmp_path / "config.py"
-    target.write_text("secret = " + repr("sk-" + token_hex(16)), encoding="utf-8")
+    target.write_text("{} = {!r}".format("secret", "sk-" + token_hex(16)), encoding="utf-8")
     hits = {(f.code, f.severity, f.path) for f in MODULE.audit(tmp_path)}
     assert ("assigned_secret", "blocker", target.name) in hits
     assert ("openai_like_key", "blocker", target.name) in hits
