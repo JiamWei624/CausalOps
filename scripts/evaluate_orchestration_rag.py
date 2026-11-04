@@ -11,6 +11,7 @@ cases=[
 ('工具变量2SLS的排除限制与弱工具','iv_2sls'),('Anderson Rubin指定原假设与弱工具检验','iv_2sls'),('Sharp RD阈值操纵与连续性','rd_sharp'),('清晰断点的局部参数和带宽','rd_sharp'),
 ('Fuzzy模糊断点处理概率跳跃','rd_fuzzy'),('模糊断点的单调性与排除限制','rd_fuzzy'),('交错DID ATT(g,t)与从未处理对照','staggered_did'),('staggered事件期逐点区间和批次构成','staggered_did'),
 ('JFE交错处理TWFE估计偏误','jfe_design_review'),('平台政策实证设计中处理后协变量风险','platform_policy_review'),('CSR阈值实证文献与断点识别','csr_threshold_review')]
+out.mkdir(parents=True, exist_ok=True)
 rows=[]
 for q,expected in cases:
  row={'question':q,'expected_card':expected}
