@@ -19,7 +19,7 @@ from causalops.visualization import build_regression_diagnostic_figures,build_di
 from causalops.ui.showcase_widgets import style,flow,design_summary,show_conclusion
 
 ROOT=Path(__file__).resolve().parents[3]
-CATALOG=Path(os.environ.get('CAUSALOPS_PUBLIC_CATALOG','E:/ugc_ai_portfolio_public_data/prepared/catalog.json'))
+CATALOG=Path(os.environ.get('CAUSALOPS_PUBLIC_CATALOG', 'data/public/prepared/catalog.json')).resolve()
 DB=Path(os.environ.get('CAUSALOPS_DEMO_DB',str(workspace_root()/'examples/state/causalops.sqlite3')))
 OUTPUT=DB.parent.parent/'runs'
 SYNTHETIC={'营销随机实验':'ab','营销CUPED':'cuped','零效应实验':'null_ab','政策DID':'did','非平行趋势压力场景':'did_bad_trend',
@@ -45,8 +45,8 @@ def render_demo(preset=None):
    st.info('尚未下载公开数据。请运行scripts/delivery/download_public_data.py及复现说明中的准备步骤；合成演示可直接使用。');return
   catalog=json.loads(CATALOG.read_text(encoding='utf-8'))
   ids=[x['id'] for x in catalog];case_id=st.selectbox('选择公开数据分析',ids,index=ids.index(requested) if requested in ids else 0,format_func=lambda k:next(x['title'] for x in catalog if x['id']==k),disabled=bool(preset))
-  item=next(x for x in catalog if x['id']==case_id);path=Path(item['path']).resolve()
-  allowed=Path('E:/ugc_ai_portfolio_public_data/prepared').resolve()
+  item=next(x for x in catalog if x['id']==case_id);path=(CATALOG.parent/item['path']).resolve()
+  allowed=CATALOG.parent
   if not path.is_relative_to(allowed) or hashlib.sha256(path.read_bytes()).hexdigest()!=item['sha256']:
    st.error('登记路径或数据指纹不符，停止加载。');return
   frame=pd.read_parquet(path);spec=CausalSpec.model_validate(item['spec']);kind='user_provided';scope=item['scope']

@@ -5,7 +5,7 @@ import json
 import pandas as pd
 
 
-PRIVATE_ROOT = Path('E:/ugc_ai_portfolio_private_data')
+import os
 BASE_CONTROLS = ['post_len_log','post_emoji_count','log_account_age','log_since_first','mention_order',
                  'lag_reply','cum_reply_count_before_n','reply_streak_before_n',
                  'roll_neg_post_rate','roll_pos_post_rate',
@@ -25,12 +25,14 @@ def horizon_label(event: pd.Series, duration: pd.Series, seconds: int) -> pd.Ser
 def load_registered_catalog(path: Path) -> list[dict]:
     if not path.is_file(): return []
     payload=json.loads(path.read_text(encoding='utf-8'))
-    root=PRIVATE_ROOT.resolve()
+    configured=os.environ.get('CAUSALOPS_PRIVATE_DATA_ROOT')
+    if not configured: raise ValueError('请先显式设置本地私有数据根目录。')
+    root=Path(configured).resolve()
     records=[]
     for item in payload.get('datasets',[]):
         source=Path(item['path']).resolve()
         if not source.is_relative_to(root) or source.suffix.lower()!='.parquet':
-            raise ValueError('已登记数据必须位于 E 盘私有数据目录内，且使用 Parquet。')
+            raise ValueError('已登记数据必须位于显式配置的私有数据目录内，且使用 Parquet。')
         if not source.is_file(): raise ValueError('已登记数据文件不存在。')
         records.append(item)
     return records

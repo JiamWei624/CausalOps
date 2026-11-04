@@ -107,13 +107,64 @@ class ResearchService:
         original_question=check_question(question)
         question,conversation_ref=resolve_context(self,sid,original_question,parent_flow_id)
         binding=self.data_binding(sid)
+        from causalops.application.research_semantics import reads_saved_result
+        readonly=mode in ('auto','results') and reads_saved_result(original_question)
+        from causalops.application.run_context import resolve,split_request,asks_previous_status
+        compound=split_request(original_question) if mode in ('auto','plan') else None
+        reference=resolve(self,sid,compound[0] if compound else original_question,parent_flow_id,run_ids)
+        if not compound and mode in ('auto','results') and not asks_previous_status(original_question):
+            from causalops.application.report_scope import match_requested_report
+            revise=re.search('新方案|新计划|待审|重新审核|提交方案|改看|改成|改用|改为|换成|修改|调整|只看|更换',original_question)
+            if (not revise or readonly) and (run_ids or self.a.selected_run(sid)):
+                selection=(reference or {}).get('ids',run_ids or [self.a.selected_run(sid)])
+                matched=match_requested_report(self,sid,original_question,selection,binding)
+                if matched:
+                    reference={**matched,'reason':matched.get('reason','范围待确认')}
+        if reference is not None:run_ids=reference['ids']
         if run_ids is None:
             rid=self.a.selected_run(sid);run_ids=[rid] if rid else []
+        from causalops.assistant.service import check_run_mentions
+        check_run_mentions(original_question,([r['run_id'] for r in self.a.completed_runs(sid)] if (reference or {}).get('error') else run_ids))
         self.a.facts(sid,run_ids=run_ids)
         request={'question':question,'mode':mode,'run_ids':list(dict.fromkeys(run_ids)),'data':binding,'contract_ref':self.contracts.ref(sid)}
+        from causalops.application.run_context import review_preview
+        if mode=='auto' and review_preview(original_question):
+            previous=self.flow(parent_flow_id) if parent_flow_id else None
+            owner=self.flow(previous['request']['review_owner']) if previous and previous['request'].get('review_owner') else previous
+            if not owner or owner['status']!='awaiting_review':
+                pending=[v for v in self.flows(sid) if v['status']=='awaiting_review']
+                owner=pending[0] if len(pending)==1 else None
+            if owner and owner['session_id']==sid and owner['status']=='awaiting_review':
+                request['review_owner']=owner['id']
+        if parent_flow_id and mode=='auto' and not compound and asks_previous_status(original_question):
+            request['status_parent']=parent_flow_id
+        if reference:
+            request['report_reference']={**reference,'page_selected':self.a.selected_run(sid),
+                'parent_flow':parent_flow_id}
+
+        if compound:
+            request.update(prior_question=compound[0],plan_question=compound[1],question=compound[1])
         if conversation_ref:request.update(user_question=original_question,conversation_ref=conversation_ref)
         from causalops.application.research_quality import audit_research,research_brief
         bound=self.contracts.latest(sid);body=bound['body'] if bound else {}
+        if run_ids and not readonly and mode not in ('method','results','profile','explore'):
+            from causalops.application.plan_scope import requested_scope
+            literal=compound[1] if compound else original_question
+            if compound or re.search('改看|改成|改用|改为|换成|切换|修改|调整|新方案|新计划|重新审核|只看|新报告|单独制定',literal):
+                from causalops.application.task_conclusions import source_dictionary
+                scoped_body=body
+                if len(run_ids)==1:
+                    source,source_ref=source_dictionary(self.a,sid,run_ids[0])
+                    if source_ref and source_ref.get('scope_sha') and source_ref['sha']==request['contract_ref']['sha']:
+                        scoped_body=source
+                scope=requested_scope(literal,scoped_body,self.ws.load_upload(binding['upload_id']))
+                if scope and not scope.get('error') and scoped_body is not body:
+                    # Preserve the approved measure when a follow-up only narrows the time window.
+                    for field in ('metric_label','metric_unit','metric_kind','metric_window'):
+                        scope.setdefault(field,scoped_body.get(field,''))
+                    scope['source_run_id']=run_ids[0]
+                if scope:
+                    request['analysis_scope']=scope
         if (self.contracts.ref(sid))!=request['contract_ref']:raise DesignError('研究口径已改变，请重新提出问题。')
         audit=audit_research(self.ws.load_upload(binding['upload_id']),body)
         fid=uuid.uuid4().hex
@@ -190,7 +241,26 @@ class ResearchService:
         from causalops.assistant.service import Plan,Step
         f=self.flow(fid);retrieval=self.output(fid,'retrieval');advice=self.output(fid,'method_research')
         row=self.contracts.bound(f);body=row['body'] if row else {};methods=advice['candidate_methods'] if advice else []
-        if not self.model and body and len(methods)==1 and methods[0]!='descriptive':
+        from causalops.application.plan_scope import ordered_methods
+        scope=f['request'].get('analysis_scope')
+        order=ordered_methods(f['request'].get('user_question',f['request']['question']))
+        if scope or (order and body.get('outcome') and body.get('predictors')):
+            if scope and scope.get('error'):raise DesignError(scope['error'])
+            steps=[]
+            for method in (['descriptive'] if scope else order):
+                outcome=body['outcome']
+                cfg={'method':method,'question':f['request']['question']}
+                if method=='descriptive':
+                    cfg['numeric']=[outcome]
+                    if scope and scope.get('start'):
+                        cfg.update(date=scope['date'],window_start=scope['start'],window_end=scope['end'],frequency='D')
+                else:
+                    cfg.update(outcome=outcome,predictors=body['predictors'])
+                steps.append(Step(tool='exploration',config=cfg,reason='按本次请求、登记指标与观察范围执行，须重新审核。'))
+            plan=Plan(objective=f['request']['question'],steps=steps,citations=[h['card_id'] for h in retrieval['hits'][:8]],required_questions=[])
+            return self.a.store_plan(f['session_id'],plan,'按本次研究口径制定',f['request']['question'],retrieval,request_key=fid)
+        if order:raise DesignError('多步骤任务需要确认结果指标与回归解释变量，不能省略步骤。')
+        if (not self.model or (f['request'].get('prior_question') and methods==['ols'])) and body and len(methods)==1 and methods[0]!='descriptive':
             m=methods[0];config={'method':m,'question':f['request']['question'] if len(f['request']['question'])>=8 else f['request']['question']+'：核对数据与方法设定'}
             spec=self.a.tools.method(__import__('causalops.assistant.contracts',fromlist=['REGISTRY']).REGISTRY[m].tool,m)
             for key in spec.design_type.model_fields:
@@ -217,6 +287,27 @@ class ResearchService:
         if not self.model and any(m!='descriptive' for m in methods):raise DesignError('当前请求涉及专门分析方法。请先登记所需数据字典，或配置并授权模型生成待审计划；系统不会静默替换成描述统计。')
         from causalops.application.task_readiness import public_contract_context
         return self.a.propose(f['session_id'],f['request']['question'],self.model,request_key=fid,retrieval=retrieval,guidance={**(advice or {}),'data_dictionary':public_contract_context(self,f),'conversation_context':__import__('causalops.application.conversation',fromlist=['public_context']).public_context(f['request']),'previous_plan':__import__('causalops.application.conversation',fromlist=['previous_plan']).previous_plan(self,f['request'])})
+    def withdraw_replaced_candidate(self,flow,replacement):
+        req=flow['request']
+        parent=(req.get('conversation_ref') or {}).get('parent_flow_id')
+        literal=req.get('user_question',req['question'])
+        if re.search(r'(?:不要|不得|禁止|勿|不应|不必|无需|不).{0,5}(?:撤回|放弃)',literal):
+            return
+        if not parent or not re.search(r'(?:撤回|放弃)(?:原|旧|之前的)(?:方案|计划)',req.get('user_question',req['question'])):
+            return
+        if not (self.output(flow['id'],'readiness') or {}).get('configuration_ready'):
+            return
+        old=self.flow(parent)
+        if old['session_id']!=flow['session_id'] or not old['plan_id'] or old['plan_id']==replacement['id']:
+            return
+        with self.ws.connection() as conn:
+            conn.execute('BEGIN IMMEDIATE')
+            changed=conn.execute("UPDATE assistant_plans SET state='rejected' WHERE id=? AND session_id=? AND state='candidate' AND EXISTS (SELECT 1 FROM workflow_flows WHERE id=? AND status='awaiting_review')",
+                                  (old['plan_id'],flow['session_id'],parent)).rowcount
+            if changed:
+                conn.execute("UPDATE workflow_flows SET status='rejected' WHERE id=?",(parent,))
+        if changed:self.emit(parent,'review','rejected',{'replaced_by':replacement['id']})
+
     def review(self,fid,*,accept:bool,expected_plan_id:str,expected_plan_sha:str,expected_data_sha:str,human_confirmed=False,confirmations=None,dispatch=True,use_contract_facts=False):
         if human_confirmed is not True or type(accept) is not bool:raise DesignError('只有使用者明确审核后才能批准或放弃。')
         with flow_lock(self.ws.root,fid):
@@ -250,7 +341,7 @@ class ResearchService:
             elif p['state']!='accepted':raise DesignError('计划状态已变化，无法批准。')
             receipt={'flow_id':fid,'session_id':f['session_id'],'plan_id':p['id'],'plan_sha':p['sha'],'data':data,
                      'knowledge_sha':self.a.library.digest,'source_sha':execution_source_sha(),'confirmations':facts,
-                     'facts_sha':digest(facts),'contract_ref':f['request'].get('contract_ref'),'actor':'explicit_local_user_review','approved_at':now()}
+                     'scope_sha':digest(f['request'].get('analysis_scope')),'facts_sha':digest(facts),'contract_ref':f['request'].get('contract_ref'),'actor':'explicit_local_user_review','approved_at':now()}
             aid=uuid.uuid4().hex
             with self.ws.connection() as c:
                 c.execute('INSERT INTO workflow_approvals VALUES(?,?,?,?,0)',(aid,fid,json.dumps(receipt,ensure_ascii=False),digest(receipt)))
@@ -264,17 +355,86 @@ class ResearchService:
         if not r or r[3]:raise DesignError('缺少有效领域批准，恢复参数不能替代批准。')
         body=json.loads(r[1]);p=self.a.get_plan(f['plan_id'])
         if digest(body)!=r[2] or body['flow_id']!=fid or body['session_id']!=f['session_id'] or body['plan_id']!=p['id'] or body['plan_sha']!=p['sha'] or p['state'] not in ('accepted','completed'):raise DesignError('批准记录与计划不一致。')
+        if (f['request'].get('analysis_scope') or 'scope_sha' in body) and body.get('scope_sha')!=digest(f['request'].get('analysis_scope')):
+            raise DesignError('当前指标或窗口与审批记录不符。')
         if body['data']!=self.data_binding(f['session_id']) or body['data']!=f['request']['data']:raise DesignError('批准的数据版本已失效。')
         if body['knowledge_sha']!=self.a.library.digest or body['source_sha']!=execution_source_sha() or body['facts_sha']!=digest(body['confirmations']):raise DesignError('批准的依据、代码或人工确认版本已变化。')
         if self.a.plans(f['session_id'])[0]['id']!=p['id']:raise DesignError('已有更新计划，旧批准不能启动统计。')
+        # Re-evaluate the actual step roles against the bound dictionary on dispatch and resume.
+        self.contracts.review_facts(f,p['plan'])
+        from causalops.application.research_semantics import issue
+        definition=(self.contracts.bound(f) or {}).get('body',{})
+        conflict=issue(f['request'].get('user_question', f['request']['question']),definition,[step['config'] for step in p['plan']['steps']])
+        if conflict:raise DesignError(conflict)
         return body
     def decide_route(self,fid):
         f=self.flow(fid);req=f['request'];q=req['question']
         if re.search(r'(?:直接|自动|替我|帮我|立即).{0,6}(?:批准|删除|跳过审核)|忽略.*(?:规则|权限)|绕过',q):return RouteDecision(route='clarify',reason='该请求涉及受限操作，请通过审核界面处理。')
         from causalops.application.report_scope import PROFIT, YEAR, METRICS, UNITS, report_scope, scope_message
-        inquiry = req.get('user_question', q)
+        inquiry=req.get('plan_question') or req.get('user_question',q)
+        reference=req.get('report_reference') or {}
+        if req.get('review_owner'):return RouteDecision(route='method',reason='只读核对当前待审方案。')
+        if re.search('批准|授权|核过|审批',inquiry) and re.search('还能|能否|可否|是否.*(?:派发|执行|沿用)',inquiry):
+            old=next((flow for flow in self.flows(f['session_id']) if flow.get('plan_id') and
+                      flow['id']!=fid),None)
+            if old:
+                try:self.verify_approval(old['id'])
+                except DesignError as exc:return RouteDecision(route='clarify',reason=str(exc)[:400])
+            return RouteDecision(route='clarify',reason='请在当前版本审核页核对指标、样本与批准依据；历史批准仅对应原方案，本轮没有执行新计算。')
+        if req.get('status_parent'):return RouteDecision(route='method',reason='读取上一流程的实际状态和当轮交付，不执行分析。')
+        if reference.get('error'):return RouteDecision(route='clarify',reason=reference['error'])
+        if req.get('prior_question'):
+            if not req['run_ids']:return RouteDecision(route='clarify',reason='请指定需要先解释的已有报告。')
+            if req.get('analysis_scope',{}).get('error'):return RouteDecision(route='clarify',reason=req['analysis_scope']['error'])
+            if re.search(r'ols|线性回归',inquiry,re.I):
+                return RouteDecision(route='plan',methods=['ols'],reason='先解释指定运行，再形成待审的关联分析方案。')
+            if not req.get('analysis_scope'):return RouteDecision(route='clarify',reason='请确认新窗口的日期界限与指标，再制定方案。')
+        if req.get('conversation_ref') and re.search('缺哪|缺少哪|少了哪|哪一天|哪几天|哪天',inquiry):
+            parent=self.flow(req['conversation_ref']['parent_flow_id'])
+            scope=parent['request'].get('analysis_scope') or {}
+            if scope.get('coverage'):return RouteDecision(route='clarify',reason=scope['error'][:395])
         explicit_analysis = re.search(r'新建计划|另建计划|制定.*计划|(?:使用|采用|进行)\s*(?:A/B|随机实验|回归|双重差分).{0,16}(?:比较|分析|估计)',inquiry,re.I)
+        from causalops.application.research_semantics import issue, calculation_forbidden, consultation, DESCRIBE, REQUEST
+        definition=(self.contracts.bound(f) or {}).get('body',{})
+        from causalops.application.plan_scope import ordered_methods
+        scope=req.get('analysis_scope')
+        from causalops.application.research_semantics import registered_ratio_advice
+        if req['mode'] in ('auto','method') and registered_ratio_advice(inquiry,definition):
+            return RouteDecision(route='method',reason='解释已登记比率的汇总规则，不执行计算。')
+        conflict=issue(inquiry,definition)
+        if conflict:return RouteDecision(route='clarify',reason=conflict)
+        if scope:
+            if scope.get('error'):return RouteDecision(route='clarify',reason=scope['error'])
+            if re.search(r'因果|回归|干预效果|相关系数',inquiry):
+                return RouteDecision(route='clarify',reason='请登记新目标、观察范围及方法假设，不能直接沿用旧设计。')
+            return RouteDecision(route='plan',methods=['descriptive'],reason='按照本次指标和窗口建立独立待审版本。')
+        order=ordered_methods(inquiry)
+        if order and req['mode'] not in ('method','results') and not calculation_forbidden(inquiry):
+            return RouteDecision(route='plan',methods=order,reason='按用户明确的顺序分别检查分布与回归关联。')
+        from causalops.application.research_semantics import reads_saved_result
+        if req['mode'] in ('auto','results') and not req.get('prior_question') and reads_saved_result(inquiry):
+            if not req['run_ids']:return RouteDecision(route='clarify',reason='当前没有选定的已完成报告。请先选择历史运行；本轮未新建方案。')
+            scopes=[report_scope(self.a,f['session_id'],{'run_id':rid}) for rid in req['run_ids']]
+            missing=scope_message(inquiry,scopes)
+            if missing:return RouteDecision(route='clarify',reason=missing[:400])
+            return RouteDecision(route='results',reason='从指定运行读取所问统计量，仅解释已有研究。')
+        if calculation_forbidden(inquiry) and not (req['run_ids'] and re.search('报告|当前结果|本次结果',inquiry)):
+            return RouteDecision(route='method',reason='本轮仅请求方法或设计说明，不生成计算任务。')
         if req['run_ids'] and req['mode'] in ('auto','results') and not explicit_analysis:
+            from causalops.application.comparison import threshold
+            if threshold(inquiry) and not re.search('请拟合|重新计算|制定.*计划',inquiry):
+                return RouteDecision(route='results',reason='核对所选运行的统计量与比较条件。')
+            numeric_query=re.search(r'相关系数|pearson|spearman|(?:阈值|基准|参考值)\s*[为是：:]?\s*[+-]?\d|(?:与|比|和)\s*[+-]?\d+(?:\.\d+)?\s*(?:高|低|相比|相差|大|小)',inquiry,re.I)
+            if numeric_query and not re.search('重新计算|另建|新方案|新计划|换指标|请计算|请拟合',inquiry):
+                return RouteDecision(route='results',reason='读取选定报告的统计量与单位。')
+            if re.search(r'(?:最近|过去|最后)\s*(?:\d+|[一二三四五六七八九十]+)\s*个?(?:自然)?[日天]',inquiry):
+                from causalops.application.plan_scope import requested_scope
+                window=requested_scope(inquiry,definition,self.ws.load_upload(req['data']['upload_id']))
+                if window and window.get('error'):return RouteDecision(route='clarify',reason=window['error'])
+                if window and window.get('start'):
+                    windows=[report_scope(self.a,f['session_id'],{'run_id':rid})[1] for rid in req['run_ids']]
+                    if not all(window['start'] in prior and window['end'] in prior for prior in windows):
+                        return RouteDecision(route='clarify',reason='所选报告未采用所问窗口。数据中的日期范围为 '+window['metric_window']+'；如需计算，请为该窗口制定新方案并重新审核。')
             if PROFIT.search(inquiry) or YEAR.search(inquiry) or any(re.search(p,inquiry,re.I) for p in METRICS.values()):
                 scopes = [report_scope(self.a,f['session_id'],{'run_id':rid}) for rid in req['run_ids']]
                 missing = scope_message(inquiry,scopes)
@@ -282,7 +442,22 @@ class ResearchService:
                     return RouteDecision(route='clarify',reason=missing[:400])
             if (UNITS.search(inquiry) or re.search(r'(?:解释|解读|理解).{0,12}(?:本次|这份|当前|已选).{0,12}(?:结果|访问|购买)',inquiry)) and not re.search('重新|重算|新分析|制定|新增',inquiry):
                 return RouteDecision(route='results',reason='按已选报告的估计量和基准解释单位。')
+        if not req.get('prior_question') and not req.get('analysis_scope') and reference and reference['ids'] and reference['reason']!='显式选择' and req['mode'] in ('auto','results'):
+            if not re.search('新方案|新计划|制定|修改|改为|更换|重新(?:运行|计算)|拟合|提交.*审|指标.*改',inquiry):
+                return RouteDecision(route='results',reason='使用已核对指代的历史运行回答。')
         if (req.get('conversation_ref') or {}).get('selected_direction'):return RouteDecision(route='plan',reason='依据使用者选择的已展示建议形成待审计划。')
+        if req['mode']=='auto' and not req['run_ids']:
+            if re.search('好不好|表现如何|怎么样',inquiry) and not definition.get('research',{}).get('decision'):
+                return RouteDecision(route='clarify',reason='请明确希望评估的业务指标、比较基准及观察窗口，再判断表现。')
+            if DESCRIBE.search(inquiry) and REQUEST.search(inquiry) and re.search('分布|直方图|描述统计',inquiry) and not re.search(r'回归|相关|关联|关系|因果|影响|效应|如何|为什么|\b(?:ols|did|cuped|psm|ipw|dml)\b',inquiry,re.I):
+                return RouteDecision(route='plan',methods=['descriptive'],reason='请求计算指标分布，需形成待审描述分析计划。')
+            if req.get('conversation_ref') and re.search('改为|改看|改成|改用',inquiry):
+                from causalops.application.conversation import previous_plan
+                prev=previous_plan(self,req)
+                if prev and definition.get('outcome') and re.search('指标|结果变量',inquiry) and not re.search('回归|相关|因果|实验',inquiry):
+                    parent=self.flow(req['conversation_ref']['parent_flow_id'])
+                    if parent.get('plan_id') and all(step['config']['method']=='descriptive' for step in self.a.get_plan(parent['plan_id'])['plan']['steps']):
+                        return RouteDecision(route='plan',methods=['descriptive'],reason='依据当前数据字典与前一描述方案生成新指标的待审计划。')
         if req['mode']!='auto':route=RouteDecision(route=req['mode'],reason='使用者明确选择的请求类型。')
         elif re.search(r'能做什么|可以.{0,8}做什么|(?:能|可以).{0,8}(?:研究|分析|探索)(?:什么|哪些|哪)|(?:能|可以).{0,8}回答(?:什么|哪些)问题|分析方向|研究方向|不知道.{0,6}(?:问|分析|研究)|推荐.{0,8}(?:问题|研究|方向)',q):route=RouteDecision(route='explore',reason='先推荐当前数据可回答的问题，不执行分析。')
         elif re.search(r'解释|解读',q) and re.search(r'当前结果|本次结果|分析结果|结果的',q) and not req['run_ids']:route=RouteDecision(route='clarify',reason='目前只完成了文件登记，还没有可解释的分析结果。点击“生成基础报告”后，即可查看图表、结论并继续追问。')

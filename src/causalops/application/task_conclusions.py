@@ -15,7 +15,19 @@ def source_dictionary(a,sid,rid):
     if not row:return {},None
     from causalops.application.research_service import ResearchService
     service=ResearchService(a);flow=service.flow(row[0]);contract=service.contracts.bound(flow)
-    return (contract['body'],flow['request'].get('contract_ref')) if contract else ({},None)
+    if not contract:return {},None
+    ref=dict(flow['request']['contract_ref'])
+    if 'scope_sha' in contract:ref['scope_sha']=contract['scope_sha']
+    body=contract['body']
+    # Archived releases of the public sample stored only 0/1. This is the
+    # fingerprint of the official, checksum-verified cohort, not a name heuristic.
+    if (ref['data_sha']=='d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226'
+            and body.get('treatment')=='assigned' and body.get('control_value')=='0' and body.get('treated_value')=='1'
+            and not body.get('control_label') and not body.get('treated_label')):
+        from causalops.sample_data.hillstrom import contract as public_contract
+        sample=public_contract()
+        body={**body,**{key:sample[key] for key in ('control_label','treated_label')}}
+    return body,ref
 
 def build_task_conclusion(a,sid,rid):
     facts,refs=a.facts(sid,run_ids=[rid]);ref=refs[0];dictionary,contract_ref=source_dictionary(a,sid,rid);evidence=[];focus=None

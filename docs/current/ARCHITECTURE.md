@@ -1,4 +1,6 @@
-# 系统架构 · 0.16.0
+# 系统架构 · CausalOps 阶段性公开测试版
+
+应用包版本 0.16.0，本阶段产品代码冻结于 `b8fbc75`。核心调用链在本地单用户模式验证，包括 LangGraph 审核中断、版本化合同、本地执行、保存证据与报告问答；模型端验证限于已记录的具体服务和任务。问答路由和目标指标解读存在已知遗漏，17 项注册入口的统计验证深度并不相同。下一代多表语义管理、更自主的研究规划和多人部署属于未来工作。
 
 [查看研究质量、权限、恢复和运行证据图](FIGURES.md)
 
@@ -55,6 +57,23 @@ SQLite保存任务、字典、候选、审批、后台状态和图检查点；Pa
 审批绑定具体数据、字典、计划、知识库和代码指纹。LangGraph恢复信号不是批准；ToolGateway仍验证领域批准。新字典不能静默改变旧运行，模型不能自行接受、批准或执行。
 
 后台是单线程本地队列，并非分布式执行或任意代码沙箱；数值程序来自原已验证内核。MCP保留只读导出工具，A2A是本地规则审阅服务，均不等于多模型自主研究。
+
+## 冻结版本的研究请求调用路径
+
+以下以营销邮件研究为例。表中源码均位于 `src/causalops/` 下。[隔离安装实测和已知风险](../stage/验收与整合.md)
+
+| 顺序与源码入口 | 输入与输出 | 设计理由与边界 |
+|---|---|---|
+| 1. Streamlit 的 `ui/workbench.py` 进入 `ui/marketing_case.py:render` | 原始 gzip → `sample_data/hillstrom.py:cohort` 校验指纹及两臂样本 → `ResearchService.create_task` | 案例预览可以直接阅读，实际报告需由新的任务生成。用户自有表另走普通上传。 |
+| 2. `application/data_contracts.py:DataContract、ContractRepository.save` | 分组、结果、指标窗口、分析单位及来源声明 → 有版本的数据字典 | 字段类型本身不足以证明随机化。更新字典需要重新核对依赖的计划。 |
+| 3. `application/research_service.py:ResearchService.start、decide_route` → `orchestration/research_graph.py:build_graph` | 问题、数据绑定、可选历史运行 → 新的流程编号、路由和引用 | 图的状态记录引用和步骤。区分计划与结果追问仍有误路由案例。 |
+| 4. `orchestration/method_research.py:build_method_graph` → `integrations/method_retriever.py:MethodRetriever` | 问题、候选方法 → 本地知识目录的方法卡及来源 | 采用有界检索，以便限制缺证时的补检次数。未做全领域文献召回率验证。 |
+| 5. `llm/providers.py:ProviderConfig、StructuredModelClient`、`llm/deepseek.py:DeepSeekStructuredModelClient` 与 `ui/model_setup.py` | 授权的字段和研究上下文 → 模型建议或解释 | 密钥和任务外发许可分开。选择本地模式即可完成本教程。结构有效不能保证研究结论正确。 |
+| 6. `application/task_readiness.py:plan_readiness、check_declared_roles` → `ResearchService.review` | 待审步骤、绑定的数据与计划指纹、用户确认 → 批准、阻断或修订 | 审核中断让使用者确认真实业务条件。旧研究仍绑定原版本。 |
+| 7. `ToolGateway.execute` → `assistant/contracts.py:AnalysisTools.method、REGISTRY` → 探索、研究或进阶工具 | 批准版本、方法、字段 → 运行和统计证据 | 白名单按工具核对方法。描述、因果与局部推断的必要条件不同。 |
+| 8. `general/service.py:GeneralWorkspace` 与 `assistant/service.py:AssistantWorkspace` | SQLite 保存研究/审批等记录，工作区文件保存表格与运行产物；`completed_runs` 查成功运行，`bundle` 读证据 | SQLite、Parquet 等本地持久化便于复核；共享或并发多租户部署不在验证范围。 |
+| 9. `application/report_scope.py:match_requested_report`、`application/metric_semantics.py:semantic_answer`、`application/aggregation_evidence.py` | 用户所指运行、统计量、单位与窗口 → 有出处的回答或缺项说明；`ui/assistant_app.py:make_report` 生成报告 | 检查分母含义与分组证据；复杂自然语言仍可能漏答。历史查询先确认所选运行。 |
+| 10. `evaluation/v1、v12、v13` 与 `scripts/eval_v20/` | 隔离任务、公开或合成输入 → 各层记录、独立评分与失败原因 | 服务评分、浏览器行为和官方模型回执分别报告。真实用户试用另行开展。 |
 
 ## 官方技术依据
 

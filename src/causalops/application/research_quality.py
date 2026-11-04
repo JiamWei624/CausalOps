@@ -36,11 +36,18 @@ def audit_research(frame,body):
             sparse=int((counts<5).sum())
             if sparse:add('统计','sparse:'+str(col),'review',str(col)+f' 有 {sparse} 个类别不足5条记录。','小类别可能导致不稳定估计；不自动合并类别。',sparse)
     entity,time=body.get('entity'),body.get('time')
-    if entity in frame and time in frame:
-        duplicate_keys=int(frame.duplicated([entity,time]).sum())
-        add('关系','entity_time','block' if duplicate_keys else 'pass',f'实体—时间键重复 {duplicate_keys} 条。','检查观测粒度；不自动聚合或删行。',duplicate_keys)
-    elif entity in frame:
-        n=int(frame[entity].duplicated().sum());add('关系','repeated_entity','review' if n else 'pass',f'重复实体记录 {n} 条。','重复观测需要合适的聚类或面板方法；不能默认独立。',n)
+    if entity in frame:
+        ids=frame[entity].dropna()
+        counts=ids.value_counts()
+        repeated=int(len(ids)-len(counts))
+        detail=(f'共 {len(frame)} 条记录，已知标识 {entity} 对应 {len(counts)} 个不同实体；'
+                f'{int((counts>1).sum())} 个实体有重复观测，比每实体首条多 {repeated} 条，缺失标识 {len(frame)-len(ids)} 条。')
+        action=('记录数不代表独立样本数。若研究单位为用户，先核对聚合窗口；若一行是帖子或一次测量，'
+                '可保留各行，核对上层用户标识、实体—时间键及按实体聚类的适用性。')
+        add('关系','repeated_entity','review' if repeated or len(ids)<len(frame) else 'pass',detail,action,repeated)
+        if time in frame:
+            duplicate_keys=int(frame.duplicated([entity,time]).sum())
+            add('关系','entity_time','block' if duplicate_keys else 'pass',f'实体—时间键重复 {duplicate_keys} 条。','检查观测粒度；不自动聚合或删行。',duplicate_keys)
     else:add('关系','unit_unknown','review','尚无可核对的实体标识。','确认每行含义；没有ID不等于观测独立。')
     if time in frame:
         raw=frame[time];parsed=pd.to_datetime(raw,errors='coerce') if not pd.api.types.is_numeric_dtype(raw) else None
@@ -48,10 +55,9 @@ def audit_research(frame,body):
         add('关系','time_semantics','review' if parsed is None or invalid else 'pass','日期解析失败 '+str(invalid)+' 条。' if parsed is not None else '时间为数值编码，尚未自动解释为日期。','确认时间单位、时区和编码。',invalid)
     covs=set(body.get('covariates',[]));target=body.get('outcome')
     if target in covs:add('研究','outcome_adjustment','block','结果字段同时被设为调整变量。','修改变量角色，不能把结果本身当作控制变量。')
-    definitions={f['field']:f for f in body.get('fields',[])}
-    for c in sorted(covs):
-        timing=definitions.get(c,{}).get('timing','unknown')
-        add('研究','timing:'+c,'block' if timing in ('future','post_treatment') else 'review' if timing=='unknown' else 'declared',c+' 的测量时点：'+timing,'核对生成逻辑与测量时间；人工声明不等于程序已验证。')
+    from causalops.application.variable_timing import timing_checks
+    for field,status,message in timing_checks(body,body):
+        add('研究','timing:'+field,status,message,'核对生成逻辑与测量时间；人工声明不等于程序已验证。')
     scope=body.get('research',{})
     for k in ('population','provenance'):
         if not scope.get(k):add('研究','scope:'+k,'review',SCOPE_LABELS[k]+'未登记。','补充适用范围与数据来源，或明确仅描述上传样本。')

@@ -109,38 +109,79 @@ class StructuredModelClient:
             headers['anthropic-version']=cfg.anthropic_version;body.update(system=instruction,messages=[{'role':'user','content':encoded}],max_tokens=cfg.max_output_tokens);path='/messages'
         # No tools, file upload, automatic redirects or hidden alternate provider.
         return path,headers,body
+    def _observe_attempt(self, event):
+        """Optional metadata-only observer. Physical attempts are distinct from schema repairs."""
+
     def complete_json(self,*,system_instruction,user_payload,output_schema):
         import httpx
         from jsonschema.validators import validator_for
-        started=time.monotonic();path,headers,body=self._request(system_instruction,user_payload,output_schema);self.last_telemetry={}
-        for attempt in range(self.provider_config.max_retries+1):
+        started=time.monotonic()
+        path,headers,body=self._request(system_instruction,user_payload,output_schema)
+        base={'provider':self.provider_config.provider,'provider_host':urlsplit(self.base_url).hostname,
+              'model':self.model,'api_mode':self.api_mode}
+        self.last_telemetry={}
+        for attempt in range(1,self.provider_config.max_retries+2):
+            physical_started=time.monotonic()
+            event={**base,'attempt':attempt}
+            self._observe_attempt({**event,'event':'started'})
+            retry=False
             try:
                 with self._client.stream('POST',self.base_url+path,headers=headers,json=body,follow_redirects=False,timeout=self.provider_config.timeout_seconds) as response:
+                    event['status_code']=response.status_code
+                    rid=response.headers.get('x-request-id')
+                    if rid and self._api_key not in rid:event['request_id']=rid[:180]
                     if response.status_code>=300:
-                        self.last_telemetry={'provider':self.provider_config.provider,'provider_host':urlsplit(self.base_url).hostname,'model':self.model,'api_mode':self.api_mode,'status':'http_error','status_code':response.status_code,'attempts':attempt+1}
-                        if response.status_code in (429,500,502,503,504) and attempt<self.provider_config.max_retries:self._sleep(1);continue
-                        labels={400:'请求参数或接口模式不兼容',401:'密钥未通过认证',403:'账户或模型权限不足',404:'API路径或模型不可用',429:'限流或额度限制'}
-                        raise ProviderError('API返回HTTP '+str(response.status_code)+'：'+labels.get(response.status_code,'服务未完成请求')+'。未切换服务商；请核对当前配置。')
-                    chunks=[];size=0
-                    for chunk in response.iter_bytes():
-                        size+=len(chunk)
-                        if size>2*1024*1024:raise ProviderError('响应超过本地大小限制，停止解析。')
-                        chunks.append(chunk)
-                    outer=strict_object(b''.join(chunks).decode('utf-8'))
-                    request_id=response.headers.get('x-request-id') or outer.get('id')
-                text,usage=self._content(outer)
-                self.last_telemetry={'request_id':request_id,'provider':self.provider_config.provider,'provider_host':urlsplit(self.base_url).hostname,'model':str(outer.get('model',self.model))[:160],'requested_model':self.model,'api_mode':self.api_mode,'output_contract':self.provider_config.json_mode+'_with_local_schema_validation','status':'completed','attempts':attempt+1,'latency_ms':round((time.monotonic()-started)*1000),'input_tokens':usage.get('input_tokens',usage.get('prompt_tokens')),'output_tokens':usage.get('output_tokens',usage.get('completion_tokens')),'total_tokens':usage.get('total_tokens')}
-                if len(self._api_key)>=8 and self._api_key in text:raise ProviderError('模型输出包含认证信息，已阻止保存与展示。')
-                try:value=strict_object(text)
-                except ValueError:raise OutputContractError('返回文本不是有效的单一JSON对象；仅允许按原结构修复一次。') from None
-                validator=validator_for(output_schema);validator.check_schema(output_schema)
-                error=next(validator(output_schema).iter_errors(value),None)
-                if error is not None:raise OutputContractError('模型JSON未通过本地结构校验（规则：'+str(error.validator)+'）；请重新输出完整且字段类型正确的JSON。')
-                return value
-            except (httpx.TimeoutException,httpx.TransportError) as exc:
-                if attempt<self.provider_config.max_retries:self._sleep(1);continue
-                raise ProviderError('模型网络请求未完成：'+type(exc).__name__+'；未切换服务商。') from None
-            except (ValueError,UnicodeError,KeyError,TypeError,AttributeError):raise ProviderError('模型返回内容不完整或JSON格式无效，未采纳输出。') from None
+                        event['status']='http_error'
+                        retry=response.status_code in (429,500,502,503,504) and attempt<=self.provider_config.max_retries
+                        if not retry:
+                            labels={400:'请求参数或接口模式不兼容',401:'密钥未通过认证',403:'账户或模型权限不足',404:'API路径或模型不可用',429:'限流或额度限制'}
+                            raise ProviderError('API返回HTTP '+str(response.status_code)+'：'+labels.get(response.status_code,'服务未完成请求')+'。未切换服务商；请核对当前配置。')
+                    else:
+                        chunks=[];size=0
+                        for chunk in response.iter_bytes():
+                            size+=len(chunk)
+                            if size>2*1024*1024:raise ProviderError('响应超过本地大小限制，停止解析。')
+                            chunks.append(chunk)
+                        outer=strict_object(b''.join(chunks).decode('utf-8'))
+                        rid=event.get('request_id') or outer.get('id')
+                        if isinstance(rid,str) and self._api_key not in rid:event['request_id']=rid[:180]
+                        event['status']='response_received'
+                if not retry:
+                    text,usage=self._content(outer)
+                    if len(self._api_key)>=8 and self._api_key in text:raise ProviderError('模型输出包含认证信息，已阻止保存与展示。')
+                    resolved=str(outer.get('model',self.model))
+                    def tokens(*keys):
+                        value=next((usage[k] for k in keys if k in usage),None)
+                        return value if type(value) is int and value>=0 else None
+                    event.update(model=resolved[:160] if self._api_key not in resolved else self.model,
+                        requested_model=self.model,output_contract=self.provider_config.json_mode+'_with_local_schema_validation',
+                        input_tokens=tokens('input_tokens','prompt_tokens'),output_tokens=tokens('output_tokens','completion_tokens'),
+                        total_tokens=tokens('total_tokens'))
+                    try:value=strict_object(text)
+                    except ValueError:raise OutputContractError('返回文本不是有效的单一JSON对象；仅允许按原结构修复一次。') from None
+                    validator=validator_for(output_schema);validator.check_schema(output_schema)
+                    error=next(validator(output_schema).iter_errors(value),None)
+                    if error is not None:raise OutputContractError('模型JSON未通过本地结构校验（规则：'+str(error.validator)+'）；请重新输出完整且字段类型正确的JSON。')
+                    event['status']='completed'
+                    return value
+            except httpx.TransportError as exc:
+                event.update(status='transport_error',error=type(exc).__name__)
+                # Only transient I/O failures qualify. Protocol/configuration violations do not.
+                retry=isinstance(exc,(httpx.TimeoutException,httpx.NetworkError,httpx.RemoteProtocolError)) and attempt<=self.provider_config.max_retries
+                if not retry:raise ProviderError('模型网络请求未完成：'+type(exc).__name__+'；未切换服务商。') from None
+            except OutputContractError:
+                event['status']='output_contract_error'
+                raise
+            except ProviderError:
+                if event.get('status')!='http_error':event['status']='response_rejected'
+                raise
+            except (ValueError,UnicodeError,KeyError,TypeError,AttributeError):
+                event['status']='response_rejected'
+                raise ProviderError('模型返回内容不完整或JSON格式无效，未采纳输出。') from None
+            finally:
+                self.last_telemetry={**event,'attempts':attempt,'latency_ms':round((time.monotonic()-started)*1000)}
+                self._observe_attempt({**event,'event':'finished','will_retry':retry,'latency_ms':round((time.monotonic()-physical_started)*1000)})
+            if retry:self._sleep(1)
         raise ProviderError('已达到请求尝试上限。')
     def _content(self,r):
         if self.api_mode=='responses':

@@ -18,7 +18,9 @@ def public_contract_context(service,flow):
     result['field_definitions']=[]
     for field in body['fields']:
         try:check_question(field['meaning']) if field['meaning'] else None;check_question(field['unit']) if len(field['unit'])>1 else None
-        except ValueError:continue
+        except ValueError:
+            result['field_definitions'].append({k:field[k] for k in ('field','role','timing')})
+            continue
         result['field_definitions'].append({k:field[k] for k in ('field','meaning','unit','role','timing')})
     return {'status':'human_registered','version':row['version'],'definition':result,'evidence_type':'human_declaration_not_empirical_validation','scope':'current dataset and new plans only; prior results remain bound to their source plan','rule':'可引用字段名与登记口径；不得写入任何reviewed/declared/assignment事实，不得声称假设已验证。'}
 
@@ -35,11 +37,20 @@ def check_declared_roles(plan,context):
             if cfg.get(key) and definition.get(key) and cfg[key]!=definition[key]:raise DesignError('候选的'+LABELS[key]+'与已登记口径不同，请按已登记字段修复或由使用者先修改字典。')
         for key in ('predictors','covariates'):
             if cfg.get(key) and definition.get(key) and set(cfg[key])!=set(definition[key]):raise DesignError('候选的'+LABELS[key]+'偏离已登记的本轮变量集合；请不要自行增删。')
-        rolefields=cfg.get('covariates',[])+(cfg.get('predictors',[]) if definition.get('purpose')=='predictive' else [])
-        if any(f['field'] in rolefields and f['timing'] in ('future','post_treatment') for f in definition.get('field_definitions',[])):raise DesignError('候选使用了登记为未来或处理后的输入，应说明不可用原因，不应形成该预测/调整设定。')
+        from causalops.application.variable_timing import require_eligible
+        require_eligible(cfg, {**definition, 'fields':definition.get('field_definitions',[])})
+
 
 def plan_readiness(service,flow,plan):
     errors=[];required=[];row=service.contracts.bound(flow);body=row['body'] if row else {};steps=plan['steps'];frame=service.ws.load_upload(flow['request']['data']['upload_id'])
+    from causalops.application.research_semantics import issue
+    semantics=issue(flow['request'].get('user_question',flow['request']['question']),body,[step['config'] for step in steps])
+    if semantics:errors.append(semantics)
+    from causalops.application.plan_scope import check_steps, ordered_methods
+    try:check_steps(flow['request'].get('analysis_scope'),steps)
+    except ValueError as exc:errors.append(str(exc))
+    order=ordered_methods(flow['request'].get('user_question',flow['request']['question']))
+    if order and [s['config']['method'] for s in steps]!=order:errors.append('方案缺少请求的分析步骤或顺序不符。')
     from causalops.assistant.service import Plan
     try:check_declared_roles(Plan.model_validate(plan),public_contract_context(service,flow))
     except ValueError as exc:errors.append(str(exc))

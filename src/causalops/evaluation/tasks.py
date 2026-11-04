@@ -1,7 +1,7 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
-import hashlib,json
+import hashlib,json,os
 import pandas as pd
 from causalops.schemas import CausalSpec
 from causalops.demo_domains import synthetic_scenario
@@ -40,8 +40,9 @@ def load_task(task_id,seed=641227):
             'window':'生成器登记的分析窗口','source':'固定种子的合成生成器；不代表真实业务效果'}
         return AnalysisTask(task_id,TITLES[task_id],frame,spec,'synthetic','approved','seeded synthetic generator',
                {'metric_definition':md,'sample_note':'合成验收任务；已知生成过程不外推业务。'},_data_fingerprint(frame),known_effect=tau)
-    catalog=json.loads(Path('E:/ugc_ai_portfolio_public_data/prepared/catalog.json').read_text(encoding='utf-8'))
-    item=next(x for x in catalog if x['id']==task_id);p=Path(item['path']).resolve();allowed=Path('E:/ugc_ai_portfolio_public_data/prepared').resolve()
+    catalog_path=Path(os.environ.get('CAUSALOPS_PUBLIC_CATALOG', 'data/public/prepared/catalog.json')).resolve()
+    catalog=json.loads(catalog_path.read_text(encoding='utf-8'))
+    item=next(x for x in catalog if x['id']==task_id);allowed=catalog_path.parent;p=(allowed/item['path']).resolve()
     if not p.is_relative_to(allowed):raise ValueError('公开数据路径越出登记目录。')
     file_sha=hashlib.sha256(p.read_bytes()).hexdigest()
     if file_sha!=item['sha256']:raise ValueError('公开数据校验和不符。')

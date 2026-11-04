@@ -21,6 +21,8 @@ class ExplorationDesign(BaseModel):
     categorical:list[str]=Field(default_factory=list,max_length=10)
     group:str|None=None
     date:str|None=None
+    window_start:str|None=None
+    window_end:str|None=None
     frequency:Literal['D','M','Q','Y']='M'
     outcome:str|None=None
     predictors:list[str]=Field(default_factory=list,max_length=20)
@@ -49,6 +51,17 @@ def validate_frame(frame,d):
     if set(d.numeric)&set(d.categorical):raise DesignError('数值和分类字段不能重复选择。')
     if d.date in d.numeric or d.date in d.predictors:raise DesignError('日期不得自动作为数值特征。')
     f=frame.copy()
+    if d.window_start is not None or d.window_end is not None:
+        if not (d.date and d.window_start and d.window_end):
+            raise DesignError('日期筛选需要字段和完整起止日期。')
+        dates=pd.to_datetime(f[d.date],errors='coerce')
+        if dates.isna().any() or not pd.api.types.is_datetime64_any_dtype(dates) or dates.dt.tz is not None:
+            raise DesignError('请确认日期口径后再筛选。')
+        start,end=pd.Timestamp(d.window_start),pd.Timestamp(d.window_end)
+        if start>end or end>dates.max().normalize() or start<dates.min().normalize():
+            raise DesignError('请求的窗口超出样本日期覆盖。')
+        f=f.loc[dates.dt.normalize().between(start,end)].copy()
+        if f.empty:raise DesignError('该时间窗内没有记录。')
     for c in set(d.numeric+([d.outcome] if d.outcome else [])):
         if pd.api.types.is_datetime64_any_dtype(f[c]):raise DesignError('数值字段不能是日期。')
         try:f[c]=pd.to_numeric(f[c],errors='raise')

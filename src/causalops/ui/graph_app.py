@@ -22,6 +22,8 @@ def render_graph_workspace(a,sid,frame,model):
         overview_flow=next((v for v in overview if v['id']==chosen),overview[0])
     else:
         overview_flow=None
+    if overview_flow and overview_flow['request'].get('review_owner') and overview_flow['status']=='completed':
+        overview_flow=service.flow(overview_flow['request']['review_owner'])
     from causalops.ui.visual_layout import steps
     status=overview_flow['status'] if overview_flow else 'created'
     phase={'awaiting_review':2,'approved':3,'executing':3,'executed':4,'completed':4}.get(status,0)
@@ -78,8 +80,9 @@ def render_graph_workspace(a,sid,frame,model):
                 job=jobs.submit_start(sid,'这份数据可以回答哪些研究问题？',mode='explore')
                 st.session_state['_graph_pending_'+sid]=job['flow_id']
                 st.rerun()
-        if latest_context:
-            st.caption('当前指标：'+str(latest_context['body'].get('metric_label') or latest_context['body'].get('outcome') or '整体数据特征'))
+        visible_context=service.contracts.bound(overview_flow) if overview_flow else latest_context
+        if visible_context:
+            st.caption('方案登记指标：'+str(visible_context['body'].get('metric_label') or visible_context['body'].get('outcome') or '整体数据特征'))
         if overview_flow:
             pending_plans=[v for v in overview if v['status']=='awaiting_review' and v['id']!=overview_flow['id']]
             if pending_plans:
@@ -139,6 +142,14 @@ def render_graph_workspace(a,sid,frame,model):
                         def restore_turn(fid=turn['flow_id']):st.session_state['_graph_pending_'+sid]=fid
                         st.button('查看该轮记录',key='restore_turn_'+turn['flow_id'],on_click=restore_turn)
             with st.chat_message('user'):st.write(safe_text(f['request'].get('user_question',f['request']['question'])))
+        chat_flow=current
+        owner=f['request'].get('review_owner')
+        if owner and f['status']=='completed':
+            preview=service.output(current,'answer') or {}
+            if preview.get('review_owner')==owner:
+                with discussion.chat_message('assistant'):st.write(safe_text(preview['text']))
+                current=owner
+                f=service.flow(owner)
         current_jobs=[j for j in jobs.jobs(sid) if j['flow_id']==current]
         active=any(j['status'] in ACTIVE for j in current_jobs)
         if active:
@@ -147,12 +158,16 @@ def render_graph_workspace(a,sid,frame,model):
         elif current_jobs and current_jobs[0]['error_note']:st.warning(current_jobs[0]['error_note'])
         from causalops.ui.recovery import render_recovery
         render_recovery(service,jobs,sid,f,active,has_error=bool(current_jobs and current_jobs[0]['error_note']))
+        scope=f['request'].get('analysis_scope') if flows else None
+        if scope and not scope.get('error'):
+            st.info('本次研究口径：'+str(scope['outcome'])+(' · '+scope['metric_window'] if scope.get('metric_window') else '')+
+                    ('。新运行尚未交付，下面已保存的报告为历史结果。' if not service.output(current,'execution') else '。'))
         runs=a.completed_runs(sid);refs={r['run_id']:r for r in runs}
         if flows:
             completed=service.output(current,'execution')
             if completed and completed.get('completed') and completed.get('run_ids'):
                 last=completed.get('primary_run_ids',completed['run_ids'][-1:])[-1];stamp=(current,last)
-                if st.session_state.get('_graph_run_seen_'+sid)!=stamp and last in refs:
+                if st.session_state.get('_graph_run_seen_'+sid)!=stamp and last in refs and (a.selected_run(sid)==last or '_graph_run_seen_'+sid in st.session_state):
                     st.session_state['_graph_run_seen_'+sid]=stamp
                     st.session_state['graph_run_'+sid]=last;a.select_run(sid,last)
         if refs:
@@ -184,6 +199,11 @@ def render_graph_workspace(a,sid,frame,model):
                             st.session_state['_graph_pending_'+sid]=job['flow_id'];st.rerun()
                         except (ValueError,RuntimeError,OSError) as exc:st.error(str(exc))
 
+        prior=service.output(current,'prior_answer')
+        if prior:
+            st.markdown('**前序报告解读**')
+            st.write(safe_text(prior['text']))
+            st.caption('运行来源：'+'、'.join(prior.get('run_ids',[])))
         answer=service.output(current,'answer')
         if answer:
             if not completed and f['status']=='completed':
@@ -234,6 +254,10 @@ def render_graph_workspace(a,sid,frame,model):
                     for i,step in enumerate(v['steps']):
                         st.markdown('**步骤 '+str(i+1)+' · '+a.tools.method(step['tool'],step['config']['method']).label+'**')
                         st.write(safe_text(step['reason']))
+                        if scope and not scope.get('error'):
+                            st.write('结果：'+scope['outcome']+'。')
+                            if scope.get('start'):
+                                st.write('筛选日期：'+scope['start']+' 至 '+scope['end']+'；实际有记录 '+str(scope['covered_days'])+' 个自然日。')
                         from causalops.application.research_quality import method_contract
                         mc=method_contract(step['config']['method'])
                         st.caption('估计对象：'+mc['estimand']+'；适用样本：'+mc['population'])
@@ -270,16 +294,25 @@ def render_graph_workspace(a,sid,frame,model):
                 for i,step in enumerate(v['steps']):
                     if bound:facts[str(i)]=render_fact_fields(step['config']['method'],bound['body']['method_facts'].get(step['config']['method'],{}),'review_'+p['id']+'_'+str(i))
                     else:facts[str(i)]=confirmations(step,i,p['id'],frame)
-                checked=st.checkbox('我已核对上述计划和本步骤必要事实，同意按当前数据与计划版本进行本地计算。',key='graph_review_'+current)
-                yes,no=st.columns(2)
-                if yes.button('接受计划并批准本次执行',type='primary',disabled=not checked or not readiness['configuration_ready'] or stale,key='graph_approve_'+current):
+                # Submit preview confirmations atomically. A checkbox rerun must not race the approve button.
+                review_box=st.form('preview_confirmation_'+current) if owner else st.container()
+                with review_box:
+                    checked=st.checkbox('我已核对上述计划和本步骤必要事实，同意按当前数据与计划版本进行本地计算。',key='graph_review_'+current)
+                    yes,no=st.columns(2)
+                    if owner:
+                        approve=yes.form_submit_button('接受计划并批准本次执行',type='primary',disabled=not readiness['configuration_ready'] or stale)
+                    else:
+                        approve=yes.button('接受计划并批准本次执行',type='primary',disabled=not checked or not readiness['configuration_ready'] or stale,key='graph_approve_'+current)
+                if approve and not checked:
+                    st.warning('请先核对当前版本并勾选确认。尚未批准或执行。')
+                if approve and checked and readiness['configuration_ready'] and not stale:
                     try:
                         service.review(current,accept=True,expected_plan_id=p['id'],expected_plan_sha=p['sha'],expected_data_sha=f['request']['data']['frame_sha'],human_confirmed=True,confirmations=facts,dispatch=False,use_contract_facts=bool(bound))
                         jobs.submit(current)
                         st.session_state['_graph_pending_'+sid]=current
                         st.rerun()
                     except (ValueError,RuntimeError,OSError) as exc:st.error(str(exc))
-                if no.button('放弃本候选计划',key='graph_reject_'+current):
+                if (st if owner else no).button('放弃本候选计划',key='graph_reject_'+current):
                     try:service.review(current,accept=False,expected_plan_id=p['id'],expected_plan_sha=p['sha'],expected_data_sha=f['request']['data']['frame_sha'],human_confirmed=True);st.rerun()
                     except (ValueError,RuntimeError,OSError) as exc:st.error(str(exc))
         if not active and (f['status'] in ('approved','executing','failed','cancelled') or (current_jobs and current_jobs[0]['status']=='interrupted')):
@@ -329,7 +362,7 @@ def render_graph_workspace(a,sid,frame,model):
         q=st.chat_input('输入分析目标、方案调整要求或结果解读问题',key='graph_question_'+sid)
     if q:
         try:
-            job=jobs.submit_start(sid,q,mode=modes[mode],parent_flow_id=current if flows else None)
+            job=jobs.submit_start(sid,q,mode=modes[mode],parent_flow_id=chat_flow if flows else None)
             st.session_state['_graph_pending_'+sid]=job['flow_id'];st.rerun()
         except (ValueError,RuntimeError,OSError) as exc:st.error(str(exc));st.info('未执行未批准的统计；已有结果保持不变。')
 

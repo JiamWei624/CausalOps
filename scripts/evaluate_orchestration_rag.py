@@ -1,7 +1,7 @@
 from pathlib import Path
 import json,time
 from causalops.knowledge.retrieval import MethodLibrary
-root=Path('E:/ugc_ai_portfolio/causalops-agent');out=root/'artifacts/orchestration-v060-20261031';lib=MethodLibrary()
+root=Path(__file__).resolve().parents[1];out=root/'artifacts/orchestration-v060-20261031';lib=MethodLibrary()
 cases=[
 ('描述性统计中缺失值和分布怎么报告','describe'),('分类频数的分母与IQR异常标记','describe'),('Pearson与Spearman常量输入','correlation'),('只做相关关系不能说明因果','correlation'),
 ('OLS残差异方差和HC3标准误','ols'),('条件线性回归可以解释干预收益吗','ols'),('Logit二元转化概率模型','logit'),('二项模型完全分离和收敛问题','logit'),('Poisson计数暴露时长与过度离散','poisson'),

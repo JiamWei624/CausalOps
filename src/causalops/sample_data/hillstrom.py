@@ -26,7 +26,7 @@ def cohort(payload):
 
 def contract():
     return dict(analysis_unit='客户', purpose='causal', structure='cross_section', entity='entity_id',
-                treatment='assigned', control_value='0', treated_value='1', outcome='visit',
+                control_label='未发邮件', treated_label='男装邮件', treatment='assigned', control_value='0', treated_value='1', outcome='visit',
                 metric_label='两周访问率', metric_unit='概率', metric_kind='binary', metric_window='分配后两周',
                 fields=[dict(field='assigned', meaning='男装邮件与未发邮件的随机分配组', unit='0/1', timing='unknown'),
                         dict(field='visit', meaning='两周内是否访问', unit='0/1', timing='post_treatment')],

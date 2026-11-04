@@ -38,15 +38,32 @@ def render_contract(service,sid,frame,expanded=False):
             body['covariates']=st.multiselect('处理前协变量',list(frame),default=body['covariates'],key=prefix+'_covariates',placeholder='请选择处理前协变量')
             a,b=st.columns(2)
             with a:body['control_value']=st.text_input('对照值（按原始数据文本填写）',value=body['control_value'] or '',key=prefix+'_control') or None
+            with a:body['control_label']=st.text_input('对照组业务名称',value=body.get('control_label',''),key=prefix+'_control_label')
+            with b:body['treated_label']=st.text_input('处理组业务名称',value=body.get('treated_label',''),key=prefix+'_treated_label')
             with b:body['treated_value']=st.text_input('处理值（按原始数据文本填写）',value=body['treated_value'] or '',key=prefix+'_treated') or None
             body['metric_label']=st.text_input('指标名称',value=body['metric_label'],key=prefix+'_metriclabel')
             body['metric_unit']=st.text_input('指标单位',value=body['metric_unit'],key=prefix+'_metricunit')
             kinds=['unknown','continuous','binary','count'];body['metric_kind']=st.selectbox('指标类型',kinds,index=kinds.index(body['metric_kind']),format_func=lambda x:{'unknown':'尚未确认','continuous':'连续指标','binary':'二元指标','count':'计数指标'}[x],key=prefix+'_kind')
+            body['calendar_rule']=st.selectbox('观测日历约定',('unknown','daily'),index=int(body.get('calendar_rule')=='daily'),format_func=lambda v:'每天应有记录' if v=='daily' else '未声明',key=prefix+'_calendar_rule')
+            if body['calendar_rule']=='daily':
+                body['calendar_start']=st.text_input('应观测起始日期（YYYY-MM-DD）',value=body.get('calendar_start',''),key=prefix+'_calendar_start')
+                body['calendar_end']=st.text_input('应观测结束日期（YYYY-MM-DD）',value=body.get('calendar_end',''),key=prefix+'_calendar_end')
             body['metric_window']=st.text_input('指标观察窗口',value=body['metric_window'],key=prefix+'_window')
             with st.expander('进阶设计字段（仅在使用IV/RD/交错DID时填写）'):
                 body['instruments']=st.multiselect('工具变量',list(frame),default=body['instruments'],key=prefix+'_iv',placeholder='请选择工具变量');body['running']=choose('断点运行变量','running');body['cohort']=choose('首次处理期/批次','cohort')
                 known=st.checkbox('已明确登记断点阈值',value=body['cutoff'] is not None,key=prefix+'_cutoff_known')
                 body['cutoff']=st.number_input('断点阈值',value=float(body['cutoff'] or 0),key=prefix+'_cutoff') if known else None
+        with basic:
+            with st.expander('事件、比率与分配口径（按研究目标选填）'):
+                from causalops.application.research_semantics import LABELS
+                m=body['measurement']
+                for field in ('event_label','event_time_meaning','assignment_unit'):
+                    m[field]=st.text_input(LABELS[field],value=m[field],key=prefix+'_semantic_'+field)
+                for field in ('numerator','denominator','cluster_field'):
+                    m[field]=st.selectbox(LABELS[field],options,index=options.index(m[field]) if m[field] in options else 0,
+                        format_func=lambda v:v or '未登记',key=prefix+'_semantic_'+field) or None
+                agg={'unknown':'未登记','ratio_of_sums':'总分子除以总分母','mean_of_ratios':'各行比率等权平均','binary_mean':'二元指标样本比例'}
+                m['aggregation']=st.selectbox('汇总方式',list(agg),index=list(agg).index(m['aggregation']),format_func=agg.get,key=prefix+'_semantic_aggregation')
         with scope:
             from causalops.application.research_quality import SCOPE_LABELS
             st.caption('这里记录研究意图和适用范围，不自动筛选原表，不代表研究条件已经满足。不确定的内容可以留空。')

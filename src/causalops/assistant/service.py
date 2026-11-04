@@ -14,6 +14,18 @@ PROTECTED=FACT_FIELDS|{'assignment','assignment_mechanism','covariates_reviewed'
 SENSITIVE=re.compile(r'(?:^|_)(id|uid|phone|email|name|address|token|key|password)(?:$|_)|姓名|身份证|手机|邮箱|密码',re.I)
 def now():return datetime.now(timezone.utc).isoformat()
 def digest(x):return hashlib.sha256(json.dumps(x,ensure_ascii=False,sort_keys=True,allow_nan=False).encode()).hexdigest()
+class ModelRequestFailure(DesignError):
+    """A provider request failed before an answer was available for semantic repair."""
+
+
+def check_run_mentions(question, selected):
+    # Only immutable run/fact IDs are authoritative. Ordinary plan/data IDs may occur in questions.
+    named = re.findall(r'(?:run(?:[ _-]?id)?|运行(?:标识|编号|ID)?)[：:#= \t`]*([a-f0-9]{32})(?![a-f0-9])',question,re.I)
+    facts = re.findall(r'(?<![a-f0-9])([a-f0-9]{32}):[a-z][a-z0-9_.]*',question,re.I)
+    if {value.lower() for value in named + facts} - set(selected):
+        raise DesignError('问题点名的运行与当前选择不一致。请先选择对应的历史运行再解释。')
+
+
 def check_question(q):
     if not isinstance(q,str) or not 2<=len(q.strip())<=2000:raise DesignError('问题应为2至2000字。')
     if re.search(r'sk-[a-zA-Z0-9_-]{10,}|[\w.+-]+@[\w.-]+\.[a-zA-Z]{2,}|(?<!\d)\d{11,}(?!\d)',q):raise DesignError('问题疑似包含密钥、邮箱或长标识，请移除后再提问。')
@@ -138,7 +150,7 @@ class AssistantWorkspace:
                     payload={**payload,'output_contract_repair':str(exc),'output_contract_rule':'Return the complete JSON object required by the supplied schema. Do not confirm human facts, call tools, or execute analysis. No extra fields.'}
                     continue
                 reason=str(exc) if isinstance(exc,ProviderError) else type(exc).__name__
-                raise DesignError('模型请求未完成；可继续使用本地模式。'+reason) from None
+                raise ModelRequestFailure('模型请求未完成；可继续使用本地模式。'+reason) from None
             self.event(sid,'model_usage',getattr(model,'last_telemetry',{}));return result
     def validate_plan(self,uid,p):
         p=Plan.model_validate(p);frame=self.ws.load_upload(uid);cols=set(frame)
@@ -308,6 +320,19 @@ class AssistantWorkspace:
     def execute(self,pid,*,permit=False,confirmations=None,progress=None):
         p=self.get_plan(pid);sid=p['session_id'];uid=self.session(sid)['upload_id'];confirmations=confirmations or {}
         if not permit or p['state'] not in ('accepted','completed'):raise DesignError('须由用户接受计划并授权执行；模型没有此权限。')
+        # A workflow-bound plan cannot use the older direct executor to replace its receipt.
+        with self.ws.connection() as conn:
+            has_flows=conn.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='workflow_flows'").fetchone()
+            flow=conn.execute('SELECT id FROM workflow_flows WHERE plan_id=?',(pid,)).fetchone() if has_flows else None
+            if not flow:
+                has_contracts=conn.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='workflow_data_contracts'").fetchone()
+                if has_contracts and conn.execute('SELECT 1 FROM workflow_data_contracts WHERE session_id=? LIMIT 1',(sid,)).fetchone():
+                    raise DesignError('已登记研究口径的任务须通过绑定版本的方案与审批执行。')
+        if flow:
+            from causalops.application.research_service import ResearchService
+            receipt=ResearchService(self).verify_approval(flow[0])
+            if confirmations!=receipt['confirmations']:
+                raise DesignError('执行请求与当前版本的审批声明不一致。')
         self.recover(pid)
         for task in self.tasks(pid):
             if task['state'] in ('completed','cancelled'):continue
@@ -432,15 +457,19 @@ class AssistantWorkspace:
         scope=compare_run_ids if compare_run_ids is not None else ([run_id] if run_id else None)
         facts,runs=self.facts(sid,run_ids=scope)
         scope_ids=[r['run_id'] for r in runs]
+        check_run_mentions(q,scope_ids)
         from causalops.application.report_scope import report_scope, scope_message, unit_answer, UNITS
         scopes = [report_scope(self,sid,r) for r in runs]
         missing = scope_message(q,scopes)
         rates = None
-        if len(runs)==1 and not missing and (UNITS.search(q) or re.search('幅度|实际含义|区间',q)):
-            rates = unit_answer(facts,runs[0],*scopes[0])
+        if len(runs)==1 and not missing:
+            from causalops.application.task_conclusions import source_dictionary
+            from causalops.application.report_scope import saved_answer
+            dictionary, binding = source_dictionary(self,sid,runs[0]['run_id'])
+            rates = saved_answer(facts,runs[0],dictionary,q,bundle=self.ex.load(runs[0]['run_id']) if runs[0]['method']=='descriptive' else None)
         if missing:
             answer={'source':'本地报告口径核对','text':missing,'facts':[],'citations':[]}
-        elif re.search('重新估计|执行|删除|修改数据|接受草案|批准|换成|跑一下',q):
+        elif re.search('重新估计|执行|删除|修改数据|接受草案|批准|换成|跑一下',re.sub(r'已(?:经)?(?:批准|执行)|(?:不要|暂不|不需|不必)执行','',q)):
             answer={'source':'local','text':'本轮是结果解释，不执行或修改。请在任务计划中生成新版本并核对。','facts':[],'citations':[]}
         elif rates is not None:
             answer=rates
@@ -532,6 +561,9 @@ class AssistantWorkspace:
                         if set(method_refs)-set(reply.citations):raise DesignError('正文方法引用不在本轮引用列表中。')
                         text=re.sub(r'\[citation:[a-zA-Z0-9_-]+\]','（方法依据见下方）',text)
                         answer={'source':__import__('causalops.llm.providers',fromlist=['model_label']).model_label(model)+'模型+本地证据校验','text':text,'facts':rendered_facts,'citations':reply.citations,'validation_repairs':validation_failures,'display_note':'正文数值适度四舍五入；完整精度与运行标识见证据展开区。'};break
+                    except ModelRequestFailure as exc:
+                        validation_failures.append(str(exc)[:800])
+                        break
                     except (ValueError,RuntimeError) as exc:
                         validation_failures.append(str(exc)[:800]);self.event(sid,'answer_validation',{'attempt':attempt+1,'reason':str(exc)[:800]})
                         payload={**payload,'repair_required':str(exc)[:800],'repair_example':{'explanation':'当前保存的运行事实为[['+reverse_alias[selected[0][0]]+']]；其解释须遵守本次分析的结论边界。' if selected else '当前没有运行证据，无法提供数值结论。','fact_ids':[reverse_alias[selected[0][0]]] if selected else [],'citations':[]},'repair_rule':'重新生成完整对象。不要输出任何占位符之外的阿拉伯数字；不要编造事实、引用、操作或因果。'}

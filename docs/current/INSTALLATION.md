@@ -87,3 +87,9 @@ $env:CAUSALOPS_PYTHON = "E:/causalops-env/Scripts/python.exe"
 ## 7. 部署边界
 
 代码开放与 Web 服务开放是两件事。当前服务只监听本机，面向单用户；没有公网鉴权、多租户隔离、恶意文件沙箱或分布式任务队列。不要直接改监听为公网地址。独立用户验收仍待进行，自动浏览器复现不是人类用户效率对照实验。
+
+## Beta 的本地资源
+
+首页葡萄酒示例随包提供。营销实验可在页面上传教程指定的公开压缩包，也可通过 CAUSALOPS_HILLSTROM_ARCHIVE 指定同一文件。本地模式和这两个示例均不要求模型密钥。
+
+旧版评测的已准备数据目录可用 CAUSALOPS_PUBLIC_CATALOG 指向 catalog.json，默认从启动目录下的 data/public/prepared 读取。清单内的 Parquet 须位于清单所在目录内并通过摘要校验。浏览器评测输出由 CAUSALOPS_V20_WORKSPACE 指定。历史私有示例仅在显式登记数据和 CAUSALOPS_PRIVATE_DATA_ROOT 后可用，公开快照不分发相应数据。旧实验记录中的 artifacts 标识对应本地归档，不作为公共下载链接。

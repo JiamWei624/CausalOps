@@ -39,7 +39,7 @@ def main():
   st.write('从点击开始，到你读懂结果并提交估计值、区间、结论等级和一句实际含义/建议。暂停时间单独排除；没有观察员验证，数据只能称为自助试用记录。')
   st.write('两种条件均使用同一预登记数据、方法和完整报告。脚本已预先写好；不能将结果称为“从零编程相对Agent节省时间”。业务解释另需人工复核。')
   st.write('标准脚本：在PowerShell执行下面命令。Agent：打开对应演示，核对设计后运行，并阅读同样的完整结论。')
-  st.code(f'& "E:\\ugc_ai_portfolio\\.venv-agent\\Scripts\\python.exe" "{ROOT / "scripts/reference_task.py"}" --task {task_id} --confirm-design',language='powershell')
+  st.code(f'python "{ROOT / "scripts/reference_task.py"}" --task {task_id} --confirm-design',language='powershell')
   st.link_button('打开此任务的Agent演示',f"http://127.0.0.1:8503/?case={task['demo_case']}")
  if st.button('开始本轮计时',type='primary',disabled=bool(active)):
   try:

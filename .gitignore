@@ -42,3 +42,18 @@ backups/
 *.sqlite3-*
 *.sqlite-wal
 *.sqlite-shm
+
+# User research inputs, manuscripts and local archives
+*.pdf
+*.docx
+*.xlsx
+*.parquet
+*.csv
+!src/causalops/sample_data/winequality-red.csv
+*.csv.gz
+*.dta
+*.sav
+*.zip
+*.pem
+.streamlit/secrets.toml
+data/public/

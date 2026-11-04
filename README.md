@@ -1,15 +1,27 @@
 <!-- release: 0.16.0 -->
-# CausalOps
+# CausalOps Beta
 
-**AI 辅助数据分析与因果推断** · 0.16.0 公开预览 · Windows x64 / Python 3.11
+**CausalOps Beta——面向科研与业务分析的可验证 AI 数据科学 Agent。**
+
+公开测试版候选 · 0.16.0 软件包 · Windows x64 / Python 3.11
 
 CausalOps 是本地单用户研究工作台。业务分析人员可以导入一张表，从样本分布开始提出问题，也可以直接输入研究目标。助手协助制定和修订方案；使用者核对字段与研究条件后，由本地统计工具计算。每份报告关联一次具体运行，可据此复核数字、诊断和解释范围。
 
-[营销实验与本轮验收](docs/current/PHASE2_ACCEPTANCE.md) · [快速安装](#快速安装) · [首次使用教程](docs/current/PUBLIC_TUTORIAL.md)
+复杂只读请求偶尔会生成待审计划，部分指标需补充口径或返回原报告核查。尚无真人用户完成率或效率测量。用于高风险科研或业务决策前，应由专业人员独立复核。多表自主研究与云端多人协作属于后续规划。历史评测报告中的提交号对应本地开发档案，详细运行库不随快照分发。
 
-![首页的营销实验预览与三级研究案例](docs/assets/phase2-home.png)
+[阶段冻结与风险登记](docs/stage/验收与整合.md) · [技术与成果总结](docs/stage/技术与成果总结.md) · [营销实验历史验收](docs/current/PHASE2_ACCEPTANCE.md) · [快速安装](#快速安装) · [首次使用教程](docs/current/PUBLIC_TUTORIAL.md)
+
+![首页的营销实验预览与三级研究案例](docs/stage/home.png)
 
 **图 1　首页。** 右侧按同一尺度比较两组访问率；下方三个入口分别面向描述统计、随机实验和政策评估教学。
+
+## 本次测试版的使用范围
+
+| 状态 | 功能与条件 |
+|---|---|
+| 已验证 | 公开营销实验从导入、制定方案、核查版本化数据合同、人工批准、本地执行，到报告导出及按运行追问。LangGraph 组织步骤，方法检索提供依据，17 个注册入口分派计算。DeepSeek 官方接口已完成一次最终产品冒烟；本地案例可以离线分析。 |
+| 有条件可用 | 观察性解释依赖分配机制和变量测量时点。某些只读问题会进入待审，或在证据充分时漏答目标数值。最后封存的十题首次为 3 项完整、2 项部分、5 项失败。CausalOps Eval 的模拟操作与程序回归不能代替真人试用。 |
+| 后续规划 | Eval V2.2 将测量导航、操作成本和故障恢复，V2.3 计划扩大任务集。多表指标管理、自主研究规划与云端多用户协作尚属后续方向。 |
 
 ## 核心功能
 
@@ -47,12 +59,12 @@ Hillstrom 将 64,000 名客户随机分配到男装邮件、女装邮件和未�
 
 | 研究方案 | 人工审核 |
 |---|---|
-| ![营销实验待审方案](docs/assets/phase2-plan.png) | ![程序核对、研究声明与批准操作](docs/assets/phase2-review.png) |
+| ![营销实验待审方案](docs/stage/plan.png) | ![程序核对、研究声明与批准操作](docs/stage/review.png) |
 | 图 2　研究工作台 | 图 3　审核当前版本 |
 
 | 本次分析结果 | 离线报告 |
 |---|---|
-| ![两组访问率与绝对差](docs/assets/phase2-result.png) | ![浏览器打开导出的 HTML 报告](docs/assets/phase2-report.png) |
+| ![两组访问率与绝对差](docs/stage/result.png) | ![浏览器打开导出的 HTML 报告](docs/stage/report.png) |
 | 图 4　运行结果 | 图 5　研究报告 |
 
 ## 研究流程
@@ -79,7 +91,7 @@ py -3.11 -m venv E:/causalops-venv
 & E:/causalops-venv/Scripts/python.exe -m causalops.launch --workspace E:/causalops-work --port 8513
 ```
 
-打开启动器显示的本机地址。更新已有安装时，在最新源码目录重新执行安装步骤并重启服务；本次沿用 0.16.0，可通过首页营销实验预览和三张案例卡辨识新版。本次更新通过 main 分支发布，旧离线安装包仍对应各自构建。E 盘路径可替换。Windows 环境建议同时使用较短的工作区与测试临时目录；路径过深时，报告写入可能失败。若系统使用 `python` 而非 `py`，先用 `python --version` 确认是 3.11，再用该解释器创建虚拟环境。缓存目录设置、离线安装与端口故障处理见[安装说明](docs/current/INSTALLATION.md)。
+打开启动器显示的本机地址。更新已有安装时，在最新源码目录重新执行安装步骤并重启服务；本次沿用 0.16.0，请通过 Git 标签、源码提交与启动地址中的构建指纹辨识本次候选。本次公开快照保留软件包版本，使用 Beta 分支的提交号区分构建。远程 main 和旧离线包对应各自构建；辨别候选应核对 Git 提交。E 盘路径可替换。Windows 环境建议同时使用较短的工作区与测试临时目录；路径过深时，报告写入可能失败。若系统使用 `python` 而非 `py`，先用 `python --version` 确认是 3.11，再用该解释器创建虚拟环境。缓存目录设置、离线安装与端口故障处理见[安装说明](docs/current/INSTALLATION.md)。
 
 ## 统计方法与验证情况
 
@@ -89,7 +101,8 @@ py -3.11 -m venv E:/causalops-venv
 | 实验与观察性比较 | A/B、CUPED、回归调整、PSM、IPW、AIPW、DoubleML。随机分配、协变量测量时点和重叠条件须按设计核对。 |
 | 面板、工具变量与断点 | 共同或交错处理时点 DID、2SLS、清晰与模糊断点。适用面板结构、工具变量论证与局部解释限制见[方法合同](docs/METHOD_CONTRACTS.md)。 |
 
-- **本轮验收。** 本地配置指定原始压缩包后，633 项回归测试通过。另以浏览器完成营销实验文件上传、审核、计算、报告下载与基于同一运行的追问。独立试用者完成率与用时仍待测量。[验收条件和记录](docs/current/PHASE2_ACCEPTANCE.md)
+- **早期界面验收。** 本地配置指定原始压缩包后，633 项回归测试通过。另以浏览器完成营销实验文件上传、审核、计算、报告下载与基于同一运行的追问。独立试用者完成率与用时仍待测量。[验收条件和记录](docs/current/PHASE2_ACCEPTANCE.md)
+- **阶段冻结。** 产品提交 `b8fbc75`，完整工程回归 755 项通过。最终十道陌生服务任务首次 3 项完整、2 项部分、5 项失败；其中两项只读追问进入待审。使用限制与实际测量范围见[冻结记录](docs/stage/验收与整合.md)。
 - **统计复算。** 固定种子重新拟合 90 次；其中 PSM 的 6 次模拟有 4 次区间覆盖设定真值。该结果提示需要进一步核查匹配推断，不足以估计长期覆盖率。[统计核查](docs/current/STATISTICAL_AUDIT.md)
 - **业务解释。** Hillstrom 公开实验中，男装邮件组两周访问率为 18.28%，未发邮件组为 10.62%。绝对差约 **7.66 个百分点**，相对增幅约 **72.14%**；这份报告不能据以估算下一年度净利润。[组间比较图](docs/assets/hillstrom-visit-rates.svg) · [计算与问答验收](docs/current/VALIDATION.md)
 
@@ -103,7 +116,7 @@ py -3.11 -m venv E:/causalops-venv
 |---|---|
 | 第一次运行 | [安装与更新](docs/current/INSTALLATION.md) → [营销实验图文教程](docs/current/PUBLIC_TUTORIAL.md) → [日常操作与故障恢复](docs/current/USER_GUIDE.md) |
 | 核对样本与结论 | [实验来源、筛选与复算](docs/current/PHASE2_ACCEPTANCE.md) · [研究质量与声明核对](docs/current/RESEARCH_QUALITY.md) · [真实数据测试范围](docs/current/REAL_DATA_EXPERIENCE.md) |
-| 核对发布与限制 | [当前验收记录](docs/current/VALIDATION.md) · [界面与权限复核](docs/current/DESIGN_REVIEW.md) · [统计方法与限制](docs/METHOD_CONTRACTS.md) |
+| 核对发布与限制 | [阶段验收记录](docs/stage/验收与整合.md) · [界面与权限复核](docs/current/DESIGN_REVIEW.md) · [统计方法与限制](docs/METHOD_CONTRACTS.md) |
 | 理解实现 | [系统架构与代码职责](docs/current/ARCHITECTURE.md) · [研究流程、证据与权限图集](docs/current/FIGURES.md) · [完整功能手册](docs/current/COMPLETE_MANUAL.md) |
 | 参与开发或复用 | [贡献步骤](CONTRIBUTING.md) · [代码许可](LICENSE) · [公共数据与第三方许可](THIRD_PARTY_NOTICES.md) |
 

@@ -7,6 +7,9 @@ from causalops.assistant.service import digest,now,PROTECTED
 from causalops.assistant.contracts import REGISTRY
 from causalops.general.service import DesignError
 
+from causalops.application.research_semantics import Measurement
+
+
 class ResearchScope(BaseModel):
     """Human-supplied scope; it never authorizes filtering, execution or causal claims."""
     model_config=ConfigDict(extra='forbid',strict=True)
@@ -47,10 +50,16 @@ class DataContract(BaseModel):
     covariates:list[str]=Field(default_factory=list,max_length=20)
     control_value:str|None=None
     treated_value:str|None=None
+    control_label:str=Field(default='',max_length=100)
+    treated_label:str=Field(default='',max_length=100)
     metric_label:str=Field(default='',max_length=120)
     metric_unit:str=Field(default='',max_length=80)
     metric_kind:Literal['unknown','continuous','binary','count']='unknown'
+    calendar_rule:Literal['unknown','daily']='unknown'
+    calendar_start:str=''
+    calendar_end:str=''
     metric_window:str=Field(default='',max_length=220)
+    measurement:Measurement=Field(default_factory=Measurement)
     research:ResearchScope=Field(default_factory=ResearchScope)
     fields:list[FieldMeaning]=Field(default_factory=list,max_length=200)
     method_facts:dict[str,dict]=Field(default_factory=dict)
@@ -79,6 +88,13 @@ class ContractRepository:
         if human_confirmed is not True:raise DesignError('数据字典只能由使用者明确确认。')
         d=DataContract.model_validate(value);s=self.a.session(sid);frame=self.ws.load_upload(s['upload_id']);columns=set(frame)
         selected=[x for x in (d.entity,d.time,d.treatment_time,d.outcome,d.treatment,d.running,d.cohort) if x]+d.predictors+d.covariates+d.instruments+[x.field for x in d.fields]
+        if d.calendar_rule=='daily':
+            from datetime import date
+            if not d.time or not d.calendar_start or not d.calendar_end or date.fromisoformat(d.calendar_start)>date.fromisoformat(d.calendar_end):
+                raise DesignError('每日观测约定需要日期字段与有效起止范围。')
+        measure=d.measurement
+        selected.extend(x for x in (measure.numerator,measure.denominator,measure.cluster_field) if x)
+        if measure.numerator and measure.numerator==measure.denominator:raise DesignError('分子和分母不能登记为同一字段。')
         if set(selected)-columns:raise DesignError('数据字典引用了当前表不存在的字段。')
         if len({x.field for x in d.fields})!=len(d.fields):raise DesignError('字段说明不能重复。')
         if d.treatment and d.outcome==d.treatment:raise DesignError('处理和结果不能是同一个字段。')
@@ -113,17 +129,27 @@ class ContractRepository:
         if not ref:return None
         row=next((v for v in self.versions(flow['session_id']) if v['id']==ref['id']),None)
         if not row or any(row[k]!=ref[k] for k in ('id','version','sha','data_sha')):raise DesignError('流程引用的数据字典版本不存在或已损坏。')
+        scope=flow['request'].get('analysis_scope')
+        if scope and not scope.get('error'):
+            body=dict(row['body'])
+            for name in ('outcome','metric_label','metric_unit','metric_kind','metric_window'):
+                if name in scope:body[name]=scope[name]
+            if scope['outcome']!=scope.get('base_outcome'):
+                body['predictors']=[x for x in body['predictors'] if x!=scope['outcome']]
+            return {**row,'body':body,'scope_sha':digest(scope)}
         return row
     def verify_current(self,flow):
         if 'contract_ref' in flow['request'] and flow['request']['contract_ref']!=self.ref(flow['session_id']):raise DesignError('数据字典已更新，请基于新版本制定计划，旧批准不再适用。')
         return self.bound(flow)
     def review_facts(self,flow,plan):
         row=self.verify_current(flow)
+        from causalops.application.plan_scope import check_steps
+        check_steps(flow['request'].get('analysis_scope'),plan['steps'])
         if not row:return {}
-        definitions={x['field']:x for x in row['body']['fields']};facts={}
+        from causalops.application.variable_timing import require_eligible
+        facts={}
         for i,step in enumerate(plan['steps']):
             cfg=step['config'];method=cfg['method']
-            fields=cfg.get('covariates',[])+ (cfg.get('predictors',[]) if row['body']['purpose']=='predictive' else [])
-            if any(definitions.get(f,{}).get('timing') in ('post_treatment','future') for f in fields):raise DesignError('计划使用了字典标记的处理后/未来变量，请修订设定。')
+            require_eligible(cfg,row['body'])
             facts[str(i)]=dict(row['body']['method_facts'].get(method,{}))
         return facts
