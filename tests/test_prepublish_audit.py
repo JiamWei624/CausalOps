@@ -44,3 +44,14 @@ def test_public_data_exception_is_path_and_content_specific(tmp_path):
     target.write_bytes(raw)
     (tmp_path/'users.csv').write_bytes(raw)
     assert 'private_data_file' in {x.code for x in MODULE.audit(tmp_path)}
+
+
+def test_credentials_still_block_outside_transport_fixture(tmp_path):
+    # Generate an inert provider-shaped value only inside the temporary audit tree.
+    from secrets import token_hex
+
+    target = tmp_path / "config.py"
+    target.write_text("secret = " + repr("sk-" + token_hex(16)), encoding="utf-8")
+    hits = {(f.code, f.severity, f.path) for f in MODULE.audit(tmp_path)}
+    assert ("assigned_secret", "blocker", target.name) in hits
+    assert ("openai_like_key", "blocker", target.name) in hits

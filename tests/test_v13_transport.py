@@ -1,4 +1,5 @@
 import json
+import secrets
 
 import httpx
 import pytest
@@ -19,7 +20,7 @@ SCHEMA = {"type": "object", "required": ["ok"], "properties": {"ok": {"type": "b
 ])
 def test_physical_attempts_bind_real_requests(tmp_path, first, expected, exception):
     received = []
-    secret = "dummy-credential"
+    secret = secrets.token_hex(16)
     def handle(req):
         received.append((req.headers["idempotency-key"], req.content))
         if len(received) == 1 or first == "persistent":
