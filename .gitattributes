@@ -7,3 +7,7 @@
 *.png binary
 *.webm binary
 src/causalops/sample_data/winequality-red.csv -text
+
+# Preserve the exact bytes of the historically frozen V2.3 scorer.
+scripts/eval_v23/calibrate.py -text
+scripts/eval_v23/score.py -text
