@@ -9,6 +9,10 @@
 
 可在启动前设置环境变量 `CAUSALOPS_HILLSTROM_ARCHIVE` 指向下载文件。不要将原始包、个人数据或工作区加入Git。指纹不符时停止，不替换成任意营销表。
 
+![真实五步依赖](../releases/automation-v2-beta/diagrams/fixed-chain.svg)
+
+[可编辑流程定义](../releases/automation-v2-beta/diagrams/fixed-chain.mmd)
+
 ## 2. 生成与审核
 确认来源后点击“生成五步研究计划”。计划明确：数据与设计审计；分组描述统计；上游证据核验；A/B效果分析；报告整合。其中只有描述和A/B为两次统计工具调用。
 

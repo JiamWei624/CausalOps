@@ -1,0 +1,42 @@
+{
+  "home": {
+    "mode": "actual_installed_wheel_fixed_browser",
+    "case": "A-normal",
+    "sha256": "5d8a09fb95f14f2092bd348981f2db1ae942bfc5b2df6a76043924d025cc96fb"
+  },
+  "review": {
+    "mode": "actual_installed_wheel_fixed_browser",
+    "case": "A-normal",
+    "sha256": "c0a27c62337ba4fde18ef254c011096ce0dc8285dcd1b31857182746344a0d38"
+  },
+  "report": {
+    "mode": "actual_installed_wheel_fixed_browser",
+    "case": "A-normal",
+    "sha256": "e8a4ce2380cc2d60b2469be7cab03ec72de5aeeefad7f066a6af2049d76dd6cf"
+  },
+  "budget": {
+    "mode": "actual_installed_wheel_fixed_browser",
+    "case": "A-normal",
+    "sha256": "7bcf9b8024c9d9dfa88359cc56293cf098d04dfd3e18954ecef4fff1c6c9671b"
+  },
+  "paused": {
+    "mode": "actual_installed_wheel_fixed_browser",
+    "case": "C-pause-cancel",
+    "sha256": "72321a6e2dd2c4f82d122240e8453f0c8f93440f6abffed64393219bb6222caa"
+  },
+  "cancelled": {
+    "mode": "actual_installed_wheel_fixed_browser",
+    "case": "C-pause-cancel",
+    "sha256": "f1d2e2208c6688723a20792f6025e1864d1892ef7441ac9c0111bb070c2820a0"
+  },
+  "takeover": {
+    "mode": "actual_installed_wheel_fixed_browser",
+    "case": "C-uncertain",
+    "sha256": "f738a73671c60564615aef6d58a873957f76cbd7f3fd3fa87c196007b4134201"
+  },
+  "blocked": {
+    "mode": "actual_installed_wheel_fixed_browser",
+    "case": "B-insufficient",
+    "sha256": "dc4bc5fdf3b755b5518e9f28e9a8174a6874ee12ef3f94c9e7ab5a040405a277"
+  }
+}

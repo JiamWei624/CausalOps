@@ -1,5 +1,5 @@
 {
-  "version": "0.16.0",
-  "wheel": "causalops_agent-0.16.0-py3-none-any.whl",
-  "sha256": "079c9a481fecc17788f9b6d08b4573f968b1332422626d24923aaec964cd7516"
+  "version": "0.17.0b1",
+  "wheel": "causalops_agent-0.17.0b1-py3-none-any.whl",
+  "sha256": "69382e821f274797bed89ed4f96985ce2bc3ec027475b0a5280a0459d09529f9"
 }

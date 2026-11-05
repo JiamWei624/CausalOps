@@ -1,0 +1,133 @@
+{
+  "date": "2026-11-06",
+  "package_version": "0.17.0b1",
+  "tested_code_commit": "c726eeeb274c41564eccb29d5bb2a06276d4786d",
+  "clean_export_commit": "5e74dcfef1952ff0d9afa69fcdcb8ad1fbb44aef",
+  "development_delivery": "f568f3e3ead19ff6c1943a39c210dd38b39e0beb",
+  "source_sha": "cbd52957f77801e3e28f4e4f768377a88dc47cabb62e3af39c49757f3416cfc5",
+  "branch": "beta/automation-v2-20261106",
+  "public_base": "5f350ab28a1fe1ba5a9bf0ad93f87b3407353652",
+  "remote_main": "058d3df5ff1684226c0cefba4bbc738c4cfca8a3",
+  "development_stage_ancestry": {
+    "2d0efb2": true,
+    "a9f02ce": true,
+    "e566f24": true,
+    "87601b8": true
+  },
+  "engineering": {
+    "tests": 974,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 505.861
+  },
+  "browser": [
+    {
+      "case": "A-normal",
+      "status": "passed",
+      "seconds": 32.55,
+      "effective_operations": 11,
+      "model_requests": 0,
+      "state_samples": 84,
+      "state_mismatches": 0,
+      "evidence_folder": "browser-final-wheel/A-normal"
+    },
+    {
+      "case": "B-insufficient",
+      "status": "passed",
+      "seconds": 21.302,
+      "effective_operations": 6,
+      "model_requests": 0,
+      "state_samples": 5,
+      "state_mismatches": 0,
+      "evidence_folder": "browser-final-controls/B-insufficient"
+    },
+    {
+      "case": "C-pause-cancel",
+      "status": "passed",
+      "seconds": 52.128,
+      "effective_operations": 17,
+      "model_requests": 0,
+      "state_samples": 180,
+      "state_mismatches": 0,
+      "evidence_folder": "browser-final-controls/C-pause-cancel"
+    },
+    {
+      "case": "C-uncertain",
+      "status": "passed",
+      "seconds": 26.459,
+      "effective_operations": 7,
+      "model_requests": 0,
+      "state_samples": 37,
+      "state_mismatches": 0,
+      "evidence_folder": "browser-final-controls/C-uncertain"
+    },
+    {
+      "case": "legacy-single",
+      "status": "passed",
+      "seconds": 33.771,
+      "effective_operations": 9,
+      "model_requests": 0,
+      "state_samples": 0,
+      "state_mismatches": 0,
+      "evidence_folder": "browser-final-controls/legacy-single"
+    }
+  ],
+  "history_switch": {
+    "switches": 6,
+    "readable_samples": 101,
+    "visible_mismatch_samples": 0,
+    "invalid_selector_lag_metric_excluded": true
+  },
+  "actual_primary_task": "ed4ff6613dcd45e1873174a7874167cd",
+  "actual_primary_approval": "9483e92ea1d14b7b9540c34012eeb880",
+  "actual_primary_runs": [
+    "838f09db19f844c88e7b25722d0881a4",
+    "cd8bbdd71f9e4a038fb2a9148d3b6a82"
+  ],
+  "actual_primary_effect": {
+    "estimand": "risk_difference",
+    "outcome": "visit",
+    "raw_unit": "probability",
+    "raw": 0.07658956365153125,
+    "control_rate": 0.10616727682343002,
+    "treated_rate": 0.18275684047496127,
+    "pp": 7.6589563651531245,
+    "ci_pp": [
+      6.995322354054364,
+      8.322590376251885
+    ],
+    "relative_pct": 72.1404616781399,
+    "formulas": {
+      "pp": "100 * raw",
+      "ci_pp": "100 * each raw interval bound",
+      "relative_pct": "100 * raw / control_rate (positive control_rate only)"
+    }
+  },
+  "actual_sample_size": 42613,
+  "actual_model_requests": 0,
+  "independent_install": {
+    "new_virtualenv": true,
+    "system_site_packages": false,
+    "offline_public_dependency_cache": true,
+    "full_internet_dependency_download_tested": false,
+    "pip_check": "passed",
+    "package_resources_byte_identical": 178
+  },
+  "wheel": {
+    "filename": "causalops_agent-0.17.0b1-py3-none-any.whl",
+    "sha256": "69382e821f274797bed89ed4f96985ce2bc3ec027475b0a5280a0459d09529f9",
+    "bytes": 1753534
+  },
+  "historical_failures_retained": {
+    "targeted_first": "62 passed, 1 CSV credential-inspection assertion failed; broadened text inspection without relaxing data blockers",
+    "full_first": "972 passed, 2 frozen-scorer raw-byte checks failed; preserved exact original scorer bytes",
+    "history_first": "13 visible identity-mismatch samples / 187 samples; stale report hidden on rerender"
+  },
+  "not_claimed": [
+    "production multi-user reliability",
+    "general autonomous planning",
+    "real human task success or efficiency",
+    "new V2.3 research evaluation scores"
+  ]
+}
