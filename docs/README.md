@@ -1,10 +1,12 @@
-<!-- current: 0.16.0 -->
+<!-- current: 0.17.0b1 -->
 
 [阶段性交付、复现与风险登记](stage/验收与整合.md)
 
 # 文档入口
 
-当前版本为 **0.16.0**。请优先使用下面的当前说明，带版本号的旧文档仅记录对应阶段。
+- [受限自动化五步教程](current/AUTOMATION_GUIDE.md) · [本次候选验收](releases/automation-v2-beta/ACCEPTANCE.md) · [当前能力限制](releases/automation-v2-beta/LIMITATIONS.md)
+
+当前候选为 **0.17.0b1**。请优先使用下面的当前说明，带版本号的旧文档仅记录对应阶段。
 
 - [第二轮营销实验操作与验收](current/PHASE2_ACCEPTANCE.md) · [示例教程](current/PUBLIC_TUTORIAL.md) · [离线图文教程](current/TUTORIAL.html)
 - [项目与功能手册](current/COMPLETE_MANUAL.md) · [可打印手册](current/COMPLETE_MANUAL.html) · [安装与更新](current/INSTALLATION.md)

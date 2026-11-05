@@ -1,5 +1,7 @@
 # 验收记录与使用限制 · 0.16.0 第二轮
 
+> 本文保留早期版本记录。0.17.0b1受限自动化及当前边界以[本次验收](../releases/automation-v2-beta/ACCEPTANCE.md)和[当前限制](../releases/automation-v2-beta/LIMITATIONS.md)为准；已结项V2.2/V2.3见对应归档，不作为未来待开发项。
+
 [2026-11-05 阶段冻结与最新验收](../stage/验收与整合.md)
 
 

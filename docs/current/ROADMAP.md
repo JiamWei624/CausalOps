@@ -1,5 +1,7 @@
 # 当前范围与后续工作
 
+> 本文保留早期版本记录。0.17.0b1受限自动化及当前边界以[本次验收](../releases/automation-v2-beta/ACCEPTANCE.md)和[当前限制](../releases/automation-v2-beta/LIMITATIONS.md)为准；已结项V2.2/V2.3见对应归档，不作为未来待开发项。
+
 [本阶段收口、风险与后续工作排序](../stage/验收与整合.md)
 
 

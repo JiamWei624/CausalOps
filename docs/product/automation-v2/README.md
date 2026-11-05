@@ -1,5 +1,7 @@
 # CausalOps 自动化 V2 · 专项设计候选
 
+> 本目录同时保留先期设计和三个阶段历史。当前已开放固定五步工作台，不是通用模型规划；正式使用见[当前教程](../../current/AUTOMATION_GUIDE.md)，本次独立安装与验收见[候选报告](../../releases/automation-v2-beta/ACCEPTANCE.md)。设计中的未来能力不因收录文档而成为已实现功能。
+
 实施记录：[第一阶段真实依赖闭环](STAGE_ONE.md) · [第二阶段持久化恢复与预算控制](STAGE_TWO.md) · [第二阶段机器证据](STAGE_TWO_EVIDENCE.json) · [第三阶段真实工作台与交付](STAGE_THREE.md) · [第三阶段机器证据](STAGE_THREE_EVIDENCE.json)。以下原专项设计保留其制定时点，不能据设计内容推断全部工作台已实现。
 
 **2026-11-05｜基线5ac788f｜仅设计，不含功能实现**
