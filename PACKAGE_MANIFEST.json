@@ -1,13 +1,13 @@
 [
   {
     "file": ".gitattributes",
-    "bytes": 339,
-    "sha256": "5721026b439d89602855c89d5880bb44916bc2ab4efd25d2d90c6f9665d8021e"
+    "bytes": 326,
+    "sha256": "0d538c309ee33f92139f7c57755ff8f89b052308a49e6e3caa6089cadb932732"
   },
   {
     "file": ".github/workflows/tests.yml",
-    "bytes": 1276,
-    "sha256": "d0238f853bee7427cb178c6aef7ccae693e17713d9918ae713583faa0798435d"
+    "bytes": 1250,
+    "sha256": "09c67070d4b1c1a53cc0e6714a7fed718bc2ecdc52dd426ee0e26f8dd2ce9fee"
   },
   {
     "file": ".gitignore",
@@ -26,8 +26,8 @@
   },
   {
     "file": "README.md",
-    "bytes": 8647,
-    "sha256": "92d10dbcd67ff4c25a1ab369a32ae971387bb6cb96f6db4a83d7c3a7564f00bf"
+    "bytes": 8553,
+    "sha256": "aa9e6a8a9932db47ad336888e48eaa5cdf4aaa99f04cfbd968068f1dceb10db7"
   },
   {
     "file": "SECURITY.md",
@@ -41,8 +41,8 @@
   },
   {
     "file": "application-wheel.json",
-    "bytes": 169,
-    "sha256": "2140d3edf69cd5d67e2a9d3686940503232de8751e9cba29d3d853ab6b2f2a6c"
+    "bytes": 164,
+    "sha256": "5c83cad33375eafd0dcfcb6ca91605e1f1f9333493e40ba08d47e16c12023318"
   },
   {
     "file": "docs/ARCHITECTURE.md",
@@ -66,8 +66,8 @@
   },
   {
     "file": "docs/HISTORY.md",
-    "bytes": 4875,
-    "sha256": "f87f4d6c2eaab6c877582857b6f3a76da2dbcf34964e36e627fd7c30117dbfc5"
+    "bytes": 4811,
+    "sha256": "e470807aa3e974219c2aa5219225c7e1d62765d1378226a3521625e49f0657c4"
   },
   {
     "file": "docs/IMPLEMENTATION_0.7.0.md",
@@ -101,8 +101,8 @@
   },
   {
     "file": "docs/README.md",
-    "bytes": 1240,
-    "sha256": "9b600276ac8baadfd8a0872f830b1b646386e448dcc762bbd73be27b99258296"
+    "bytes": 1218,
+    "sha256": "b0fa2a26413cdd9d4e03169054937ebdecfae6157ff86faaac2579ddebf0f9d2"
   },
   {
     "file": "docs/REFERENCE_PROJECT_REVIEW.md",
@@ -546,13 +546,13 @@
   },
   {
     "file": "docs/current/ARCHITECTURE.md",
-    "bytes": 13658,
-    "sha256": "60799c6486b8f04ec5e6d504f2c348b4d1e98f069827ee042371e0cc0aa17071"
+    "bytes": 13531,
+    "sha256": "3dcf03a3b960ce949780d49c57aae7ea86275d75c7cae216bf3a950d02ce3f1d"
   },
   {
     "file": "docs/current/AUTOMATION_GUIDE.md",
-    "bytes": 3471,
-    "sha256": "5ba7f44c23a33d6c5e050d9025e067adf1d76e92412a45d5b7d02ba8980ebfd6"
+    "bytes": 3429,
+    "sha256": "252a0131f9c6873b2e5366be7bbe7ac68bd3d99aee48294ef4430057f72d088d"
   },
   {
     "file": "docs/current/COMPLETE_MANUAL.html",
@@ -561,8 +561,8 @@
   },
   {
     "file": "docs/current/COMPLETE_MANUAL.md",
-    "bytes": 54482,
-    "sha256": "7ff36321e2eeaff80c893655afa0964a8597857dfd4c91cba96120637179d5c3"
+    "bytes": 53971,
+    "sha256": "839aebe68ae2d32448837662528e2f196e7d7ee29396ebf89e1af5f5c83b221f"
   },
   {
     "file": "docs/current/DESIGN_REVIEW.md",
@@ -576,8 +576,8 @@
   },
   {
     "file": "docs/current/INSTALLATION.md",
-    "bytes": 7975,
-    "sha256": "7f8c41d856a55655985ec4de5726e73926816c644fc7e898e4bfac486e97dee0"
+    "bytes": 7878,
+    "sha256": "948275179bc4126812cfebf662a59b3fcd3a0a696177f103ab6559f68f31f639"
   },
   {
     "file": "docs/current/PHASE2_ACCEPTANCE.md",
@@ -596,8 +596,8 @@
   },
   {
     "file": "docs/current/PUBLIC_TUTORIAL.md",
-    "bytes": 4388,
-    "sha256": "34e2381d4dfe347d8a6dae7b62fed11915186463ef6612708af9567e90977774"
+    "bytes": 4335,
+    "sha256": "8a8e57b2af8023cb51e5210312b0ea99af3ff6faded3bc18d8cffe0c7571477f"
   },
   {
     "file": "docs/current/REAL_DATA_EXPERIENCE.md",
@@ -611,8 +611,8 @@
   },
   {
     "file": "docs/current/ROADMAP.md",
-    "bytes": 2794,
-    "sha256": "4d6f912e734d408ff3b0fcbbc13ae7489dcbff76aa227b470a70e0e6408ebf04"
+    "bytes": 2759,
+    "sha256": "e4105987ce9c31a156064b82687f5b5825a94d69abab92495e9e8c9a35eb8449"
   },
   {
     "file": "docs/current/STATISTICAL_AUDIT.md",
@@ -626,13 +626,13 @@
   },
   {
     "file": "docs/current/USER_GUIDE.md",
-    "bytes": 6521,
-    "sha256": "9a009b6b4167cf61079cadc17200d537aec81682d287a6c1cf24b3d97f1be5db"
+    "bytes": 6458,
+    "sha256": "f5dc2c0268a29c25d39e91978788dd2d91c36e874c305929f265458043a1fba4"
   },
   {
     "file": "docs/current/VALIDATION.md",
-    "bytes": 2303,
-    "sha256": "ce673e0b248335b5c7dce5e03090de140452f44838d82bdf387d0e903a10620d"
+    "bytes": 2281,
+    "sha256": "8e7142f9c12867325007a12e66825b379340207909779c21b3c997049e4e5404"
   },
   {
     "file": "docs/diagrams/HISTORY.md",
@@ -881,8 +881,8 @@
   },
   {
     "file": "docs/evaluation/v22/FOURTH_PHASE.md",
-    "bytes": 11093,
-    "sha256": "cc5803a97cca505d0ee8cf5a8736301bbc0848ee9e929e6f0c42b4e096af7f78"
+    "bytes": 11008,
+    "sha256": "df917765140a56d304d295644d48b0a9ba5abd81303283100ccf0e3ab162ed63"
   },
   {
     "file": "docs/evaluation/v22/PILOT.md",
@@ -901,8 +901,8 @@
   },
   {
     "file": "docs/evaluation/v22/STAGE_SUMMARY.md",
-    "bytes": 11242,
-    "sha256": "faa5cd2d4e9b614226febdd0496ec109c4946a522356e6c411a6488b55d704ac"
+    "bytes": 11159,
+    "sha256": "9518ac0d87985b3aeb1cf3adada3de71a199a158fa15926afebc26242b11c60a"
   },
   {
     "file": "docs/evaluation/v22/THIRD_PHASE.md",
@@ -921,8 +921,8 @@
   },
   {
     "file": "docs/evaluation/v23/CLOSEOUT.md",
-    "bytes": 296,
-    "sha256": "cc0278ce42cbc32c5ab92ebf50aee1a1599d95c044a7979cab09b3180e685c9e"
+    "bytes": 293,
+    "sha256": "2fd8bf98a915394ddf98ee7aeec5f4c59539f8dc52783dc982fd5f6ac82bfb69"
   },
   {
     "file": "docs/evaluation/v23/CLOSEOUT_ARCHIVE.json",
@@ -931,8 +931,8 @@
   },
   {
     "file": "docs/evaluation/v23/CLOSEOUT_REVIEW.md",
-    "bytes": 296,
-    "sha256": "cc0278ce42cbc32c5ab92ebf50aee1a1599d95c044a7979cab09b3180e685c9e"
+    "bytes": 293,
+    "sha256": "2fd8bf98a915394ddf98ee7aeec5f4c59539f8dc52783dc982fd5f6ac82bfb69"
   },
   {
     "file": "docs/evaluation/v23/FREEZE.json",
@@ -946,18 +946,18 @@
   },
   {
     "file": "docs/evaluation/v23/PHASE_FOUR.md",
-    "bytes": 296,
-    "sha256": "cc0278ce42cbc32c5ab92ebf50aee1a1599d95c044a7979cab09b3180e685c9e"
+    "bytes": 293,
+    "sha256": "2fd8bf98a915394ddf98ee7aeec5f4c59539f8dc52783dc982fd5f6ac82bfb69"
   },
   {
     "file": "docs/evaluation/v23/PHASE_FOUR_CASES.md",
-    "bytes": 296,
-    "sha256": "cc0278ce42cbc32c5ab92ebf50aee1a1599d95c044a7979cab09b3180e685c9e"
+    "bytes": 293,
+    "sha256": "2fd8bf98a915394ddf98ee7aeec5f4c59539f8dc52783dc982fd5f6ac82bfb69"
   },
   {
     "file": "docs/evaluation/v23/PHASE_FOUR_METRICS.json",
-    "bytes": 163,
-    "sha256": "b08f2f133ba1f4e440bd79b4f9a10100e22cd9e0a9887f1d6b97f47374451e36"
+    "bytes": 156,
+    "sha256": "a9cf3ab61e76d7dd41b106d06201d46b88b22da2cda370c1b2be0d6acc528839"
   },
   {
     "file": "docs/evaluation/v23/PHASE_ONE.md",
@@ -1011,8 +1011,8 @@
   },
   {
     "file": "docs/evaluation/v23/PUBLIC_SUMMARY.md",
-    "bytes": 1370,
-    "sha256": "0b8e973dfa920c3b6653cdbf6a4eae02782ca3d3f8eea35d42652ad8aff90bec"
+    "bytes": 1356,
+    "sha256": "1acd5d6dd1b7c7b24e3c7a31ceab25c9f78dce62c668d2ba1a4ad340e78e460c"
   },
   {
     "file": "docs/evaluation/v23/REFERENCE_NOTES.md",
@@ -1136,8 +1136,8 @@
   },
   {
     "file": "docs/product/automation-v2/README.md",
-    "bytes": 3204,
-    "sha256": "d2605be8553ee0107b1b59650868cbbbc235d7dc51c5f18af669ac9910402161"
+    "bytes": 3170,
+    "sha256": "75849dd7c59777207b7099c261d21020444340ad2136288883b6a9062395175e"
   },
   {
     "file": "docs/product/automation-v2/SOURCE_MANIFEST.json",
@@ -1151,8 +1151,8 @@
   },
   {
     "file": "docs/product/automation-v2/STAGE_ONE_EVIDENCE.json",
-    "bytes": 230,
-    "sha256": "b07033d5813b417d32b6362290564d4af71af4ee40ec751bf03f222937ad90e4"
+    "bytes": 225,
+    "sha256": "fcb6f757d4fc54f9350a73625eb596f680be2e3508ecc95a71edc5c5a36a3569"
   },
   {
     "file": "docs/product/automation-v2/STAGE_THREE.md",
@@ -1161,8 +1161,8 @@
   },
   {
     "file": "docs/product/automation-v2/STAGE_THREE_EVIDENCE.json",
-    "bytes": 232,
-    "sha256": "200796dd48a0d8426fb1c11c12abba80b86621aee5ce46546bc3c183f65506fb"
+    "bytes": 227,
+    "sha256": "095929598a9b91cab9e24d001f2dcad0a2b7605f64ed921b29fa03b360523283"
   },
   {
     "file": "docs/product/automation-v2/STAGE_TWO.md",
@@ -1171,8 +1171,8 @@
   },
   {
     "file": "docs/product/automation-v2/STAGE_TWO_EVIDENCE.json",
-    "bytes": 230,
-    "sha256": "b043abc4d0b488d5a021ad70d3ad42f0ca9565cd4690c1bfe360b440285f2fb9"
+    "bytes": 225,
+    "sha256": "39b06f2a8accadfc79cd663f09478eedc2367b9b4521ce672d2f275c6cfe31ec"
   },
   {
     "file": "docs/product/automation-v2/build.mjs",
@@ -1416,33 +1416,33 @@
   },
   {
     "file": "docs/releases/automation-v2-beta/ACCEPTANCE.md",
-    "bytes": 5997,
-    "sha256": "858f5a145604cdbd483234b2dc192ebcd42f6b72aa664d11ea155cbe813ef6ad"
+    "bytes": 5940,
+    "sha256": "1ca0676c5af642dd2c82ab53f24bb82a813be6915c59d8939706cb333c2e1a07"
   },
   {
     "file": "docs/releases/automation-v2-beta/EVIDENCE.json",
-    "bytes": 4313,
-    "sha256": "5cda8faeebbb45cd28c4c0bb78f7fbe60d73e84253ae445d81de78c0c28bc3e1"
+    "bytes": 4180,
+    "sha256": "bd97e4a5c0991b49aed02caad604dca8fc89c85f979127eb82ccf3466017027b"
   },
   {
     "file": "docs/releases/automation-v2-beta/FILES.md",
-    "bytes": 1198,
-    "sha256": "bf8cb474bce873ed31c7acff016c2ffa2abe0eef2900f57c50505fa67855f4b7"
+    "bytes": 1184,
+    "sha256": "22a4169dee7d47effb30c9db2471030aa87ac1a2b7fed43a204bed90496d7edf"
   },
   {
     "file": "docs/releases/automation-v2-beta/LIMITATIONS.md",
-    "bytes": 1787,
-    "sha256": "574e6e9a3619841d778f464dbbb7538a93949b48060ff8f9025975d22e4ac6ff"
+    "bytes": 1769,
+    "sha256": "a536bc7c9e8865f8782388934f0141a2902c23f92281ff7385f17f9bd507e568"
   },
   {
     "file": "docs/releases/automation-v2-beta/README.md",
-    "bytes": 971,
-    "sha256": "7d5a13d0ca296680873886db9bba66a1de5226c2dab780e905169d59bc4282e9"
+    "bytes": 959,
+    "sha256": "3ab673096003c3a46b7523b1777e07db0fef7a7cbea14e519b32359533648132"
   },
   {
     "file": "docs/releases/automation-v2-beta/assets/PROVENANCE.json",
-    "bytes": 1478,
-    "sha256": "315c6bfb79be32394a8afe54c321f0a220551a30b547307a1e561728ab2be0a8"
+    "bytes": 1436,
+    "sha256": "b69d0196672cf6f4d80e0f5f641dbaf7c9205a8d30bb55c1df4a6910b8acf84a"
   },
   {
     "file": "docs/releases/automation-v2-beta/assets/blocked.png",
@@ -1486,8 +1486,8 @@
   },
   {
     "file": "docs/releases/automation-v2-beta/diagrams/fixed-chain.mmd",
-    "bytes": 421,
-    "sha256": "fb241459d951c98f1ca503b689715caa9561649be7b4b0d15a2e59fed28cda9e"
+    "bytes": 412,
+    "sha256": "9af21e6aba40a13e2df2b8331cde7712035874e0382fe4e40cd16588128502e8"
   },
   {
     "file": "docs/releases/automation-v2-beta/diagrams/fixed-chain.svg",
@@ -1666,8 +1666,8 @@
   },
   {
     "file": "pyproject.toml",
-    "bytes": 1449,
-    "sha256": "11c54bb603110a5de1f1bbd1d298195eaf5f84991b30ea80d214a216456dfbb6"
+    "bytes": 1393,
+    "sha256": "77a56eba862a2d6845b8ba1817015ab539cb2dbe2e52fe254a2dbb085ffaa081"
   },
   {
     "file": "requirements-runtime-win-py311.txt",
@@ -1681,13 +1681,13 @@
   },
   {
     "file": "scripts/automation_v2_browser.cjs",
-    "bytes": 18810,
-    "sha256": "003c052ca82119c450d1435695f72a53ac24630c4a251c06b3206049a799b92f"
+    "bytes": 18577,
+    "sha256": "ce76519ce8369165a265c3ad29b05ed93f33d245b5c554460ecc11c0a8b40bd3"
   },
   {
     "file": "scripts/automation_v2_history_browser.cjs",
-    "bytes": 4144,
-    "sha256": "b4d434cba168067ea05b33ecefc852de3f4b2b25725c163481d2c2c753877e68"
+    "bytes": 4106,
+    "sha256": "e9c93dd81886d2beb188b958d6395d0d518ad04c4e7d20d7e34ad8f63c2ee5be"
   },
   {
     "file": "scripts/automation_v2_stage1.py",
@@ -1926,8 +1926,8 @@
   },
   {
     "file": "scripts/prepublish_audit.py",
-    "bytes": 5513,
-    "sha256": "314ee96a7435bc6846abfeb2c25ffad5ba7d21ca8c0a4223cd11e645949119a1"
+    "bytes": 5406,
+    "sha256": "6fd404ec2421dfdab1d78225362d086dfaaceb509d4be2f5bed80455bf2c6bd1"
   },
   {
     "file": "scripts/refresh_method_sources.py",
@@ -2001,8 +2001,8 @@
   },
   {
     "file": "src/causalops/__init__.py",
-    "bytes": 70,
-    "sha256": "968da249b085d43a80479cac901a53840164393b40f35e34a2c287eb411d6250"
+    "bytes": 66,
+    "sha256": "2b6e44d12a9f33bee3294e8aac24798202cb5aea7f37f740e52e81521df49259"
   },
   {
     "file": "src/causalops/advanced/__init__.py",
@@ -2516,8 +2516,8 @@
   },
   {
     "file": "src/causalops/help/manual.html",
-    "bytes": 1600395,
-    "sha256": "cf3fcbd9477e912cfbc781dc37461d54ce26105146d293bc9a691f9088e13803"
+    "bytes": 1600386,
+    "sha256": "c6d448446bf50aa432e3d0aa6839addfa4fdb80d1c5c7b9d9fdec9afa6fdd987"
   },
   {
     "file": "src/causalops/identification.py",
@@ -2766,8 +2766,8 @@
   },
   {
     "file": "src/causalops/ui/automation_app.py",
-    "bytes": 13582,
-    "sha256": "b996c2330ca89ef455e9e5d2db0e8350dabde559586cef9ed0495bb3d18c383b"
+    "bytes": 13399,
+    "sha256": "583173984e3e06d6fe24e5aeb574ddadc3f08c5f52d25982447984e3840382a8"
   },
   {
     "file": "src/causalops/ui/contracts_editor.py",
@@ -2926,8 +2926,8 @@
   },
   {
     "file": "tests/test_beta_automation_release.py",
-    "bytes": 1541,
-    "sha256": "ffe4f5bf069993d800178f526112f103eaacb7c0a7ccc20069c11b42eb8afca7"
+    "bytes": 1512,
+    "sha256": "4a71a7ff599fe825feb23ed564ddc33434ea1e5eec62bd3f206e3711fd471014"
   },
   {
     "file": "tests/test_boundaries_v051.py",
@@ -3286,12 +3286,12 @@
   },
   {
     "file": "启动LangGraph工作台.cmd",
-    "bytes": 533,
-    "sha256": "3e25278c2b28a369d2e5b94610d4025eb882786b25373aa7d55ce43da5ae311e"
+    "bytes": 517,
+    "sha256": "993d7d8fd78fd93d5765f1ca9c581294391f87d2cd2691c05aed534b5f113476"
   },
   {
     "file": "启动作品集.cmd",
-    "bytes": 533,
-    "sha256": "3e25278c2b28a369d2e5b94610d4025eb882786b25373aa7d55ce43da5ae311e"
+    "bytes": 517,
+    "sha256": "993d7d8fd78fd93d5765f1ca9c581294391f87d2cd2691c05aed534b5f113476"
   }
 ]
