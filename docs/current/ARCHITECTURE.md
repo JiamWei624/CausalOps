@@ -1,6 +1,18 @@
 # 系统架构 · CausalOps 阶段性公开测试版
 
-应用包版本 0.16.0，本阶段产品代码冻结于 `b8fbc75`。核心调用链在本地单用户模式验证，包括 LangGraph 审核中断、版本化合同、本地执行、保存证据与报告问答；模型端验证限于已记录的具体服务和任务。问答路由和目标指标解读存在已知遗漏，17 项注册入口的统计验证深度并不相同。下一代多表语义管理、更自主的研究规划和多人部署属于未来工作。
+应用包0.17.0b1。当前候选来自第三阶段f568f3e；新增受限固定自动化，旧单次LangGraph路径保留。软件不是通用自主规划系统。
+
+## 受限自动化执行路径（当前实现）
+
+Streamlit automation_app → ResearchService.automation_v2 → BoundedCoordinator。PlanV2静态计划与动态步骤记录分开；整体人工批准绑定数据、DataContract、完整步骤、配置与哈希。AutomationJobs复用后台线程，逐步授权后调用原注册工具与研究域门禁。
+
+固定链：S01审计→S02描述Run→S03持久结果/哈希核验→S04 A/B Run→S05事实报告。正式计算只有两次，不把审计或页面状态当统计步骤。automation_results.snapshot有界重读，report_html在同一HTML内绑定任务、指标、计划与两个Run。SQLite/Parquet及原结果文件仍为统计事实来源，没有第二套统计数据库。
+
+automation_budget记录实际模型请求、工具尝试与预算事件；固定计划模型授权为0。暂停在安全边界生效，取消终态，恢复核对所有权、批准、输入、已有Run和预算。无法证明安全时暂停人工核查，不盲目重算。
+
+核心文件：application/automation_contracts.py、automation_coordinator.py、automation_budget.py、automation_results.py、background.py；ui/automation_app.py。完整设计与三个阶段见[自动化文档](../product/automation-v2/README.md)，实际安装与浏览器结果见[本次验收](../releases/automation-v2-beta/ACCEPTANCE.md)。
+
+以下组件图及单次路径继续适用；图中LangGraph不是固定自动化的必经路线。可选DeepSeek不等于每次研究必须调用模型。
 
 [查看研究质量、权限、恢复和运行证据图](FIGURES.md)
 

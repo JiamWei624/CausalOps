@@ -123,6 +123,20 @@ class StructuredModelClient:
         for attempt in range(1,self.provider_config.max_retries+2):
             physical_started=time.monotonic()
             event={**base,'attempt':attempt}
+            # Task scope reaches every physical HTTP attempt, including transport retries
+            # and callers' separate JSON repair calls. No reservation is refunded.
+            from causalops.application.automation_budget import active_budget
+            budget_scope=active_budget()
+            reservation=None
+            if budget_scope:
+                ledger,purpose,binding,enabled=budget_scope
+                if not enabled:
+                    from causalops.application.automation_budget import BudgetExceeded
+                    raise BudgetExceeded("当前固定自动化计划未批准模型调用，已在HTTP发送前阻断。")
+                if binding is not None and binding!=self.provider_config.binding():
+                    raise ProviderError("预算任务绑定的模型服务不同，禁止静默切换。")
+                config=self.provider_config.model_dump(mode='json')
+                reservation=ledger.reserve_model(purpose,config,len(json.dumps(body,ensure_ascii=False).encode('utf8')))
             self._observe_attempt({**event,'event':'started'})
             retry=False
             try:
@@ -180,7 +194,9 @@ class StructuredModelClient:
                 raise ProviderError('模型返回内容不完整或JSON格式无效，未采纳输出。') from None
             finally:
                 self.last_telemetry={**event,'attempts':attempt,'latency_ms':round((time.monotonic()-started)*1000)}
-                self._observe_attempt({**event,'event':'finished','will_retry':retry,'latency_ms':round((time.monotonic()-physical_started)*1000)})
+                finished={**event,'event':'finished','will_retry':retry,'latency_ms':round((time.monotonic()-physical_started)*1000)}
+                if reservation:ledger.receipt(reservation,finished)
+                self._observe_attempt(finished)
             if retry:self._sleep(1)
         raise ProviderError('已达到请求尝试上限。')
     def _content(self,r):

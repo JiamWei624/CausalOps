@@ -1,0 +1,42 @@
+[
+  {
+    "source_archive": "V2.2 closeout evidence",
+    "source_relative": "preview-fixed/01-different.png",
+    "destination": "assets/n06-preview.png",
+    "product_commit": "152b410",
+    "delivery_commit": "863b017",
+    "sha256": "55ED6DEB5BFD94B525B20247AD00EB0368D54C17A03AE18784B9B9763B1A76DC",
+    "copied_unchanged": true,
+    "description": "实际浏览器验收截图；非本轮新运行、非设计稿；合成数据"
+  },
+  {
+    "source_archive": "V2.2 closeout evidence",
+    "source_relative": "preview-fixed/02-awaiting.png",
+    "destination": "assets/n06-review.png",
+    "product_commit": "152b410",
+    "delivery_commit": "863b017",
+    "sha256": "51BE9B8F586241830246A00CE0AA0495E52A6D182E7900AA50379D8A15FB4095",
+    "copied_unchanged": true,
+    "description": "实际浏览器验收截图；非本轮新运行、非设计稿；合成数据"
+  },
+  {
+    "source_archive": "V2.2 closeout evidence",
+    "source_relative": "preview-fixed/03-changed.png",
+    "destination": "assets/n06-result.png",
+    "product_commit": "152b410",
+    "delivery_commit": "863b017",
+    "sha256": "57C13D500BCEB7980EB671847CAD9B071E666CDBA9C1761E697361311F05E7ED",
+    "copied_unchanged": true,
+    "description": "实际浏览器验收截图；非本轮新运行、非设计稿；合成数据"
+  },
+  {
+    "source_archive": "V2.2 closeout evidence",
+    "source_relative": "preview-fixed/05-refreshed-target.png",
+    "destination": "assets/n06-refresh.png",
+    "product_commit": "152b410",
+    "delivery_commit": "863b017",
+    "sha256": "0F84C91C7C18406C9C6B60A8886B231E24FDBE01ED7E248BE200311F2D42C293",
+    "copied_unchanged": true,
+    "description": "实际浏览器验收截图；非本轮新运行、非设计稿；合成数据"
+  }
+]

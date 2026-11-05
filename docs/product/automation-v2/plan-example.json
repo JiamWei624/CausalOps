@@ -1,0 +1,359 @@
+{
+  "schema_version": "automation-plan-v2-design-1",
+  "status": "design_only_not_executable",
+  "objective": "评估男装邮件相对未发邮件对分配后两周访问率的影响",
+  "scope": {
+    "dataset_ref": "$approved.upload",
+    "data_sha": "$approved.frame_sha",
+    "contract_ref": "$approved.contract_ref",
+    "analysis_unit": "客户",
+    "entity": "entity_id",
+    "outcome": "visit",
+    "groups": {
+      "field": "assigned",
+      "control": "0",
+      "treated": "1",
+      "control_label": "未发邮件",
+      "treated_label": "男装邮件"
+    },
+    "window": {
+      "kind": "source_defined",
+      "label": "分配后两周",
+      "source": "https://blog.minethatdata.com/2008/03/minethatdata-e-mail-analytics-and-data.html"
+    },
+    "inclusion": {
+      "adapter": "causalops.sample_data.hillstrom.cohort",
+      "groups": [
+        "Mens E-Mail",
+        "No E-Mail"
+      ],
+      "mutable_at_execution": false
+    },
+    "missing_policy": "stop_no_automatic_exclusion"
+  },
+  "budgets": {
+    "max_steps": 6,
+    "max_plan_revisions": 2,
+    "max_physical_model_requests": 12,
+    "max_transient_retries_per_step": 1,
+    "cost_warning_cny": 1,
+    "cost_is_estimate": true
+  },
+  "approval": {
+    "mode": "whole_fixed_plan",
+    "revalidate_before_each_step": true,
+    "model_cannot_supply_facts": true
+  },
+  "steps": [
+    {
+      "step_id": "S01",
+      "kind": "audit",
+      "purpose": "核对同一数据版本的执行条件和已登记设计事实",
+      "depends_on": [],
+      "inputs": {
+        "data": "$approved.upload",
+        "contract": "$approved.contract_ref",
+        "provenance": "$approved.source_receipt"
+      },
+      "tool": {
+        "handler": "audit_adapter_v2",
+        "registered_statistical_method": null
+      },
+      "config": {
+        "required_fields": [
+          "entity_id",
+          "assigned",
+          "visit"
+        ],
+        "binary_outcome": "visit",
+        "expected_groups": [
+          "0",
+          "1"
+        ],
+        "missing_policy": "stop",
+        "assignment_from": "approved_contract_only"
+      },
+      "preconditions": [
+        "approved_snapshot_matches"
+      ],
+      "outputs": {
+        "schema": "audit-evidence-v1",
+        "paths": [
+          "group_counts",
+          "rows",
+          "entity_check",
+          "binary_check",
+          "provenance_ref",
+          "data_sha",
+          "scope_sha"
+        ]
+      },
+      "success": "结构满足首版条件且设计声明来源已人工核对",
+      "authorization": "whole_plan_receipt_then_per_step_verify",
+      "failure_policy": {
+        "transient_retries": 1,
+        "on_invalid_condition": "block_descendants",
+        "on_uncertain_output": "pause_for_reconciliation"
+      }
+    },
+    {
+      "step_id": "S02",
+      "kind": "statistical",
+      "purpose": "保存两组实际分布与有效样本以供下一步核对",
+      "depends_on": [
+        "S01"
+      ],
+      "inputs": {
+        "data": "$approved.upload",
+        "gate": "S01:success"
+      },
+      "tool": {
+        "registry_tool": "exploration",
+        "method": "descriptive"
+      },
+      "config": {
+        "question": "核对两组客户的两周访问指标与有效样本分布",
+        "method": "descriptive",
+        "numeric": [
+          "visit"
+        ],
+        "categorical": [
+          "assigned"
+        ],
+        "group": "assigned"
+      },
+      "preconditions": [
+        "S01:succeeded",
+        "approved_snapshot_matches"
+      ],
+      "outputs": {
+        "schema": "tool-result-v1+descriptive-grouped-v1",
+        "paths": [
+          "run_id",
+          "result_fingerprint",
+          "summary.grouped",
+          "data_fingerprint"
+        ]
+      },
+      "success": "唯一可加载的描述统计Run与当前计划绑定",
+      "authorization": "whole_plan_receipt_then_per_step_verify",
+      "failure_policy": {
+        "transient_retries": 1,
+        "on_invalid_condition": "block_descendants",
+        "on_uncertain_output": "pause_for_reconciliation"
+      }
+    },
+    {
+      "step_id": "S03",
+      "kind": "gate",
+      "purpose": "基于S02真实结果决定A/B是否可以执行",
+      "depends_on": [
+        "S01",
+        "S02"
+      ],
+      "inputs": {
+        "audit": "S01:output",
+        "grouped": {
+          "producer": "S02",
+          "path": "summary.grouped",
+          "schema": "descriptive-grouped-v1"
+        },
+        "statistical_run": "S02:run_id"
+      },
+      "tool": {
+        "handler": "cohort_consistency_gate_v1",
+        "registered_statistical_method": null
+      },
+      "config": {
+        "checks": [
+          "exactly_approved_groups",
+          "finite_count_equals_rows",
+          "each_group_at_least_two",
+          "total_rows_at_least_ten",
+          "sum_group_variances_finite_positive",
+          "counts_match_audit",
+          "same_data_contract_metric_scope"
+        ],
+        "allowed_decisions": [
+          "proceed",
+          "blocked"
+        ],
+        "statistical_significance_not_a_condition": true
+      },
+      "preconditions": [
+        "S01:succeeded",
+        "S02:succeeded",
+        "all_input_hashes_verified"
+      ],
+      "outputs": {
+        "schema": "gate-evidence-v1",
+        "paths": [
+          "decision",
+          "checks",
+          "upstream_refs",
+          "scope_sha"
+        ]
+      },
+      "success": "所有确定性条件满足，decision=proceed",
+      "authorization": "whole_plan_receipt_then_per_step_verify",
+      "failure_policy": {
+        "transient_retries": 1,
+        "on_invalid_condition": "block_descendants",
+        "on_uncertain_output": "pause_for_reconciliation"
+      }
+    },
+    {
+      "step_id": "S04",
+      "kind": "statistical",
+      "purpose": "估计预先指定的两组两周访问概率差",
+      "depends_on": [
+        "S03"
+      ],
+      "inputs": {
+        "data": "$approved.upload",
+        "execution_gate": "S03:decision",
+        "facts": "$approved.confirmations.ab_test"
+      },
+      "tool": {
+        "registry_tool": "research",
+        "method": "ab_test"
+      },
+      "config": {
+        "question": "评估分配男装邮件相对未发邮件的两周访问率差异",
+        "method": "ab_test",
+        "analysis_unit": "客户",
+        "entity": "entity_id",
+        "treatment": "assigned",
+        "control_value": "0",
+        "treated_value": "1",
+        "outcome": "visit",
+        "covariates": [],
+        "metric": {
+          "label": "两周访问率",
+          "unit": "概率",
+          "kind": "binary",
+          "direction": "higher_is_better",
+          "ratio_scale": true,
+          "window": "分配后两周",
+          "source": "Hillstrom公开设计说明及已批准DataContract"
+        }
+      },
+      "preconditions": [
+        "S03:decision=proceed",
+        "all_input_hashes_verified",
+        "approved_snapshot_matches",
+        "original_engine_gates"
+      ],
+      "outputs": {
+        "schema": "tool-result-v1",
+        "paths": [
+          "run_id",
+          "result_fingerprint",
+          "data_fingerprint",
+          "claim"
+        ]
+      },
+      "success": "通过原统计门禁，保存唯一实际Run",
+      "authorization": "whole_plan_receipt_then_per_step_verify",
+      "failure_policy": {
+        "transient_retries": 1,
+        "on_invalid_condition": "block_descendants",
+        "on_uncertain_output": "pause_for_reconciliation"
+      }
+    },
+    {
+      "step_id": "S05",
+      "kind": "report",
+      "purpose": "核对多个步骤并交付完整可追溯结论",
+      "depends_on": [
+        "S01",
+        "S02",
+        "S03",
+        "S04"
+      ],
+      "inputs": {
+        "audit": "S01:output",
+        "descriptive": "S02:run_id",
+        "gate": "S03:output",
+        "effect": "S04:run_id"
+      },
+      "tool": {
+        "handler": "report_manifest_v1",
+        "registered_statistical_method": null
+      },
+      "config": {
+        "required_parts": [
+          "question",
+          "two_group_rates",
+          "absolute_difference_pp",
+          "confidence_interval",
+          "sample_counts",
+          "window",
+          "scope_limits",
+          "run_sources"
+        ],
+        "optional_model_explanation": true,
+        "missing_required_part": "partial_not_complete"
+      },
+      "preconditions": [
+        "all_input_hashes_verified",
+        "same_metric_population_window",
+        "counts_exactly_equal",
+        "probabilities_match_within_approved_tolerance"
+      ],
+      "outputs": {
+        "schema": "report-manifest-v1",
+        "paths": [
+          "report_id",
+          "source_runs",
+          "completeness",
+          "report_hash"
+        ]
+      },
+      "success": "必要内容由实际Run支撑且报告来源完整",
+      "authorization": "whole_plan_receipt_then_per_step_verify",
+      "failure_policy": {
+        "transient_retries": 1,
+        "on_invalid_condition": "block_descendants",
+        "on_uncertain_output": "pause_for_reconciliation"
+      }
+    }
+  ],
+  "runtime_record_templates_NOT_in_plan_hash": {
+    "S01": {
+      "status": "pending",
+      "attempt_id": null,
+      "run_id": null,
+      "output_ref": null,
+      "output_sha": null
+    },
+    "S02": {
+      "status": "pending",
+      "attempt_id": null,
+      "run_id": null,
+      "output_ref": null,
+      "output_sha": null
+    },
+    "S03": {
+      "status": "pending",
+      "attempt_id": null,
+      "run_id": null,
+      "output_ref": null,
+      "output_sha": null
+    },
+    "S04": {
+      "status": "pending",
+      "attempt_id": null,
+      "run_id": null,
+      "output_ref": null,
+      "output_sha": null
+    },
+    "S05": {
+      "status": "pending",
+      "attempt_id": null,
+      "run_id": null,
+      "output_ref": null,
+      "output_sha": null
+    }
+  }
+}

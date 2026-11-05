@@ -60,6 +60,11 @@ class ResearchService:
             c.execute('CREATE TABLE IF NOT EXISTS workflow_outputs(flow_id TEXT,kind TEXT,body TEXT NOT NULL,PRIMARY KEY(flow_id,kind))')
             c.execute('CREATE TABLE IF NOT EXISTS workflow_events(flow_id TEXT,seq INTEGER,node TEXT,status TEXT,body TEXT,created TEXT,PRIMARY KEY(flow_id,seq))')
             c.execute('CREATE TABLE IF NOT EXISTS workflow_approvals(id TEXT PRIMARY KEY,flow_id TEXT UNIQUE NOT NULL,body TEXT NOT NULL,sha TEXT NOT NULL,revoked INTEGER NOT NULL DEFAULT 0)')
+    def automation_v2(self):
+        """Restricted V2 execution/control entry; receipts never inherit legacy approval."""
+        from causalops.application.automation_coordinator import BoundedCoordinator
+        return BoundedCoordinator(self)
+
     def create_task(self,*,payload=None,name=None,upload_id=None,title='新分析任务',**reader):
         if payload is not None:
             if upload_id is not None or not name:raise DesignError('新文件与已有上传只能选择一种。')
@@ -104,7 +109,10 @@ class ResearchService:
     def begin(self,sid,question,*,mode='auto',run_ids=None,parent_flow_id=None):
         if mode not in ('auto','plan','method','results','profile','explore'):raise DesignError('请求路线不受支持。')
         from causalops.application.conversation import resolve_context
-        original_question=check_question(question)
+        submitted_question=check_question(question)
+        from causalops.application.research_semantics import request_text
+        registered=self.contracts.latest(sid)
+        original_question=request_text(submitted_question, registered['body'] if registered else {})
         question,conversation_ref=resolve_context(self,sid,original_question,parent_flow_id)
         binding=self.data_binding(sid)
         from causalops.application.research_semantics import reads_saved_result
@@ -126,7 +134,7 @@ class ResearchService:
         from causalops.assistant.service import check_run_mentions
         check_run_mentions(original_question,([r['run_id'] for r in self.a.completed_runs(sid)] if (reference or {}).get('error') else run_ids))
         self.a.facts(sid,run_ids=run_ids)
-        request={'question':question,'mode':mode,'run_ids':list(dict.fromkeys(run_ids)),'data':binding,'contract_ref':self.contracts.ref(sid)}
+        request={'question':question,'submitted_question':submitted_question,'mode':mode,'run_ids':list(dict.fromkeys(run_ids)),'data':binding,'contract_ref':self.contracts.ref(sid)}
         from causalops.application.run_context import review_preview
         if mode=='auto' and review_preview(original_question):
             previous=self.flow(parent_flow_id) if parent_flow_id else None
@@ -150,7 +158,7 @@ class ResearchService:
         if run_ids and not readonly and mode not in ('method','results','profile','explore'):
             from causalops.application.plan_scope import requested_scope
             literal=compound[1] if compound else original_question
-            if compound or re.search('改看|改成|改用|改为|换成|切换|修改|调整|新方案|新计划|重新审核|只看|新报告|单独制定',literal):
+            if compound or re.search('改看|改成|改用|改为|换成|切换|修改|调整|新方案|新计划|重新审核|只看|新报告|单独制定|改按',literal):
                 from causalops.application.task_conclusions import source_dictionary
                 scoped_body=body
                 if len(run_ids)==1:
@@ -163,6 +171,14 @@ class ResearchService:
                     for field in ('metric_label','metric_unit','metric_kind','metric_window'):
                         scope.setdefault(field,scoped_body.get(field,''))
                     scope['source_run_id']=run_ids[0]
+                    if not scope.get('start'):
+                        # Inherit actual typed filters, not dates parsed from a display label.
+                        ref=next(r for r in self.a.completed_runs(sid) if r['run_id']==run_ids[0])
+                        if ref['method']=='descriptive':
+                            design=self.a.ex.load(run_ids[0])['design']
+                            if design.get('window_start') and design.get('window_end'):
+                                scope.update(date=design['date'],start=design['window_start'],end=design['window_end'],
+                                             inherited_window_from=run_ids[0])
                 if scope:
                     request['analysis_scope']=scope
         if (self.contracts.ref(sid))!=request['contract_ref']:raise DesignError('研究口径已改变，请重新提出问题。')
@@ -388,7 +404,7 @@ class ResearchService:
             if req.get('analysis_scope',{}).get('error'):return RouteDecision(route='clarify',reason=req['analysis_scope']['error'])
             if re.search(r'ols|线性回归',inquiry,re.I):
                 return RouteDecision(route='plan',methods=['ols'],reason='先解释指定运行，再形成待审的关联分析方案。')
-            if not req.get('analysis_scope'):return RouteDecision(route='clarify',reason='请确认新窗口的日期界限与指标，再制定方案。')
+            if not req.get('analysis_scope'):return RouteDecision(route='clarify',reason='请明确本次要修改的指标或观察范围及对应字段，旧报告将保留。')
         if req.get('conversation_ref') and re.search('缺哪|缺少哪|少了哪|哪一天|哪几天|哪天',inquiry):
             parent=self.flow(req['conversation_ref']['parent_flow_id'])
             scope=parent['request'].get('analysis_scope') or {}
@@ -401,6 +417,12 @@ class ResearchService:
         from causalops.application.research_semantics import registered_ratio_advice
         if req['mode'] in ('auto','method') and registered_ratio_advice(inquiry,definition):
             return RouteDecision(route='method',reason='解释已登记比率的汇总规则，不执行计算。')
+        from causalops.application.research_semantics import equal_weight_explanation
+        if equal_weight_explanation(inquiry) and (calculation_forbidden(inquiry) or re.search('只谈|权重.*(?:不同|区别)|一定.*不同',inquiry)):
+            return RouteDecision(route='method',reason='解释记录加权与对象等权的区别及成立条件。')
+        from causalops.application.research_semantics import readonly_consultation, reads_saved_result
+        if req['mode'] in ('auto','method') and readonly_consultation(inquiry) and not req.get('prior_question') and not reads_saved_result(inquiry) and not re.search(r'(?:当前|本次).{0,10}结果|分析结果|结果的',inquiry):
+            return RouteDecision(route='method',reason='本轮询问研究条件或方法区别，不授权生成统计方案。')
         conflict=issue(inquiry,definition)
         if conflict:return RouteDecision(route='clarify',reason=conflict)
         if scope:

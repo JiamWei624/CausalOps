@@ -1,0 +1,5 @@
+{
+  "archive": "local_only",
+  "product_stage": "STAGE_ONE_EVIDENCE",
+  "note": "原始步骤身份、开发机路径、截图及测试日志保留本地，公开验收见 docs/releases/automation-v2-beta/ACCEPTANCE.md。"
+}

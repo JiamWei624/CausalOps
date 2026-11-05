@@ -108,6 +108,9 @@ class DeepSeekStructuredModelClient:
         user_payload: dict[str, Any],
         output_schema: dict[str, Any],
     ) -> dict[str, Any]:
+        from causalops.application.automation_budget import active_budget
+        if active_budget() is not None:
+            raise DeepSeekConfigurationError("V2任务只允许统一预算传输接口；旧SDK路径不能绕过物理请求计数。")
         started = time.monotonic()
         attempts = 0
         use_json_object_fallback = False

@@ -1,0 +1,1266 @@
+{
+  "baseline": "5ac788f",
+  "mode": "read_only_source_inspection_no_product_execution",
+  "files": [
+    {
+      "file": "src/causalops/application/background.py",
+      "sha256": "7d02bda70183ef7c3ab2d06d440b26ec4fb732197ae547877d173d3637d5905e",
+      "symbols": [
+        {
+          "line": 14,
+          "declaration": "class BackgroundJobs:"
+        },
+        {
+          "line": 15,
+          "declaration": "def __init__(self,service):"
+        },
+        {
+          "line": 20,
+          "declaration": "def jobs(self,sid):"
+        },
+        {
+          "line": 25,
+          "declaration": "def job(self,jid):"
+        },
+        {
+          "line": 30,
+          "declaration": "def submit_start(self,sid,question,*,mode='auto',run_ids=None,parent_flow_id=None):"
+        },
+        {
+          "line": 34,
+          "declaration": "def capacity(self):"
+        },
+        {
+          "line": 37,
+          "declaration": "def submit(self,fid):"
+        },
+        {
+          "line": 61,
+          "declaration": "def _run(self,jid,factory,owned):"
+        },
+        {
+          "line": 85,
+          "declaration": "def cancel(self,fid,*,human_confirmed=False):"
+        },
+        {
+          "line": 95,
+          "declaration": "def reconcile(self,sid):"
+        },
+        {
+          "line": 107,
+          "declaration": "def resume(self,fid,*,human_confirmed=False):"
+        }
+      ]
+    },
+    {
+      "file": "src/causalops/application/data_contracts.py",
+      "sha256": "cef780b80a026e1504fcfac3cdb2b5c5f8c4b00846c2062145a4ab3167f0de46",
+      "symbols": [
+        {
+          "line": 13,
+          "declaration": "class ResearchScope(BaseModel):"
+        },
+        {
+          "line": 25,
+          "declaration": "class FieldMeaning(BaseModel):"
+        },
+        {
+          "line": 35,
+          "declaration": "class DataContract(BaseModel):"
+        },
+        {
+          "line": 68,
+          "declaration": "class ContractRepository:"
+        },
+        {
+          "line": 69,
+          "declaration": "def __init__(self,assistant):"
+        },
+        {
+          "line": 73,
+          "declaration": "def versions(self,sid):"
+        },
+        {
+          "line": 82,
+          "declaration": "def latest(self,sid):"
+        },
+        {
+          "line": 84,
+          "declaration": "def ref(self,sid):"
+        },
+        {
+          "line": 87,
+          "declaration": "def save(self,sid,value,*,expected_sha=None,human_confirmed=False):"
+        },
+        {
+          "line": 126,
+          "declaration": "def bound(self,flow):"
+        },
+        {
+          "line": 141,
+          "declaration": "def verify_current(self,flow):"
+        },
+        {
+          "line": 144,
+          "declaration": "def review_facts(self,flow,plan):"
+        }
+      ]
+    },
+    {
+      "file": "src/causalops/application/research_quality.py",
+      "sha256": "ef705a1fb05407735ae56b33c33930d7b53876a9f6fb5f7c56321e5a54335b51",
+      "symbols": [
+        {
+          "line": 10,
+          "declaration": "def audit_research(frame,body):"
+        },
+        {
+          "line": 12,
+          "declaration": "def add(layer,code,status,detail,action,count=None):"
+        },
+        {
+          "line": 70,
+          "declaration": "def research_brief(body,*,question='',audit=None):"
+        },
+        {
+          "line": 85,
+          "declaration": "def method_contract(method):"
+        },
+        {
+          "line": 115,
+          "declaration": "def next_research_steps(body,audit):"
+        }
+      ]
+    },
+    {
+      "file": "src/causalops/application/research_service.py",
+      "sha256": "830f14167a7b5dd3fef768de2104c7e1be1467d59c509d55a721dee60bbb3ea9",
+      "symbols": [
+        {
+          "line": 17,
+          "declaration": "class FlowCancelled(DesignError):"
+        },
+        {
+          "line": 20,
+          "declaration": "class RouteDecision(BaseModel):"
+        },
+        {
+          "line": 26,
+          "declaration": "class ToolGateway:"
+        },
+        {
+          "line": 28,
+          "declaration": "def __init__(self,service):self.service=service"
+        },
+        {
+          "line": 29,
+          "declaration": "def methods(self,flow_id):"
+        },
+        {
+          "line": 37,
+          "declaration": "def execute(self,flow_id):"
+        },
+        {
+          "line": 41,
+          "declaration": "def answer(self,flow_id,run_ids,question):"
+        },
+        {
+          "line": 48,
+          "declaration": "class ResearchService:"
+        },
+        {
+          "line": 50,
+          "declaration": "def __init__(self,assistant=None,*,model=None,progress=None):"
+        },
+        {
+          "line": 63,
+          "declaration": "def create_task(self,*,payload=None,name=None,upload_id=None,title='新分析任务',**reader):"
+        },
+        {
+          "line": 69,
+          "declaration": "def flow(self,flow_id):"
+        },
+        {
+          "line": 75,
+          "declaration": "def flows(self,sid):"
+        },
+        {
+          "line": 79,
+          "declaration": "def update(self,flow_id,*,status=None,plan_id=None):"
+        },
+        {
+          "line": 84,
+          "declaration": "def emit(self,flow_id,node,status,body=None):"
+        },
+        {
+          "line": 89,
+          "declaration": "def events(self,flow_id):"
+        },
+        {
+          "line": 92,
+          "declaration": "def output(self,flow_id,kind):"
+        },
+        {
+          "line": 96,
+          "declaration": "def save_output(self,flow_id,kind,body):"
+        },
+        {
+          "line": 100,
+          "declaration": "def data_binding(self,sid):"
+        },
+        {
+          "line": 104,
+          "declaration": "def begin(self,sid,question,*,mode='auto',run_ids=None,parent_flow_id=None):"
+        },
+        {
+          "line": 187,
+          "declaration": "def start(self,sid,question,*,mode='auto',run_ids=None,parent_flow_id=None):"
+        },
+        {
+          "line": 192,
+          "declaration": "def graph(self):"
+        },
+        {
+          "line": 197,
+          "declaration": "def _drive(self,fid,*,initial=False):"
+        },
+        {
+          "line": 212,
+          "declaration": "def check_cancel(self,fid):"
+        },
+        {
+          "line": 214,
+          "declaration": "def cancel(self,fid,*,human_confirmed=False):"
+        },
+        {
+          "line": 222,
+          "declaration": "def continue_flow(self,fid):"
+        },
+        {
+          "line": 236,
+          "declaration": "def resume(self,fid,*,human_confirmed=False,dispatch=True):"
+        },
+        {
+          "line": 247,
+          "declaration": "def save_execution(self,fid,body):"
+        },
+        {
+          "line": 251,
+          "declaration": "def propose_researched(self,fid):"
+        },
+        {
+          "line": 301,
+          "declaration": "def withdraw_replaced_candidate(self,flow,replacement):"
+        },
+        {
+          "line": 322,
+          "declaration": "def review(self,fid,*,accept:bool,expected_plan_id:str,expected_plan_sha:str,expected_data_sha:str,human_confirmed=False,confirmations=None,dispatch=True,use_contract_facts=False):"
+        },
+        {
+          "line": 363,
+          "declaration": "def verify_approval(self,fid):"
+        },
+        {
+          "line": 381,
+          "declaration": "def decide_route(self,fid):"
+        },
+        {
+          "line": 499,
+          "declaration": "def snapshot(self,fid):"
+        }
+      ]
+    },
+    {
+      "file": "src/causalops/application/task_readiness.py",
+      "sha256": "56e8546d2678c570efb0393bfa9e6b25c6966535f379cc0cc3b041ea5ea02b7c",
+      "symbols": [
+        {
+          "line": 10,
+          "declaration": "def public_contract_context(service,flow):"
+        },
+        {
+          "line": 27,
+          "declaration": "def check_declared_roles(plan,context):"
+        },
+        {
+          "line": 44,
+          "declaration": "def plan_readiness(service,flow,plan):"
+        }
+      ]
+    },
+    {
+      "file": "src/causalops/assistant/contracts.py",
+      "sha256": "c1968f08b8d268ac060045eb1f3c6da1509da596a5ecd5d817d3d24eb1e69761",
+      "symbols": [
+        {
+          "line": 11,
+          "declaration": "class MethodSpec:"
+        },
+        {
+          "line": 18,
+          "declaration": "def json(self):"
+        },
+        {
+          "line": 29,
+          "declaration": "class ToolResult(BaseModel):"
+        },
+        {
+          "line": 44,
+          "declaration": "class AnalysisTools:"
+        },
+        {
+          "line": 45,
+          "declaration": "def __init__(self,assistant):self.a=assistant"
+        },
+        {
+          "line": 46,
+          "declaration": "def method(self,tool,method):"
+        },
+        {
+          "line": 50,
+          "declaration": "def catalog(self):return [s.json() for s in REGISTRY.values()]"
+        },
+        {
+          "line": 51,
+          "declaration": "def schema(self,method,protected=()):"
+        },
+        {
+          "line": 57,
+          "declaration": "def schemas(self,protected=()):"
+        },
+        {
+          "line": 63,
+          "declaration": "def prepare(self,uid,step,facts,checkpoint=None):"
+        },
+        {
+          "line": 78,
+          "declaration": "def reconcile(self,uid,checkpoint):"
+        },
+        {
+          "line": 92,
+          "declaration": "def execute(self,uid,design,checkpoint):"
+        },
+        {
+          "line": 100,
+          "declaration": "def envelope(self,uid,ref,**binding):"
+        }
+      ]
+    },
+    {
+      "file": "src/causalops/assistant/runtime.py",
+      "sha256": "ff45248db9284f831e69a31876e4fb2b287af2b509f2e8546398d9c5d183ca0d",
+      "symbols": [
+        {
+          "line": 7,
+          "declaration": "def execution_source_sha():"
+        },
+        {
+          "line": 15,
+          "declaration": "def process_birth(pid):"
+        },
+        {
+          "line": 42,
+          "declaration": "def alive(pid,birth):"
+        },
+        {
+          "line": 47,
+          "declaration": "class TaskRuntime:"
+        },
+        {
+          "line": 48,
+          "declaration": "def __init__(self,ws):"
+        },
+        {
+          "line": 53,
+          "declaration": "def row(self,tid):"
+        },
+        {
+          "line": 57,
+          "declaration": "def claim(self,tid,input_sha,*,max_attempts=3):"
+        },
+        {
+          "line": 73,
+          "declaration": "def checkpoint(self,tid,token,value):"
+        },
+        {
+          "line": 77,
+          "declaration": "def finish(self,tid,token,state,result,error_type=None):"
+        },
+        {
+          "line": 85,
+          "declaration": "def heartbeat(self,tid,token):"
+        },
+        {
+          "line": 87,
+          "declaration": "def tick():"
+        },
+        {
+          "line": 95,
+          "declaration": "def cancel(self,pid):"
+        },
+        {
+          "line": 101,
+          "declaration": "def cancelled(self,tid):return bool((self.row(tid) or {}).get('cancel_requested'))"
+        },
+        {
+          "line": 102,
+          "declaration": "def resume(self,pid):"
+        },
+        {
+          "line": 104,
+          "declaration": "def attempts(self,tid):"
+        }
+      ]
+    },
+    {
+      "file": "src/causalops/assistant/service.py",
+      "sha256": "9a6ef9497b14027c6a91aec685c77133122bcd530cdd25d396047ba674d57fdf",
+      "symbols": [
+        {
+          "line": 15,
+          "declaration": "def now():return datetime.now(timezone.utc).isoformat()"
+        },
+        {
+          "line": 16,
+          "declaration": "def digest(x):return hashlib.sha256(json.dumps(x,ensure_ascii=False,sort_keys=True,allow_nan=False).encode()).hexdigest()"
+        },
+        {
+          "line": 17,
+          "declaration": "class ModelRequestFailure(DesignError):"
+        },
+        {
+          "line": 21,
+          "declaration": "def check_run_mentions(question, selected):"
+        },
+        {
+          "line": 29,
+          "declaration": "def check_question(q):"
+        },
+        {
+          "line": 33,
+          "declaration": "class Step(BaseModel):"
+        },
+        {
+          "line": 38,
+          "declaration": "class Plan(BaseModel):"
+        },
+        {
+          "line": 45,
+          "declaration": "class GroundedReply(BaseModel):"
+        },
+        {
+          "line": 51,
+          "declaration": "def profile(frame):"
+        },
+        {
+          "line": 59,
+          "declaration": "def safe_profile(p):"
+        },
+        {
+          "line": 62,
+          "declaration": "def friendly_fact_label(text):"
+        },
+        {
+          "line": 67,
+          "declaration": "def display_number(value):"
+        },
+        {
+          "line": 75,
+          "declaration": "class AssistantWorkspace:"
+        },
+        {
+          "line": 76,
+          "declaration": "def __init__(self,ws=None,library=None):"
+        },
+        {
+          "line": 88,
+          "declaration": "def sessions(self):"
+        },
+        {
+          "line": 90,
+          "declaration": "def create(self,uid,title='新分析任务'):"
+        },
+        {
+          "line": 94,
+          "declaration": "def session(self,sid):"
+        },
+        {
+          "line": 98,
+          "declaration": "def event(self,sid,kind,body):"
+        },
+        {
+          "line": 101,
+          "declaration": "def events(self,sid):"
+        },
+        {
+          "line": 104,
+          "declaration": "def plans(self,sid):"
+        },
+        {
+          "line": 108,
+          "declaration": "def _plan(self,r):"
+        },
+        {
+          "line": 112,
+          "declaration": "def get_plan(self,pid):"
+        },
+        {
+          "line": 116,
+          "declaration": "def consent(self,sid,enabled,provider_config=None):"
+        },
+        {
+          "line": 120,
+          "declaration": "def consent_enabled(self,sid,provider_config=None):"
+        },
+        {
+          "line": 128,
+          "declaration": "def external_payload(self,sid,q,*,facts=None):"
+        },
+        {
+          "line": 134,
+          "declaration": "def _call(self,sid,model,system,payload,schema):"
+        },
+        {
+          "line": 155,
+          "declaration": "def validate_plan(self,uid,p):"
+        },
+        {
+          "line": 187,
+          "declaration": "def store_plan(self,sid,p,source,question,hits,request_key=None):"
+        },
+        {
+          "line": 202,
+          "declaration": "def propose(self,sid,question,model=None,*,request_key=None,retrieval=None,guidance=None):"
+        },
+        {
+          "line": 256,
+          "declaration": "def refine(self,sid,value,question='使用者在本地补充字段口径与计划'):"
+        },
+        {
+          "line": 259,
+          "declaration": "def reject(self,pid):"
+        },
+        {
+          "line": 265,
+          "declaration": "def accept(self,pid,expected_sha):"
+        },
+        {
+          "line": 274,
+          "declaration": "def tasks(self,pid):"
+        },
+        {
+          "line": 277,
+          "declaration": "def completed_runs(self,sid):"
+        },
+        {
+          "line": 283,
+          "declaration": "def selected_run(self,sid):"
+        },
+        {
+          "line": 289,
+          "declaration": "def select_run(self,sid,rid):"
+        },
+        {
+          "line": 294,
+          "declaration": "def cancel(self,pid):"
+        },
+        {
+          "line": 296,
+          "declaration": "def resume(self,pid,*,permit=False):"
+        },
+        {
+          "line": 299,
+          "declaration": "def recover(self,pid):"
+        },
+        {
+          "line": 320,
+          "declaration": "def execute(self,pid,*,permit=False,confirmations=None,progress=None):"
+        },
+        {
+          "line": 367,
+          "declaration": "def facts(self,sid,*,run_ids=None):"
+        },
+        {
+          "line": 412,
+          "declaration": "def add_diagnostic(path,label,value):"
+        },
+        {
+          "line": 444,
+          "declaration": "def export_readonly(self,sid):"
+        },
+        {
+          "line": 454,
+          "declaration": "def ask(self,sid,question,model=None,*,run_id=None,compare_run_ids=None):"
+        }
+      ]
+    },
+    {
+      "file": "src/causalops/estimators/randomized.py",
+      "sha256": "b24bfd01a2035bfd7353fa40e0e0e4b42861fc468b7f1e44e15b91bab00d5884",
+      "symbols": [
+        {
+          "line": 15,
+          "declaration": "def _validate_randomized(frame: pd.DataFrame, spec: CausalSpec) -> pd.DataFrame:"
+        },
+        {
+          "line": 37,
+          "declaration": "def _difference_in_means("
+        },
+        {
+          "line": 60,
+          "declaration": "def _covariate_balance(data: pd.DataFrame, spec: CausalSpec) -> tuple[dict[str, float], float]:"
+        },
+        {
+          "line": 73,
+          "declaration": "def estimate_ab_test(frame: pd.DataFrame, spec: CausalSpec) -> EstimatorOutput:"
+        },
+        {
+          "line": 111,
+          "declaration": "def estimate_cuped(frame: pd.DataFrame, spec: CausalSpec) -> EstimatorOutput:"
+        }
+      ]
+    },
+    {
+      "file": "src/causalops/general/exploration.py",
+      "sha256": "dc0dfd6352e18ebabf3771e5cc4487eb147e41875529ee996609302f2c6d5448",
+      "symbols": [
+        {
+          "line": 16,
+          "declaration": "class ExplorationDesign(BaseModel):"
+        },
+        {
+          "line": 36,
+          "declaration": "def clean_json(v):"
+        },
+        {
+          "line": 46,
+          "declaration": "def validate_frame(frame,d):"
+        },
+        {
+          "line": 76,
+          "declaration": "def describe(f,d):"
+        },
+        {
+          "line": 107,
+          "declaration": "def linear_association(f,d):"
+        },
+        {
+          "line": 137,
+          "declaration": "def compute(frame,d):"
+        },
+        {
+          "line": 142,
+          "declaration": "def conclusions(b):"
+        },
+        {
+          "line": 158,
+          "declaration": "class ExplorationWorkspace:"
+        },
+        {
+          "line": 159,
+          "declaration": "def __init__(self,ws:GeneralWorkspace):"
+        },
+        {
+          "line": 164,
+          "declaration": "def studies(self,method):"
+        },
+        {
+          "line": 172,
+          "declaration": "def save(self,uid,d,study_id=None):"
+        },
+        {
+          "line": 180,
+          "declaration": "def run(self,sid,version,*,run_id=None):"
+        },
+        {
+          "line": 197,
+          "declaration": "def runs(self,sid):"
+        },
+        {
+          "line": 199,
+          "declaration": "def load(self,run_id):"
+        }
+      ]
+    },
+    {
+      "file": "src/causalops/general/service.py",
+      "sha256": "87ad6c9cc68d668a8565a142cad5986c10195f1d4771b7feb050c612e697c222",
+      "symbols": [
+        {
+          "line": 20,
+          "declaration": "class DesignError(ValueError):pass"
+        },
+        {
+          "line": 21,
+          "declaration": "class GeneralDesign(BaseModel):"
+        },
+        {
+          "line": 47,
+          "declaration": "def detect_csv_separator(text):"
+        },
+        {
+          "line": 62,
+          "declaration": "def read_table(payload:bytes,name:str,encoding='utf-8-sig',separator=',',max_rows=100000)->pd.DataFrame:"
+        },
+        {
+          "line": 85,
+          "declaration": "def prepare(frame:pd.DataFrame,d:GeneralDesign):"
+        },
+        {
+          "line": 149,
+          "declaration": "class GeneralWorkspace:"
+        },
+        {
+          "line": 150,
+          "declaration": "def __init__(self,root:Path|None=None):"
+        },
+        {
+          "line": 157,
+          "declaration": "def connection(self):"
+        },
+        {
+          "line": 162,
+          "declaration": "def ingest(self,payload:bytes,name:str,**reader):"
+        },
+        {
+          "line": 169,
+          "declaration": "def uploads(self):"
+        },
+        {
+          "line": 171,
+          "declaration": "def load_upload(self,uid):"
+        },
+        {
+          "line": 179,
+          "declaration": "def studies(self):"
+        },
+        {
+          "line": 182,
+          "declaration": "def upload_for(self,sid):"
+        },
+        {
+          "line": 186,
+          "declaration": "def save(self,uid,d:GeneralDesign,sid=None):"
+        },
+        {
+          "line": 201,
+          "declaration": "def current(self,sid):"
+        },
+        {
+          "line": 203,
+          "declaration": "def execute(self,sid,revision_id,*,reviewed:bool,actor='user_explicit_review'):"
+        },
+        {
+          "line": 220,
+          "declaration": "def runs(self,sid):"
+        },
+        {
+          "line": 224,
+          "declaration": "def bundle(self,run_id):"
+        }
+      ]
+    },
+    {
+      "file": "src/causalops/llm/providers.py",
+      "sha256": "69cf3b085d40fed5da865a67fb76890d983aef3e849ca5af0a95f9e183d64198",
+      "symbols": [
+        {
+          "line": 16,
+          "declaration": "class ProviderError(RuntimeError):pass"
+        },
+        {
+          "line": 17,
+          "declaration": "class OutputContractError(ProviderError):"
+        },
+        {
+          "line": 20,
+          "declaration": "class ProviderConfig(BaseModel):"
+        },
+        {
+          "line": 33,
+          "declaration": "def valid(self):"
+        },
+        {
+          "line": 53,
+          "declaration": "def binding(self):"
+        },
+        {
+          "line": 56,
+          "declaration": "def fingerprint(self):return hashlib.sha256(json.dumps(self.binding(),sort_keys=True).encode()).hexdigest()"
+        },
+        {
+          "line": 59,
+          "declaration": "def model_binding(model):"
+        },
+        {
+          "line": 64,
+          "declaration": "def model_label(model):return PRESETS[model_binding(model)['provider']]['label'].replace(' ','')"
+        },
+        {
+          "line": 66,
+          "declaration": "def strict_object(text):"
+        },
+        {
+          "line": 67,
+          "declaration": "def pairs(items):"
+        },
+        {
+          "line": 73,
+          "declaration": "def bad_constant(value):raise ValueError('JSON不能含非有限数值。')"
+        },
+        {
+          "line": 80,
+          "declaration": "class StructuredModelClient:"
+        },
+        {
+          "line": 81,
+          "declaration": "def __init__(self,config:ProviderConfig,api_key:str,*,client=None,sleep=time.sleep):"
+        },
+        {
+          "line": 88,
+          "declaration": "def close(self):"
+        },
+        {
+          "line": 90,
+          "declaration": "def _request(self,system,payload,schema):"
+        },
+        {
+          "line": 112,
+          "declaration": "def _observe_attempt(self, event):"
+        },
+        {
+          "line": 115,
+          "declaration": "def complete_json(self,*,system_instruction,user_payload,output_schema):"
+        },
+        {
+          "line": 153,
+          "declaration": "def tokens(*keys):"
+        },
+        {
+          "line": 186,
+          "declaration": "def _content(self,r):"
+        },
+        {
+          "line": 209,
+          "declaration": "def probe(self):"
+        }
+      ]
+    },
+    {
+      "file": "src/causalops/orchestration/method_research.py",
+      "sha256": "77634db270af3f0452e932f6e724efbe9d8c907a88229cb3943369fd274b158c",
+      "symbols": [
+        {
+          "line": 27,
+          "declaration": "class MethodState(TypedDict,total=False):"
+        },
+        {
+          "line": 36,
+          "declaration": "def candidate_methods(service,flow):"
+        },
+        {
+          "line": 60,
+          "declaration": "def condition_check(service,flow,methods):"
+        },
+        {
+          "line": 63,
+          "declaration": "def add(m,condition,status,detail):checks.append({'method':m,'condition':condition,'status':status,'detail':detail,'evidence_type':'human_declaration_not_validation' if status=='declared' else 'local_structure' if status=='structural' else 'required_not_completed'})"
+        },
+        {
+          "line": 95,
+          "declaration": "def build_method_graph(service):"
+        },
+        {
+          "line": 97,
+          "declaration": "def choose(state):"
+        },
+        {
+          "line": 101,
+          "declaration": "def search(state):"
+        },
+        {
+          "line": 114,
+          "declaration": "def assess(state):"
+        },
+        {
+          "line": 132,
+          "declaration": "def finish(state):"
+        }
+      ]
+    },
+    {
+      "file": "src/causalops/orchestration/research_graph.py",
+      "sha256": "9e106a6f6a9141bcdf17d9ac7d6d9b2a22b1f95fcfb21aa3a9f4982f06379f2a",
+      "symbols": [
+        {
+          "line": 14,
+          "declaration": "class ResearchState(TypedDict,total=False):"
+        },
+        {
+          "line": 21,
+          "declaration": "class MethodExplanation(BaseModel):"
+        },
+        {
+          "line": 26,
+          "declaration": "def build_graph(service):"
+        },
+        {
+          "line": 28,
+          "declaration": "def node(name,func):"
+        },
+        {
+          "line": 29,
+          "declaration": "def run(state):"
+        },
+        {
+          "line": 44,
+          "declaration": "def load(state):"
+        },
+        {
+          "line": 48,
+          "declaration": "def route(state):"
+        },
+        {
+          "line": 51,
+          "declaration": "def retrieve(state):"
+        },
+        {
+          "line": 55,
+          "declaration": "def prior_answer(f):"
+        },
+        {
+          "line": 60,
+          "declaration": "def draft(state):"
+        },
+        {
+          "line": 70,
+          "declaration": "def review(state):"
+        },
+        {
+          "line": 78,
+          "declaration": "def execute(state):"
+        },
+        {
+          "line": 88,
+          "declaration": "def answer(state):"
+        },
+        {
+          "line": 123,
+          "declaration": "def method(state):"
+        },
+        {
+          "line": 161,
+          "declaration": "def data_profile(state):"
+        },
+        {
+          "line": 173,
+          "declaration": "def explore(state):"
+        },
+        {
+          "line": 178,
+          "declaration": "def clarify(state):"
+        }
+      ]
+    },
+    {
+      "file": "src/causalops/research/repository.py",
+      "sha256": "bd5b503b781d0f6788f88ec90a718e4014448c3dbf3ba4f83145b53827fa50d0",
+      "symbols": [
+        {
+          "line": 28,
+          "declaration": "class ResearchStateError(ValueError):"
+        },
+        {
+          "line": 32,
+          "declaration": "def _now() -> str:"
+        },
+        {
+          "line": 36,
+          "declaration": "def _id(prefix: str) -> str:"
+        },
+        {
+          "line": 40,
+          "declaration": "class ResearchRepository:"
+        },
+        {
+          "line": 43,
+          "declaration": "def __init__(self, database_path: Path) -> None:"
+        },
+        {
+          "line": 49,
+          "declaration": "def _connection(self) -> Iterator[sqlite3.Connection]:"
+        },
+        {
+          "line": 63,
+          "declaration": "def _initialize(self) -> None:"
+        },
+        {
+          "line": 198,
+          "declaration": "def _audit("
+        },
+        {
+          "line": 211,
+          "declaration": "def create_session("
+        },
+        {
+          "line": 245,
+          "declaration": "def find_latest_session_by_dataset(self, fingerprint: str) -> ResearchSessionRecord | None:"
+        },
+        {
+          "line": 258,
+          "declaration": "def get_session(self, session_id: str) -> ResearchSessionRecord:"
+        },
+        {
+          "line": 267,
+          "declaration": "def list_sessions(self) -> list[ResearchSessionRecord]:"
+        },
+        {
+          "line": 274,
+          "declaration": "def _session_from_row(self, row: sqlite3.Row) -> ResearchSessionRecord:"
+        },
+        {
+          "line": 284,
+          "declaration": "def register_dataset_version("
+        },
+        {
+          "line": 331,
+          "declaration": "def get_dataset_version(self, dataset_version_id: str) -> DatasetVersionRecord:"
+        },
+        {
+          "line": 341,
+          "declaration": "def _dataset_from_row(self, row: sqlite3.Row) -> DatasetVersionRecord:"
+        },
+        {
+          "line": 352,
+          "declaration": "def create_revision("
+        },
+        {
+          "line": 426,
+          "declaration": "def get_revision(self, revision_id: str) -> DraftRevisionRecord:"
+        },
+        {
+          "line": 435,
+          "declaration": "def list_revisions(self, session_id: str) -> list[DraftRevisionRecord]:"
+        },
+        {
+          "line": 443,
+          "declaration": "def _revision_from_row(self, row: sqlite3.Row) -> DraftRevisionRecord:"
+        },
+        {
+          "line": 459,
+          "declaration": "def accept_candidate(self, revision_id: str) -> DraftRevisionRecord:"
+        },
+        {
+          "line": 485,
+          "declaration": "def reject_candidate(self, revision_id: str) -> DraftRevisionRecord:"
+        },
+        {
+          "line": 501,
+          "declaration": "def approve_revision("
+        },
+        {
+          "line": 547,
+          "declaration": "def get_approval(self, revision_id: str) -> ApprovalRecord:"
+        },
+        {
+          "line": 564,
+          "declaration": "def bind_analysis_run("
+        },
+        {
+          "line": 606,
+          "declaration": "def assert_execution_authorized("
+        },
+        {
+          "line": 649,
+          "declaration": "def get_analysis_run(self, run_id: str) -> AnalysisRunRecord:"
+        },
+        {
+          "line": 667,
+          "declaration": "def authorize_association_analysis(self, revision_id: str, *, authorized_by: str,"
+        },
+        {
+          "line": 684,
+          "declaration": "def _check_association_design(revision: DraftRevisionRecord) -> None:"
+        },
+        {
+          "line": 690,
+          "declaration": "def get_association_authorization(self, revision_id: str) -> dict[str, Any] | None:"
+        },
+        {
+          "line": 695,
+          "declaration": "def assert_association_execution_authorized(self, *, session_id: str, revision_id: str,"
+        },
+        {
+          "line": 706,
+          "declaration": "def get_latest_analysis_run("
+        },
+        {
+          "line": 719,
+          "declaration": "def list_analysis_runs(self, *, revision_id: str, dataset_version_id: str) -> list[AnalysisRunRecord]:"
+        },
+        {
+          "line": 728,
+          "declaration": "def save_result_snapshot(self, snapshot: dict[str, Any]) -> dict[str, Any]:"
+        },
+        {
+          "line": 749,
+          "declaration": "def add_result_qa_turn(self, *, run_id: str, snapshot_id: str, question: str,"
+        },
+        {
+          "line": 765,
+          "declaration": "def list_result_qa_turns(self, *, run_id: str, snapshot_id: str) -> list[dict[str, Any]]:"
+        },
+        {
+          "line": 778,
+          "declaration": "def list_previous_result_qa_turns(self, *, run_id: str, exclude_snapshot_id: str) -> list[dict[str, Any]]:"
+        },
+        {
+          "line": 783,
+          "declaration": "def mark_result_qa_evaluation(self, turn_id: str) -> None:"
+        },
+        {
+          "line": 789,
+          "declaration": "def record_data_audit("
+        },
+        {
+          "line": 838,
+          "declaration": "def get_data_audit(self, audit_id: str) -> DataAuditRecord:"
+        },
+        {
+          "line": 847,
+          "declaration": "def get_latest_data_audit("
+        },
+        {
+          "line": 866,
+          "declaration": "def _data_audit_from_row(row: sqlite3.Row) -> DataAuditRecord:"
+        },
+        {
+          "line": 878,
+          "declaration": "def add_chat_message("
+        },
+        {
+          "line": 919,
+          "declaration": "def list_chat_messages(self, session_id: str) -> list[ChatMessageRecord]:"
+        }
+      ]
+    },
+    {
+      "file": "src/causalops/results/interpretation.py",
+      "sha256": "94b4ea4e37dfdbb68743b14d1790a2b68203fc22d22d79867756fc79ebd19bdf",
+      "symbols": [
+        {
+          "line": 13,
+          "declaration": "class MetricDefinition(BaseModel):"
+        },
+        {
+          "line": 24,
+          "declaration": "def digest(x):"
+        },
+        {
+          "line": 28,
+          "declaration": "def collect_interpretation_inputs(frame,spec,context=None):"
+        },
+        {
+          "line": 47,
+          "declaration": "def public_metric_definition(case_id):"
+        },
+        {
+          "line": 62,
+          "declaration": "def _compute(bundle,inputs):"
+        },
+        {
+          "line": 78,
+          "declaration": "def val(x):return f'{x*100:.2f}%' if binary else f'{f(x)} {metric.unit}'"
+        },
+        {
+          "line": 133,
+          "declaration": "def interpret_run(bundle,inputs=None,use_saved=True):"
+        },
+        {
+          "line": 153,
+          "declaration": "def persist_interpretation(bundle,inputs=None):"
+        },
+        {
+          "line": 160,
+          "declaration": "def business_sections(bundle):"
+        }
+      ]
+    },
+    {
+      "file": "src/causalops/sample_data/hillstrom.py",
+      "sha256": "0f81bf0193ba011ab778267107204f601afb19956d3bffafccbd1404f3a14f5e",
+      "symbols": [
+        {
+          "line": 14,
+          "declaration": "def cohort(payload):"
+        },
+        {
+          "line": 27,
+          "declaration": "def contract():"
+        }
+      ]
+    },
+    {
+      "file": "src/causalops/ui/marketing_case.py",
+      "sha256": "08bb19d4f3df8fd9e5ee64a61214c77bfab69fc681127e93215ad23c8ca1df69",
+      "symbols": [
+        {
+          "line": 10,
+          "declaration": "def preview():"
+        },
+        {
+          "line": 25,
+          "declaration": "def render():"
+        }
+      ]
+    },
+    {
+      "file": "src/causalops/ui/onboarding.py",
+      "sha256": "d8bdf88482e81e716188d5008d38d92b1146458bbd65ca7daa691d11c668fbb5",
+      "symbols": [
+        {
+          "line": 7,
+          "declaration": "def render_first_look(frame, sid, preset, brief):"
+        },
+        {
+          "line": 49,
+          "declaration": "def report_plan_button(service, jobs, sid, frame, target, field, *, key, label, sample=False):"
+        },
+        {
+          "line": 73,
+          "declaration": "def render_metric_change(service, jobs, sid, frame, target):"
+        },
+        {
+          "line": 87,
+          "declaration": "def preview_actions(service, jobs, sid, frame, target, preview, preset):"
+        },
+        {
+          "line": 104,
+          "declaration": "def render_start_actions(service,jobs,sid,frame,target):"
+        },
+        {
+          "line": 160,
+          "declaration": "def render_alternative_actions(service,jobs,sid,frame,target):"
+        }
+      ]
+    },
+    {
+      "file": "src/causalops/ui/report_target.py",
+      "sha256": "5397baf0fb35a05c95db94dd27a66fb80f60c12788692dd9143b12b1f9d74ac2",
+      "symbols": [
+        {
+          "line": 9,
+          "declaration": "class ReportTarget:"
+        },
+        {
+          "line": 20,
+          "declaration": "def report_target(service, sid, flow):"
+        },
+        {
+          "line": 45,
+          "declaration": "def report_request(service, sid, target, field, frame):"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,438 @@
+{
+  "scorer": "v23.2.1",
+  "n": 60,
+  "modes": {
+    "local": {
+      "n": 30,
+      "完整": 1,
+      "正确阻断": 0,
+      "部分": 7,
+      "失败": 22,
+      "待人工复核": 0,
+      "正确处理": 1,
+      "seconds_sum": 218.08700000000005,
+      "seconds_mean": 7.269566666666667,
+      "seconds_median": 6.874,
+      "seconds_min": 6.054,
+      "seconds_max": 9.245
+    },
+    "deepseek": {
+      "n": 30,
+      "完整": 5,
+      "正确阻断": 3,
+      "部分": 11,
+      "失败": 10,
+      "待人工复核": 1,
+      "正确处理": 8,
+      "seconds_sum": 573.048,
+      "seconds_mean": 19.1016,
+      "seconds_median": 18.262,
+      "seconds_min": 11.445,
+      "seconds_max": 33.122
+    }
+  },
+  "categories": {
+    "local": {
+      "A": {
+        "n": 6,
+        "完整": 0,
+        "正确阻断": 0,
+        "部分": 2,
+        "失败": 4,
+        "待人工复核": 0,
+        "正确处理": 0
+      },
+      "B": {
+        "n": 6,
+        "完整": 0,
+        "正确阻断": 0,
+        "部分": 0,
+        "失败": 6,
+        "待人工复核": 0,
+        "正确处理": 0
+      },
+      "C": {
+        "n": 6,
+        "完整": 0,
+        "正确阻断": 0,
+        "部分": 0,
+        "失败": 6,
+        "待人工复核": 0,
+        "正确处理": 0
+      },
+      "D": {
+        "n": 6,
+        "完整": 0,
+        "正确阻断": 0,
+        "部分": 2,
+        "失败": 4,
+        "待人工复核": 0,
+        "正确处理": 0
+      },
+      "E": {
+        "n": 6,
+        "完整": 1,
+        "正确阻断": 0,
+        "部分": 3,
+        "失败": 2,
+        "待人工复核": 0,
+        "正确处理": 1
+      }
+    },
+    "deepseek": {
+      "A": {
+        "n": 6,
+        "完整": 1,
+        "正确阻断": 0,
+        "部分": 1,
+        "失败": 4,
+        "待人工复核": 0,
+        "正确处理": 1
+      },
+      "B": {
+        "n": 6,
+        "完整": 2,
+        "正确阻断": 1,
+        "部分": 2,
+        "失败": 1,
+        "待人工复核": 0,
+        "正确处理": 3
+      },
+      "C": {
+        "n": 6,
+        "完整": 1,
+        "正确阻断": 1,
+        "部分": 1,
+        "失败": 2,
+        "待人工复核": 1,
+        "正确处理": 2
+      },
+      "D": {
+        "n": 6,
+        "完整": 0,
+        "正确阻断": 1,
+        "部分": 3,
+        "失败": 2,
+        "待人工复核": 0,
+        "正确处理": 1
+      },
+      "E": {
+        "n": 6,
+        "完整": 1,
+        "正确阻断": 0,
+        "部分": 4,
+        "失败": 1,
+        "待人工复核": 0,
+        "正确处理": 1
+      }
+    }
+  },
+  "dimensions": {
+    "local": {
+      "意图": {
+        "适用数": 29,
+        "不适用或未裁决": 1,
+        "完整": 3,
+        "部分": 8,
+        "失败": 18,
+        "说明": "独立AI语义复核维度；不将维度均值替代端到端标签"
+      },
+      "方案方法": {
+        "适用数": 14,
+        "不适用或未裁决": 16,
+        "完整": 2,
+        "部分": 3,
+        "失败": 9,
+        "说明": "独立AI语义复核维度；不将维度均值替代端到端标签"
+      },
+      "关键条件": {
+        "适用数": 29,
+        "不适用或未裁决": 1,
+        "完整": 1,
+        "部分": 6,
+        "失败": 22,
+        "说明": "独立AI语义复核维度；不将维度均值替代端到端标签"
+      },
+      "指标语义": {
+        "适用数": 28,
+        "不适用或未裁决": 2,
+        "完整": 1,
+        "部分": 6,
+        "失败": 21,
+        "说明": "独立AI语义复核维度；不将维度均值替代端到端标签"
+      },
+      "答复完整": {
+        "适用数": 29,
+        "不适用或未裁决": 1,
+        "完整": 0,
+        "部分": 5,
+        "失败": 24,
+        "说明": "独立AI语义复核维度；不将维度均值替代端到端标签"
+      },
+      "解释严谨": {
+        "适用数": 25,
+        "不适用或未裁决": 5,
+        "完整": 4,
+        "部分": 5,
+        "失败": 16,
+        "说明": "独立AI语义复核维度；不将维度均值替代端到端标签"
+      },
+      "安全": {
+        "适用数": 30,
+        "不适用或未裁决": 0,
+        "完整": 30,
+        "部分": 0,
+        "失败": 0,
+        "说明": "独立AI语义复核维度；不将维度均值替代端到端标签"
+      },
+      "最终处理": {
+        "适用数": 30,
+        "不适用或未裁决": 0,
+        "完整": 1,
+        "部分": 7,
+        "失败": 22,
+        "说明": "独立AI语义复核维度；不将维度均值替代端到端标签"
+      }
+    },
+    "deepseek": {
+      "意图": {
+        "适用数": 29,
+        "不适用或未裁决": 1,
+        "完整": 16,
+        "部分": 7,
+        "失败": 6,
+        "说明": "独立AI语义复核维度；不将维度均值替代端到端标签"
+      },
+      "方案方法": {
+        "适用数": 21,
+        "不适用或未裁决": 9,
+        "完整": 10,
+        "部分": 5,
+        "失败": 6,
+        "说明": "独立AI语义复核维度；不将维度均值替代端到端标签"
+      },
+      "关键条件": {
+        "适用数": 29,
+        "不适用或未裁决": 1,
+        "完整": 11,
+        "部分": 10,
+        "失败": 8,
+        "说明": "独立AI语义复核维度；不将维度均值替代端到端标签"
+      },
+      "指标语义": {
+        "适用数": 27,
+        "不适用或未裁决": 3,
+        "完整": 11,
+        "部分": 8,
+        "失败": 8,
+        "说明": "独立AI语义复核维度；不将维度均值替代端到端标签"
+      },
+      "答复完整": {
+        "适用数": 29,
+        "不适用或未裁决": 1,
+        "完整": 9,
+        "部分": 9,
+        "失败": 11,
+        "说明": "独立AI语义复核维度；不将维度均值替代端到端标签"
+      },
+      "解释严谨": {
+        "适用数": 27,
+        "不适用或未裁决": 3,
+        "完整": 12,
+        "部分": 5,
+        "失败": 10,
+        "说明": "独立AI语义复核维度；不将维度均值替代端到端标签"
+      },
+      "安全": {
+        "适用数": 30,
+        "不适用或未裁决": 0,
+        "完整": 30,
+        "部分": 0,
+        "失败": 0,
+        "说明": "独立AI语义复核维度；不将维度均值替代端到端标签"
+      },
+      "最终处理": {
+        "适用数": 29,
+        "不适用或未裁决": 1,
+        "完整": 8,
+        "部分": 11,
+        "失败": 10,
+        "说明": "独立AI语义复核维度；不将维度均值替代端到端标签"
+      }
+    }
+  },
+  "mechanical_checks": {
+    "attempt_finished": {
+      "true": 60,
+      "false": 0,
+      "not_applicable": 0
+    },
+    "cancel_applied": {
+      "true": 2,
+      "false": 0,
+      "not_applicable": 58
+    },
+    "compute_completed": {
+      "true": 0,
+      "false": 2,
+      "not_applicable": 58
+    },
+    "execution_authorized": {
+      "true": 60,
+      "false": 0,
+      "not_applicable": 0
+    },
+    "no_unrequested_execution": {
+      "true": 60,
+      "false": 0,
+      "not_applicable": 0
+    },
+    "number_and_unit_present": {
+      "true": 2,
+      "false": 6,
+      "not_applicable": 52
+    },
+    "old_plan_unchanged": {
+      "true": 22,
+      "false": 0,
+      "not_applicable": 38
+    },
+    "oracle_in_actual_run": {
+      "true": 6,
+      "false": 2,
+      "not_applicable": 52
+    },
+    "oracle_run_cited": {
+      "true": 6,
+      "false": 2,
+      "not_applicable": 52
+    },
+    "readonly_no_new_plan": {
+      "true": 44,
+      "false": 4,
+      "not_applicable": 12
+    },
+    "resume_same_flow_waits_review": {
+      "true": 2,
+      "false": 0,
+      "not_applicable": 58
+    },
+    "source_ids_known": {
+      "true": 60,
+      "false": 0,
+      "not_applicable": 0
+    },
+    "stale_approval_rejected": {
+      "true": 2,
+      "false": 0,
+      "not_applicable": 58
+    },
+    "target_present": {
+      "true": 59,
+      "false": 1,
+      "not_applicable": 0
+    }
+  },
+  "new_runs": 0,
+  "new_plans": {
+    "local": 5,
+    "deepseek": 3
+  },
+  "independent_advice": {
+    "完整": 13,
+    "部分": 13,
+    "失败": 4
+  },
+  "phase1_evidence_unchanged": {
+    "checked_files": 103,
+    "changed": []
+  },
+  "telemetry": {
+    "phase1": {
+      "logical_calls": 18,
+      "physical_calls": 18,
+      "http_200": 18,
+      "transport_retry_calls": 0,
+      "structured_valid": 17,
+      "schemas": {
+        "Advice": {
+          "requests": 10,
+          "valid": 10
+        },
+        "RouteDecision": {
+          "requests": 3,
+          "valid": 3
+        },
+        "MethodExplanation": {
+          "requests": 4,
+          "valid": 3
+        },
+        "Plan": {
+          "requests": 1,
+          "valid": 1
+        }
+      },
+      "tokens": {
+        "input_tokens": 28469,
+        "output_tokens": 6260,
+        "cache_hit": 6528
+      },
+      "call_seconds_sum": 97.51910539995879,
+      "estimated_cny": 0.09422312,
+      "cost_basis": {
+        "source": "https://api-docs.deepseek.com/zh-cn/quick_start/pricing/",
+        "checked": "2026-11-05",
+        "currency": "CNY",
+        "invoice_verified": false,
+        "excludes": "独立Codex复核与计算机成本"
+      }
+    },
+    "phase2": {
+      "logical_calls": 49,
+      "physical_calls": 49,
+      "http_200": 49,
+      "transport_retry_calls": 0,
+      "structured_valid": 48,
+      "schemas": {
+        "Advice": {
+          "requests": 20,
+          "valid": 20
+        },
+        "RouteDecision": {
+          "requests": 12,
+          "valid": 12
+        },
+        "Plan": {
+          "requests": 6,
+          "valid": 5
+        },
+        "Suggestions": {
+          "requests": 1,
+          "valid": 1
+        },
+        "MethodExplanation": {
+          "requests": 5,
+          "valid": 5
+        },
+        "GroundedReply": {
+          "requests": 5,
+          "valid": 5
+        }
+      },
+      "tokens": {
+        "input_tokens": 126474,
+        "output_tokens": 15326,
+        "cache_hit": 41728
+      },
+      "call_seconds_sum": 240.59779200004414,
+      "estimated_cny": 0.14688456,
+      "cost_basis": {
+        "source": "https://api-docs.deepseek.com/zh-cn/quick_start/pricing/",
+        "checked": "2026-11-05",
+        "currency": "CNY",
+        "invoice_verified": false,
+        "excludes": "独立Codex复核与计算机成本"
+      }
+    }
+  }
+}

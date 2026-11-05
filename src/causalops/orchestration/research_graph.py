@@ -139,7 +139,9 @@ def build_graph(service):
             from causalops.application.research_semantics import registered_ratio_advice
             literal=f['request'].get('user_question',f['request']['question'])
             dictionary=(s.contracts.bound(f) or {}).get('body',{})
-            guidance=registered_ratio_advice(literal,dictionary) or (consultation(literal) if not s.model else '')
+            from causalops.application.research_semantics import equal_weight_explanation
+            from causalops.application.answer_checks import unit_guidance, method_context, design_checked
+            guidance=unit_guidance(literal,dictionary) or method_context(literal,dictionary) or equal_weight_explanation(literal) or registered_ratio_advice(literal,dictionary) or (consultation(literal) if not s.model else '')
             if guidance:body={'source':'本地研究口径说明','text':guidance,'facts':[],'citations':[]}
             elif not hits['hits']:body={'source':'本地方法目录','text':'现有已核对资料不足以回答该问题，未生成替代引用。','facts':[],'citations':[]}
             elif s.model:
@@ -151,6 +153,8 @@ def build_graph(service):
                 for h in hits['hits'][:3]:
                     lines.append(h['title']+'\n'+'\n'.join(k+'：'+v for k,v in h['sections'].items()))
                 body={'source':'本地方法资料（未调用模型）','text':'\n\n'.join(lines),'facts':[],'citations':[h['card_id'] for h in hits['hits'][:3]]}
+            body['text'],repairs=design_checked(body['text'],dictionary)
+            if repairs:body['validation_repairs']=repairs
             body.update(run_ids=[],scope='method_only',knowledge_sha256=s.a.library.digest)
             s.save_output(fid,'answer',body)
         s.update(fid,status='completed');return {'status':'completed'}

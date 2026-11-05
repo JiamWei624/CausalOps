@@ -1,0 +1,23 @@
+{
+  "stage": "V2.3 closed",
+  "product": "b8f5758",
+  "pre_closeout_delivery": "77ff125",
+  "archive_original_files": 11061,
+  "archive_original_bytes": 897356555,
+  "integrity": {
+    "verified_utc": "2026-11-05T10:40:14.429650+00:00",
+    "files_before": 11061,
+    "files_after": 11061,
+    "changed": [],
+    "missing": [],
+    "added": [],
+    "manifest_sha256": "7470ae66d925d07386664509028d779cd43abbd9dc742c295c60bbb408174011"
+  },
+  "limited_review_sha256": "74f4b3b80cb65ba6184eb048979af4688a2eca37a9a313f82d3d02a1be7a07a0",
+  "unexecuted_classification_sha256": "641132653869f610ad46dc663a5619168cf359fc453483edfd11814a14180a9d",
+  "new_product_attempts": 0,
+  "new_official_calls": 0,
+  "frozen_scores_modified": false,
+  "product_modified": false,
+  "raw_evidence_committed_to_git": false
+}

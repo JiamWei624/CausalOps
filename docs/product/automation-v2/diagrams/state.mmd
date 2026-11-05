@@ -1,0 +1,26 @@
+stateDiagram-v2
+ [*] --> prechecking
+ prechecking --> needs_clarification: 必需条件不足
+ prechecking --> drafting: 条件明确
+ needs_clarification --> drafting: 人工补充并核查
+ drafting --> awaiting_review
+ awaiting_review --> approved: 明确批准完整固定计划
+ approved --> running: 每步授权/依赖/预算核验
+ running --> completed: 全部必要步骤有证据
+ running --> paused: 暂停请求；在途步骤安全收尾
+ running --> blocked: 研究条件或授权冲突
+ running --> failed: 执行失败且不可重试
+ running --> interrupted: 进程中断/结果未知
+ running --> cancelled: 取消请求安全收尾
+ paused --> reconciling: 用户确认恢复
+ interrupted --> reconciling: 核对旧进程及已有Run
+ failed --> reconciling: 人工核查允许恢复且预算未耗尽
+ reconciling --> running: 唯一结果归属与原批准仍有效
+ reconciling --> blocked: 证据归属不明或批准失效
+ blocked --> awaiting_review: 新候选/重新审批
+ completed --> [*]
+ cancelled --> [*]
+ note right of cancelled
+  已保存结果不删除；
+  重开为后继任务，不静默恢复。
+ end note

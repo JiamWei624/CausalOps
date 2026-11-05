@@ -1,0 +1,14 @@
+flowchart TB
+ UI["Streamlit / 后台Jobs（复用与扩展）"] --> RS["ResearchService：唯一任务入口（扩展）"]
+ RS --> LG["LangGraph：路由、检索、规划、审核中断（复用）"]
+ LG --> CO["BoundedCoordinator：固定步骤推进（新增）"]
+ RC["PlanV2 + 整体Approval + BudgetLedger（扩展/新增）"] --> CO
+ CO --> EA["EvidenceAdapter / gate（新增）"]
+ CO --> AT["AnalysisTools / TaskRuntime（复用与扩展）"]
+ AT --> EN["descriptive + ab_test（复用；估计器不改）"]
+ EN --> DB["原SQLite + Parquet + Run/ToolResult（复用）"]
+ DB --> EA
+ EA --> MF["ReportManifest（新增）"]
+ MF --> UI
+ CO -.每个物理请求先预留.-> BL["模型预算账本（新增）"]
+ BL --> MC["现有模型客户端（复用）；外发单独授权"]

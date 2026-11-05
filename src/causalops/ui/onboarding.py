@@ -2,7 +2,7 @@
 from __future__ import annotations
 import copy
 import streamlit as st
-from causalops.application.onboarding import start_basic_report
+from causalops.ui.report_target import report_target, report_request
 
 def render_first_look(frame, sid, preset, brief):
     import numpy as np
@@ -19,7 +19,7 @@ def render_first_look(frame, sid, preset, brief):
             st.caption('频数仅计入该字段非缺失的记录；未合并相似类别。')
         else:
             st.caption('缺少可预览的数值或低基数类别字段。可生成完整报告，查看字段完整性。')
-        return
+        return category if categories else None
     names = {f['field']: f['meaning'] for f in preset.get('fields', [])}
     choices = [f['field'] for f in fields]
     target = preset.get('target')
@@ -28,7 +28,7 @@ def render_first_look(frame, sid, preset, brief):
     values = frame[col].replace([np.inf, -np.inf], np.nan).dropna()
     if values.empty:
         st.info('所选指标没有有限数值，可切换字段。')
-        return
+        return col
     unit = preset.get('metric_unit', '') if col == target else ''
     st.write(f"{names.get(col,col)}有 {len(values):,} 个有效值，中位数 {values.median():.4g}{unit}，范围 {values.min():.4g} 至 {values.max():.4g}{unit}。")
     if values.nunique() <= 20:
@@ -44,23 +44,64 @@ def render_first_look(frame, sid, preset, brief):
     fig.update_layout(height=250, margin=dict(t=10,b=30))
     st.plotly_chart(fig, key='preview_chart_'+sid, width='stretch')
     st.caption('横轴为取值或分组区间，纵轴为原始记录数。图中只使用当前字段的有限数值。')
+    return col
 
-def basic_report_button(a,sid, *, sample_service=None):
-    use_sample = sample_service is not None and not sample_service.contracts.latest(sid)
-    if use_sample:
-        st.caption('生成报告时采用此示例的公开定义，以质量评分为主要指标。')
-    if st.button('生成完整描述统计报告',type='primary',key='basic_report_'+sid,help='在本地计算并保存描述统计，可继续追问或导出。'):
+def report_plan_button(service, jobs, sid, frame, target, field, *, key, label, sample=False):
+    busy = any(j['status'] in ('queued','running','cancel_requested') for j in jobs.jobs(sid))
+    if target.pending:
+        st.caption('请先审核或放弃当前候选方案。')
+    elif target.stale:
+        st.caption('数据口径已更新，请按最新口径重新制定方案。')
+    if st.button(label, type='primary', key=key, disabled=busy or target.pending or target.stale,
+                 help='先生成待审方案，审核通过后再计算并保存报告。'):
         try:
-            if use_sample:
+            jobs.capacity()
+            if sample:
                 from causalops.application.guided_intake import GuidedIntake
-                GuidedIntake(sample_service).use_example(sid,expected_sha=None,human_confirmed=True)
-            result=start_basic_report(a,sid,user_requested=True)
-            st.session_state['_graph_pending_'+sid]=result['flow_id']
+                GuidedIntake(service).use_example(sid, expected_sha=None, human_confirmed=True)
+                target = report_target(service, sid, None)
+                field = target.outcome
+            question = report_request(service, sid, target, field, frame)
+            job = jobs.submit_start(sid, question, mode='plan', parent_flow_id=target.flow_id,
+                                    run_ids=[target.run_id] if target.run_id else None)
+            st.session_state['_graph_pending_'+sid] = job['flow_id']
             st.rerun()
-        except (ValueError,RuntimeError,OSError) as exc:
+        except (ValueError, RuntimeError, OSError) as exc:
             st.error(str(exc))
 
-def render_start_actions(service,jobs,sid,frame):
+
+def render_metric_change(service, jobs, sid, frame, target):
+    if not target.run_id or target.pending or target.stale:
+        return
+    with st.expander('更换研究指标'):
+        st.text(f'当前方案 V{target.version} · 指标：{target.outcome or "未登记"}')
+        from causalops.assistant.service import profile
+        fields = [v['field'] for v in profile(frame)['fields']
+                  if v['numeric'] and not v['likely_identifier'] and v['field'] != target.outcome]
+        field = st.selectbox('新方案的目标字段',fields,index=None,placeholder='选择新指标',key='change_target_'+sid)
+        st.caption('更换指标会改变统计对象。新方案需要单独批准，历史报告仍按原指标解释。')
+        if field:
+            report_plan_button(service,jobs,sid,frame,target,field,key='change_plan_'+sid,label='生成指标变更方案')
+
+
+def preview_actions(service, jobs, sid, frame, target, preview, preset):
+    sample = bool(preset and not service.contracts.latest(sid))
+    formal = target.outcome or (preset.get('target') if sample else '')
+    version = f'方案 V{target.version}' if target.version else '尚无方案'
+    st.text(f'当前预览字段：{preview or "无"}  ｜  正式研究指标：{target.outcome or "尚未登记"}  ｜  {version}')
+    if preview and preview != formal:
+        st.caption('切换预览只更新分布图。当前报告口径：'+(formal or '全表概况')+'。')
+        if target.run_id and frame[preview].dtype.kind in 'iuf':
+            st.caption('若要按预览字段生成报告，先建立新方案并重新审批。')
+            report_plan_button(service,jobs,sid,frame,target,preview,key='preview_change_'+sid,
+                               label='以 '+preview+' 为研究指标，生成待审方案')
+            return
+        st.caption('要登记新的研究指标，请切换至“已有明确问题”核对目标字段和单位。')
+    st.caption('报告主指标：'+(formal or '未指定（全表概况）')+'。点击后先显示方案，核对并批准后生成报告。')
+    report_plan_button(service,jobs,sid,frame,target,formal,key='basic_report_'+sid,label='生成完整描述统计报告',sample=sample)
+
+
+def render_start_actions(service,jobs,sid,frame,target):
     a=service.a
     from causalops.sample_data import example_context
     example=example_context(a,sid)
@@ -71,8 +112,8 @@ def render_start_actions(service,jobs,sid,frame):
         if preset:
             st.write(preset['description'])
             st.caption(preset['analysis_unit']+'。'+preset['target_definition'])
-        render_first_look(frame,sid,preset,profile(frame))
-        basic_report_button(a,sid,sample_service=service if example else None)
+        preview=render_first_look(frame,sid,preset,profile(frame))
+        preview_actions(service,jobs,sid,frame,target,preview,preset)
         if example:
             st.caption('可继续研究：质量评分集中在哪些分值？酒精含量与评分是否相关？这些样本仅支持描述和关联解释。')
         else:
@@ -114,13 +155,13 @@ def render_start_actions(service,jobs,sid,frame):
     else:
         with st.container(border=True):render_guided_intake(service,jobs,sid,frame)
     with st.expander('其他分析起点'):
-        render_alternative_actions(service,jobs,sid,frame)
+        render_alternative_actions(service,jobs,sid,frame,target)
 
-def render_alternative_actions(service,jobs,sid,frame):
+def render_alternative_actions(service,jobs,sid,frame,target):
     a=service.a
     st.markdown('**分析起点**')
     left,right=st.columns(2)
-    with left:basic_report_button(a,sid)
+    with left:preview_actions(service,jobs,sid,frame,target,None,{})
     if right.button('推荐分析方向',key='find_questions_'+sid,width='stretch'):
         try:
             job=jobs.submit_start(sid,'我可以根据这张表做什么研究？请推荐可回答的问题。',mode='explore');st.session_state['_graph_pending_'+sid]=job['flow_id'];st.rerun()

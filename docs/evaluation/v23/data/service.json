@@ -1,0 +1,13 @@
+{
+  "analysis_unit": "队列日",
+  "outcome": "within_sla",
+  "metric_label": "within_sla",
+  "metric_unit": "通",
+  "metric_kind": "unknown",
+  "metric_window": "当前表全期",
+  "time": "day",
+  "research": {
+    "provenance": "Eval V2.3 可复现合成数据",
+    "population": "客服队列日记录；offered 为进线，answered 为接通，within_sla 为在时限内接通；无个人工号。"
+  }
+}

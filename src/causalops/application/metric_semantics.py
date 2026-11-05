@@ -45,7 +45,7 @@ def semantic_answer(facts,run,contract,question,*,bundle=None):
         target=('',registered.get('meaning') or den,registered_unit,())
     general_note=denominator_note(question,contract)
     if not target and run.get('method')=='descriptive':
-        requested=re.search(r'每((?:[百千万]|\d+(?:\.\d+)?)?(?:个)?[a-zA-Z\u4e00-\u9fff]{1,18}?)(?:的|耗费|需要|用量|是多少|要用|为多少)',question)
+        requested=re.search(r'每((?:[百千万]|\d+(?:\.\d+)?)?(?:个)?[a-zA-Z\u4e00-\u9fff]{1,18}?)(?:耗费|需要|用量|是多少|要用|为多少)',question)
         if requested and not re.match('行|日|天|条记录|次观测',requested[1]):
             return reply(f'所问分母是“{requested[1]}”。需同一窗口实际发生的该类暴露量和对应分子。请登记分母的业务含义、数值单位与汇总方式，不能用容量、记录数或主指标均值替代。')
     if not target:

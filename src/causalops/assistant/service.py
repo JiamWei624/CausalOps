@@ -547,6 +547,11 @@ class AssistantWorkspace:
                                 if not re.search(r'不能|无法|不代表|不等于|不应|不得|尚未|没有|并非|不构成|不足以|并不|假设|如果|尚需|需要',context):raise DesignError('关联/描述结果被写成因果提升。')
                         from causalops.application.answer_evidence import check_answer_semantics
                         check_answer_semantics(reply.explanation,selected,runs)
+                        from causalops.application.answer_checks import design_checked
+                        for source_run in runs:
+                            source_body=source_dictionary(self,sid,source_run['run_id'])[0]
+                            _,design_errors=design_checked(reply.explanation,source_body)
+                            if design_errors:raise DesignError('回答将未确认的随机分配作为事实。须依据所引运行的登记设计，或明确条件性解释。')
                         text=reply.explanation;rendered_facts=[]
                         ordered=list(dict.fromkeys(re.findall(r'\[\[([^\]]+)\]\]',text)))
                         for number,ref in enumerate(ordered,1):

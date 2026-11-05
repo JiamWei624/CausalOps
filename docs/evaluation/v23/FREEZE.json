@@ -1,0 +1,40 @@
+{
+  "v22_product": "152b410",
+  "v22_tag": "eval-v2.2-close-863b017",
+  "v22_tip": "863b017938a87fa68eb5d8a0c4c3c8d1536786e8",
+  "pilot_runner_commit": "5988bffeaf0529400147436bf07ad3984e513a10",
+  "pilot_inputs": [
+    "A01",
+    "A02",
+    "B01",
+    "B02",
+    "C01",
+    "C02",
+    "D01",
+    "D02",
+    "E01",
+    "E02"
+  ],
+  "canonical_git_blob_sha256": {
+    "docs/evaluation/v23/data/donor.csv": "eb78ce39706c7f561bf80755928d5b44c363661c6c97b5f37427a9b3a6a92bfd",
+    "docs/evaluation/v23/data/donor.json": "0f0a03e6d16bf91428110a8d2fe7a16b23ae1c5d29a27b3a1d685d72b720d8b3",
+    "docs/evaluation/v23/data/lab.csv": "cf18c6ecdf1324603750aa26d051b38923ee066fa7bb6fb08cd5ad6cf0280e67",
+    "docs/evaluation/v23/data/lab.json": "c50def074c660c2fd36455a682b095875eab9d7daacc7337b16613bae6291447",
+    "docs/evaluation/v23/data/line.csv": "9968701d94df042321ac703698a99a35f91cdeae1b381ff13f14de698d40a5fe",
+    "docs/evaluation/v23/data/line.json": "1f62dff215df962180db1e581a58bc135cc54fd0602710ee33361e1362898903",
+    "docs/evaluation/v23/data/port.csv": "a1d89add002ab83172a4f988977ce535fbd81932aceadac171c952c8c5b4034e",
+    "docs/evaluation/v23/data/port.json": "0608b9c1900a809deb3e753fc119b60285330d663e3060f0b761de50c48b0c95",
+    "docs/evaluation/v23/data/school.csv": "5bc7b37324ba8c831b3997115dd1c13f7220d3259dd7f86750bc3e1b06782060",
+    "docs/evaluation/v23/data/school.json": "d0f06343274c455b6afd0bfa79dce65d5243c956b22d5e71dc20abb87344ccb9",
+    "docs/evaluation/v23/data/service.csv": "6fc6d28ab189ec60ebfc264feb69c9a081958b3da0e7f97c56d6821bc2c7e5d7",
+    "docs/evaluation/v23/data/service.json": "173301a0b0fd2813efb81c7b1da3076f6e050a7e5f823b2dbe257bf0d918f0fb",
+    "docs/evaluation/v23/development_tasks.json": "082318bd66ffe68134e074dc4d133d5c90cda273a2617a3fadb57c52905c8654",
+    "docs/evaluation/v23/development_rubrics.json": "995166693598e5505ec4c24780c5b404762c64ebc09b2a4e7165b3b1bd69f310",
+    "docs/evaluation/v23/holdout-receipt.json": "c127062147cb8f5c2de2e7871b3731286b7a5ee9b4919939cc619ab471e19f54",
+    "docs/evaluation/v23/PROTOCOL.md": "44f5884b99f7d60e9f5efdfd3eb753f346e696bcff963d1fa61db1b9d15167a7",
+    "scripts/eval_v23/datasets.py": "722dd2ccd802191414f19ba11e3960ada86031a80743a4e0a1999dea79da633d",
+    "scripts/eval_v23/run_pilot.py": "8941f4c1e0f784610ccf6b9ecda769085b82a8228ab650fc6a9a28381f582e3d",
+    "scripts/eval_v23/score.py": "48f1f5179789722b9d6d2b00027a51b449c659ba1df00a578bf63ca43e1d80d4",
+    "scripts/eval_v23/validate.py": "29b97f0ffd73d386505b985cbeda441d2311c5e66eea4c5f61b9c004c7d5bc53"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "analysis_unit": "学生测评",
+  "outcome": "score",
+  "metric_label": "score",
+  "metric_unit": "分",
+  "metric_kind": "unknown",
+  "metric_window": "当前表全期",
+  "research": {
+    "provenance": "Eval V2.3 可复现合成数据",
+    "population": "学校整体分配培训邀请，同校学生测评有重复，未提供外校传播或被邀请后出席的反事实。"
+  }
+}

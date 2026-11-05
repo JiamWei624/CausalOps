@@ -1,0 +1,12 @@
+{
+  "analysis_unit": "批次",
+  "outcome": "failures",
+  "metric_label": "failures",
+  "metric_unit": "件",
+  "metric_kind": "unknown",
+  "metric_window": "当前表全期",
+  "research": {
+    "provenance": "Eval V2.3 可复现合成数据",
+    "population": "试制线每个生产批次的检测记录。温度由工程师选择；failures 是不合格件数，units 是检测件数。"
+  }
+}

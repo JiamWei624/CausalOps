@@ -1,0 +1,12 @@
+{
+  "analysis_unit": "等分试样",
+  "outcome": "concentration",
+  "metric_label": "concentration",
+  "metric_unit": "毫克/升",
+  "metric_kind": "continuous",
+  "metric_window": "当前表全期",
+  "research": {
+    "provenance": "Eval V2.3 可复现合成数据",
+    "population": "实验室的等分试样检测；同一标本有不同数量的复测，浓度以毫克/升记录；检测限未登记。"
+  }
+}

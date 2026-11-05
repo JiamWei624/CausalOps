@@ -1,123 +1,94 @@
-<!-- release: 0.16.0 -->
+<!-- release: 0.17.0b1 -->
 # CausalOps Beta
 
-**CausalOps Beta——面向科研与业务分析的可验证 AI 数据科学 Agent。**
+**面向科研与业务分析的可审核、可追溯 AI 数据科学 Agent。**
 
-公开测试版候选 · 0.16.0 软件包 · Windows x64 / Python 3.11
+`0.17.0b1` · Windows x64 / Python 3.11 · 本地单用户 · 受限自动化首版候选
 
-CausalOps 是本地单用户研究工作台。业务分析人员可以导入一张表，从样本分布开始提出问题，也可以直接输入研究目标。助手协助制定和修订方案；使用者核对字段与研究条件后，由本地统计工具计算。每份报告关联一次具体运行，可据此复核数字、诊断和解释范围。
+CausalOps 将研究问题、版本化数据合同、方法建议、人工审核、本地统计与运行证据连接起来。使用者可以从单表数据提出问题，审核方案后执行注册工具，并按具体运行查看报告。新增的自动化入口只支持已核验的 Hillstrom 营销实验：一次整体审核，按固定五步推进两次真实统计计算。
 
-复杂只读请求偶尔会生成待审计划，部分指标需补充口径或返回原报告核查。尚无真人用户完成率或效率测量。用于高风险科研或业务决策前，应由专业人员独立复核。多表自主研究与云端多人协作属于后续规划。历史评测报告中的提交号对应本地开发档案，详细运行库不随快照分发。
+**当前不是通用自主研究系统。** 不支持任意自然语言目标的自动多步骤规划、通用多表研究、完整主动诊断或云端多人协作。开放式方法建议和研究解释仍有已记录的准确性限制。没有真人完成率、提效或生产可靠性数据。
 
-[阶段冻结与风险登记](docs/stage/验收与整合.md) · [技术与成果总结](docs/stage/技术与成果总结.md) · [营销实验历史验收](docs/current/PHASE2_ACCEPTANCE.md) · [快速安装](#快速安装) · [首次使用教程](docs/current/PUBLIC_TUTORIAL.md)
+[自动化使用教程](docs/current/AUTOMATION_GUIDE.md) · [安装](docs/current/INSTALLATION.md) · [本候选验收](docs/releases/automation-v2-beta/ACCEPTANCE.md) · [已知限制](docs/releases/automation-v2-beta/LIMITATIONS.md) · [架构](docs/current/ARCHITECTURE.md)
 
-![首页的营销实验预览与三级研究案例](docs/stage/home.png)
+![实际首页与自动化入口](docs/releases/automation-v2-beta/assets/home.png)
 
-**图 1　首页。** 右侧按同一尺度比较两组访问率；下方三个入口分别面向描述统计、随机实验和政策评估教学。
+*图1：候选包独立安装后的实际首页。营销实验成果预览不等于本任务已执行。*
 
-## 本次测试版的使用范围
+## 已实现与验证范围
 
-| 状态 | 功能与条件 |
+|能力|实际行为与边界|
 |---|---|
-| 已验证 | 公开营销实验从导入、制定方案、核查版本化数据合同、人工批准、本地执行，到报告导出及按运行追问。LangGraph 组织步骤，方法检索提供依据，17 个注册入口分派计算。DeepSeek 官方接口已完成一次最终产品冒烟；本地案例可以离线分析。 |
-| 有条件可用 | 观察性解释依赖分配机制和变量测量时点。某些只读问题会进入待审，或在证据充分时漏答目标数值。最后封存的十题首次为 3 项完整、2 项部分、5 项失败。CausalOps Eval 的模拟操作与程序回归不能代替真人试用。 |
-| 后续规划 | Eval V2.2 将测量导航、操作成本和故障恢复，V2.3 计划扩大任务集。多表指标管理、自主研究规划与云端多用户协作尚属后续方向。 |
+|单表分析|CSV / Parquet 导入，字段与缺失预览，版本化 DataContract；预览字段不自动改变正式指标。|
+|研究方案与方法依据|LangGraph 组织意图、方法检索、结构化方案、审核中断与结果问答；DeepSeek 为可选辅助，模型不能授予执行权限。|
+|人工审核与本地统计|17 个注册方法入口；批准绑定数据、合同、方案及执行范围。各方法验证深度不同。|
+|运行证据与报告|统计结果来自实际工具，关联 Run、计划和数据版本；可导出 HTML 与证据。|
+|受限五步自动化|审计→分组描述→真实上游证据核验→A/B→报告整合。描述与A/B各自生成Run，门禁失败停止下游。|
+|执行控制|持久预算、步骤边界暂停、取消终态、恢复前调和、异常人工核查；不承诺任意进程故障下物理恰好一次。|
 
-## 核心功能
+## 快速安装与启动
 
-| 任务 | 操作与产出 |
-|---|---|
-| 理解数据 | 导入 CSV 或 Parquet，核对每行代表的对象，查看字段类型、缺失、重复和分布。 |
-| 制定与修订方案 | 用自然语言说明指标、观察期和目标。工作台检索方法依据，列出待确认事项；候选修订可比较修改前后的内容。 |
-| 审核与计算 | 在人工审核视图中核对拟批准的方案与执行条件。批准绑定具体版本；普通对话不会触发批准。 |
-| 解读与复核 | 查看样本、指标、估计值及其不确定性；通过研究记录选回对应运行，追问结果或导出 HTML 报告。 |
-
-## 真实研究案例 · 营销邮件与两周访问率
-
-Hillstrom 将 64,000 名客户随机分配到男装邮件、女装邮件和未发邮件三组。此处预先选定男装邮件与未发邮件，结果为两周内是否访问。未发邮件组 2,262 / 21,306（10.62%），男装邮件组 3,894 / 21,307（18.28%）。绝对差为 **7.66 个百分点**。分母为各自分配组中的客户数；该指标无法回答次年净利润问题。[实验发布说明](https://blog.minethatdata.com/2008/03/minethatdata-e-mail-analytics-and-data.html) · [同期实验资料](https://stochasticsolutions.com/pdf/HillstromChallenge.pdf)
-
-1. 首页选择 **查看营销实验**，在案例页下载链接取得原始压缩包，直接上传。也可将环境变量 `CAUSALOPS_HILLSTROM_ARCHIVE` 指向同一文件，再启动应用。仓库仅附公开汇总。
-2. 核对来源和两周指标，点击 **创建研究任务并生成待审方案**。系统核对文件指纹，筛选预先指定的两臂，保留分组及访问指标，登记行标识。
-3. 打开 **人工审核**，查看绑定的数据与方案、分配依据和阻断项。确认后批准本次计算。在结果页核对两组比例和差值区间，导出 HTML 报告。后续追问应引用本次保存的运行。
-
-## 基础与进阶示例
-
-**进阶教学 · 合成政策面板。** 从首页进入政策评估示例，切换处理前趋势相同或不同的设定，再检查趋势诊断怎样限制结论。参数和结果仅描述模拟情形。
-
-
-
-**分析问题：公开红葡萄酒样本的质量评分如何分布？** 此例采用 UCI Wine Quality 的红酒子集。一行是一条检测与评分记录，`quality` 为感官评分，单位为分。[UCI 数据说明与许可](https://archive.ics.uci.edu/dataset/186/wine+quality)
-
-1. 首页点击 **载入葡萄酒示例**。工作台载入 **1,599 行、12 个字段**，评分的含义已按数据来源预填。
-2. 保留 **先了解数据**，查看评分分布，再点击 **生成完整描述统计报告**。若要体验方案审核，另载入一个示例任务，选择 **已有明确问题 → 使用示例说明并生成分析计划 → 人工审核**，核对后批准执行。
-3. 在结果区核对指标。该样本的平均评分为 **5.636 分**，中位数为 **6 分**，观测范围为 **3–8 分**。原表有 **240 行完全重复记录**，系统保留这些记录。这个分布描述已观测样本，无法回答调整某项配方会让评分提高多少。
-4. 展开 **研究报告预览** 或点击 **导出本次分析报告**。后续可在 **研究记录** 找回任务和运行证据。改问酒精含量与评分的关系时，应建立关联分析计划。
-
-## 界面截图
-
-下列截图取自营销实验的本地浏览器验收，包含实际审核控件与导出的文件。
-
-| 研究方案 | 人工审核 |
-|---|---|
-| ![营销实验待审方案](docs/stage/plan.png) | ![程序核对、研究声明与批准操作](docs/stage/review.png) |
-| 图 2　研究工作台 | 图 3　审核当前版本 |
-
-| 本次分析结果 | 离线报告 |
-|---|---|
-| ![两组访问率与绝对差](docs/stage/result.png) | ![浏览器打开导出的 HTML 报告](docs/stage/report.png) |
-| 图 4　运行结果 | 图 5　研究报告 |
-
-## 研究流程
-
-![研究设计与结果复核的两条路径](docs/assets/phase2-research-cycle.svg)
-
-**图 6　研究设计与结果复核。** 设计调整回到待审计划；同一运行的追问直接核查结果与诊断。[可编辑关系定义](docs/diagrams/phase2-research-cycle.mmd)
-
-## 技术架构
-
-![本地界面、研究服务、编排、方法检索、统计执行和外部模型的调用关系](docs/assets/architecture-current.svg)
-
-**图 7　组件与调用关系。** Streamlit 提供交互界面，ResearchService 管理任务与版本，LangGraph 组织路由、检索和审核中断。方法资料用于解释研究设计；运行结果由本地统计执行器产生，报告通过运行记录引用数值。模型连接与任务外发许可分别配置。[架构与源码职责](docs/current/ARCHITECTURE.md)
-
-## 快速安装
-
-在 Windows x64 上安装 Python 3.11，将仓库下载并解压到较短的路径（如 `E:\CausalOps`）。在**仓库根目录**打开 PowerShell 执行：
+在仓库根目录打开 PowerShell，先确认 `py -3.11 --version`。下列相对路径可替换为数据盘上的短目录；不要提交个人工作区。
 
 ```powershell
-py -3.11 -m venv E:/causalops-venv
-& E:/causalops-venv/Scripts/python.exe -m pip install -r requirements-runtime-win-py311.txt
-& E:/causalops-venv/Scripts/python.exe -m pip install --no-deps .
-& E:/causalops-venv/Scripts/python.exe -m pip check
-& E:/causalops-venv/Scripts/python.exe -m causalops.launch --workspace E:/causalops-work --port 8513
+py -3.11 -m venv .venv
+& ./.venv/Scripts/python.exe -m pip install -r requirements-runtime-win-py311.txt
+& ./.venv/Scripts/python.exe -m pip install --no-deps .
+& ./.venv/Scripts/python.exe -m pip check
+& ./.venv/Scripts/python.exe -m causalops.launch --workspace ./causalops-workspace --port 8513
 ```
 
-打开启动器显示的本机地址。更新已有安装时，在最新源码目录重新执行安装步骤并重启服务；本次沿用 0.16.0，请通过 Git 标签、源码提交与启动地址中的构建指纹辨识本次候选。本次公开快照保留软件包版本，使用 Beta 分支的提交号区分构建。远程 main 和旧离线包对应各自构建；辨别候选应核对 Git 提交。E 盘路径可替换。Windows 环境建议同时使用较短的工作区与测试临时目录；路径过深时，报告写入可能失败。若系统使用 `python` 而非 `py`，先用 `python --version` 确认是 3.11，再用该解释器创建虚拟环境。缓存目录设置、离线安装与端口故障处理见[安装说明](docs/current/INSTALLATION.md)。
+打开启动器显示的地址。软件包版本与地址中的构建指纹共同辨识候选，旧 `0.16.0` 安装不会自动升级。独立验收使用新虚拟环境、离线公开依赖缓存和新构建 wheel；未声称测试了从互联网重新下载全部依赖。[详细安装与缓存设置](docs/current/INSTALLATION.md)
 
-## 统计方法与验证情况
+## 首要演示：Hillstrom 固定五步研究
 
-| 分析范围 | 已实现的方法及解释边界 |
-|---|---|
-| 描述与关联 | 描述统计、Pearson / Spearman 相关、OLS、Logit、Poisson。两变量相关以成对有效观测为分母；关联系数不能直接解释为干预收益。 |
-| 实验与观察性比较 | A/B、CUPED、回归调整、PSM、IPW、AIPW、DoubleML。随机分配、协变量测量时点和重叠条件须按设计核对。 |
-| 面板、工具变量与断点 | 共同或交错处理时点 DID、2SLS、清晰与模糊断点。适用面板结构、工具变量论证与局部解释限制见[方法合同](docs/METHOD_CONTRACTS.md)。 |
+1. 首页点击 **启动自动化研究**，下载页面指定的原始公开压缩包并上传；也可在启动前设置 `CAUSALOPS_HILLSTROM_ARCHIVE`。仓库不分发客户原始表。
+2. 阅读发布者设计资料，核对客户单位、男装邮件/未发邮件、分配后两周访问定义。确认后 **生成五步研究计划**；这一步没有批准或统计。
+3. 核对完整五步、两次工具调用、数据合同、严格缺失策略及预算；勾选审核声明，点击 **批准整份计划并开始**。
+4. 自动执行审计、分组描述、上游Run核验、A/B及整合。每个统计步骤重新校验授权；失败不会自动改方法、删样本或填补数据。
+5. 查看整体报告、两个Run、风险说明及预算。导出报告或证据；刷新和重开历史任务不会重新计算。
 
-- **早期界面验收。** 本地配置指定原始压缩包后，633 项回归测试通过。另以浏览器完成营销实验文件上传、审核、计算、报告下载与基于同一运行的追问。独立试用者完成率与用时仍待测量。[验收条件和记录](docs/current/PHASE2_ACCEPTANCE.md)
-- **阶段冻结。** 产品提交 `b8fbc75`，完整工程回归 755 项通过。最终十道陌生服务任务首次 3 项完整、2 项部分、5 项失败；其中两项只读追问进入待审。使用限制与实际测量范围见[冻结记录](docs/stage/验收与整合.md)。
-- **统计复算。** 固定种子重新拟合 90 次；其中 PSM 的 6 次模拟有 4 次区间覆盖设定真值。该结果提示需要进一步核查匹配推断，不足以估计长期覆盖率。[统计核查](docs/current/STATISTICAL_AUDIT.md)
-- **业务解释。** Hillstrom 公开实验中，男装邮件组两周访问率为 18.28%，未发邮件组为 10.62%。绝对差约 **7.66 个百分点**，相对增幅约 **72.14%**；这份报告不能据以估算下一年度净利润。[组间比较图](docs/assets/hillstrom-visit-rates.svg) · [计算与问答验收](docs/current/VALIDATION.md)
+![完整计划与整体审批](docs/releases/automation-v2-beta/assets/review.png)
 
-## 安全与使用限制
+*图2：预览、正式计划、批准与执行分别记录。普通聊天中的“同意”不授予执行权限。*
 
-工作区用于本地单用户分析。上传限制为单文件 50 MB、10 万行、200 列，解码后上限 256 MB。模型为可选服务；配置密钥后，仍须针对具体任务授权数据发送。使用者负责确认业务事实与识别条件。字段存在、程序成功运行或统计显著，都不能单独证明因果关系。[模型与隐私](docs/current/PROVIDERS.md) · [安全说明](SECURITY.md)
+公开原始表预先取两组共42,613名客户：未发邮件2,262/21,306（10.62%），男装邮件3,894/21,307（18.28%）。差值约7.66个百分点，原A/B工具95%区间约[6.995,8.323]个百分点。每次安装必须实际运行产生自己的证据，不将这些公开参考数值冒充新计算。随机分配依据原发布者资料与用户确认，不能仅凭有两组推断。[发布者说明](https://blog.minethatdata.com/2008/03/minethatdata-e-mail-analytics-and-data.html)
+
+![整体报告与独立运行来源](docs/releases/automation-v2-beta/assets/report.png)
+
+*图3：报告数值由持久化结构化证据生成。模型自主规划关闭，本固定链无真实模型请求。*
+
+## 其他现有路径
+
+- **单次营销研究**：保留“查看营销实验→生成待审方案→人工审核→计算→报告”的原路径。[单次教程](docs/current/PUBLIC_TUTORIAL.md)
+- **基础示例**：内置UCI红葡萄酒，1,599行、12字段；质量分布仅描述样本，不能解释配方因果效应。
+- **政策教学**：明确标记的合成面板，展示双重差分假设与限制，不是真实政策成果。
+
+## 统计方法
+
+描述统计、Pearson/Spearman相关、OLS、Logit、Poisson、A/B、CUPED、回归调整、PSM、IPW、AIPW、DoubleML、共同/交错时点DID、2SLS与清晰/模糊断点由17个注册入口管理。方法名称与注册别名以实际注册表为准。存在工具不代表其识别假设或所有场景已经全面验证。[方法合同](docs/METHOD_CONTRACTS.md) · [统计核查](docs/current/STATISTICAL_AUDIT.md)
+
+## 质量记录与能力限制
+
+- 自动化三个阶段的工程与固定浏览器证据按版本保存；本候选的实际安装、测试数、四条自动化流程及旧流程结果见[本次验收](docs/releases/automation-v2-beta/ACCEPTANCE.md)，不能沿用旧成绩代替新测。
+- Eval V2.2固定流程8/8，但最后N06自由探索3次未完整完成；固定脚本不代表自主导航或真人效率。
+- Eval V2.3最终开发集为本地9/30、DeepSeek15/30。保留集每模式实际执行13题，已确认正确0/13，另7题未执行；模型6项评分争议仍保留。不能合并成50题通用准确率。[归档汇总](docs/evaluation/v23/PUBLIC_SUMMARY.md)
+- PSM等方法有统计推断限制；高风险研究与业务决策须专业复核。部分复杂只读问题、指标与统计解释仍不可靠。两周访问率不支持推算次年净利润。
+
+## 架构、数据与权限
+
+Streamlit→ResearchService。单次研究走LangGraph与本地方法知识检索；受限自动化走BoundedCoordinator、PlanV2及步骤证据门禁，复用原统计工具与审批。SQLite保存任务/批准/预算/Run元数据，Parquet与结果文件保存数据和统计证据。恢复先校验所有权及既有Run，不盲目重算。[实现与边界](docs/current/ARCHITECTURE.md)
+
+模型为可选服务。连接凭据与数据外发授权分别管理；固定自动化计划不调用DeepSeek。公开源码、个人工作区和模型数据发送是不同权限。论文、私人研究和微博数据、数据库、密钥、隐藏评测答案不随快照分发。[安全](SECURITY.md) · [模型与隐私](docs/current/PROVIDERS.md)
 
 ## 完整文档
 
-| 使用场景 | 推荐阅读 |
+|用途|文档|
 |---|---|
-| 第一次运行 | [安装与更新](docs/current/INSTALLATION.md) → [营销实验图文教程](docs/current/PUBLIC_TUTORIAL.md) → [日常操作与故障恢复](docs/current/USER_GUIDE.md) |
-| 核对样本与结论 | [实验来源、筛选与复算](docs/current/PHASE2_ACCEPTANCE.md) · [研究质量与声明核对](docs/current/RESEARCH_QUALITY.md) · [真实数据测试范围](docs/current/REAL_DATA_EXPERIENCE.md) |
-| 核对发布与限制 | [阶段验收记录](docs/stage/验收与整合.md) · [界面与权限复核](docs/current/DESIGN_REVIEW.md) · [统计方法与限制](docs/METHOD_CONTRACTS.md) |
-| 理解实现 | [系统架构与代码职责](docs/current/ARCHITECTURE.md) · [研究流程、证据与权限图集](docs/current/FIGURES.md) · [完整功能手册](docs/current/COMPLETE_MANUAL.md) |
-| 参与开发或复用 | [贡献步骤](CONTRIBUTING.md) · [代码许可](LICENSE) · [公共数据与第三方许可](THIRD_PARTY_NOTICES.md) |
+|第一次运行|[安装](docs/current/INSTALLATION.md) · [自动化教程](docs/current/AUTOMATION_GUIDE.md) · [日常操作](docs/current/USER_GUIDE.md)|
+|理解结果|[方法合同](docs/METHOD_CONTRACTS.md) · [研究质量](docs/current/RESEARCH_QUALITY.md) · [运行核验](docs/current/VALIDATION.md)|
+|理解代码|[架构](docs/current/ARCHITECTURE.md) · [五步设计与历史](docs/product/automation-v2/README.md) · [完整功能手册](docs/current/COMPLETE_MANUAL.md)|
+|本次候选|[变更与范围](docs/releases/automation-v2-beta/README.md) · [验收](docs/releases/automation-v2-beta/ACCEPTANCE.md) · [限制](docs/releases/automation-v2-beta/LIMITATIONS.md)|
+|贡献与许可|[贡献](CONTRIBUTING.md) · [MIT许可](LICENSE) · [第三方许可](THIRD_PARTY_NOTICES.md) · [全部索引](docs/README.md)|
 
-[版本历史](docs/HISTORY.md) · [项目对比评审（含评审时的源码基线）](docs/current/PROJECT_REVIEW_2026-11-03.md) · [全部文档索引](docs/README.md)
+未来规划包括有界自然语言规划、基于证据的主动诊断、多表指标管理和RAG专项优化，均不作为当前自动化首版能力。[版本历史](docs/HISTORY.md)

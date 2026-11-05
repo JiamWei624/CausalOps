@@ -216,6 +216,15 @@ def render_assistant():
     from causalops import __version__
     from causalops.ui.visual_layout import steps
     sessions=a.sessions();byid={s['id']:s for s in sessions};sid=st.query_params.get('assistant')
+    with a.ws.connection() as c:
+        exists=c.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='automation_v2_tasks'").fetchone()
+        automatic=c.execute("SELECT id FROM automation_v2_tasks WHERE session_id=?",(sid,)).fetchone() if exists and sid else None
+    if automatic:
+        st.info("当前任务属于固定五步自动化研究，请在对应工作台查看整体计划、步骤和报告。")
+        if st.button("打开此自动化任务"):
+            st.query_params.update(route="automation",automation=automatic[0])
+            st.rerun()
+        return
     if sid not in byid:
         st.title('创建研究任务',anchor=False)
         st.caption('登记数据与研究口径。此阶段不执行统计估计。')
@@ -234,6 +243,7 @@ def render_assistant():
         with right.container(key='panel_field_preview'):
             st.subheader('数据概况与字段目录')
             preview=None
+            rejected=False
             try:
                 if upload:
                     from causalops.general.service import read_table
@@ -241,10 +251,19 @@ def render_assistant():
                 elif uid:
                     preview=a.ws.load_upload(uid)
             except (ValueError,RuntimeError,OSError) as exc:
-                st.error(str(exc))
-            if preview is None:
+                rejected=True
+                reason=str(exc)
+                st.error(reason)
+                if '列名' in reason:
+                    advice='请检查首行，给空列命名并区分重名字段。'
+                elif any(term in reason for term in ('编码','分隔','列数')):
+                    advice='请检查文件编码、分隔符和每行的列数。'
+                else:
+                    advice='请按上方错误说明修正文件。'
+                st.info(advice+'可在导入框中直接替换文件；通过校验后即可创建任务。')
+            if preview is None and not rejected:
                 st.info('选择文件后显示真实行数、字段类型与缺失情况。')
-            else:
+            elif preview is not None:
                 k=st.columns(3)
                 k[0].metric('数据行数',f'{len(preview):,}');k[1].metric('字段数',len(preview.columns));k[2].metric('缺失单元格',int(preview.isna().sum().sum()))
                 st.dataframe(pd.DataFrame({'字段':list(preview),'类型':preview.dtypes.astype(str).tolist(),'缺失数':preview.isna().sum().tolist()}),hide_index=True,width='stretch')
@@ -274,7 +293,9 @@ def render_assistant():
     landmark('overview', move=st.session_state.pop('_open_overview', False))
     s=a.session(sid);frame=a.ws.load_upload(s['upload_id']);pr=profile(frame)
     st.title(s['title'],anchor=False)
-    st.caption('研究问题、方案版本与运行记录均保存在当前任务。')
+    st.caption('当前任务编号：'+sid+'。研究问题、方案版本与运行记录保存在此任务中。')
+    if not a.plans(sid):
+        st.info('数据已登记。可先查看数据质量，或在下方输入研究问题。')
     with st.sidebar.expander('当前任务 · 数据与权限'):
         with st.expander('数据概况与字段目录'):
             top=st.columns(3)

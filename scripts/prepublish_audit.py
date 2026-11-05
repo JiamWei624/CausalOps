@@ -11,8 +11,10 @@ from pathlib import Path
 SKIP_DIRS = {".git", ".pytest_cache", "__pycache__", ".venv", "artifacts", "htmlcov"}
 PUBLIC_SAMPLE_SHA256 = '4a402cf041b025d4566d954c3b9ba8635a3a8a01e039005d97d6a710278cf05e'
 
+PUBLIC_SYNTHETIC_SHA256 = {'docs/evaluation/v23/data/donor.csv': 'eb78ce39706c7f561bf80755928d5b44c363661c6c97b5f37427a9b3a6a92bfd', 'docs/evaluation/v23/data/lab.csv': 'cf18c6ecdf1324603750aa26d051b38923ee066fa7bb6fb08cd5ad6cf0280e67', 'docs/evaluation/v23/data/line.csv': '9968701d94df042321ac703698a99a35f91cdeae1b381ff13f14de698d40a5fe', 'docs/evaluation/v23/data/port.csv': 'a1d89add002ab83172a4f988977ce535fbd81932aceadac171c952c8c5b4034e', 'docs/evaluation/v23/data/school.csv': '5bc7b37324ba8c831b3997115dd1c13f7220d3259dd7f86750bc3e1b06782060', 'docs/evaluation/v23/data/service.csv': '6fc6d28ab189ec60ebfc264feb69c9a081958b3da0e7f97c56d6821bc2c7e5d7'}
+
 PRIVATE_SUFFIXES = {".csv", ".parquet", ".pq", ".duckdb", ".sqlite", ".db", ".pkl", ".pickle"}
-TEXT_SUFFIXES = {".py", ".toml", ".md", ".json", ".yaml", ".yml", ".txt", ".sql", ".ps1"}
+TEXT_SUFFIXES = {".csv", ".py", ".toml", ".md", ".json", ".yaml", ".yml", ".txt", ".sql", ".ps1"}
 MAX_PUBLIC_FILE_BYTES = 5 * 1024 * 1024
 
 SECRET_PATTERNS = {
@@ -53,7 +55,7 @@ def audit(root: Path) -> list[Finding]:
         size = path.stat().st_size
         if size > MAX_PUBLIC_FILE_BYTES:
             findings.append(Finding("blocker", "large_file", relative, None, f"File is {size} bytes (>5 MiB)."))
-        if path.suffix.lower() in PRIVATE_SUFFIXES and not (relative == 'src/causalops/sample_data/winequality-red.csv' and hashlib.sha256(path.read_bytes()).hexdigest() == PUBLIC_SAMPLE_SHA256):
+        if path.suffix.lower() in PRIVATE_SUFFIXES and not ((relative == 'src/causalops/sample_data/winequality-red.csv' and hashlib.sha256(path.read_bytes()).hexdigest() == PUBLIC_SAMPLE_SHA256) or PUBLIC_SYNTHETIC_SHA256.get(relative) == hashlib.sha256(path.read_bytes()).hexdigest()):
             findings.append(Finding("blocker", "private_data_file", relative, None, "Data/binary artifact must not enter the public repository."))
         if path.suffix.lower() not in TEXT_SUFFIXES or size > MAX_PUBLIC_FILE_BYTES:
             continue

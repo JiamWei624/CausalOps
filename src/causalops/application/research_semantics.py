@@ -22,7 +22,7 @@ LABELS={'event_label':'处理事件名称','event_time_meaning':'处理时间字
 NO_COMPUTE=re.compile(r'(?:不要|无需|不必|禁止|暂不|先不|别|不)(?:实际|直接|进行|重新)?(?:拟合|估计|计算|运行|执行)|只(?:解释|讨论|咨询|说明)')
 EFFECT=re.compile(r'效果|效应|因果|影响|干预|策略实施|政策实施|促销开始后|intervention|treatment effect',re.I)
 SUBSTITUTE=re.compile(r'(?:把|用|将)([^，。；？,;?]{1,40}?)(?:当作|当成|代替|充当|视为|作为)([^，。；？,;?]{1,40}?(?:开始日期|生效日期|日期|时间|时点|开始日|生效日))')
-RATE=re.compile(r'率|占比|比例|比率|rate|ratio',re.I)
+RATE=re.compile(r'率|占比|比例|比率|(?<![A-Za-z0-9_])(?:rate|ratio)(?![A-Za-z0-9_])',re.I)
 DESCRIBE=re.compile(r'描述|统计|分布|均值|频数|直方图|基础报告')
 REQUEST=re.compile(r'生成|展示|统计|描述|分析|计算|报告|绘制')
 def calculation_forbidden(question):
@@ -33,6 +33,8 @@ def issue(question,body,configs=()):
     m=body.get('measurement') or {}
     if calculation_forbidden(question):
         return '本次只讨论研究设计，未授权制定计算方案或执行统计。' if configs else ''
+    constraint=constraint_issue(question,body,configs)
+    if constraint:return constraint
     substitution=SUBSTITUTE.search(question)
     if substitution and EFFECT.search(question):
         source,target=[s.strip(' 的') for s in substitution.groups()]
@@ -67,6 +69,8 @@ def issue(question,body,configs=()):
 
 
 def consultation(question):
+    equal=equal_weight_explanation(question)
+    if equal:return equal
     if RATE.search(question) and re.search('分母|加权|权重|平均.*汇总',question):
         return '先明确分母。合并比率应把分子与分母分别汇总再相除，相当于按每日分母加权；各日比率等权平均回答的是典型一天的表现。例如计算购买率，订单数未必等于购买人数，访客也可能跨天重复。'
     if re.search('随机单位|整群|分配单位|集群随机',question):
@@ -90,7 +94,7 @@ def registered_ratio_advice(question, body):
 def reads_saved_result(question):
     """A reference to an existing report plus a read verb; keep explicit changes actionable."""
     affirmative=re.sub(r'(?:不要|无需|不必|不用|暂不|不|勿|别)(?:再|另行|重新|新)?(?:建(?:立)?|生成|制定|用|执行|计算|拟合|运行|调整)?(?:新模型|新计划|新方案|计划|模型|计算|拟合|运行)?', '',question)
-    if re.search(r'另(?:建|拟)|重新(?:分析|计算|拟合)|(?:制定|生成|建立|提交|创建).{0,6}(?:计划|方案)|改为|换成|再用|再使用|请(?:拟合|计算)',affirmative):
+    if re.search(r'另(?:建|拟)|重新(?:分析|计算|拟合)|(?:制定|生成|建立|提交|创建).{0,6}(?:计划|方案)|改为|改按|换成|再用|再使用|请(?:拟合|计算)',affirmative):
         return False
     # Asking for a new plan for later review and explaining its coverage are compatible.
     if re.search('新方案|新计划|候选计划',affirmative) and re.search('核对后|确认后|审查后|再批准|待我审核|提交审核',affirmative):
@@ -130,3 +134,60 @@ def denominator_note(question,body):
     return (f'登记分子为 {num}，分母为 {den}，观察期为{period}，口径为“{mode}”。'
             '请核对分母代表当日人数、人日还是全期去重人数，以及报告是否保存了该比率。'
             '分母为零时比率未定义；分子为零且分母为正时比率为零。不能用数据行数或单列均值替代。')
+
+
+def request_text(question, body):
+    """Remove only a verbatim registered metadata prefix; retain the submitted text in the flow."""
+    for context in ((body.get('research') or {}).get('population'),):
+        if context and question.startswith(context + "\n"):
+            remainder=question[len(context):].strip()
+            if remainder:return remainder
+    return question
+
+
+def field_aliases(body):
+    """Exact declared labels, never substring similarity between column names."""
+    labels={v['field']:[v['field'],v.get('meaning','')] for v in body.get('fields',[])}
+    population=(body.get('research') or {}).get('population','')
+    for key in labels:
+        match=re.search(r'(?<![A-Za-z0-9_])'+re.escape(key)+r'\s*为\s*([^，,。；;\n]+)',population)
+        if match:labels[key].append(match[1].strip())
+    return labels
+
+
+def constraint_issue(question, body, configs):
+    # Row subsets are not executable via the free-text inclusion declaration.
+    # Date windows have their own typed, reviewed path. Do not pretend prose is a filter.
+    subset=re.search(r'(?:只|仅)(?:分析|保留|看)\s*([^，,。；;！？?]{1,60})',question)
+    if subset:
+        target=subset[1]
+        if re.search(r'班|样本|记录|客户|患者|地区|区域',target) and not re.search(r'最近|过去|截至|自然日|\d{4}-\d{2}-\d{2}',target):
+            return '当前执行配置尚未支持这项样本筛选：'+target+'。请先提供已筛选并核对的独立数据及口径，再制定新方案；不会用全样本结果替代。'
+    grouping=re.search(r'按([^，,。；;]{1,30}?)分组',question)
+    if grouping and configs:
+        candidates=[key for key,terms in field_aliases(body).items() if grouping[1].strip() in terms]
+        if len(candidates)!=1:
+            return '请确认分组字段及其业务含义；当前计划不能用总体汇总代替分组结果。'
+        if any(c.get('method')!='descriptive' or c.get('group')!=candidates[0] for c in configs):
+            return '请求的分组条件未落实到执行配置；请在候选方案中登记分组字段后重新审核。'
+    return ''
+
+
+def equal_weight_explanation(question):
+    if not (re.search('等权|一票|相同权重',question) and re.search('记录|试样|测量|复测|观测|抽检',question)):
+        return ''
+    return ('记录平均按每条记录等权，因此对象的权重与其观测次数成正比；对象等权平均应先计算每个对象的组内均值，再对这些均值等权。'
+            '复测次数不同意味着权重可能不同，两种结果可能不同，但不必然不同：若各对象组内均值相同，两者相同；其他情况下差异也可能抵消。'
+            '计算对象等权结果需要可靠的对象标识、同一指标与窗口，以及缺失和复测纳入规则。这里说明的是口径，没有新增计算。')
+
+
+def readonly_consultation(question):
+    """User speech act only; metadata and method names are not execution authorization."""
+    affirmative=re.sub(r"(?:不要|无需|不必|暂不|先不|不|别)(?:重新|直接|实际)?(?:生成|制定|创建|计算|执行|运行|分析)(?:新计划|新方案|计划|方案)?", "", question)
+    if re.search(r"(?:生成|制定|创建|提交|另建|另拟).{0,12}(?:计划|方案|草案)|(?:审核|批准)后(?:计算|运行|执行)",affirmative):
+        return False
+    if re.search(r"适用条件|(?:解释|说明).{0,16}(?:如何|怎样|怎么|原理|含义)",question):
+        return True
+    if re.search(r"(?:^|[，。；])\s*(?:请|帮我|现在|开始|再)?(?:直接|重新)?(?:计算|拟合|执行|运行|分析|描述)",affirmative):
+        return False
+    return bool(re.search(r"请先区分|(?:能否|可否|是否|能用|可以用).{0,45}(?:吗|方法|识别|回答)|(?:应|需要|还|先).{0,8}(?:补什么|补充什么|缺什么|缺哪些)|(?:方法|研究|分析).{0,12}(?:适用条件|限制|原理|区别)|如何理解|如何计算|怎样计算|(?:解释|说明).{0,30}(?:含义|原理|区别|条件)|只要问题清单",question))

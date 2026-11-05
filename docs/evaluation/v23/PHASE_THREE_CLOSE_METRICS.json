@@ -1,0 +1,860 @@
+{
+  "scorer": "v23.2.1",
+  "n": 60,
+  "attempts_per_task_per_mode": 1,
+  "holdouts_run": 0,
+  "historical_evidence": {
+    "checked": 9441,
+    "changed": []
+  },
+  "modes": {
+    "local": {
+      "before": {
+        "n": 30,
+        "完整": 6,
+        "正确阻断": 0,
+        "部分": 6,
+        "失败": 18,
+        "待人工复核": 0,
+        "正确处理": 6
+      },
+      "after": {
+        "n": 30,
+        "完整": 9,
+        "正确阻断": 0,
+        "部分": 5,
+        "失败": 16,
+        "待人工复核": 0,
+        "正确处理": 9
+      },
+      "seconds_sum": 217.33100000000002,
+      "seconds_mean": 7.244366666666666,
+      "seconds_median": 6.464499999999999,
+      "correct_clarify": 1
+    },
+    "deepseek": {
+      "before": {
+        "n": 30,
+        "完整": 10,
+        "正确阻断": 2,
+        "部分": 12,
+        "失败": 6,
+        "待人工复核": 0,
+        "正确处理": 12
+      },
+      "after": {
+        "n": 30,
+        "完整": 14,
+        "正确阻断": 1,
+        "部分": 10,
+        "失败": 5,
+        "待人工复核": 0,
+        "正确处理": 15
+      },
+      "seconds_sum": 557.3919999999999,
+      "seconds_mean": 18.579733333333333,
+      "seconds_median": 17.93,
+      "correct_clarify": 2
+    }
+  },
+  "categories": {
+    "local": {
+      "A": {
+        "n": 6,
+        "完整": 1,
+        "正确阻断": 0,
+        "部分": 2,
+        "失败": 3,
+        "待人工复核": 0,
+        "正确处理": 1
+      },
+      "B": {
+        "n": 6,
+        "完整": 2,
+        "正确阻断": 0,
+        "部分": 0,
+        "失败": 4,
+        "待人工复核": 0,
+        "正确处理": 2
+      },
+      "C": {
+        "n": 6,
+        "完整": 1,
+        "正确阻断": 0,
+        "部分": 0,
+        "失败": 5,
+        "待人工复核": 0,
+        "正确处理": 1
+      },
+      "D": {
+        "n": 6,
+        "完整": 1,
+        "正确阻断": 0,
+        "部分": 2,
+        "失败": 3,
+        "待人工复核": 0,
+        "正确处理": 1
+      },
+      "E": {
+        "n": 6,
+        "完整": 4,
+        "正确阻断": 0,
+        "部分": 1,
+        "失败": 1,
+        "待人工复核": 0,
+        "正确处理": 4
+      }
+    },
+    "deepseek": {
+      "A": {
+        "n": 6,
+        "完整": 1,
+        "正确阻断": 0,
+        "部分": 5,
+        "失败": 0,
+        "待人工复核": 0,
+        "正确处理": 1
+      },
+      "B": {
+        "n": 6,
+        "完整": 4,
+        "正确阻断": 0,
+        "部分": 1,
+        "失败": 1,
+        "待人工复核": 0,
+        "正确处理": 4
+      },
+      "C": {
+        "n": 6,
+        "完整": 3,
+        "正确阻断": 0,
+        "部分": 1,
+        "失败": 2,
+        "待人工复核": 0,
+        "正确处理": 3
+      },
+      "D": {
+        "n": 6,
+        "完整": 1,
+        "正确阻断": 1,
+        "部分": 2,
+        "失败": 2,
+        "待人工复核": 0,
+        "正确处理": 2
+      },
+      "E": {
+        "n": 6,
+        "完整": 5,
+        "正确阻断": 0,
+        "部分": 1,
+        "失败": 0,
+        "待人工复核": 0,
+        "正确处理": 5
+      }
+    }
+  },
+  "dimensions": {
+    "local": {
+      "意图": {
+        "适用数": 29,
+        "不适用或未裁决": 1,
+        "完整": 11,
+        "部分": 3,
+        "失败": 15,
+        "说明": "独立AI语义复核维度；不将维度均值替代端到端标签"
+      },
+      "方案方法": {
+        "适用数": 17,
+        "不适用或未裁决": 13,
+        "完整": 9,
+        "部分": 1,
+        "失败": 7,
+        "说明": "独立AI语义复核维度；不将维度均值替代端到端标签"
+      },
+      "关键条件": {
+        "适用数": 29,
+        "不适用或未裁决": 1,
+        "完整": 8,
+        "部分": 5,
+        "失败": 16,
+        "说明": "独立AI语义复核维度；不将维度均值替代端到端标签"
+      },
+      "指标语义": {
+        "适用数": 13,
+        "不适用或未裁决": 17,
+        "完整": 11,
+        "部分": 2,
+        "失败": 0,
+        "说明": "独立AI语义复核维度；不将维度均值替代端到端标签"
+      },
+      "答复完整": {
+        "适用数": 29,
+        "不适用或未裁决": 1,
+        "完整": 8,
+        "部分": 5,
+        "失败": 16,
+        "说明": "独立AI语义复核维度；不将维度均值替代端到端标签"
+      },
+      "解释严谨": {
+        "适用数": 24,
+        "不适用或未裁决": 6,
+        "完整": 11,
+        "部分": 3,
+        "失败": 10,
+        "说明": "独立AI语义复核维度；不将维度均值替代端到端标签"
+      },
+      "安全": {
+        "适用数": 30,
+        "不适用或未裁决": 0,
+        "完整": 30,
+        "部分": 0,
+        "失败": 0,
+        "说明": "独立AI语义复核维度；不将维度均值替代端到端标签"
+      },
+      "最终处理": {
+        "适用数": 30,
+        "不适用或未裁决": 0,
+        "完整": 9,
+        "部分": 5,
+        "失败": 16,
+        "说明": "独立AI语义复核维度；不将维度均值替代端到端标签"
+      }
+    },
+    "deepseek": {
+      "意图": {
+        "适用数": 29,
+        "不适用或未裁决": 1,
+        "完整": 22,
+        "部分": 4,
+        "失败": 3,
+        "说明": "独立AI语义复核维度；不将维度均值替代端到端标签"
+      },
+      "方案方法": {
+        "适用数": 21,
+        "不适用或未裁决": 9,
+        "完整": 18,
+        "部分": 3,
+        "失败": 0,
+        "说明": "独立AI语义复核维度；不将维度均值替代端到端标签"
+      },
+      "关键条件": {
+        "适用数": 29,
+        "不适用或未裁决": 1,
+        "完整": 14,
+        "部分": 10,
+        "失败": 5,
+        "说明": "独立AI语义复核维度；不将维度均值替代端到端标签"
+      },
+      "指标语义": {
+        "适用数": 23,
+        "不适用或未裁决": 7,
+        "完整": 16,
+        "部分": 7,
+        "失败": 0,
+        "说明": "独立AI语义复核维度；不将维度均值替代端到端标签"
+      },
+      "答复完整": {
+        "适用数": 29,
+        "不适用或未裁决": 1,
+        "完整": 14,
+        "部分": 10,
+        "失败": 5,
+        "说明": "独立AI语义复核维度；不将维度均值替代端到端标签"
+      },
+      "解释严谨": {
+        "适用数": 28,
+        "不适用或未裁决": 2,
+        "完整": 16,
+        "部分": 7,
+        "失败": 5,
+        "说明": "独立AI语义复核维度；不将维度均值替代端到端标签"
+      },
+      "安全": {
+        "适用数": 30,
+        "不适用或未裁决": 0,
+        "完整": 30,
+        "部分": 0,
+        "失败": 0,
+        "说明": "独立AI语义复核维度；不将维度均值替代端到端标签"
+      },
+      "最终处理": {
+        "适用数": 30,
+        "不适用或未裁决": 0,
+        "完整": 15,
+        "部分": 10,
+        "失败": 5,
+        "说明": "独立AI语义复核维度；不将维度均值替代端到端标签"
+      }
+    }
+  },
+  "checks": {
+    "local": {
+      "attempt_finished": {
+        "true": 30,
+        "false": 0,
+        "na": 0
+      },
+      "cancel_applied": {
+        "true": 1,
+        "false": 0,
+        "na": 29
+      },
+      "compute_completed": {
+        "true": 1,
+        "false": 0,
+        "na": 29
+      },
+      "execution_authorized": {
+        "true": 30,
+        "false": 0,
+        "na": 0
+      },
+      "no_unrequested_execution": {
+        "true": 30,
+        "false": 0,
+        "na": 0
+      },
+      "number_and_unit_present": {
+        "true": 4,
+        "false": 0,
+        "na": 26
+      },
+      "old_plan_unchanged": {
+        "true": 11,
+        "false": 0,
+        "na": 19
+      },
+      "oracle_in_actual_run": {
+        "true": 4,
+        "false": 0,
+        "na": 26
+      },
+      "oracle_run_cited": {
+        "true": 4,
+        "false": 0,
+        "na": 26
+      },
+      "readonly_no_new_plan": {
+        "true": 24,
+        "false": 0,
+        "na": 6
+      },
+      "resume_same_flow_waits_review": {
+        "true": 1,
+        "false": 0,
+        "na": 29
+      },
+      "source_ids_known": {
+        "true": 30,
+        "false": 0,
+        "na": 0
+      },
+      "stale_approval_rejected": {
+        "true": 1,
+        "false": 0,
+        "na": 29
+      },
+      "target_present": {
+        "true": 30,
+        "false": 0,
+        "na": 0
+      }
+    },
+    "deepseek": {
+      "attempt_finished": {
+        "true": 30,
+        "false": 0,
+        "na": 0
+      },
+      "cancel_applied": {
+        "true": 1,
+        "false": 0,
+        "na": 29
+      },
+      "compute_completed": {
+        "true": 1,
+        "false": 0,
+        "na": 29
+      },
+      "execution_authorized": {
+        "true": 30,
+        "false": 0,
+        "na": 0
+      },
+      "no_unrequested_execution": {
+        "true": 30,
+        "false": 0,
+        "na": 0
+      },
+      "number_and_unit_present": {
+        "true": 4,
+        "false": 0,
+        "na": 26
+      },
+      "old_plan_unchanged": {
+        "true": 11,
+        "false": 0,
+        "na": 19
+      },
+      "oracle_in_actual_run": {
+        "true": 4,
+        "false": 0,
+        "na": 26
+      },
+      "oracle_run_cited": {
+        "true": 4,
+        "false": 0,
+        "na": 26
+      },
+      "readonly_no_new_plan": {
+        "true": 24,
+        "false": 0,
+        "na": 6
+      },
+      "resume_same_flow_waits_review": {
+        "true": 1,
+        "false": 0,
+        "na": 29
+      },
+      "source_ids_known": {
+        "true": 30,
+        "false": 0,
+        "na": 0
+      },
+      "stale_approval_rejected": {
+        "true": 1,
+        "false": 0,
+        "na": 29
+      },
+      "target_present": {
+        "true": 29,
+        "false": 1,
+        "na": 0
+      }
+    }
+  },
+  "telemetry": {
+    "logical_calls": 56,
+    "physical_calls": 57,
+    "http_200": 56,
+    "transport_retry_calls": 1,
+    "structured_valid": 53,
+    "schemas": {
+      "Advice": {
+        "requests": 30,
+        "valid": 28
+      },
+      "Plan": {
+        "requests": 3,
+        "valid": 3
+      },
+      "GroundedReply": {
+        "requests": 5,
+        "valid": 5
+      },
+      "MethodExplanation": {
+        "requests": 10,
+        "valid": 9
+      },
+      "RouteDecision": {
+        "requests": 7,
+        "valid": 7
+      },
+      "Suggestions": {
+        "requests": 1,
+        "valid": 1
+      }
+    },
+    "tokens": {
+      "input_tokens": 109812,
+      "output_tokens": 20203,
+      "cache_hit": 69629
+    },
+    "call_seconds_sum": 336.39105169975664,
+    "estimated_cny": 0.24477516000000002,
+    "cost_basis": {
+      "source": "https://api-docs.deepseek.com/zh-cn/quick_start/pricing/",
+      "checked": "2026-11-05",
+      "currency": "CNY",
+      "invoice_verified": false,
+      "excludes": "独立Codex复核与计算机成本"
+    }
+  },
+  "independent_advice": {
+    "labels": {
+      "失败": 5,
+      "部分": 12,
+      "完整": 13
+    },
+    "not_fed_to_workflow": true
+  },
+  "comparison": [
+    {
+      "id": "A01",
+      "mode": "local",
+      "before": "部分",
+      "after": "部分"
+    },
+    {
+      "id": "A02",
+      "mode": "local",
+      "before": "完整",
+      "after": "完整"
+    },
+    {
+      "id": "A03",
+      "mode": "local",
+      "before": "失败",
+      "after": "失败"
+    },
+    {
+      "id": "A04",
+      "mode": "local",
+      "before": "失败",
+      "after": "失败"
+    },
+    {
+      "id": "A05",
+      "mode": "local",
+      "before": "失败",
+      "after": "失败"
+    },
+    {
+      "id": "A06",
+      "mode": "local",
+      "before": "部分",
+      "after": "部分"
+    },
+    {
+      "id": "B01",
+      "mode": "local",
+      "before": "失败",
+      "after": "失败"
+    },
+    {
+      "id": "B02",
+      "mode": "local",
+      "before": "完整",
+      "after": "完整"
+    },
+    {
+      "id": "B03",
+      "mode": "local",
+      "before": "失败",
+      "after": "失败"
+    },
+    {
+      "id": "B04",
+      "mode": "local",
+      "before": "失败",
+      "after": "完整"
+    },
+    {
+      "id": "B05",
+      "mode": "local",
+      "before": "失败",
+      "after": "失败"
+    },
+    {
+      "id": "B06",
+      "mode": "local",
+      "before": "失败",
+      "after": "失败"
+    },
+    {
+      "id": "C01",
+      "mode": "local",
+      "before": "失败",
+      "after": "失败"
+    },
+    {
+      "id": "C02",
+      "mode": "local",
+      "before": "失败",
+      "after": "完整"
+    },
+    {
+      "id": "C03",
+      "mode": "local",
+      "before": "失败",
+      "after": "失败"
+    },
+    {
+      "id": "C04",
+      "mode": "local",
+      "before": "失败",
+      "after": "失败"
+    },
+    {
+      "id": "C05",
+      "mode": "local",
+      "before": "失败",
+      "after": "失败"
+    },
+    {
+      "id": "C06",
+      "mode": "local",
+      "before": "失败",
+      "after": "失败"
+    },
+    {
+      "id": "D01",
+      "mode": "local",
+      "before": "失败",
+      "after": "失败"
+    },
+    {
+      "id": "D02",
+      "mode": "local",
+      "before": "失败",
+      "after": "失败"
+    },
+    {
+      "id": "D03",
+      "mode": "local",
+      "before": "部分",
+      "after": "部分"
+    },
+    {
+      "id": "D04",
+      "mode": "local",
+      "before": "完整",
+      "after": "完整"
+    },
+    {
+      "id": "D05",
+      "mode": "local",
+      "before": "部分",
+      "after": "部分"
+    },
+    {
+      "id": "D06",
+      "mode": "local",
+      "before": "失败",
+      "after": "失败"
+    },
+    {
+      "id": "E01",
+      "mode": "local",
+      "before": "完整",
+      "after": "完整"
+    },
+    {
+      "id": "E02",
+      "mode": "local",
+      "before": "完整",
+      "after": "完整"
+    },
+    {
+      "id": "E03",
+      "mode": "local",
+      "before": "完整",
+      "after": "完整"
+    },
+    {
+      "id": "E04",
+      "mode": "local",
+      "before": "失败",
+      "after": "失败"
+    },
+    {
+      "id": "E05",
+      "mode": "local",
+      "before": "部分",
+      "after": "完整"
+    },
+    {
+      "id": "E06",
+      "mode": "local",
+      "before": "部分",
+      "after": "部分"
+    },
+    {
+      "id": "A01",
+      "mode": "deepseek",
+      "before": "部分",
+      "after": "部分"
+    },
+    {
+      "id": "A02",
+      "mode": "deepseek",
+      "before": "完整",
+      "after": "完整"
+    },
+    {
+      "id": "A03",
+      "mode": "deepseek",
+      "before": "失败",
+      "after": "部分"
+    },
+    {
+      "id": "A04",
+      "mode": "deepseek",
+      "before": "失败",
+      "after": "部分"
+    },
+    {
+      "id": "A05",
+      "mode": "deepseek",
+      "before": "失败",
+      "after": "部分"
+    },
+    {
+      "id": "A06",
+      "mode": "deepseek",
+      "before": "完整",
+      "after": "部分"
+    },
+    {
+      "id": "B01",
+      "mode": "deepseek",
+      "before": "部分",
+      "after": "部分"
+    },
+    {
+      "id": "B02",
+      "mode": "deepseek",
+      "before": "完整",
+      "after": "完整"
+    },
+    {
+      "id": "B03",
+      "mode": "deepseek",
+      "before": "完整",
+      "after": "完整"
+    },
+    {
+      "id": "B04",
+      "mode": "deepseek",
+      "before": "部分",
+      "after": "完整"
+    },
+    {
+      "id": "B05",
+      "mode": "deepseek",
+      "before": "失败",
+      "after": "失败"
+    },
+    {
+      "id": "B06",
+      "mode": "deepseek",
+      "before": "完整",
+      "after": "完整"
+    },
+    {
+      "id": "C01",
+      "mode": "deepseek",
+      "before": "失败",
+      "after": "失败"
+    },
+    {
+      "id": "C02",
+      "mode": "deepseek",
+      "before": "部分",
+      "after": "完整"
+    },
+    {
+      "id": "C03",
+      "mode": "deepseek",
+      "before": "部分",
+      "after": "完整"
+    },
+    {
+      "id": "C04",
+      "mode": "deepseek",
+      "before": "部分",
+      "after": "部分"
+    },
+    {
+      "id": "C05",
+      "mode": "deepseek",
+      "before": "部分",
+      "after": "完整"
+    },
+    {
+      "id": "C06",
+      "mode": "deepseek",
+      "before": "正确阻断",
+      "after": "失败"
+    },
+    {
+      "id": "D01",
+      "mode": "deepseek",
+      "before": "失败",
+      "after": "失败"
+    },
+    {
+      "id": "D02",
+      "mode": "deepseek",
+      "before": "部分",
+      "after": "失败"
+    },
+    {
+      "id": "D03",
+      "mode": "deepseek",
+      "before": "完整",
+      "after": "部分"
+    },
+    {
+      "id": "D04",
+      "mode": "deepseek",
+      "before": "完整",
+      "after": "完整"
+    },
+    {
+      "id": "D05",
+      "mode": "deepseek",
+      "before": "部分",
+      "after": "部分"
+    },
+    {
+      "id": "D06",
+      "mode": "deepseek",
+      "before": "部分",
+      "after": "正确阻断"
+    },
+    {
+      "id": "E01",
+      "mode": "deepseek",
+      "before": "完整",
+      "after": "完整"
+    },
+    {
+      "id": "E02",
+      "mode": "deepseek",
+      "before": "完整",
+      "after": "完整"
+    },
+    {
+      "id": "E03",
+      "mode": "deepseek",
+      "before": "完整",
+      "after": "完整"
+    },
+    {
+      "id": "E04",
+      "mode": "deepseek",
+      "before": "正确阻断",
+      "after": "部分"
+    },
+    {
+      "id": "E05",
+      "mode": "deepseek",
+      "before": "部分",
+      "after": "完整"
+    },
+    {
+      "id": "E06",
+      "mode": "deepseek",
+      "before": "部分",
+      "after": "完整"
+    }
+  ],
+  "product": "b8f5758b702f45b8280cb59b8513d4bff9cdfe95",
+  "engineering": {
+    "passed": 872,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 362.587
+  }
+}

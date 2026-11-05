@@ -27,6 +27,9 @@ def render():
     from causalops.assistant.service import AssistantWorkspace
 
     st.title('营销邮件实验', anchor=False)
+    if st.button('进入五步自动化研究'):
+        st.query_params['route']='automation'
+        st.rerun()
     left, right = st.columns([1.15, 1])
     with right:
         preview()

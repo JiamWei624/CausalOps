@@ -53,7 +53,9 @@ def render_graph_workspace(a,sid,frame,model):
         discussion=st.container()
         design=st.container()
     if not audit_view:approval=design
-    from causalops.ui.onboarding import render_start_actions
+    from causalops.ui.onboarding import render_start_actions,render_metric_change
+    from causalops.ui.report_target import report_target
+    target=report_target(service,sid,overview_flow)
     with design:
         if overview_flow:
             plan=a.get_plan(overview_flow['plan_id']) if overview_flow.get('plan_id') else None
@@ -65,9 +67,10 @@ def render_graph_workspace(a,sid,frame,model):
                 from html import escape
                 records=[('研究问题',plan['plan']['objective']),('分析方法','、'.join(a.tools.method(step['tool'],step['config']['method']).label for step in design_steps)),('分析单位',contract.get('analysis_unit')),('目标指标',contract.get('metric_label') or contract.get('outcome')),('观察窗口',contract.get('metric_window')),('方案版本','V'+str(plan['version']))]
                 st.html('<dl class="co-kv">'+''.join('<div><dt>'+name+'</dt><dd>'+escape(str(value or '尚未登记'))+'</dd></div>' for name,value in records)+'</dl>')
-            with st.expander('新分析与口径设置'):render_start_actions(service,jobs,sid,frame)
+            render_metric_change(service,jobs,sid,frame,target)
+            with st.expander('新分析与口径设置'):render_start_actions(service,jobs,sid,frame,target)
         else:
-            render_start_actions(service,jobs,sid,frame)
+            render_start_actions(service,jobs,sid,frame,target)
         with st.expander('高级设置：完整数据字典与研究事实',expanded=bool(st.session_state.get('_open_contract_'+sid))):
             render_contract(service,sid,frame,expanded=bool(st.session_state.get('_open_contract_'+sid)))
     with discussion:
@@ -273,6 +276,19 @@ def render_graph_workspace(a,sid,frame,model):
                 from causalops.application.task_readiness import plan_readiness
                 readiness=plan_readiness(service,f,v)
                 stale=f['request'].get('contract_ref')!=service.contracts.ref(sid) if 'contract_ref' in f['request'] else False
+                st.markdown('**研究方案审核 · V'+str(p['version'])+'**')
+                prior=previous_plan(service,f['request'])
+                contract=service.contracts.bound(f)
+                current_metric=(contract or {}).get('body',{}).get('outcome') or '未单独登记'
+                if prior:
+                    parent=service.flow(f['request']['conversation_ref']['parent_flow_id'])
+                    if parent['plan_id']:
+                        parent_contract=service.contracts.bound(parent)
+                        old_metric=(parent_contract or {}).get('body',{}).get('outcome') or '未单独登记'
+                        st.text('前序方案指标：'+old_metric)
+                    elif scope and scope.get('base_outcome'):
+                        st.text('原登记指标：'+scope['base_outcome'])
+                st.text('本次计划指标：'+current_metric)
                 st.markdown('**程序核对**')
                 st.write('配置可执行，且口径版本一致。' if readiness['configuration_ready'] and not stale else '当前配置或口径版本仍需处理。')
                 st.markdown('**研究声明与识别限制**')
@@ -290,7 +306,7 @@ def render_graph_workspace(a,sid,frame,model):
                         except (ValueError,RuntimeError) as exc:st.error(str(exc))
                 st.write('如变量或方法不合适，请放弃本候选，再提出新的计划；不会自动改变人工事实。')
                 facts={}
-                bound=service.contracts.bound(f)
+                bound=contract
                 for i,step in enumerate(v['steps']):
                     if bound:facts[str(i)]=render_fact_fields(step['config']['method'],bound['body']['method_facts'].get(step['config']['method'],{}),'review_'+p['id']+'_'+str(i))
                     else:facts[str(i)]=confirmations(step,i,p['id'],frame)
@@ -298,6 +314,14 @@ def render_graph_workspace(a,sid,frame,model):
                 review_box=st.form('preview_confirmation_'+current) if owner else st.container()
                 with review_box:
                     checked=st.checkbox('我已核对上述计划和本步骤必要事实，同意按当前数据与计划版本进行本地计算。',key='graph_review_'+current)
+                    if stale:
+                        st.caption('暂不能批准：数据口径已更新，请按最新口径重新制定计划。')
+                    elif not readiness['configuration_ready']:
+                        st.caption('暂不能批准：请先处理上方列出的配置问题。')
+                    elif not owner and not checked:
+                        st.caption('暂不能批准：请核对本版本字段和研究声明，再勾选上方确认项。')
+                    else:
+                        st.caption('核对并勾选后，点击下方批准按钮。系统复核本版本后执行，完成后可打开新报告。')
                     yes,no=st.columns(2)
                     if owner:
                         approve=yes.form_submit_button('接受计划并批准本次执行',type='primary',disabled=not readiness['configuration_ready'] or stale)

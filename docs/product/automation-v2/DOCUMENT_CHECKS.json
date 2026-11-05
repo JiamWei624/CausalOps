@@ -1,0 +1,105 @@
+{
+  "scope": "documentation_only_not_product_acceptance",
+  "date": "2026-11-05",
+  "baseline": "5ac788f",
+  "errors": [],
+  "views": [
+    {
+      "page": "prototype",
+      "state": "goal",
+      "width": 1440,
+      "visible": true,
+      "overflow": false
+    },
+    {
+      "page": "prototype",
+      "state": "review",
+      "width": 1440,
+      "visible": true,
+      "overflow": false
+    },
+    {
+      "page": "prototype",
+      "state": "running",
+      "width": 1440,
+      "visible": true,
+      "overflow": false
+    },
+    {
+      "page": "prototype",
+      "state": "paused",
+      "width": 1440,
+      "visible": true,
+      "overflow": false
+    },
+    {
+      "page": "prototype",
+      "state": "report",
+      "width": 1440,
+      "visible": true,
+      "overflow": false
+    },
+    {
+      "page": "prototype",
+      "state": "review",
+      "width": 800,
+      "overflow": false
+    },
+    {
+      "page": "index",
+      "width": 1440,
+      "overflow": false,
+      "articles": 3,
+      "images": [
+        {
+          "src": "diagrams/user-flow.svg",
+          "ok": true
+        },
+        {
+          "src": "diagrams/state.svg",
+          "ok": true
+        },
+        {
+          "src": "diagrams/architecture.svg",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "page": "index",
+      "width": 800,
+      "overflow": false,
+      "articles": 3,
+      "images": [
+        {
+          "src": "diagrams/user-flow.svg",
+          "ok": true
+        },
+        {
+          "src": "diagrams/state.svg",
+          "ok": true
+        },
+        {
+          "src": "diagrams/architecture.svg",
+          "ok": true
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    "previews/goal.png",
+    "previews/review.png",
+    "previews/running.png",
+    "previews/paused.png",
+    "previews/report.png"
+  ],
+  "plan": {
+    "steps": 5,
+    "statistical_steps": 2,
+    "within_limit": true
+  },
+  "local_links_checked": 54,
+  "product_tests_run": false,
+  "model_calls": 0,
+  "passed": true
+}

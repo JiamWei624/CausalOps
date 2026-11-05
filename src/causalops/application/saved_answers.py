@@ -80,8 +80,16 @@ def saved_answer(facts, run, dictionary, question, *, bundle=None):
             bounds.append((f"{title} {items[0][1]['value']:.6g}{actual_unit}",items[0]))
     if bounds and re.search('不确定|总体均值|总体平均|抽样误差',question):
         return response('样本实际观测范围：'+'，'.join(t for t,_ in bounds)+'。端点描述本批样本的跨度；总体均值的不确定性需用均值的标准误和相应置信区间表示，不能取这两个端点。',[v for _,v in bounds])
-    if bounds:return response('所选报告的样本范围：'+'，'.join(t for t,_ in bounds)+'。',[v for _,v in bounds])
-    if asks_stat and run.get('method')=='descriptive' and (len(mentioned)==1 and field!=outcome or '中位' in question or 'median' in lower):
+    if bounds:
+        explanation=''
+        limit=re.search('检测限|检出限|定量限',question)
+        if limit:
+            explanation=('样本极值是本批已观测记录的端点，不能直接当作仪器'+limit[0]+
+                         '。需要相应检测方法的空白、低浓度验证、校准及检出概率或精密度要求等证据；现有样本极值不能替代仪器或方法验证。')
+        elif re.search('未来|以后|保证|上限|下限',question):
+            explanation='样本极值只限定当前已观测样本，不能保证未来观测不超过该范围，也不是理论或业务上限。'
+        return response('所选报告的样本范围：'+'，'.join(t for t,_ in bounds)+'。'+explanation,[v for _,v in bounds])
+    if asks_stat and run.get('method')=='descriptive' and (mentioned or outcome or re.search('中位|median',question,re.I)):
         field=next(iter(mentioned),outcome)
         if not field:return response('请指定要读取中位数或均值的字段。',[])
         stat='median' if re.search('中位|median',question,re.I) else 'mean'
@@ -89,7 +97,10 @@ def saved_answer(facts, run, dictionary, question, *, bundle=None):
         if len(values)!=1 or values[0][1]['value'] is None:
             return response('所选报告未保存 '+field+' 的目标统计量，不能用其他指标的数值替代。',[])
         kind='中位数' if stat=='median' else '均值'
-        return response(f"{meta.get(field,{}).get('meaning') or field}（{field}）的{kind}为 {values[0][1]['value']:.6g}{unit}。观察期：{window or '未登记'}。",values)
+        from causalops.application.answer_checks import mean_explanation, converted_value
+        explanation=mean_explanation(question,dictionary) if stat=='mean' else ''
+        conversion=converted_value(values[0][1]['value'],unit,question)
+        return response(f"{meta.get(field,{}).get('meaning') or field}（{field}）的{kind}为 {values[0][1]['value']:.6g}{unit}。观察期：{window or '未登记'}。"+conversion+explanation,values)
     if re.search(r'访问率|超标|两组.*比例|转化率|购买率|百分点|相对(?:变化|增长)|概率差|两组.*率|幅度|实际含义|区间|百分|[%％]',question):
         result = unit_answer(scoped,run,label,window,
                              control=dictionary.get('control_label') or dictionary.get('control_value'),

@@ -40,7 +40,7 @@ ISO_DATE = re.compile(r'(?<!\d)\d{4}-\d{2}-\d{2}(?!\d)')
 def requested_scope(q, body, frame):
     """Only infer a candidate for an explicit change. Every such candidate requires review."""
     if not body:return None
-    changed=re.search(r'(?:改看|改成|改用|改为|换成|切换(?:至|到)|更换为)\s*([^。；;！？?，,]{1,130})',q)
+    changed=re.search(r'(?:改看|改成|改用|改为|改按|换成|切换(?:至|到)|更换为)\s*([^。；;！？?，,]{1,130})',q)
     span=DAY_SPAN.search(q)
     explicit=list(dict.fromkeys(ISO_DATE.findall(q)))
     if not changed and not span and len(explicit)!=2:return None
@@ -53,9 +53,9 @@ def requested_scope(q, body, frame):
                 text=re.sub('^(?:当日|每日|每天|日均)','',text.strip())
                 return text.replace('访问人数','访客人数')
             requested=subject(changed[1])
-            names=[v['field'] for v in body.get('fields',[]) if v['field'] in frame
-                   and any(len(term)>=2 and term in requested for term in
-                           (subject(t) for t in re.split('[，,。；;（(]',v.get('meaning','')) if t))]
+            from causalops.application.research_semantics import field_aliases
+            aliases=field_aliases({**body,'fields':body.get('fields') or [{'field':str(k)} for k in frame.columns]})
+            names=[key for key,terms in aliases.items() if key in frame and any(len(subject(t))>=2 and subject(t) in requested for t in terms if t)]
         if len(names)==1 and names[0]!=body.get('outcome'):
             field=names[0]
             if not pd.api.types.is_numeric_dtype(frame[field]):
@@ -111,5 +111,7 @@ def check_steps(scope, steps):
         c=step['config']
         if c['method']!='descriptive' or c.get('numeric')!=[scope['outcome']]:
             raise DesignError('候选方案与当前研究指标不一致。')
+        if not scope.get('start') and (c.get('window_start') or c.get('window_end')):
+            raise DesignError('仅修改指标时不能额外改变观察窗口。')
         if scope.get('start') and (c.get('date'),c.get('window_start'),c.get('window_end'))!=(scope['date'],scope['start'],scope['end']):
             raise DesignError('候选方案没有采用已核对的观察窗口。')

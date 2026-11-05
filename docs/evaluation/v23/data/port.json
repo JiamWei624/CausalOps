@@ -1,0 +1,13 @@
+{
+  "analysis_unit": "泊位日",
+  "outcome": "kwh",
+  "metric_label": "kwh",
+  "metric_unit": "千瓦时",
+  "metric_kind": "unknown",
+  "metric_window": "当前表全期",
+  "time": "day",
+  "research": {
+    "provenance": "Eval V2.3 可复现合成数据",
+    "population": "港口岸电的泊位日记录；零耗电日保留；没有天气、排放系数或船只级轨迹。"
+  }
+}

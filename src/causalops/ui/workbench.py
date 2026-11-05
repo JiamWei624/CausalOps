@@ -74,16 +74,35 @@ def _professional(mode):
 def render_history():
     from causalops.assistant.service import AssistantWorkspace
     st.title('研究记录', anchor=False)
+    st.button('查看自动化研究记录',on_click=navigate,args=('automation',))
     a=AssistantWorkspace()
-    records={item['id']:item for item in a.sessions()}
+    with a.ws.connection() as c:
+        has_auto=c.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='automation_v2_tasks'").fetchone()
+        automated={r[0] for r in c.execute("SELECT session_id FROM automation_v2_tasks")} if has_auto else set()
+    records={item['id']:item for item in a.sessions() if item['id'] not in automated}
     if not records:
         st.info('当前工作区尚无研究任务。')
         st.button('创建研究任务',on_click=new_import)
         return
+    from causalops.application.task_conclusions import source_dictionary
+    from causalops.ui.history_report import report_label
+    # Build selector text from each saved run's bound contract, never the active task dictionary.
+    saved = {key: a.completed_runs(key) for key in records}
+    descriptors = {}
+    def label(key, run):
+        rid = run['run_id']
+        if (key, rid) not in descriptors:
+            dictionary, _ = source_dictionary(a, key, rid)
+            descriptors[key, rid] = report_label(dictionary)
+        return descriptors[key, rid]
+    def task_label(key):
+        title = records[key]['title']
+        summary = ('最近报告：' + label(key, saved[key][0])) if saved[key] else '暂无已完成报告'
+        return f'{title} · {summary} · {key[:6]}'
     left,right=st.columns([.88,1.12],gap='medium')
     with left.container(key='panel_history'):
         st.subheader('研究记录')
-        sid=st.selectbox('选择任务',list(records),format_func=lambda x:records[x]['title']+' · '+x[:6])
+        sid=st.selectbox('选择任务',list(records),format_func=task_label)
         plans=a.plans(sid)
         for plan in plans:
             st.text('V'+str(plan['version'])+'　'+plan['plan']['objective'])
@@ -96,24 +115,17 @@ def render_history():
         st.button('继续研究',on_click=resume)
     with right.container(key='panel_trace'):
         st.subheader('运行证据与报告')
-        runs={r['run_id']:r for r in a.completed_runs(sid)}
+        runs={r['run_id']:r for r in saved[sid]}
         if runs:
-            rid=st.selectbox('选择已保存的运行',list(runs),format_func=lambda r:'计划 V'+str(runs[r]['plan_version'])+' · '+r[:8],key='history_run_'+sid)
+            rid=st.selectbox('选择已保存的运行',list(runs),format_func=lambda r:'计划 V'+str(runs[r]['plan_version'])+' · '+r[:8]+' · '+label(sid,runs[r]),key='history_run_'+sid)
             run=runs[rid]
-            st.text('运行编号：'+rid)
-            st.text('批准的计划指纹：'+run['plan_sha'])
-            from causalops.application.task_conclusions import build_task_conclusion
+            from causalops.application.task_conclusions import build_task_conclusion, source_dictionary
+            from causalops.application.research_report import run_quality
+            from causalops.ui.history_report import history_html
             conclusion=build_task_conclusion(a,sid,rid)
-            st.write(conclusion['sections']['magnitude'])
-            with st.expander('方法来源与运行证据'):
-                methods,evidence=st.columns(2)
-                from causalops.application.research_report import run_quality
-                quality=run_quality(a,sid,rid)
-                methods.markdown('**方法依据**')
-                for source in quality['method']['sources']:
-                    methods.link_button(source['title'],source['url'])
-                evidence.markdown('**本次运行引用**')
-                evidence.json(conclusion['evidence'])
+            dictionary,_=source_dictionary(a,sid,rid)
+            quality=run_quality(a,sid,rid)
+            st.html(history_html(records[sid]['title'],run,dictionary,conclusion,quality['method']['sources']))
         else:st.info('尚无已完成的统计运行。完成审核与执行后可在此核对证据。')
 
 
@@ -134,6 +146,11 @@ def home():
             st.caption('本地分析无需模型密钥。统计执行前需审核研究方案。')
         with preview:
             marketing_preview()
+    with st.container(border=True):
+        st.subheader("受限自动化研究")
+        st.write("公开 Hillstrom 营销实验：核对固定五步计划，整体审核一次，自动执行两次统计并整合证据报告。支持暂停、核查恢复和取消。")
+        st.caption("仅支持已核验案例，模型自主规划关闭。")
+        st.button("启动自动化研究",on_click=navigate,args=('automation',),type='primary')
     render_examples()
     from causalops.ui.model_setup import render_model_setup
     with st.expander('模型连接与隐私设置'):
@@ -231,7 +248,7 @@ def main():
     initial=requested_route if requested_route in allowed_routes else 'home'
     if requested_route not in allowed_routes:st.info('此历史入口不属于默认发行版，已返回首页。可载入公共示例或导入自己的数据。')
     route = initial
-    navigation=[('home','首页','home'), ('assistant','我的研究','assignment'), ('examples','分析示例','view_column'), ('analysis','专业分析','functions'), ('history','研究记录','list'), ('settings','模型与隐私','settings'), ('guide','使用说明','help'), ('status','系统状态','monitor_heart')]
+    navigation=[('home','首页','home'), ('assistant','我的研究','assignment'), ('automation','自动化研究','account_tree'), ('examples','分析示例','view_column'), ('analysis','专业分析','functions'), ('history','研究记录','list'), ('settings','模型与隐私','settings'), ('guide','使用说明','help'), ('status','系统状态','monitor_heart')]
     with st.sidebar:
         st.html('<div class="co-brand"><span class="co-logo">◇</span>CausalOps</div><div class="co-navcap">研究空间</div>')
         for dest,label,icon in navigation:
@@ -255,6 +272,9 @@ def main():
             from causalops.ui.assistant_app import render_assistant
             render_assistant()
         elif route=='home':home()
+        elif route=='automation':
+            from causalops.ui.automation_app import render
+            render()
         elif route=='settings':
             from causalops.ui.model_setup import render_model_setup
             st.title('模型连接与数据权限',anchor=False)

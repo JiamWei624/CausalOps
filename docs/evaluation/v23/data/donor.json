@@ -1,0 +1,12 @@
+{
+  "analysis_unit": "活动周",
+  "outcome": "paid",
+  "metric_label": "paid",
+  "metric_unit": "元",
+  "metric_kind": "unknown",
+  "metric_window": "当前表全期",
+  "research": {
+    "provenance": "Eval V2.3 可复现合成数据",
+    "population": "募捐项目每周汇总；pledged 为认捐额，paid 为到账额，donations 为笔数，没有唯一捐赠人数。"
+  }
+}
