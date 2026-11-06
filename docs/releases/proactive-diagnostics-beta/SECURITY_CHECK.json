@@ -42,11 +42,11 @@
     ]
   },
   "reachable_history": {
-    "checked_commit": "f0a543961bb786777f6afcc6779ff0cd5c878e04",
+    "checked_commit": "b8b5153b1b49b3e9d2869094e0618be26beb0e59",
     "object_counts": {
-      "commit": 43,
-      "tree": 411,
-      "blob": 1334
+      "commit": 44,
+      "tree": 418,
+      "blob": 1358
     },
     "new_findings": [],
     "inherited": [
@@ -76,6 +76,8 @@
   },
   "wheel": {
     "scanned": true,
+    "filename": "causalops_agent-0.18.0b1-py3-none-any.whl",
+    "sha256": "672733a1fa596d4f37656710d4399477329eafa25f6f37c898dbf66fedd88e7e",
     "findings": []
   },
   "screenshot_review": {

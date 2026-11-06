@@ -1269,5 +1269,33 @@
     "pytest_pythonpath_override": "empty",
     "xml_sha256": "974cd1230a6ac9fa82186e9fdd3b2eca1c666af3bb31e4d116ed702448d6cada",
     "log_sha256": "dc8e65d19680ae8ea50c366872bf2a34f4079762f830bf3749980bc32411f480"
-  }
+  },
+  "final_installed_launcher_smoke": {
+    "status": "passed",
+    "health_status": 200,
+    "version": "0.18.0b1",
+    "browser": {
+      "browser": "156.0.4314.58",
+      "page_version": "0.18.0b1",
+      "diagnostics_entry": true,
+      "model_calls": 0
+    },
+    "source_fingerprint": "8eb422c5dec5b0ad6f6872c07402c117e430cee4f89f391fd4d85a857420416e",
+    "installed_package": true,
+    "actual_launcher": "python -m causalops.launch --no-browser"
+  },
+  "release_specific_tests": {
+    "tests": "11",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "time": "3.549"
+  },
+  "final_wheel": {
+    "filename": "causalops_agent-0.18.0b1-py3-none-any.whl",
+    "bytes": 1789526,
+    "sha256": "672733a1fa596d4f37656710d4399477329eafa25f6f37c898dbf66fedd88e7e",
+    "built_from_clean_commit": "b8b5153b1b49b3e9d2869094e0618be26beb0e59"
+  },
+  "application_resources_verified": 190
 }
