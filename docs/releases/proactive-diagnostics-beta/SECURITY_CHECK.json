@@ -1,0 +1,101 @@
+{
+  "scope": "公开候选树、继承历史与应用wheel；最终精确HEAD及源码压缩包另在本地最终报告复验，不把本收据写入循环的自身SHA。",
+  "tree": {
+    "automatic_status": "review",
+    "blockers": 0,
+    "manual_reviews": [
+      {
+        "code": "email_address",
+        "file": "docs/product/proactive-diagnostics/stage1-evidence/test-cases.json",
+        "line": 4300,
+        "line_sha256": "d82d3271ea9edd603c0c5456e5912a1a4145804c7bafab1613c70457abee6c7e",
+        "review": "测试邮箱或测试用例参数，非真实账户"
+      },
+      {
+        "code": "email_address",
+        "file": "docs/product/proactive-diagnostics/stage2-evidence/test-cases.json",
+        "line": 3688,
+        "line_sha256": "9e28bbb2875b2cf69f6f9aaecc516237fb193785a920e2eb6b7956c74318a2f5",
+        "review": "测试邮箱或测试用例参数，非真实账户"
+      },
+      {
+        "code": "cn_mobile",
+        "file": "docs/product/proactive-diagnostics/stage3-evidence/engineering-results.json",
+        "line": 5605,
+        "line_sha256": "b27c84f75ff6ab6cc101fa8978fb274c21b7ed6cdfd0d7420fae254e8fead9d7",
+        "review": "结构化数值或SHA256的数字形态，非联系电话"
+      },
+      {
+        "code": "cn_mobile",
+        "file": "docs/product/proactive-diagnostics/stage3-evidence/reports.json",
+        "line": 1886,
+        "line_sha256": "6e0aa6277e2fadbc321d87d2ac7d6926218c5f8acd9b86360cea8d3e321d82f8",
+        "review": "结构化数值或SHA256的数字形态，非联系电话"
+      },
+      {
+        "code": "email_address",
+        "file": "tests/test_providers_v070.py",
+        "line": 48,
+        "line_sha256": "17dd043d0ae30044c607e1b11eb92656d0c7c9c6c61d0c2321e1687ee0547c06",
+        "review": "测试邮箱或测试用例参数，非真实账户"
+      }
+    ]
+  },
+  "reachable_history": {
+    "checked_commit": "f0a543961bb786777f6afcc6779ff0cd5c878e04",
+    "object_counts": {
+      "commit": 43,
+      "tree": 411,
+      "blob": 1334
+    },
+    "new_findings": [],
+    "inherited": [
+      {
+        "object": "294fe15c96f766010e862865eb524fb5bd947381",
+        "file": "tests/test_prepublish_audit.py",
+        "codes": [
+          "assigned_credential"
+        ]
+      },
+      {
+        "object": "2d99f5e7837b039c9888029723b1b5cabbfa5ff4",
+        "file": "tests/test_v13_transport.py",
+        "codes": [
+          "assigned_credential"
+        ]
+      },
+      {
+        "object": "76e80b8c99d27f3bdd86d17ee5d563fad186a280",
+        "file": "src/causalops/real_data.py",
+        "codes": [
+          "private_directory"
+        ]
+      }
+    ],
+    "interpretation": "两个历史测试假值及一项旧目录名称来自既有公开父链；不复制原字面量，不声称撤回已有远程信息。"
+  },
+  "wheel": {
+    "scanned": true,
+    "findings": []
+  },
+  "screenshot_review": {
+    "new_images": 12,
+    "source": "公开Hillstrom及独立合成／受控冲突案例",
+    "personal_material_found": false
+  },
+  "redaction": {
+    "public_copy_only": "一处历史阶段报告开发工作区改为中性说明",
+    "local_original_preserved": true
+  },
+  "not_shipped": [
+    "私人数据库和工作区",
+    "论文、微博及非公开研究数据",
+    "隐藏题目及参考答案",
+    "原始私有模型会话与未经脱敏日志"
+  ],
+  "limitations": [
+    "模式扫描不是不存在所有秘密的证明。",
+    "原始日志与数据库本地保留；不改写Git历史。",
+    "阶段验收不代表生产级多用户验证。"
+  ]
+}

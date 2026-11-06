@@ -1,0 +1,1273 @@
+{
+  "version": "0.18.0b1",
+  "source_product_delivery": "bea02f8",
+  "tested_clean_snapshot": "f0a5439",
+  "runtime_source_sha": "8eb422c5dec5b0ad6f6872c07402c117e430cee4f89f391fd4d85a857420416e",
+  "independent_install": {
+    "version": "0.18.0b1",
+    "system_site_packages": false,
+    "compared_package_files": 190,
+    "missing": [],
+    "changed": [],
+    "installed_package_in_new_virtualenv": true
+  },
+  "dependency_source": "公开依赖离线缓存；新虚拟环境无system-site-packages；未声称另一机器或完整互联网下载复现。",
+  "diagnostics_browser": {
+    "mode": "fixed_browser_not_free_exploration_or_human_test",
+    "results": [
+      {
+        "case": "A-complete",
+        "mode": "fixed_real_streamlit_browser",
+        "status": "passed",
+        "browser": "156.0.4314.58",
+        "model_requests": 0,
+        "installed_package": true,
+        "report_id": "0ece93d851577b9b99e8a7b49e3c9a5da77338f215ad6dfa114fe0bcbf8367bc",
+        "checked": {
+          "actual_two_runs": true,
+          "three_layers": true,
+          "six_rules": true,
+          "eight_unimplemented": true,
+          "no_suggestions": true,
+          "same_report_after_refresh": true
+        },
+        "seconds": 17.853,
+        "effective_actions": 13,
+        "events": [
+          {
+            "seq": 1,
+            "actor": "browser",
+            "event": "open_home",
+            "at": "2026-11-06T18:15:19.888Z",
+            "milliseconds": 606
+          },
+          {
+            "seq": 2,
+            "actor": "browser",
+            "event": "open_existing_automation",
+            "at": "2026-11-06T18:15:24.910Z",
+            "milliseconds": 5018
+          },
+          {
+            "seq": 3,
+            "actor": "browser",
+            "event": "open_自动化任务与历史报告",
+            "at": "2026-11-06T18:15:25.181Z",
+            "milliseconds": 271
+          },
+          {
+            "seq": 4,
+            "actor": "browser",
+            "event": "select_自动化任务与历史报告",
+            "at": "2026-11-06T18:15:25.262Z",
+            "milliseconds": 81
+          },
+          {
+            "seq": 5,
+            "actor": "browser",
+            "event": "open_task_diagnostics",
+            "at": "2026-11-06T18:15:26.106Z",
+            "milliseconds": 844
+          },
+          {
+            "seq": 6,
+            "actor": "browser",
+            "event": "explicit_diagnostic_request",
+            "at": "2026-11-06T18:15:26.377Z",
+            "milliseconds": 271
+          },
+          {
+            "seq": 7,
+            "actor": "browser",
+            "event": "open_native_evidence",
+            "at": "2026-11-06T18:15:30.270Z",
+            "milliseconds": 27
+          },
+          {
+            "seq": 8,
+            "actor": "browser",
+            "event": "refresh_same_report",
+            "at": "2026-11-06T18:15:32.722Z",
+            "milliseconds": 46
+          },
+          {
+            "seq": 9,
+            "actor": "browser",
+            "event": "repeat_same_check",
+            "at": "2026-11-06T18:15:34.157Z",
+            "milliseconds": 33
+          },
+          {
+            "seq": 10,
+            "actor": "browser",
+            "event": "open_历史诊断报告",
+            "at": "2026-11-06T18:15:34.260Z",
+            "milliseconds": 82
+          },
+          {
+            "seq": 11,
+            "actor": "browser",
+            "event": "select_历史诊断报告",
+            "at": "2026-11-06T18:15:34.309Z",
+            "milliseconds": 49
+          },
+          {
+            "seq": 12,
+            "actor": "browser",
+            "event": "open_历史诊断报告",
+            "at": "2026-11-06T18:15:34.782Z",
+            "milliseconds": 37
+          },
+          {
+            "seq": 13,
+            "actor": "browser",
+            "event": "select_历史诊断报告",
+            "at": "2026-11-06T18:15:34.817Z",
+            "milliseconds": 35
+          }
+        ],
+        "provider_requests": []
+      },
+      {
+        "case": "B-unknown-design",
+        "mode": "fixed_real_streamlit_browser",
+        "status": "passed",
+        "browser": "156.0.4314.58",
+        "model_requests": 0,
+        "installed_package": true,
+        "report_id": "6c4e4963bb5e68180a578e70ac785f2a1b5dbb99571bc23923c9787b25098646",
+        "draft_id": "94536b66d24b00adcde903bcc2645a8d9892ee6477ddfb748dacd4a8d44221b3",
+        "checked": {
+          "unknown_randomization": true,
+          "no_run": true,
+          "explicit_draft": true,
+          "idempotent": true,
+          "refresh_preserved": true,
+          "stale_rejected": true
+        },
+        "seconds": 29.148,
+        "effective_actions": 13,
+        "events": [
+          {
+            "seq": 1,
+            "actor": "browser",
+            "event": "open_home",
+            "at": "2026-11-06T18:15:37.323Z",
+            "milliseconds": 195
+          },
+          {
+            "seq": 2,
+            "actor": "browser",
+            "event": "open_diagnostics",
+            "at": "2026-11-06T18:15:38.233Z",
+            "milliseconds": 17
+          },
+          {
+            "seq": 3,
+            "actor": "browser",
+            "event": "open_诊断任务",
+            "at": "2026-11-06T18:15:38.601Z",
+            "milliseconds": 44
+          },
+          {
+            "seq": 4,
+            "actor": "browser",
+            "event": "select_诊断任务",
+            "at": "2026-11-06T18:15:38.638Z",
+            "milliseconds": 37
+          },
+          {
+            "seq": 5,
+            "actor": "browser",
+            "event": "explicit_diagnostic_request",
+            "at": "2026-11-06T18:15:39.057Z",
+            "milliseconds": 13
+          },
+          {
+            "seq": 6,
+            "actor": "browser",
+            "event": "confirm_draft_only",
+            "at": "2026-11-06T18:15:40.021Z",
+            "milliseconds": 16
+          },
+          {
+            "seq": 7,
+            "actor": "browser",
+            "event": "enter_need",
+            "at": "2026-11-06T18:15:40.369Z",
+            "milliseconds": 12
+          },
+          {
+            "seq": 8,
+            "actor": "browser",
+            "event": "save_draft",
+            "at": "2026-11-06T18:15:40.442Z",
+            "milliseconds": 73
+          },
+          {
+            "seq": 9,
+            "actor": "browser",
+            "event": "duplicate_save",
+            "at": "2026-11-06T18:15:45.763Z",
+            "milliseconds": 35
+          },
+          {
+            "seq": 10,
+            "actor": "browser",
+            "event": "reload_draft",
+            "at": "2026-11-06T18:15:50.510Z",
+            "milliseconds": 86
+          },
+          {
+            "seq": 11,
+            "actor": "browser",
+            "event": "reconfirm_same_need",
+            "at": "2026-11-06T18:15:51.392Z",
+            "milliseconds": 21
+          },
+          {
+            "seq": 12,
+            "actor": "browser",
+            "event": "duplicate_after_refresh",
+            "at": "2026-11-06T18:15:51.857Z",
+            "milliseconds": 465
+          },
+          {
+            "seq": 13,
+            "actor": "browser",
+            "event": "attempt_stale_save",
+            "at": "2026-11-06T18:16:01.023Z",
+            "milliseconds": 127
+          }
+        ],
+        "provider_requests": []
+      },
+      {
+        "case": "C-foreign",
+        "mode": "fixed_real_streamlit_browser",
+        "status": "passed",
+        "browser": "156.0.4314.58",
+        "model_requests": 0,
+        "installed_package": true,
+        "report_id": "af9f2f09f4d8c9e662f7bf7df7063c35cde23685feddbde32df279aac97026be",
+        "checked": {
+          "restriction": true,
+          "no_old_numeric_fill": true,
+          "evidence_accessible": true
+        },
+        "seconds": 5.507,
+        "effective_actions": 9,
+        "events": [
+          {
+            "seq": 1,
+            "actor": "browser",
+            "event": "open_home",
+            "at": "2026-11-06T18:16:06.474Z",
+            "milliseconds": 190
+          },
+          {
+            "seq": 2,
+            "actor": "browser",
+            "event": "open_diagnostics",
+            "at": "2026-11-06T18:16:07.427Z",
+            "milliseconds": 19
+          },
+          {
+            "seq": 3,
+            "actor": "browser",
+            "event": "choose_post_run",
+            "at": "2026-11-06T18:16:07.765Z",
+            "milliseconds": 19
+          },
+          {
+            "seq": 4,
+            "actor": "browser",
+            "event": "open_诊断任务",
+            "at": "2026-11-06T18:16:08.634Z",
+            "milliseconds": 43
+          },
+          {
+            "seq": 5,
+            "actor": "browser",
+            "event": "select_诊断任务",
+            "at": "2026-11-06T18:16:08.670Z",
+            "milliseconds": 36
+          },
+          {
+            "seq": 6,
+            "actor": "browser",
+            "event": "open_历史诊断报告",
+            "at": "2026-11-06T18:16:09.109Z",
+            "milliseconds": 24
+          },
+          {
+            "seq": 7,
+            "actor": "browser",
+            "event": "select_历史诊断报告",
+            "at": "2026-11-06T18:16:09.135Z",
+            "milliseconds": 26
+          },
+          {
+            "seq": 8,
+            "actor": "browser",
+            "event": "explicit_diagnostic_request",
+            "at": "2026-11-06T18:16:10.203Z",
+            "milliseconds": 25
+          },
+          {
+            "seq": 9,
+            "actor": "browser",
+            "event": "open_conflict_evidence",
+            "at": "2026-11-06T18:16:11.570Z",
+            "milliseconds": 33
+          }
+        ],
+        "provider_requests": []
+      },
+      {
+        "case": "C-metric",
+        "mode": "fixed_real_streamlit_browser",
+        "status": "passed",
+        "browser": "156.0.4314.58",
+        "model_requests": 0,
+        "installed_package": true,
+        "report_id": "ae055e14473c07eb22ab3eee574de268e5bab92571d0206621575cc6d982f112",
+        "checked": {
+          "restriction": true,
+          "no_old_numeric_fill": true,
+          "evidence_accessible": true
+        },
+        "seconds": 9.118,
+        "effective_actions": 9,
+        "events": [
+          {
+            "seq": 1,
+            "actor": "browser",
+            "event": "open_home",
+            "at": "2026-11-06T18:16:11.985Z",
+            "milliseconds": 173
+          },
+          {
+            "seq": 2,
+            "actor": "browser",
+            "event": "open_diagnostics",
+            "at": "2026-11-06T18:16:12.938Z",
+            "milliseconds": 15
+          },
+          {
+            "seq": 3,
+            "actor": "browser",
+            "event": "choose_post_run",
+            "at": "2026-11-06T18:16:13.264Z",
+            "milliseconds": 23
+          },
+          {
+            "seq": 4,
+            "actor": "browser",
+            "event": "open_诊断任务",
+            "at": "2026-11-06T18:16:14.150Z",
+            "milliseconds": 63
+          },
+          {
+            "seq": 5,
+            "actor": "browser",
+            "event": "select_诊断任务",
+            "at": "2026-11-06T18:16:14.200Z",
+            "milliseconds": 50
+          },
+          {
+            "seq": 6,
+            "actor": "browser",
+            "event": "open_历史诊断报告",
+            "at": "2026-11-06T18:16:14.823Z",
+            "milliseconds": 42
+          },
+          {
+            "seq": 7,
+            "actor": "browser",
+            "event": "select_历史诊断报告",
+            "at": "2026-11-06T18:16:14.861Z",
+            "milliseconds": 38
+          },
+          {
+            "seq": 8,
+            "actor": "browser",
+            "event": "explicit_diagnostic_request",
+            "at": "2026-11-06T18:16:16.649Z",
+            "milliseconds": 76
+          },
+          {
+            "seq": 9,
+            "actor": "browser",
+            "event": "open_conflict_evidence",
+            "at": "2026-11-06T18:16:20.688Z",
+            "milliseconds": 69
+          }
+        ],
+        "provider_requests": []
+      },
+      {
+        "case": "C-unit",
+        "mode": "fixed_real_streamlit_browser",
+        "status": "passed",
+        "browser": "156.0.4314.58",
+        "model_requests": 0,
+        "installed_package": true,
+        "report_id": "39c6be980e1e4e9b3270d0273647e101565b47f698b98c2480b722461b8f6ff6",
+        "checked": {
+          "restriction": true,
+          "no_old_numeric_fill": true,
+          "evidence_accessible": true
+        },
+        "seconds": 8.65,
+        "effective_actions": 9,
+        "events": [
+          {
+            "seq": 1,
+            "actor": "browser",
+            "event": "open_home",
+            "at": "2026-11-06T18:16:21.185Z",
+            "milliseconds": 227
+          },
+          {
+            "seq": 2,
+            "actor": "browser",
+            "event": "open_diagnostics",
+            "at": "2026-11-06T18:16:22.215Z",
+            "milliseconds": 21
+          },
+          {
+            "seq": 3,
+            "actor": "browser",
+            "event": "choose_post_run",
+            "at": "2026-11-06T18:16:22.555Z",
+            "milliseconds": 16
+          },
+          {
+            "seq": 4,
+            "actor": "browser",
+            "event": "open_诊断任务",
+            "at": "2026-11-06T18:16:23.426Z",
+            "milliseconds": 43
+          },
+          {
+            "seq": 5,
+            "actor": "browser",
+            "event": "select_诊断任务",
+            "at": "2026-11-06T18:16:23.464Z",
+            "milliseconds": 38
+          },
+          {
+            "seq": 6,
+            "actor": "browser",
+            "event": "open_历史诊断报告",
+            "at": "2026-11-06T18:16:23.916Z",
+            "milliseconds": 34
+          },
+          {
+            "seq": 7,
+            "actor": "browser",
+            "event": "select_历史诊断报告",
+            "at": "2026-11-06T18:16:23.942Z",
+            "milliseconds": 26
+          },
+          {
+            "seq": 8,
+            "actor": "browser",
+            "event": "explicit_diagnostic_request",
+            "at": "2026-11-06T18:16:25.611Z",
+            "milliseconds": 29
+          },
+          {
+            "seq": 9,
+            "actor": "browser",
+            "event": "open_conflict_evidence",
+            "at": "2026-11-06T18:16:29.370Z",
+            "milliseconds": 34
+          }
+        ],
+        "provider_requests": []
+      },
+      {
+        "case": "C-window",
+        "mode": "fixed_real_streamlit_browser",
+        "status": "passed",
+        "browser": "156.0.4314.58",
+        "model_requests": 0,
+        "installed_package": true,
+        "report_id": "e1b8faf3cb80ad7648aa95d2ccf8bf40f8ff57aa5e96034550853c3bc5671f1f",
+        "checked": {
+          "restriction": true,
+          "no_old_numeric_fill": true,
+          "evidence_accessible": true
+        },
+        "seconds": 8.496,
+        "effective_actions": 9,
+        "events": [
+          {
+            "seq": 1,
+            "actor": "browser",
+            "event": "open_home",
+            "at": "2026-11-06T18:16:29.783Z",
+            "milliseconds": 178
+          },
+          {
+            "seq": 2,
+            "actor": "browser",
+            "event": "open_diagnostics",
+            "at": "2026-11-06T18:16:30.731Z",
+            "milliseconds": 22
+          },
+          {
+            "seq": 3,
+            "actor": "browser",
+            "event": "choose_post_run",
+            "at": "2026-11-06T18:16:31.080Z",
+            "milliseconds": 23
+          },
+          {
+            "seq": 4,
+            "actor": "browser",
+            "event": "open_诊断任务",
+            "at": "2026-11-06T18:16:31.958Z",
+            "milliseconds": 44
+          },
+          {
+            "seq": 5,
+            "actor": "browser",
+            "event": "select_诊断任务",
+            "at": "2026-11-06T18:16:31.991Z",
+            "milliseconds": 32
+          },
+          {
+            "seq": 6,
+            "actor": "browser",
+            "event": "open_历史诊断报告",
+            "at": "2026-11-06T18:16:32.439Z",
+            "milliseconds": 22
+          },
+          {
+            "seq": 7,
+            "actor": "browser",
+            "event": "select_历史诊断报告",
+            "at": "2026-11-06T18:16:32.465Z",
+            "milliseconds": 26
+          },
+          {
+            "seq": 8,
+            "actor": "browser",
+            "event": "explicit_diagnostic_request",
+            "at": "2026-11-06T18:16:34.086Z",
+            "milliseconds": 28
+          },
+          {
+            "seq": 9,
+            "actor": "browser",
+            "event": "open_conflict_evidence",
+            "at": "2026-11-06T18:16:37.882Z",
+            "milliseconds": 39
+          }
+        ],
+        "provider_requests": []
+      },
+      {
+        "case": "C-hash",
+        "mode": "fixed_real_streamlit_browser",
+        "status": "passed",
+        "browser": "156.0.4314.58",
+        "model_requests": 0,
+        "installed_package": true,
+        "report_id": "06564b6768826605b25cd2292a0cef50a7d45513b3978afaf5f9bde4ee7daae1",
+        "checked": {
+          "restriction": true,
+          "no_old_numeric_fill": true,
+          "evidence_accessible": true
+        },
+        "seconds": 5.604,
+        "effective_actions": 9,
+        "events": [
+          {
+            "seq": 1,
+            "actor": "browser",
+            "event": "open_home",
+            "at": "2026-11-06T18:16:38.288Z",
+            "milliseconds": 177
+          },
+          {
+            "seq": 2,
+            "actor": "browser",
+            "event": "open_diagnostics",
+            "at": "2026-11-06T18:16:39.238Z",
+            "milliseconds": 17
+          },
+          {
+            "seq": 3,
+            "actor": "browser",
+            "event": "choose_post_run",
+            "at": "2026-11-06T18:16:39.569Z",
+            "milliseconds": 22
+          },
+          {
+            "seq": 4,
+            "actor": "browser",
+            "event": "open_诊断任务",
+            "at": "2026-11-06T18:16:40.445Z",
+            "milliseconds": 45
+          },
+          {
+            "seq": 5,
+            "actor": "browser",
+            "event": "select_诊断任务",
+            "at": "2026-11-06T18:16:40.481Z",
+            "milliseconds": 36
+          },
+          {
+            "seq": 6,
+            "actor": "browser",
+            "event": "open_历史诊断报告",
+            "at": "2026-11-06T18:16:40.937Z",
+            "milliseconds": 30
+          },
+          {
+            "seq": 7,
+            "actor": "browser",
+            "event": "select_历史诊断报告",
+            "at": "2026-11-06T18:16:40.969Z",
+            "milliseconds": 32
+          },
+          {
+            "seq": 8,
+            "actor": "browser",
+            "event": "explicit_diagnostic_request",
+            "at": "2026-11-06T18:16:42.027Z",
+            "milliseconds": 25
+          },
+          {
+            "seq": 9,
+            "actor": "browser",
+            "event": "open_conflict_evidence",
+            "at": "2026-11-06T18:16:43.483Z",
+            "milliseconds": 38
+          }
+        ],
+        "provider_requests": []
+      },
+      {
+        "case": "switch-consistency",
+        "mode": "fixed_real_streamlit_browser",
+        "status": "passed",
+        "browser": "156.0.4314.58",
+        "model_requests": 0,
+        "installed_package": true,
+        "checked": {
+          "six_switches": true,
+          "no_history_regeneration": true
+        },
+        "seconds": 23.395,
+        "effective_actions": 31,
+        "events": [
+          {
+            "seq": 1,
+            "actor": "browser",
+            "event": "open_home",
+            "at": "2026-11-06T18:16:48.501Z",
+            "milliseconds": 194
+          },
+          {
+            "seq": 2,
+            "actor": "browser",
+            "event": "open_diagnostics",
+            "at": "2026-11-06T18:16:49.457Z",
+            "milliseconds": 19
+          },
+          {
+            "seq": 3,
+            "actor": "browser",
+            "event": "choose_post_run",
+            "at": "2026-11-06T18:16:49.778Z",
+            "milliseconds": 16
+          },
+          {
+            "seq": 4,
+            "actor": "browser",
+            "event": "open_诊断任务",
+            "at": "2026-11-06T18:16:50.641Z",
+            "milliseconds": 41
+          },
+          {
+            "seq": 5,
+            "actor": "browser",
+            "event": "select_诊断任务",
+            "at": "2026-11-06T18:16:50.680Z",
+            "milliseconds": 39
+          },
+          {
+            "seq": 6,
+            "actor": "browser",
+            "event": "open_历史诊断报告",
+            "at": "2026-11-06T18:16:51.131Z",
+            "milliseconds": 21
+          },
+          {
+            "seq": 7,
+            "actor": "browser",
+            "event": "select_历史诊断报告",
+            "at": "2026-11-06T18:16:51.155Z",
+            "milliseconds": 24
+          },
+          {
+            "seq": 8,
+            "actor": "browser",
+            "event": "open_诊断任务",
+            "at": "2026-11-06T18:16:52.823Z",
+            "milliseconds": 43
+          },
+          {
+            "seq": 9,
+            "actor": "browser",
+            "event": "select_诊断任务",
+            "at": "2026-11-06T18:16:52.864Z",
+            "milliseconds": 41
+          },
+          {
+            "seq": 10,
+            "actor": "browser",
+            "event": "open_历史诊断报告",
+            "at": "2026-11-06T18:16:53.319Z",
+            "milliseconds": 28
+          },
+          {
+            "seq": 11,
+            "actor": "browser",
+            "event": "select_历史诊断报告",
+            "at": "2026-11-06T18:16:53.351Z",
+            "milliseconds": 32
+          },
+          {
+            "seq": 12,
+            "actor": "browser",
+            "event": "open_诊断任务",
+            "at": "2026-11-06T18:16:55.198Z",
+            "milliseconds": 37
+          },
+          {
+            "seq": 13,
+            "actor": "browser",
+            "event": "select_诊断任务",
+            "at": "2026-11-06T18:16:55.235Z",
+            "milliseconds": 37
+          },
+          {
+            "seq": 14,
+            "actor": "browser",
+            "event": "open_历史诊断报告",
+            "at": "2026-11-06T18:16:55.683Z",
+            "milliseconds": 24
+          },
+          {
+            "seq": 15,
+            "actor": "browser",
+            "event": "select_历史诊断报告",
+            "at": "2026-11-06T18:16:55.710Z",
+            "milliseconds": 27
+          },
+          {
+            "seq": 16,
+            "actor": "browser",
+            "event": "open_诊断任务",
+            "at": "2026-11-06T18:16:57.529Z",
+            "milliseconds": 36
+          },
+          {
+            "seq": 17,
+            "actor": "browser",
+            "event": "select_诊断任务",
+            "at": "2026-11-06T18:16:57.565Z",
+            "milliseconds": 36
+          },
+          {
+            "seq": 18,
+            "actor": "browser",
+            "event": "open_历史诊断报告",
+            "at": "2026-11-06T18:16:58.009Z",
+            "milliseconds": 30
+          },
+          {
+            "seq": 19,
+            "actor": "browser",
+            "event": "select_历史诊断报告",
+            "at": "2026-11-06T18:16:58.034Z",
+            "milliseconds": 25
+          },
+          {
+            "seq": 20,
+            "actor": "browser",
+            "event": "open_诊断任务",
+            "at": "2026-11-06T18:16:59.868Z",
+            "milliseconds": 35
+          },
+          {
+            "seq": 21,
+            "actor": "browser",
+            "event": "select_诊断任务",
+            "at": "2026-11-06T18:16:59.905Z",
+            "milliseconds": 38
+          },
+          {
+            "seq": 22,
+            "actor": "browser",
+            "event": "open_历史诊断报告",
+            "at": "2026-11-06T18:17:00.341Z",
+            "milliseconds": 26
+          },
+          {
+            "seq": 23,
+            "actor": "browser",
+            "event": "select_历史诊断报告",
+            "at": "2026-11-06T18:17:00.365Z",
+            "milliseconds": 24
+          },
+          {
+            "seq": 24,
+            "actor": "browser",
+            "event": "open_诊断任务",
+            "at": "2026-11-06T18:17:02.208Z",
+            "milliseconds": 39
+          },
+          {
+            "seq": 25,
+            "actor": "browser",
+            "event": "select_诊断任务",
+            "at": "2026-11-06T18:17:02.244Z",
+            "milliseconds": 36
+          },
+          {
+            "seq": 26,
+            "actor": "browser",
+            "event": "open_历史诊断报告",
+            "at": "2026-11-06T18:17:02.709Z",
+            "milliseconds": 25
+          },
+          {
+            "seq": 27,
+            "actor": "browser",
+            "event": "select_历史诊断报告",
+            "at": "2026-11-06T18:17:02.740Z",
+            "milliseconds": 31
+          },
+          {
+            "seq": 28,
+            "actor": "browser",
+            "event": "open_诊断任务",
+            "at": "2026-11-06T18:17:04.576Z",
+            "milliseconds": 39
+          },
+          {
+            "seq": 29,
+            "actor": "browser",
+            "event": "select_诊断任务",
+            "at": "2026-11-06T18:17:04.611Z",
+            "milliseconds": 35
+          },
+          {
+            "seq": 30,
+            "actor": "browser",
+            "event": "open_历史诊断报告",
+            "at": "2026-11-06T18:17:05.075Z",
+            "milliseconds": 21
+          },
+          {
+            "seq": 31,
+            "actor": "browser",
+            "event": "select_历史诊断报告",
+            "at": "2026-11-06T18:17:05.100Z",
+            "milliseconds": 25
+          }
+        ],
+        "provider_requests": []
+      }
+    ],
+    "samples": 1141,
+    "visible_identity_mismatches": 0,
+    "native_records_unchanged": true,
+    "model_requests": 0,
+    "source_sha": "8eb422c5dec5b0ad6f6872c07402c117e430cee4f89f391fd4d85a857420416e",
+    "counts_before": {
+      "analysis_runs": 6,
+      "exploration_runs": 6,
+      "automation_v2_approvals": 6,
+      "assistant_plans": 0,
+      "workflow_approvals": 0,
+      "diagnostic_reports": 5,
+      "diagnostic_request_drafts": 0
+    },
+    "counts_after": {
+      "analysis_runs": 6,
+      "exploration_runs": 6,
+      "automation_v2_approvals": 6,
+      "assistant_plans": 0,
+      "workflow_approvals": 0,
+      "diagnostic_reports": 12,
+      "diagnostic_request_drafts": 1
+    }
+  },
+  "original_browser": [
+    {
+      "case": "A-normal",
+      "status": "passed",
+      "seconds": 35.301,
+      "installed_package": true,
+      "checked": {
+        "backend": true,
+        "page": true,
+        "report_export": true,
+        "history": true
+      },
+      "model_calls": 0,
+      "state_mismatches": 0
+    },
+    {
+      "case": "B-insufficient",
+      "status": "passed",
+      "seconds": 22.785,
+      "installed_package": true,
+      "checked": {
+        "specific_reason": true,
+        "no_downstream": true,
+        "no_fabricated_report": true
+      },
+      "model_calls": 0,
+      "state_mismatches": 0
+    },
+    {
+      "case": "C-pause-cancel",
+      "status": "passed",
+      "seconds": 54.463,
+      "installed_package": true,
+      "checked": {
+        "pause": true,
+        "refresh": true,
+        "resume_without_recompute": true,
+        "cancel_terminal": true,
+        "old_report_preserved": true
+      },
+      "model_calls": 0,
+      "state_mismatches": 0
+    },
+    {
+      "case": "C-uncertain",
+      "status": "passed",
+      "seconds": 26.635,
+      "installed_package": true,
+      "checked": {
+        "uncertain_stopped": true,
+        "takeover_reason": true,
+        "no_replay": true
+      },
+      "model_calls": 0,
+      "state_mismatches": 0
+    },
+    {
+      "case": "legacy-single",
+      "status": "passed",
+      "seconds": 29.527,
+      "installed_package": true,
+      "checked": {
+        "existing_workflow": true,
+        "explicit_approval": true,
+        "report_export": true,
+        "refresh_without_recompute": true
+      },
+      "model_calls": 0,
+      "state_mismatches": 0
+    }
+  ],
+  "browser_execution_then_diagnosis": {
+    "case": "A-normal",
+    "status": "passed",
+    "seconds": 50.281,
+    "task_id": "2f6073e4787b490bbb5f88c026b87eb2",
+    "diagnostic_report_id": "7560ea87569ea5389337f42fd72f2d0c5a025fbf260e3f409cec11b262c33f9c",
+    "checked": {
+      "backend": true,
+      "page": true,
+      "report_export": true,
+      "history": true,
+      "diagnosis_of_browser_created_study": true,
+      "diagnosis_refresh_no_statistics": true
+    },
+    "installed_package": true,
+    "model_calls": 0
+  },
+  "numerical_check": {
+    "independent_public_archive_aggregation": {
+      "No E-Mail": {
+        "n": 21306,
+        "valid_n": 21306,
+        "visited": 2262,
+        "mean": 0.10616727682343002
+      },
+      "Mens E-Mail": {
+        "n": 21307,
+        "valid_n": 21307,
+        "visited": 3894,
+        "mean": 0.18275684047496127
+      }
+    },
+    "matching_saved_report": true,
+    "matching_interval_unit_chain": true,
+    "task": "cc4aa66847184f1ebcae1828f4a410e1",
+    "report_id": "0ece93d851577b9b99e8a7b49e3c9a5da77338f215ad6dfa114fe0bcbf8367bc",
+    "runs": [
+      "0743231b5ccb46089e4595eb1571e216",
+      "35da635eb00f4981af572106374fefca"
+    ],
+    "results": {
+      "approval": {
+        "execution_permission": "not_granted_by_report",
+        "id": "7dcd454a2bef45518abcbdca2742bbcc",
+        "plan_version": 1,
+        "revoked": false,
+        "sha": "086dd883323ff8426c6ce86d7eaea6ce53ff6b4460d0ea6496873baca1c2d83d"
+      },
+      "design_observations": {
+        "declared_groups_present": true,
+        "group_field_present": true,
+        "missing_group_records": 0,
+        "nonmissing_group_count": 2
+      },
+      "effect": {
+        "ci_pp": [
+          6.995322354054364,
+          8.322590376251885
+        ],
+        "control_rate": 0.10616727682343002,
+        "estimand": "risk_difference",
+        "formulas": {
+          "ci_pp": "100 * each raw interval bound",
+          "pp": "100 * raw",
+          "relative_pct": "100 * raw / control_rate (positive control_rate only)"
+        },
+        "outcome": "visit",
+        "pp": 7.6589563651531245,
+        "raw": 0.07658956365153125,
+        "raw_unit": "probability",
+        "relative_pct": 72.1404616781399,
+        "treated_rate": 0.18275684047496127
+      },
+      "estimate": {
+        "confidence_interval": [
+          0.06995322354054365,
+          0.08322590376251884
+        ],
+        "estimand": "Intent-to-treat difference in means",
+        "estimate": 0.07658956365153125,
+        "p_value": 2.74042934982949e-113,
+        "sample_size": 42613,
+        "standard_error": 0.0033858878117283653
+      },
+      "group_summary": [
+        {
+          "n": 21306,
+          "outcome_mean": 0.10616727682343002,
+          "treatment": 0
+        },
+        {
+          "n": 21307,
+          "outcome_mean": 0.18275684047496127,
+          "treatment": 1
+        }
+      ],
+      "limitations": [
+        "历史回执只描述原批准；新计算仍需原服务核验。",
+        "来源登记一致不能证明所有识别假设；两周访问指标不能推断长期利润。"
+      ],
+      "method": "ab_test",
+      "objective": "使用 A/B 随机实验比较男装邮件与未发邮件客户在两周内的访问率，并给出绝对差与区间。",
+      "original_manifest": {
+        "id": "cc4aa66847184f1ebcae1828f4a410e1:S05",
+        "kind": "saved_S05_ReportManifest",
+        "sha": "2c823c22fa309fe15b8fa5a30fbddacca961634281b1e445d96ed7f091445c63"
+      },
+      "runs": [
+        {
+          "kind": "exploration",
+          "plan_id": "178d45e1413c4853bb4bc5f341cc991b",
+          "result_fingerprint": "edddb35b4400de6068ed295fd3a3595125ce02cd4f90b570242fb911f7b9611e",
+          "run_id": "0743231b5ccb46089e4595eb1571e216"
+        },
+        {
+          "kind": "research",
+          "plan_id": "178d45e1413c4853bb4bc5f341cc991b",
+          "result_fingerprint": "2012406ebdfb0181dcc432fb8ce56113cce42346c15197715b356f3e6685f4fe",
+          "run_id": "35da635eb00f4981af572106374fefca"
+        }
+      ],
+      "sample_size": 42613,
+      "scope": {
+        "aggregation": "组内比例与概率差",
+        "analysis_unit": "客户",
+        "denominator": "各分配组客户数",
+        "group_labels": [
+          "未发邮件",
+          "男装邮件"
+        ],
+        "metric_label": "两周访问率",
+        "numerator": "各组访问客户数",
+        "observation_window": "分配后两周",
+        "outcome_field": "visit",
+        "statistic_type": "risk_difference",
+        "unit": "概率"
+      },
+      "status": "available"
+    },
+    "quality": {
+      "implemented_rules": [
+        "PD-01",
+        "PD-02",
+        "PD-06",
+        "PD-07",
+        "PD-09",
+        "PD-14"
+      ],
+      "unimplemented_rules": [
+        "PD-03",
+        "PD-04",
+        "PD-05",
+        "PD-08",
+        "PD-10",
+        "PD-11",
+        "PD-12",
+        "PD-13"
+      ],
+      "status_labels": {
+        "issue": "已发现问题",
+        "not_applicable": "不适用",
+        "not_checked": "尚未检查",
+        "unknown": "条件未知或证据不足",
+        "verified": "已核验满足"
+      },
+      "limitations": [
+        "本阶段仅实现六项证据规则；其余规则未实现，不统计为通过。",
+        "来源与人工声明一致不代表程序证明随机分配真实发生。",
+        "未新增基线平衡、功效、无干扰或长期利润检验，不能据此声称研究假设全部满足。",
+        "诊断不授予执行权限；历史保存事实与当前执行授权分别核验。",
+        "没有模型解释、完整建议、用户采纳、三层报告或长期决策记忆。"
+      ]
+    },
+    "findings": [
+      {
+        "rule": {
+          "check_method": "native_identity_and_artifact_verification",
+          "id": "PD-01",
+          "pack": "hillstrom-diagnostics-stage1:1",
+          "version": "1"
+        },
+        "status": "verified",
+        "severity": {
+          "level": "information",
+          "policy_id": "hillstrom-diagnostics-stage1:1",
+          "reason_code": "native_identity_verified"
+        },
+        "origin": "program_fact"
+      },
+      {
+        "rule": {
+          "check_method": "registered_source_attestation_not_randomization_proof",
+          "id": "PD-02",
+          "pack": "hillstrom-diagnostics-stage1:1",
+          "version": "1"
+        },
+        "status": "verified",
+        "severity": {
+          "level": "information",
+          "policy_id": "hillstrom-diagnostics-stage1:1",
+          "reason_code": "legacy_source_attestation_consistent"
+        },
+        "origin": "human_declaration"
+      },
+      {
+        "rule": {
+          "check_method": "bound_observation_window_comparison",
+          "id": "PD-06",
+          "pack": "hillstrom-diagnostics-stage1:1",
+          "version": "1"
+        },
+        "status": "verified",
+        "severity": {
+          "level": "information",
+          "policy_id": "hillstrom-diagnostics-stage1:1",
+          "reason_code": "observation_window_bound"
+        },
+        "origin": "program_fact"
+      },
+      {
+        "rule": {
+          "check_method": "saved_gate_and_two_run_sample_comparison",
+          "id": "PD-07",
+          "pack": "hillstrom-diagnostics-stage1:1",
+          "version": "1"
+        },
+        "status": "verified",
+        "severity": {
+          "level": "information",
+          "policy_id": "hillstrom-diagnostics-stage1:1",
+          "reason_code": "two_runs_and_gate_consistent"
+        },
+        "origin": "program_fact"
+      },
+      {
+        "rule": {
+          "check_method": "saved_metric_and_deterministic_rate_units",
+          "id": "PD-09",
+          "pack": "hillstrom-diagnostics-stage1:1",
+          "version": "1"
+        },
+        "status": "verified",
+        "severity": {
+          "level": "information",
+          "policy_id": "hillstrom-diagnostics-stage1:1",
+          "reason_code": "metric_and_rate_units_bound"
+        },
+        "origin": "program_fact"
+      },
+      {
+        "rule": {
+          "check_method": "saved_step_and_report_manifest_comparison",
+          "id": "PD-14",
+          "pack": "hillstrom-diagnostics-stage1:1",
+          "version": "1"
+        },
+        "status": "verified",
+        "severity": {
+          "level": "information",
+          "policy_id": "hillstrom-diagnostics-stage1:1",
+          "reason_code": "report_sources_verified"
+        },
+        "origin": "program_fact"
+      }
+    ]
+  },
+  "draft_authority": [
+    {
+      "draft_id": "94536b66d24b00adcde903bcc2645a8d9892ee6477ddfb748dacd4a8d44221b3",
+      "legacy_plan_gate_denied": true,
+      "execution_authorized": false
+    }
+  ],
+  "model_requests": 0,
+  "public_data_archive_in_git": false,
+  "actual_raw_logs_local_only": true,
+  "engineering": {
+    "tests": "1040",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "time": "638.705",
+    "timestamp": "2026-11-07T02:14:25.903382+08:00",
+    "installed_imports": true,
+    "pytest_pythonpath_override": "empty",
+    "xml_sha256": "974cd1230a6ac9fa82186e9fdd3b2eca1c666af3bb31e4d116ed702448d6cada",
+    "log_sha256": "dc8e65d19680ae8ea50c366872bf2a34f4079762f830bf3749980bc32411f480"
+  }
+}

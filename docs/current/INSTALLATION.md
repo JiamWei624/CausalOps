@@ -95,3 +95,7 @@ $env:CAUSALOPS_PYTHON = "E:/causalops-env/Scripts/python.exe"
 首页葡萄酒示例随包提供。营销实验可在页面上传教程指定的公开压缩包，也可通过 CAUSALOPS_HILLSTROM_ARCHIVE 指定同一文件。本地模式和这两个示例均不要求模型密钥。
 
 旧版评测的已准备数据目录可用 CAUSALOPS_PUBLIC_CATALOG 指向 catalog.json，默认从启动目录下的 data/public/prepared 读取。清单内的 Parquet 须位于清单所在目录内并通过摘要校验。浏览器评测输出由 CAUSALOPS_V20_WORKSPACE 指定。历史私有示例仅在显式登记数据和 CAUSALOPS_PRIVATE_DATA_ROOT 后可用，公开快照不分发相应数据。旧实验记录中的 artifacts 标识对应本地归档，不作为公共下载链接。
+
+## 诊断Beta升级边界
+
+0.18.0b1增加只读诊断表和工作台，保留原统计服务。先保留原工作区副本，再安装到新环境；不要删除历史数据库。批准绑定数据、计划及源码身份，升级后旧执行许可可能不再有效，须经原服务核查，不能通过诊断或草案绕过。已完成历史按只读接口查看；本轮独立验收使用新工作区，不代表所有用户数据库升级组合都已验证。

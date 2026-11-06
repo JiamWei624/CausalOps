@@ -1,0 +1,98 @@
+[
+  {
+    "file": "diagnostic-overview.png",
+    "test_artifact": "diagnostics01/A-complete/01-risk-summary.png",
+    "version": "0.18.0b1",
+    "installed_wheel": true,
+    "data": "公开Hillstrom",
+    "sha256": "d80b41fffe7826f535c67d45ad4504a7b44fc92773deb7710056173c20058119"
+  },
+  {
+    "file": "diagnostic-results.png",
+    "test_artifact": "diagnostics01/A-complete/01-layer-1.png",
+    "version": "0.18.0b1",
+    "installed_wheel": true,
+    "data": "公开Hillstrom",
+    "sha256": "53d37a2797085a714cd108000f95ce91e2d48cf1cbe1a64556b61e576b79fafb"
+  },
+  {
+    "file": "diagnostic-quality.png",
+    "test_artifact": "diagnostics01/A-complete/01-layer-2.png",
+    "version": "0.18.0b1",
+    "installed_wheel": true,
+    "data": "公开Hillstrom",
+    "sha256": "a66ff727ceca1e3b200e432cfe7e2fb7fdc1fea2e63e4c972954b6625136752c"
+  },
+  {
+    "file": "diagnostic-suggestions.png",
+    "test_artifact": "diagnostics01/A-complete/01-layer-3.png",
+    "version": "0.18.0b1",
+    "installed_wheel": true,
+    "data": "公开Hillstrom",
+    "sha256": "75369bc32d174e5c0187e630796dcda16f776179abc9ab642085969368c2e44f"
+  },
+  {
+    "file": "native-evidence.png",
+    "test_artifact": "diagnostics01/A-complete/02-native-evidence.png",
+    "version": "0.18.0b1",
+    "installed_wheel": true,
+    "data": "公开Hillstrom",
+    "sha256": "e645181ecebcbdbcf10bfd77aa89e1eeba1dfe2485224f97a4f07232612b5a9d"
+  },
+  {
+    "file": "preflight-unknown.png",
+    "test_artifact": "diagnostics01/B-unknown-design/01-preflight-result.png",
+    "version": "0.18.0b1",
+    "installed_wheel": true,
+    "data": "合成无随机化设计依据",
+    "sha256": "8c4a2b5ec041b81818dedd8e317fe1ac2a7b4931c892fd20e9e0b1888b895415"
+  },
+  {
+    "file": "request-draft.png",
+    "test_artifact": "diagnostics01/B-unknown-design/02-saved-draft.png",
+    "version": "0.18.0b1",
+    "installed_wheel": true,
+    "data": "合成无随机化设计依据",
+    "sha256": "c1353ffb427ac11e488e8d44ad324605bacef6065a22b48016e7cc21ee4ffd3a"
+  },
+  {
+    "file": "stale-source.png",
+    "test_artifact": "diagnostics01/B-unknown-design/03-stale-suggestion.png",
+    "version": "0.18.0b1",
+    "installed_wheel": true,
+    "data": "合成无随机化设计依据",
+    "sha256": "b22bf108d59a98ddb82a490a08a19e990537311aed6a6ab1cd9754519bad1242"
+  },
+  {
+    "file": "conflict-window.png",
+    "test_artifact": "diagnostics01/C-window/01-conflict-summary.png",
+    "version": "0.18.0b1",
+    "installed_wheel": true,
+    "data": "受控公开案例冲突副本",
+    "sha256": "462c8d421437077957c6395e6c347c3e747d56b5b9efaa82c55e2f268266003b"
+  },
+  {
+    "file": "home.png",
+    "test_artifact": "original01/A-normal/01-home.png",
+    "version": "0.18.0b1",
+    "installed_wheel": true,
+    "data": "公开Hillstrom",
+    "sha256": "c8807c6693302bdc8dbdbb8d7f1a3e50bf34171c78efd81066c501f34caac0be"
+  },
+  {
+    "file": "automation-report.png",
+    "test_artifact": "original01/A-normal/06-report.png",
+    "version": "0.18.0b1",
+    "installed_wheel": true,
+    "data": "公开Hillstrom",
+    "sha256": "ca42474bedb31c56e3ba5608dacbc53eef2045819e6ee416754202732b735c7e"
+  },
+  {
+    "file": "automation-review.png",
+    "test_artifact": "original01/A-normal/02-review-7d535a.png",
+    "version": "0.18.0b1",
+    "installed_wheel": true,
+    "data": "公开Hillstrom",
+    "sha256": "f6469870cf43cd7564ae9d20679ceb92906e163dd838da4997bbd284b8d1125e"
+  }
+]

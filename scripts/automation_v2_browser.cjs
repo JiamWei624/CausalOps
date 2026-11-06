@@ -162,6 +162,27 @@ async function attempt(name,mode){
    await text('任务状态：已完成').waitFor();await capture('history-restored');
    const after=score(home);if(JSON.stringify(original.counts)!==JSON.stringify(after.counts)||JSON.stringify(original.result_file_hashes)!==JSON.stringify(after.result_file_hashes))throw Error('history changed by reload');
    result.checked={backend:true,page:true,report_export:true,history:true};
+   if(process.env.CAUSALOPS_CHECK_DIAGNOSTICS_AFTER_RUN==='1'){
+    await action('open_completed_research_diagnostics',()=>button('查看当前研究的证据诊断').click());
+    await button('检查研究证据').waitFor();
+    await action('request_completed_research_diagnostics',()=>button('检查研究证据').click());
+    const bound=page.locator('.co-diagnostic-snapshot[data-task-id="'+tid+'"]');await bound.waitFor({state:'visible'});
+    const rid=await bound.getAttribute('data-report-id'),body=await bound.innerText();
+    for(const value of [...report.source_runs,'第一层 · 研究结果','第二层 · 证据质量','第三层 · 下一步研究建议']){
+     if(!body.includes(value))throw Error('newly executed study diagnostic missing '+value);
+    }
+    await capture('completed-research-diagnostics');
+    await action('refresh_completed_research_diagnostics',()=>page.reload());
+    await page.locator('.co-diagnostic-snapshot[data-report-id="'+rid+'"]').waitFor({state:'visible'});
+    const checked=score(home);
+    if(JSON.stringify(original.counts)!==JSON.stringify(checked.counts))throw Error('diagnosis changed native counts');
+    for(const [file,hash] of Object.entries(original.result_file_hashes)){
+     if(checked.result_file_hashes[file]!==hash)throw Error('diagnosis modified original file');
+    }
+    result.diagnostic_report_id=rid;
+    result.checked.diagnosis_of_browser_created_study=true;
+    result.checked.diagnosis_refresh_no_statistics=true;
+   }
   }else if(mode==='insufficient'){
    await text('任务状态：安全阻断').waitFor({timeout:60000});
    await wait(async()=>{const body=await page.locator('body').innerText();return body.includes('必要字段含缺失')&&body.includes('部分完成说明')});

@@ -5,15 +5,15 @@
 
 `0.18.0b1` · Windows x64 / Python 3.11 · 本地单用户 · 主动研究诊断受限首版候选
 
-CausalOps 将研究问题、版本化数据合同、方法建议、人工审核、本地统计与运行证据连接起来。使用者可以从单表数据提出问题，审核方案后执行注册工具，并按具体运行查看报告。新增的自动化入口只支持已核验的 Hillstrom 营销实验：一次整体审核，按固定五步推进两次真实统计计算。
+CausalOps 将研究问题、版本化数据合同、方法建议、人工审核、本地统计与运行证据连接起来。使用者可以从单表数据提出问题，审核方案后执行注册工具，并按具体运行查看报告。自动化入口只支持已核验的 Hillstrom 营销实验：一次整体审核，按固定五步推进两次真实统计计算。
 
 **当前不是通用自主研究系统。** 不支持任意自然语言目标的自动多步骤规划、通用多表研究、完整主动诊断或云端多人协作。当前诊断是用户显式触发的确定性检查，不是后台持续监控或模型自主推理。开放式方法建议和研究解释仍有已记录的准确性限制。没有真人完成率、提效或生产可靠性数据。
 
 [诊断教程](docs/current/DIAGNOSTICS_GUIDE.md) · [自动化使用教程](docs/current/AUTOMATION_GUIDE.md) · [安装](docs/current/INSTALLATION.md) · [本候选验收](docs/releases/proactive-diagnostics-beta/ACCEPTANCE.md) · [已知限制](docs/releases/proactive-diagnostics-beta/LIMITATIONS.md) · [架构](docs/current/ARCHITECTURE.md)
 
-![实际首页与自动化入口](docs/releases/automation-v2-beta/assets/home.png)
+![实际首页与自动化入口](docs/releases/proactive-diagnostics-beta/assets/home.png)
 
-*图1：此前0.17自动化候选的历史首页；当前诊断界面见新教程。营销实验成果预览不等于本任务已执行。*
+*图1：0.18.0b1新环境安装包的实际首页；诊断入口见侧栏和诊断教程。营销实验成果预览不等于本任务已执行。*
 
 ## 已实现与验证范围
 
@@ -59,13 +59,13 @@ py -3.11 -m venv .venv
 4. 自动执行审计、分组描述、上游Run核验、A/B及整合。每个统计步骤重新校验授权；失败不会自动改方法、删样本或填补数据。
 5. 查看整体报告、两个Run、风险说明及预算。导出报告或证据；刷新和重开历史任务不会重新计算。
 
-![完整计划与整体审批](docs/releases/automation-v2-beta/assets/review.png)
+![完整计划与整体审批](docs/releases/proactive-diagnostics-beta/assets/automation-review.png)
 
 *图2：预览、正式计划、批准与执行分别记录。普通聊天中的“同意”不授予执行权限。*
 
 公开原始表预先取两组共42,613名客户：未发邮件2,262/21,306（10.62%），男装邮件3,894/21,307（18.28%）。差值约7.66个百分点，原A/B工具95%区间约[6.995,8.323]个百分点。每次安装必须实际运行产生自己的证据，不将这些公开参考数值冒充新计算。随机分配依据原发布者资料与用户确认，不能仅凭有两组推断。[发布者说明](https://blog.minethatdata.com/2008/03/minethatdata-e-mail-analytics-and-data.html)
 
-![整体报告与独立运行来源](docs/releases/automation-v2-beta/assets/report.png)
+![整体报告与独立运行来源](docs/releases/proactive-diagnostics-beta/assets/automation-report.png)
 
 *图3：报告数值由持久化结构化证据生成。模型自主规划关闭，本固定链无真实模型请求。*
 

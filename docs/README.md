@@ -1,5 +1,8 @@
 <!-- current: 0.17.0b1 -->
 
+当前0.18.0b1受限诊断Beta候选：[诊断教程](current/DIAGNOSTICS_GUIDE.md) · [验收与边界](releases/proactive-diagnostics-beta/ACCEPTANCE.md) · [版本管理建议](releases/proactive-diagnostics-beta/MAIN_STRATEGY.md)。旧版本报告和分母继续保留。
+
+
 [阶段性交付、复现与风险登记](stage/验收与整合.md)
 
 # 文档入口
