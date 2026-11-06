@@ -1,0 +1,1261 @@
+{
+  "baseline_commit": "f9e876a654164f49bed837064cbc3530a3abe37f",
+  "package_version": "0.17.0b1",
+  "review_mode": "read_only_source_audit; no product execution or research evaluation",
+  "files": [
+    {
+      "path": "src/causalops/application/data_contracts.py",
+      "sha256": "cef780b80a026e1504fcfac3cdb2b5c5f8c4b00846c2062145a4ab3167f0de46",
+      "symbols": [
+        {
+          "symbol": "ResearchScope",
+          "line": 13,
+          "end_line": 23
+        },
+        {
+          "symbol": "FieldMeaning",
+          "line": 25,
+          "end_line": 33
+        },
+        {
+          "symbol": "DataContract",
+          "line": 35,
+          "end_line": 66
+        },
+        {
+          "symbol": "ContractRepository",
+          "line": 68,
+          "end_line": 155
+        },
+        {
+          "symbol": "ContractRepository.__init__",
+          "line": 69,
+          "end_line": 72
+        },
+        {
+          "symbol": "ContractRepository.versions",
+          "line": 73,
+          "end_line": 81
+        },
+        {
+          "symbol": "ContractRepository.latest",
+          "line": 82,
+          "end_line": 83
+        },
+        {
+          "symbol": "ContractRepository.ref",
+          "line": 84,
+          "end_line": 86
+        },
+        {
+          "symbol": "ContractRepository.save",
+          "line": 87,
+          "end_line": 125
+        },
+        {
+          "symbol": "ContractRepository.bound",
+          "line": 126,
+          "end_line": 140
+        },
+        {
+          "symbol": "ContractRepository.verify_current",
+          "line": 141,
+          "end_line": 143
+        },
+        {
+          "symbol": "ContractRepository.review_facts",
+          "line": 144,
+          "end_line": 155
+        }
+      ]
+    },
+    {
+      "path": "src/causalops/application/automation_contracts.py",
+      "sha256": "c547ea582ef893408503c6c90af84530ae76444b278b25e4f74b9730e852d263",
+      "symbols": [
+        {
+          "symbol": "EvidenceRef",
+          "line": 12,
+          "end_line": 15
+        },
+        {
+          "symbol": "StepSpec",
+          "line": 18,
+          "end_line": 29
+        },
+        {
+          "symbol": "fixed_steps",
+          "line": 32,
+          "end_line": 56
+        },
+        {
+          "symbol": "PlanV2",
+          "line": 59,
+          "end_line": 78
+        },
+        {
+          "symbol": "PlanV2.fixed_chain",
+          "line": 73,
+          "end_line": 78
+        },
+        {
+          "symbol": "scope",
+          "line": 81,
+          "end_line": 86
+        }
+      ]
+    },
+    {
+      "path": "src/causalops/application/automation_coordinator.py",
+      "sha256": "42cd7ac33d7a8e57d03fdf5180036ed3c80a8417f34ad2a97726364c83484bb8",
+      "symbols": [
+        {
+          "symbol": "encoded",
+          "line": 29,
+          "end_line": 30
+        },
+        {
+          "symbol": "BoundedCoordinator",
+          "line": 33,
+          "end_line": 646
+        },
+        {
+          "symbol": "BoundedCoordinator.__init__",
+          "line": 34,
+          "end_line": 55
+        },
+        {
+          "symbol": "BoundedCoordinator._init_control",
+          "line": 57,
+          "end_line": 61
+        },
+        {
+          "symbol": "BoundedCoordinator.budget",
+          "line": 63,
+          "end_line": 65
+        },
+        {
+          "symbol": "BoundedCoordinator.model_context",
+          "line": 67,
+          "end_line": 73
+        },
+        {
+          "symbol": "BoundedCoordinator._claim_owner",
+          "line": 75,
+          "end_line": 85
+        },
+        {
+          "symbol": "BoundedCoordinator._release_owner",
+          "line": 87,
+          "end_line": 89
+        },
+        {
+          "symbol": "BoundedCoordinator._fault",
+          "line": 91,
+          "end_line": 92
+        },
+        {
+          "symbol": "BoundedCoordinator.create_hillstrom",
+          "line": 94,
+          "end_line": 131
+        },
+        {
+          "symbol": "BoundedCoordinator.task",
+          "line": 133,
+          "end_line": 144
+        },
+        {
+          "symbol": "BoundedCoordinator.steps",
+          "line": 146,
+          "end_line": 150
+        },
+        {
+          "symbol": "BoundedCoordinator.events",
+          "line": 152,
+          "end_line": 156
+        },
+        {
+          "symbol": "BoundedCoordinator._event",
+          "line": 158,
+          "end_line": 162
+        },
+        {
+          "symbol": "BoundedCoordinator._binding",
+          "line": 164,
+          "end_line": 188
+        },
+        {
+          "symbol": "BoundedCoordinator.approve",
+          "line": 190,
+          "end_line": 214
+        },
+        {
+          "symbol": "BoundedCoordinator._verify",
+          "line": 216,
+          "end_line": 230
+        },
+        {
+          "symbol": "BoundedCoordinator.evidence",
+          "line": 232,
+          "end_line": 260
+        },
+        {
+          "symbol": "BoundedCoordinator._load_stat",
+          "line": 262,
+          "end_line": 289
+        },
+        {
+          "symbol": "BoundedCoordinator._audit",
+          "line": 291,
+          "end_line": 308
+        },
+        {
+          "symbol": "BoundedCoordinator._gate",
+          "line": 310,
+          "end_line": 331
+        },
+        {
+          "symbol": "BoundedCoordinator._stat",
+          "line": 333,
+          "end_line": 376
+        },
+        {
+          "symbol": "BoundedCoordinator._report",
+          "line": 378,
+          "end_line": 413
+        },
+        {
+          "symbol": "BoundedCoordinator._inputs",
+          "line": 416,
+          "end_line": 422
+        },
+        {
+          "symbol": "BoundedCoordinator._publish",
+          "line": 424,
+          "end_line": 437
+        },
+        {
+          "symbol": "BoundedCoordinator.advance",
+          "line": 439,
+          "end_line": 444
+        },
+        {
+          "symbol": "BoundedCoordinator._advance_once",
+          "line": 446,
+          "end_line": 502
+        },
+        {
+          "symbol": "BoundedCoordinator.run",
+          "line": 504,
+          "end_line": 515
+        },
+        {
+          "symbol": "BoundedCoordinator.report",
+          "line": 517,
+          "end_line": 518
+        },
+        {
+          "symbol": "BoundedCoordinator.pause",
+          "line": 520,
+          "end_line": 521
+        },
+        {
+          "symbol": "BoundedCoordinator.cancel",
+          "line": 523,
+          "end_line": 524
+        },
+        {
+          "symbol": "BoundedCoordinator._control",
+          "line": 526,
+          "end_line": 545
+        },
+        {
+          "symbol": "BoundedCoordinator._reconcile_stat",
+          "line": 547,
+          "end_line": 605
+        },
+        {
+          "symbol": "BoundedCoordinator.resume",
+          "line": 607,
+          "end_line": 646
+        },
+        {
+          "symbol": "StopBeforeDispatch",
+          "line": 649,
+          "end_line": 650
+        }
+      ]
+    },
+    {
+      "path": "src/causalops/application/automation_results.py",
+      "sha256": "421eeff1a2a286d4d267cc7264285576d16789c5f4d37ae42b4cc8afd10b7380",
+      "symbols": [
+        {
+          "symbol": "_reason",
+          "line": 12,
+          "end_line": 13
+        },
+        {
+          "symbol": "snapshot",
+          "line": 15,
+          "end_line": 50
+        },
+        {
+          "symbol": "report_html",
+          "line": 52,
+          "end_line": 75
+        },
+        {
+          "symbol": "export_json",
+          "line": 77,
+          "end_line": 78
+        }
+      ]
+    },
+    {
+      "path": "src/causalops/application/automation_budget.py",
+      "sha256": "ee30baf22a1cc4380943fe9d7c4bf82b1eb2dcc2aa3e41e42ed2a100e22c06ab",
+      "symbols": [
+        {
+          "symbol": "BudgetExceeded",
+          "line": 8,
+          "end_line": 8
+        },
+        {
+          "symbol": "active_budget",
+          "line": 11,
+          "end_line": 12
+        },
+        {
+          "symbol": "BudgetLedger",
+          "line": 14,
+          "end_line": 148
+        },
+        {
+          "symbol": "BudgetLedger.__init__",
+          "line": 17,
+          "end_line": 37
+        },
+        {
+          "symbol": "BudgetLedger.validate_policy",
+          "line": 38,
+          "end_line": 41
+        },
+        {
+          "symbol": "BudgetLedger.configure_price",
+          "line": 43,
+          "end_line": 57
+        },
+        {
+          "symbol": "BudgetLedger._price",
+          "line": 59,
+          "end_line": 61
+        },
+        {
+          "symbol": "BudgetLedger.check",
+          "line": 63,
+          "end_line": 70
+        },
+        {
+          "symbol": "BudgetLedger._record_stop",
+          "line": 71,
+          "end_line": 76
+        },
+        {
+          "symbol": "BudgetLedger.reserve_model",
+          "line": 78,
+          "end_line": 82
+        },
+        {
+          "symbol": "BudgetLedger._reserve_model",
+          "line": 84,
+          "end_line": 102
+        },
+        {
+          "symbol": "BudgetLedger.receipt",
+          "line": 103,
+          "end_line": 112
+        },
+        {
+          "symbol": "BudgetLedger.revision",
+          "line": 113,
+          "end_line": 117
+        },
+        {
+          "symbol": "BudgetLedger._revision",
+          "line": 119,
+          "end_line": 127
+        },
+        {
+          "symbol": "BudgetLedger.snapshot",
+          "line": 128,
+          "end_line": 143
+        },
+        {
+          "symbol": "BudgetLedger.model_scope",
+          "line": 145,
+          "end_line": 148
+        }
+      ]
+    },
+    {
+      "path": "src/causalops/application/research_quality.py",
+      "sha256": "ef705a1fb05407735ae56b33c33930d7b53876a9f6fb5f7c56321e5a54335b51",
+      "symbols": [
+        {
+          "symbol": "audit_research",
+          "line": 10,
+          "end_line": 68
+        },
+        {
+          "symbol": "research_brief",
+          "line": 70,
+          "end_line": 82
+        },
+        {
+          "symbol": "method_contract",
+          "line": 85,
+          "end_line": 112
+        },
+        {
+          "symbol": "next_research_steps",
+          "line": 115,
+          "end_line": 128
+        }
+      ]
+    },
+    {
+      "path": "src/causalops/application/research_service.py",
+      "sha256": "de7e2941a3796cb90f3e40b6cff9fdd493fc98562646054a8fdccd99de852e26",
+      "symbols": [
+        {
+          "symbol": "FlowCancelled",
+          "line": 17,
+          "end_line": 18
+        },
+        {
+          "symbol": "RouteDecision",
+          "line": 20,
+          "end_line": 24
+        },
+        {
+          "symbol": "ToolGateway",
+          "line": 26,
+          "end_line": 46
+        },
+        {
+          "symbol": "ToolGateway.__init__",
+          "line": 28,
+          "end_line": 28
+        },
+        {
+          "symbol": "ToolGateway.methods",
+          "line": 29,
+          "end_line": 36
+        },
+        {
+          "symbol": "ToolGateway.execute",
+          "line": 37,
+          "end_line": 40
+        },
+        {
+          "symbol": "ToolGateway.answer",
+          "line": 41,
+          "end_line": 46
+        },
+        {
+          "symbol": "ResearchService",
+          "line": 48,
+          "end_line": 508
+        },
+        {
+          "symbol": "ResearchService.__init__",
+          "line": 50,
+          "end_line": 62
+        },
+        {
+          "symbol": "ResearchService.automation_v2",
+          "line": 63,
+          "end_line": 66
+        },
+        {
+          "symbol": "ResearchService.create_task",
+          "line": 68,
+          "end_line": 73
+        },
+        {
+          "symbol": "ResearchService.flow",
+          "line": 74,
+          "end_line": 79
+        },
+        {
+          "symbol": "ResearchService.flows",
+          "line": 80,
+          "end_line": 83
+        },
+        {
+          "symbol": "ResearchService.update",
+          "line": 84,
+          "end_line": 88
+        },
+        {
+          "symbol": "ResearchService.emit",
+          "line": 89,
+          "end_line": 93
+        },
+        {
+          "symbol": "ResearchService.events",
+          "line": 94,
+          "end_line": 96
+        },
+        {
+          "symbol": "ResearchService.output",
+          "line": 97,
+          "end_line": 100
+        },
+        {
+          "symbol": "ResearchService.save_output",
+          "line": 101,
+          "end_line": 104
+        },
+        {
+          "symbol": "ResearchService.data_binding",
+          "line": 105,
+          "end_line": 108
+        },
+        {
+          "symbol": "ResearchService.begin",
+          "line": 109,
+          "end_line": 191
+        },
+        {
+          "symbol": "ResearchService.start",
+          "line": 192,
+          "end_line": 195
+        },
+        {
+          "symbol": "ResearchService.graph",
+          "line": 197,
+          "end_line": 201
+        },
+        {
+          "symbol": "ResearchService._drive",
+          "line": 202,
+          "end_line": 216
+        },
+        {
+          "symbol": "ResearchService.check_cancel",
+          "line": 217,
+          "end_line": 218
+        },
+        {
+          "symbol": "ResearchService.cancel",
+          "line": 219,
+          "end_line": 226
+        },
+        {
+          "symbol": "ResearchService.continue_flow",
+          "line": 227,
+          "end_line": 240
+        },
+        {
+          "symbol": "ResearchService.resume",
+          "line": 241,
+          "end_line": 251
+        },
+        {
+          "symbol": "ResearchService.save_execution",
+          "line": 252,
+          "end_line": 255
+        },
+        {
+          "symbol": "ResearchService.propose_researched",
+          "line": 256,
+          "end_line": 305
+        },
+        {
+          "symbol": "ResearchService.withdraw_replaced_candidate",
+          "line": 306,
+          "end_line": 325
+        },
+        {
+          "symbol": "ResearchService.review",
+          "line": 327,
+          "end_line": 367
+        },
+        {
+          "symbol": "ResearchService.verify_approval",
+          "line": 368,
+          "end_line": 385
+        },
+        {
+          "symbol": "ResearchService.decide_route",
+          "line": 386,
+          "end_line": 503
+        },
+        {
+          "symbol": "ResearchService.snapshot",
+          "line": 504,
+          "end_line": 508
+        }
+      ]
+    },
+    {
+      "path": "src/causalops/assistant/contracts.py",
+      "sha256": "c1968f08b8d268ac060045eb1f3c6da1509da596a5ecd5d817d3d24eb1e69761",
+      "symbols": [
+        {
+          "symbol": "MethodSpec",
+          "line": 11,
+          "end_line": 19
+        },
+        {
+          "symbol": "MethodSpec.json",
+          "line": 18,
+          "end_line": 19
+        },
+        {
+          "symbol": "ToolResult",
+          "line": 29,
+          "end_line": 42
+        },
+        {
+          "symbol": "AnalysisTools",
+          "line": 44,
+          "end_line": 112
+        },
+        {
+          "symbol": "AnalysisTools.__init__",
+          "line": 45,
+          "end_line": 45
+        },
+        {
+          "symbol": "AnalysisTools.method",
+          "line": 46,
+          "end_line": 49
+        },
+        {
+          "symbol": "AnalysisTools.catalog",
+          "line": 50,
+          "end_line": 50
+        },
+        {
+          "symbol": "AnalysisTools.schema",
+          "line": 51,
+          "end_line": 56
+        },
+        {
+          "symbol": "AnalysisTools.schemas",
+          "line": 57,
+          "end_line": 62
+        },
+        {
+          "symbol": "AnalysisTools.prepare",
+          "line": 63,
+          "end_line": 77
+        },
+        {
+          "symbol": "AnalysisTools.reconcile",
+          "line": 78,
+          "end_line": 91
+        },
+        {
+          "symbol": "AnalysisTools.execute",
+          "line": 92,
+          "end_line": 99
+        },
+        {
+          "symbol": "AnalysisTools.envelope",
+          "line": 100,
+          "end_line": 112
+        }
+      ]
+    },
+    {
+      "path": "src/causalops/assistant/service.py",
+      "sha256": "56c442e31a113d2a549559a4efee891d9f82c278611254c391b37639a60b65b4",
+      "symbols": [
+        {
+          "symbol": "now",
+          "line": 15,
+          "end_line": 15
+        },
+        {
+          "symbol": "digest",
+          "line": 16,
+          "end_line": 16
+        },
+        {
+          "symbol": "ModelRequestFailure",
+          "line": 17,
+          "end_line": 18
+        },
+        {
+          "symbol": "check_run_mentions",
+          "line": 21,
+          "end_line": 26
+        },
+        {
+          "symbol": "check_question",
+          "line": 29,
+          "end_line": 32
+        },
+        {
+          "symbol": "Step",
+          "line": 33,
+          "end_line": 37
+        },
+        {
+          "symbol": "Plan",
+          "line": 38,
+          "end_line": 44
+        },
+        {
+          "symbol": "GroundedReply",
+          "line": 45,
+          "end_line": 49
+        },
+        {
+          "symbol": "profile",
+          "line": 51,
+          "end_line": 57
+        },
+        {
+          "symbol": "safe_profile",
+          "line": 59,
+          "end_line": 60
+        },
+        {
+          "symbol": "friendly_fact_label",
+          "line": 62,
+          "end_line": 65
+        },
+        {
+          "symbol": "display_number",
+          "line": 67,
+          "end_line": 73
+        },
+        {
+          "symbol": "AssistantWorkspace",
+          "line": 75,
+          "end_line": 596
+        },
+        {
+          "symbol": "AssistantWorkspace.__init__",
+          "line": 76,
+          "end_line": 87
+        },
+        {
+          "symbol": "AssistantWorkspace.sessions",
+          "line": 88,
+          "end_line": 89
+        },
+        {
+          "symbol": "AssistantWorkspace.create",
+          "line": 90,
+          "end_line": 93
+        },
+        {
+          "symbol": "AssistantWorkspace.session",
+          "line": 94,
+          "end_line": 97
+        },
+        {
+          "symbol": "AssistantWorkspace.event",
+          "line": 98,
+          "end_line": 100
+        },
+        {
+          "symbol": "AssistantWorkspace.events",
+          "line": 101,
+          "end_line": 103
+        },
+        {
+          "symbol": "AssistantWorkspace.plans",
+          "line": 104,
+          "end_line": 107
+        },
+        {
+          "symbol": "AssistantWorkspace._plan",
+          "line": 108,
+          "end_line": 111
+        },
+        {
+          "symbol": "AssistantWorkspace.get_plan",
+          "line": 112,
+          "end_line": 115
+        },
+        {
+          "symbol": "AssistantWorkspace.consent",
+          "line": 116,
+          "end_line": 119
+        },
+        {
+          "symbol": "AssistantWorkspace.consent_enabled",
+          "line": 120,
+          "end_line": 127
+        },
+        {
+          "symbol": "AssistantWorkspace.external_payload",
+          "line": 128,
+          "end_line": 133
+        },
+        {
+          "symbol": "AssistantWorkspace._call",
+          "line": 134,
+          "end_line": 154
+        },
+        {
+          "symbol": "AssistantWorkspace.validate_plan",
+          "line": 155,
+          "end_line": 186
+        },
+        {
+          "symbol": "AssistantWorkspace.store_plan",
+          "line": 187,
+          "end_line": 201
+        },
+        {
+          "symbol": "AssistantWorkspace.propose",
+          "line": 202,
+          "end_line": 255
+        },
+        {
+          "symbol": "AssistantWorkspace.refine",
+          "line": 256,
+          "end_line": 258
+        },
+        {
+          "symbol": "AssistantWorkspace.reject",
+          "line": 259,
+          "end_line": 264
+        },
+        {
+          "symbol": "AssistantWorkspace.accept",
+          "line": 265,
+          "end_line": 273
+        },
+        {
+          "symbol": "AssistantWorkspace.tasks",
+          "line": 274,
+          "end_line": 276
+        },
+        {
+          "symbol": "AssistantWorkspace.completed_runs",
+          "line": 277,
+          "end_line": 282
+        },
+        {
+          "symbol": "AssistantWorkspace.selected_run",
+          "line": 283,
+          "end_line": 288
+        },
+        {
+          "symbol": "AssistantWorkspace.select_run",
+          "line": 289,
+          "end_line": 293
+        },
+        {
+          "symbol": "AssistantWorkspace.cancel",
+          "line": 294,
+          "end_line": 295
+        },
+        {
+          "symbol": "AssistantWorkspace.resume",
+          "line": 296,
+          "end_line": 298
+        },
+        {
+          "symbol": "AssistantWorkspace.recover",
+          "line": 299,
+          "end_line": 319
+        },
+        {
+          "symbol": "AssistantWorkspace.execute",
+          "line": 320,
+          "end_line": 366
+        },
+        {
+          "symbol": "AssistantWorkspace.facts",
+          "line": 367,
+          "end_line": 443
+        },
+        {
+          "symbol": "AssistantWorkspace.export_readonly",
+          "line": 444,
+          "end_line": 453
+        },
+        {
+          "symbol": "AssistantWorkspace.ask",
+          "line": 454,
+          "end_line": 596
+        }
+      ]
+    },
+    {
+      "path": "src/causalops/estimators/randomized.py",
+      "sha256": "b24bfd01a2035bfd7353fa40e0e0e4b42861fc468b7f1e44e15b91bab00d5884",
+      "symbols": [
+        {
+          "symbol": "_validate_randomized",
+          "line": 15,
+          "end_line": 34
+        },
+        {
+          "symbol": "_difference_in_means",
+          "line": 37,
+          "end_line": 57
+        },
+        {
+          "symbol": "_covariate_balance",
+          "line": 60,
+          "end_line": 70
+        },
+        {
+          "symbol": "estimate_ab_test",
+          "line": 73,
+          "end_line": 108
+        },
+        {
+          "symbol": "estimate_cuped",
+          "line": 111,
+          "end_line": 169
+        }
+      ]
+    },
+    {
+      "path": "src/causalops/schemas/core.py",
+      "sha256": "5a2e55dd4c60e9bc8647652c0b0244db6e8265d4b7f0fa41f82bcb3d4e400401",
+      "symbols": [
+        {
+          "symbol": "DomainName",
+          "line": 10,
+          "end_line": 16
+        },
+        {
+          "symbol": "CausalMethod",
+          "line": 19,
+          "end_line": 30
+        },
+        {
+          "symbol": "ClaimLevel",
+          "line": 33,
+          "end_line": 37
+        },
+        {
+          "symbol": "AssignmentMechanism",
+          "line": 40,
+          "end_line": 44
+        },
+        {
+          "symbol": "DataStructure",
+          "line": 47,
+          "end_line": 51
+        },
+        {
+          "symbol": "GateStatus",
+          "line": 54,
+          "end_line": 57
+        },
+        {
+          "symbol": "CausalSpec",
+          "line": 60,
+          "end_line": 98
+        },
+        {
+          "symbol": "CausalSpec.validate_design",
+          "line": 86,
+          "end_line": 98
+        },
+        {
+          "symbol": "IdentificationCheck",
+          "line": 101,
+          "end_line": 107
+        },
+        {
+          "symbol": "IdentificationDecision",
+          "line": 110,
+          "end_line": 119
+        },
+        {
+          "symbol": "AnalysisPlan",
+          "line": 122,
+          "end_line": 131
+        },
+        {
+          "symbol": "DiagnosticResult",
+          "line": 134,
+          "end_line": 142
+        },
+        {
+          "symbol": "EstimateResult",
+          "line": 145,
+          "end_line": 153
+        },
+        {
+          "symbol": "ResultBundle",
+          "line": 156,
+          "end_line": 167
+        }
+      ]
+    },
+    {
+      "path": "src/causalops/integrations/method_retriever.py",
+      "sha256": "642e889c1a55011525344dc4352f175994d7bfd79583a73a6179293e548c46a4",
+      "symbols": [
+        {
+          "symbol": "MethodRetriever",
+          "line": 8,
+          "end_line": 28
+        },
+        {
+          "symbol": "MethodRetriever._get_relevant_documents",
+          "line": 13,
+          "end_line": 19
+        },
+        {
+          "symbol": "MethodRetriever.search_bundle",
+          "line": 21,
+          "end_line": 28
+        }
+      ]
+    },
+    {
+      "path": "src/causalops/knowledge/retrieval.py",
+      "sha256": "b668a71c134f293710607f001ad75476fc99b34ce84b86939c74e8165694f06d",
+      "symbols": [
+        {
+          "symbol": "MethodLibrary",
+          "line": 18,
+          "end_line": 70
+        },
+        {
+          "symbol": "MethodLibrary.__init__",
+          "line": 19,
+          "end_line": 29
+        },
+        {
+          "symbol": "MethodLibrary._empty",
+          "line": 30,
+          "end_line": 30
+        },
+        {
+          "symbol": "MethodLibrary.search",
+          "line": 31,
+          "end_line": 57
+        },
+        {
+          "symbol": "MethodLibrary.validate_citations",
+          "line": 58,
+          "end_line": 70
+        }
+      ]
+    },
+    {
+      "path": "src/causalops/orchestration/research_graph.py",
+      "sha256": "7966de53678a75f4a8e2d76d4cc7c92d92bca43d8f42d1f11a2a71b173173afe",
+      "symbols": [
+        {
+          "symbol": "ResearchState",
+          "line": 14,
+          "end_line": 19
+        },
+        {
+          "symbol": "MethodExplanation",
+          "line": 21,
+          "end_line": 24
+        },
+        {
+          "symbol": "build_graph",
+          "line": 26,
+          "end_line": 195
+        }
+      ]
+    },
+    {
+      "path": "src/causalops/ui/automation_app.py",
+      "sha256": "583173984e3e06d6fe24e5aeb574ddadc3f08c5f52d25982447984e3840382a8",
+      "symbols": [
+        {
+          "symbol": "_open",
+          "line": 14,
+          "end_line": 17
+        },
+        {
+          "symbol": "_new",
+          "line": 19,
+          "end_line": 22
+        },
+        {
+          "symbol": "_create",
+          "line": 24,
+          "end_line": 50
+        },
+        {
+          "symbol": "_budget",
+          "line": 52,
+          "end_line": 63
+        },
+        {
+          "symbol": "_plan",
+          "line": 65,
+          "end_line": 97
+        },
+        {
+          "symbol": "_live",
+          "line": 99,
+          "end_line": 150
+        },
+        {
+          "symbol": "render",
+          "line": 152,
+          "end_line": 183
+        }
+      ]
+    },
+    {
+      "path": "src/causalops/sample_data/hillstrom.py",
+      "sha256": "0f81bf0193ba011ab778267107204f601afb19956d3bffafccbd1404f3a14f5e",
+      "symbols": [
+        {
+          "symbol": "cohort",
+          "line": 14,
+          "end_line": 24
+        },
+        {
+          "symbol": "contract",
+          "line": 27,
+          "end_line": 38
+        }
+      ]
+    },
+    {
+      "path": "src/causalops/results/rate_units.py",
+      "sha256": "74b005474ce672000580debe846071b6e3b8d6468689b371d8daa8727aed4144",
+      "symbols": [
+        {
+          "symbol": "rate_contrast",
+          "line": 5,
+          "end_line": 30
+        }
+      ]
+    },
+    {
+      "path": "src/causalops/application/background.py",
+      "sha256": "742f099f2855beec68016f073ca63441407822508cf6953325873d5262f08450",
+      "symbols": [
+        {
+          "symbol": "BackgroundJobs",
+          "line": 14,
+          "end_line": 114
+        },
+        {
+          "symbol": "BackgroundJobs.__init__",
+          "line": 15,
+          "end_line": 19
+        },
+        {
+          "symbol": "BackgroundJobs.jobs",
+          "line": 20,
+          "end_line": 24
+        },
+        {
+          "symbol": "BackgroundJobs.job",
+          "line": 25,
+          "end_line": 29
+        },
+        {
+          "symbol": "BackgroundJobs.submit_start",
+          "line": 30,
+          "end_line": 33
+        },
+        {
+          "symbol": "BackgroundJobs.capacity",
+          "line": 34,
+          "end_line": 36
+        },
+        {
+          "symbol": "BackgroundJobs.submit",
+          "line": 37,
+          "end_line": 60
+        },
+        {
+          "symbol": "BackgroundJobs._run",
+          "line": 61,
+          "end_line": 84
+        },
+        {
+          "symbol": "BackgroundJobs.cancel",
+          "line": 85,
+          "end_line": 94
+        },
+        {
+          "symbol": "BackgroundJobs.reconcile",
+          "line": 95,
+          "end_line": 106
+        },
+        {
+          "symbol": "BackgroundJobs.resume",
+          "line": 107,
+          "end_line": 114
+        },
+        {
+          "symbol": "AutomationJobs",
+          "line": 117,
+          "end_line": 168
+        },
+        {
+          "symbol": "AutomationJobs.__init__",
+          "line": 119,
+          "end_line": 123
+        },
+        {
+          "symbol": "AutomationJobs.jobs",
+          "line": 124,
+          "end_line": 128
+        },
+        {
+          "symbol": "AutomationJobs.reconcile",
+          "line": 129,
+          "end_line": 136
+        },
+        {
+          "symbol": "AutomationJobs.submit_task",
+          "line": 137,
+          "end_line": 154
+        },
+        {
+          "symbol": "AutomationJobs._run_task",
+          "line": 155,
+          "end_line": 168
+        }
+      ]
+    },
+    {
+      "path": "src/causalops/assistant/runtime.py",
+      "sha256": "ff45248db9284f831e69a31876e4fb2b287af2b509f2e8546398d9c5d183ca0d",
+      "symbols": [
+        {
+          "symbol": "execution_source_sha",
+          "line": 7,
+          "end_line": 13
+        },
+        {
+          "symbol": "process_birth",
+          "line": 15,
+          "end_line": 40
+        },
+        {
+          "symbol": "alive",
+          "line": 42,
+          "end_line": 45
+        },
+        {
+          "symbol": "TaskRuntime",
+          "line": 47,
+          "end_line": 107
+        }
+      ]
+    }
+  ]
+}

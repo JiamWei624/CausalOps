@@ -1,0 +1,229 @@
+{
+  "source_url": "https://blog.minethatdata.com/2008/03/minethatdata-e-mail-analytics-and-data.html",
+  "download_url": "https://hillstorm1.s3.us-east-2.amazonaws.com/hillstorm_no_indices.csv.gz",
+  "archive_sha256": "bab6578f60db5d792f1c2372c502f029152a5249cf5ea84390f3b7f885d7234f",
+  "task_id": "c21f63fa57a44bfab1b62cba053442fe",
+  "plan": {
+    "schema_version": "automation-v2-stage1",
+    "plan_id": "1c8dedfcfe7b4d8a892f2977a960e723",
+    "version": 1,
+    "objective": "使用 A/B 随机实验比较男装邮件与未发邮件客户在两周内的访问率，并给出绝对差与区间。",
+    "data": {
+      "upload_id": "3df734138678a6c628c9a8a26403a406d7e4ece9c2f96eb4e39fe9dbc3dd967b",
+      "frame_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226",
+      "parquet_sha": "1e8c21fc2c5f793dbbe0fb1c91744e0f1797bb45fb2ba0bca82c17d31d253785"
+    },
+    "contract_ref": {
+      "id": "01dac8f4b31a4fe28dfb2c1e203489cb",
+      "version": 1,
+      "sha": "8865c2cffc0b8135f2170dcd1ffbc4dc4a4d516325871e7cfb5d074f49028412",
+      "data_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+    },
+    "scope": {
+      "analysis_unit": "客户",
+      "entity": "entity_id",
+      "outcome": "visit",
+      "metric": "两周访问率",
+      "unit": "概率",
+      "window": "分配后两周",
+      "treatment": "assigned",
+      "groups": {
+        "0": "未发邮件",
+        "1": "男装邮件"
+      },
+      "inclusion": [
+        "Mens E-Mail",
+        "No E-Mail"
+      ],
+      "missing_policy": "stop",
+      "assignment_source": "https://blog.minethatdata.com/2008/03/minethatdata-e-mail-analytics-and-data.html"
+    },
+    "source_sha": "0a2e80ddf294772fc90d0a29354c5b50c8d7d6c8a12b83cf805e5d5129c69373",
+    "steps": [
+      {
+        "step_id": "S01",
+        "kind": "audit",
+        "tool": "audit",
+        "config": {
+          "strict_missing": true
+        },
+        "depends_on": [],
+        "inputs": [],
+        "output_type": "AuditEvidence",
+        "preconditions": [
+          "approved_binding"
+        ],
+        "authorization": "whole_plan_and_step_recheck",
+        "failure_policy": "stop_descendants_no_automatic_retry"
+      },
+      {
+        "step_id": "S02",
+        "kind": "statistical",
+        "tool": "exploration",
+        "config": {
+          "question": "核对两组客户的两周访问指标及有效样本分布",
+          "method": "descriptive",
+          "numeric": [
+            "visit"
+          ],
+          "categorical": [
+            "assigned"
+          ],
+          "group": "assigned",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "frequency": "M",
+          "outcome": null,
+          "predictors": [],
+          "covariance": "HC3",
+          "cluster": null,
+          "maxlags": 1,
+          "independent_rows_reviewed": false,
+          "allow_complete_case": false,
+          "comparable_exposure_reviewed": false
+        },
+        "depends_on": [
+          "S01"
+        ],
+        "inputs": [
+          {
+            "producer": "S01",
+            "evidence_type": "AuditEvidence"
+          }
+        ],
+        "output_type": "DescriptiveRun",
+        "preconditions": [
+          "approved_binding",
+          "upstream_success"
+        ],
+        "authorization": "whole_plan_and_step_recheck",
+        "failure_policy": "stop_descendants_no_automatic_retry"
+      },
+      {
+        "step_id": "S03",
+        "kind": "gate",
+        "tool": "gate",
+        "config": {
+          "rule": "strict_binary_two_arm_v1"
+        },
+        "depends_on": [
+          "S01",
+          "S02"
+        ],
+        "inputs": [
+          {
+            "producer": "S01",
+            "evidence_type": "AuditEvidence"
+          },
+          {
+            "producer": "S02",
+            "evidence_type": "DescriptiveRun"
+          }
+        ],
+        "output_type": "GateEvidence",
+        "preconditions": [
+          "approved_binding",
+          "upstream_success"
+        ],
+        "authorization": "whole_plan_and_step_recheck",
+        "failure_policy": "stop_descendants_no_automatic_retry"
+      },
+      {
+        "step_id": "S04",
+        "kind": "statistical",
+        "tool": "research",
+        "config": {
+          "question": "使用 A/B 随机实验比较男装邮件与未发邮件客户在两周内的访问率，并给出绝对差与区间。",
+          "analysis_unit": "客户",
+          "method": "ab_test",
+          "treatment": "assigned",
+          "control_value": "0",
+          "treated_value": "1",
+          "outcome": "visit",
+          "entity": "entity_id",
+          "covariates": [],
+          "cluster": null,
+          "time": null,
+          "treatment_time": null,
+          "pre_days": 7,
+          "post_days": 7,
+          "allow_complete_case": false,
+          "covariates_reviewed": false,
+          "overlap_declared": false,
+          "exchangeability_declared": false,
+          "parallel_declared": false,
+          "no_anticipation_declared": false,
+          "panel_confirmed": false,
+          "metric": {
+            "label": "两周访问率",
+            "unit": "概率",
+            "kind": "binary",
+            "direction": "higher_is_better",
+            "ratio_scale": true,
+            "window": "分配后两周",
+            "source": "https://blog.minethatdata.com/2008/03/minethatdata-e-mail-analytics-and-data.html"
+          }
+        },
+        "depends_on": [
+          "S03"
+        ],
+        "inputs": [
+          {
+            "producer": "S03",
+            "evidence_type": "GateEvidence"
+          }
+        ],
+        "output_type": "EffectRun",
+        "preconditions": [
+          "approved_binding",
+          "upstream_success",
+          "cohort_consistency"
+        ],
+        "authorization": "whole_plan_and_step_recheck",
+        "failure_policy": "stop_descendants_no_automatic_retry"
+      },
+      {
+        "step_id": "S05",
+        "kind": "report",
+        "tool": "report",
+        "config": {
+          "model_calls": 0
+        },
+        "depends_on": [
+          "S01",
+          "S02",
+          "S03",
+          "S04"
+        ],
+        "inputs": [
+          {
+            "producer": "S01",
+            "evidence_type": "AuditEvidence"
+          },
+          {
+            "producer": "S02",
+            "evidence_type": "DescriptiveRun"
+          },
+          {
+            "producer": "S03",
+            "evidence_type": "GateEvidence"
+          },
+          {
+            "producer": "S04",
+            "evidence_type": "EffectRun"
+          }
+        ],
+        "output_type": "ReportManifest",
+        "preconditions": [
+          "approved_binding",
+          "upstream_success"
+        ],
+        "authorization": "whole_plan_and_step_recheck",
+        "failure_policy": "stop_descendants_no_automatic_retry"
+      }
+    ],
+    "model_requests": 0
+  },
+  "approval_id": "8b7684cedb5146d49755825f9cb715a8"
+}

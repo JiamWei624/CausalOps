@@ -26,4 +26,4 @@ def test_beta_metadata_consistent():
  import tomllib
  from causalops import __version__
  assert __version__==tomllib.loads((ROOT/'pyproject.toml').read_text(encoding='utf8'))['project']['version']
- assert '0.17.0b1' in (ROOT/'README.md').read_text(encoding='utf8')
+ assert __version__ in (ROOT/'README.md').read_text(encoding='utf8')

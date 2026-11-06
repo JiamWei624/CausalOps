@@ -1,0 +1,238 @@
+[
+  {
+    "batch": "browser01",
+    "log_sha256": "3f471db5784736bbeded929fcfd5f884c4ae0df8c304b79cc5f4a33fd4445496",
+    "source_sha": "6b3a0ac2c30e96816f20edf3abc035f893e3c5dfbc56f0cd46b4a972d591d3ad",
+    "samples": 1105,
+    "visible_identity_mismatches": 15,
+    "native_records_unchanged": true,
+    "results": [
+      {
+        "case": "A-complete",
+        "status": "passed",
+        "seconds": 14.118,
+        "effective_actions": 13
+      },
+      {
+        "case": "B-unknown-design",
+        "status": "failed",
+        "seconds": 32.721,
+        "effective_actions": 5
+      },
+      {
+        "case": "C-foreign",
+        "status": "failed",
+        "seconds": 31.687,
+        "effective_actions": 2
+      },
+      {
+        "case": "C-metric",
+        "status": "failed",
+        "seconds": 31.161,
+        "effective_actions": 2
+      },
+      {
+        "case": "C-unit",
+        "status": "failed",
+        "seconds": 30.974,
+        "effective_actions": 2
+      },
+      {
+        "case": "C-window",
+        "status": "failed",
+        "seconds": 31.168,
+        "effective_actions": 2
+      },
+      {
+        "case": "C-hash",
+        "status": "failed",
+        "seconds": 31.578,
+        "effective_actions": 2
+      },
+      {
+        "case": "switch-consistency",
+        "status": "failed",
+        "seconds": 35.347,
+        "effective_actions": 2
+      },
+      {
+        "case": "transition-identity",
+        "status": "failed"
+      }
+    ]
+  },
+  {
+    "batch": "browser02",
+    "log_sha256": "073cf6d5a929541970f0d8fd72be3929693c410b5621356ad63ab1acbcc57aa7",
+    "source_sha": "6b3a0ac2c30e96816f20edf3abc035f893e3c5dfbc56f0cd46b4a972d591d3ad",
+    "samples": 849,
+    "visible_identity_mismatches": 0,
+    "native_records_unchanged": true,
+    "results": [
+      {
+        "case": "A-complete",
+        "status": "passed",
+        "seconds": 13.893,
+        "effective_actions": 13
+      },
+      {
+        "case": "B-unknown-design",
+        "status": "passed",
+        "seconds": 25.105,
+        "effective_actions": 13
+      },
+      {
+        "case": "C-foreign",
+        "status": "failed",
+        "seconds": 31.683,
+        "effective_actions": 4
+      },
+      {
+        "case": "C-metric",
+        "status": "failed",
+        "seconds": 31.663,
+        "effective_actions": 4
+      },
+      {
+        "case": "C-unit",
+        "status": "failed",
+        "seconds": 31.247,
+        "effective_actions": 4
+      },
+      {
+        "case": "C-window",
+        "status": "failed",
+        "seconds": 31.66,
+        "effective_actions": 4
+      },
+      {
+        "case": "C-hash",
+        "status": "failed",
+        "seconds": 31.708,
+        "effective_actions": 4
+      },
+      {
+        "case": "switch-consistency",
+        "status": "failed",
+        "seconds": 35.066,
+        "effective_actions": 4
+      }
+    ]
+  },
+  {
+    "batch": "browser03",
+    "log_sha256": "964e221130be1cdca72ae1c3135b7c553b5a0567ce44e62b823a3563548b8571",
+    "source_sha": "5c80c4911234d13632fab7be2e71e2f1fff5571e1c391d1a507b891577fd6038",
+    "samples": 1095,
+    "visible_identity_mismatches": 0,
+    "native_records_unchanged": true,
+    "results": [
+      {
+        "case": "A-complete",
+        "status": "failed",
+        "seconds": 12.109,
+        "effective_actions": 7
+      },
+      {
+        "case": "B-unknown-design",
+        "status": "passed",
+        "seconds": 33.841,
+        "effective_actions": 13
+      },
+      {
+        "case": "C-foreign",
+        "status": "passed",
+        "seconds": 6.094,
+        "effective_actions": 9
+      },
+      {
+        "case": "C-metric",
+        "status": "passed",
+        "seconds": 9.675,
+        "effective_actions": 9
+      },
+      {
+        "case": "C-unit",
+        "status": "passed",
+        "seconds": 10.245,
+        "effective_actions": 9
+      },
+      {
+        "case": "C-window",
+        "status": "passed",
+        "seconds": 11.172,
+        "effective_actions": 9
+      },
+      {
+        "case": "C-hash",
+        "status": "passed",
+        "seconds": 6.647,
+        "effective_actions": 9
+      },
+      {
+        "case": "switch-consistency",
+        "status": "failed",
+        "seconds": 40.241,
+        "effective_actions": 10
+      }
+    ]
+  },
+  {
+    "batch": "browser04",
+    "log_sha256": "3b28b56eb85d96ba909170b5835b4588e4a9ba6f8e299d67347c3ab2553253e6",
+    "source_sha": "5c80c4911234d13632fab7be2e71e2f1fff5571e1c391d1a507b891577fd6038",
+    "samples": 1127,
+    "visible_identity_mismatches": 0,
+    "native_records_unchanged": true,
+    "results": [
+      {
+        "case": "A-complete",
+        "status": "passed",
+        "seconds": 18.169,
+        "effective_actions": 13
+      },
+      {
+        "case": "B-unknown-design",
+        "status": "passed",
+        "seconds": 29.521,
+        "effective_actions": 13
+      },
+      {
+        "case": "C-foreign",
+        "status": "passed",
+        "seconds": 5.802,
+        "effective_actions": 9
+      },
+      {
+        "case": "C-metric",
+        "status": "passed",
+        "seconds": 8.848,
+        "effective_actions": 9
+      },
+      {
+        "case": "C-unit",
+        "status": "passed",
+        "seconds": 8.77,
+        "effective_actions": 9
+      },
+      {
+        "case": "C-window",
+        "status": "passed",
+        "seconds": 9.015,
+        "effective_actions": 9
+      },
+      {
+        "case": "C-hash",
+        "status": "passed",
+        "seconds": 5.832,
+        "effective_actions": 9
+      },
+      {
+        "case": "switch-consistency",
+        "status": "passed",
+        "seconds": 24.384,
+        "effective_actions": 31
+      }
+    ]
+  }
+]

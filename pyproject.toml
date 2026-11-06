@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "causalops-agent"
-version = "0.17.0b1"
+version = "0.18.0b1"
 description = "Evidence-gated causal analytics and decision agent."
 readme = "README.md"
 license = "MIT"

@@ -1,0 +1,35 @@
+{
+  "scope": "service_acceptance_not_browser_or_human_test",
+  "seconds": 29.437882799998988,
+  "A_report_id": "3d82d8c5a7e578cdacbef1eaeaa1a05d5780b8a18a3cc9c8698d58950eba5453",
+  "B_report_id": "6bd79a107676ac01ebaec780e6eb7beebef2e1b9bd0ba9af8459c3dbe0ea4310",
+  "C": [
+    {
+      "variant": "foreign_run",
+      "report_id": "cfa77641f1e8a49ad1927ca61bf9499d1f5bf6e4d06923e2f4d8211ab0997a25",
+      "no_statistical_side_effects": true
+    },
+    {
+      "variant": "metric",
+      "report_id": "daa944d0aaed61a1da06abf01cebb7ebf2ab394eb618985e7b4789663dadfedb",
+      "no_statistical_side_effects": true
+    },
+    {
+      "variant": "unit",
+      "report_id": "b794b2370bd2e1f347371549d9983538c0cd17f1f713de3f3f244a53b5d5c9bb",
+      "no_statistical_side_effects": true
+    },
+    {
+      "variant": "window",
+      "report_id": "430315c6dafe7e19b6b347e2e23fc7cd2c1b38347d01a171e484e1b28ddbe81d",
+      "no_statistical_side_effects": true
+    },
+    {
+      "variant": "hash",
+      "report_id": "9b26b0d2c92de0b7617b3f79b2456c963b134d954e7aad835c77046407656b5f",
+      "no_statistical_side_effects": true
+    }
+  ],
+  "original_A_preserved": true,
+  "model_requests": 0
+}

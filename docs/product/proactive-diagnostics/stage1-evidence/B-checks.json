@@ -1,0 +1,15 @@
+{
+  "before": {
+    "analysis_runs": 0,
+    "exploration_runs": 0,
+    "assistant_plans": 0,
+    "workflow_approvals": 0
+  },
+  "after": {
+    "analysis_runs": 0,
+    "exploration_runs": 0,
+    "assistant_plans": 0,
+    "workflow_approvals": 0
+  },
+  "no_plan_approval_or_run_created": true
+}

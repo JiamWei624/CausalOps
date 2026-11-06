@@ -1,0 +1,99 @@
+{
+  "artifact_type": "design_fixture_not_real_diagnostic",
+  "ids_and_hashes": "fictional; production resolution must reject these nonexistent references",
+  "finding": {
+    "schema_version": "diagnostic-finding-v1",
+    "finding_id": "design-finding-B",
+    "assessment_id": "design-assessment-B",
+    "context": {
+      "task_ref": {
+        "kind": "research_session",
+        "task_id": "design-preflight-B",
+        "session_id": "design-session-B"
+      },
+      "plan_ref": null,
+      "no_plan_reason": "只读预诊断，尚未生成正式计划",
+      "data_ref": {
+        "upload_id": "design-upload",
+        "frame_sha": "2222222222222222222222222222222222222222222222222222222222222222"
+      },
+      "contract_ref": {
+        "id": "design-contract",
+        "version": 1,
+        "sha": "3333333333333333333333333333333333333333333333333333333333333333",
+        "data_sha": "2222222222222222222222222222222222222222222222222222222222222222"
+      },
+      "run_refs": [],
+      "scope": {
+        "analysis_unit": "客户",
+        "outcome_field": "visit",
+        "metric_label": "两周访问率",
+        "statistic_type": "risk_difference",
+        "unit": "概率",
+        "observation_window": "分配后两周",
+        "group_labels": [
+          "未发邮件",
+          "男装邮件"
+        ],
+        "numerator": "各组访问客户数",
+        "denominator": "各分配组客户数",
+        "aggregation": "组内比例与概率差"
+      },
+      "fingerprint": "6666666666666666666666666666666666666666666666666666666666666666",
+      "phase": "preflight",
+      "provenance": {
+        "recorded_execution_source_sha": null,
+        "diagnostic_source_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "reading_mode": "preflight"
+      }
+    },
+    "rule": {
+      "id": "PD-02",
+      "version": "1",
+      "pack": "hillstrom-diagnostics-v1",
+      "check_method": "design_source_record_presence"
+    },
+    "diagnostic_type": "design",
+    "applicability": "applicable",
+    "check_performed": true,
+    "status": "unknown",
+    "result": {
+      "observed": null,
+      "expected": "可追溯且人工核对的分配设计依据",
+      "reason_code": "missing_design_source",
+      "missing_items": [
+        "公开设计来源",
+        "人工核对记录"
+      ]
+    },
+    "evidence_refs": [
+      {
+        "artifact_kind": "validation_observation",
+        "artifact_id": "design-observation",
+        "sha": "7777777777777777777777777777777777777777777777777777777777777777",
+        "json_pointer": "/checks",
+        "availability": "valid"
+      }
+    ],
+    "impact": {
+      "claim_effect": "descriptive_only",
+      "explanation": "只能说明分组数据，不能声称随机化；不生成AB效应。",
+      "execution_authority": "original_service_only"
+    },
+    "severity": {
+      "level": "major",
+      "policy_id": "hillstrom-diagnostics-v1",
+      "reason_code": "missing_design_source"
+    },
+    "human_confirmation_required": true,
+    "eligible_action_ids": [
+      "design-action-B"
+    ],
+    "generated_at": "2026-11-06T00:00:00+08:00",
+    "source": {
+      "mechanism": "declaration_record_check",
+      "origin": "human_declaration",
+      "generator_version": "design-only-v1"
+    }
+  }
+}

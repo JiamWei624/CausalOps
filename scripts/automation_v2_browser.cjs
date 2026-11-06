@@ -122,7 +122,7 @@ async function attempt(name,mode){
    await action('create_existing_single_plan',()=>button('创建研究任务并生成待审方案').click());
    await page.getByRole('radio',{name:'人工审核',exact:true}).waitFor();
    await action('open_existing_review',()=>page.getByRole('radiogroup',{name:'方案视图',exact:true}).getByText('人工审核',{exact:true}).click());
-   await action('review_existing_plan',()=>page.getByText('我已核对上述计划和本步骤必要事实，同意按当前数据与计划版本进行本地计算。',{exact:true}).click());
+   await action('review_existing_plan',()=>page.locator('.st-key-panel_approval').getByText('我已核对上述计划和本步骤必要事实，同意按当前数据与计划版本进行本地计算。',{exact:true}).click());
    await action('approve_existing_plan',()=>button('接受计划并批准本次执行').click());
    await button('导出本次分析报告').waitFor({timeout:80000});
    await capture('existing-report');

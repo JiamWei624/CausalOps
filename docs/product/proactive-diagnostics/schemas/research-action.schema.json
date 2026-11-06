@@ -1,0 +1,183 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:causalops:research-action:v1",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "research-action-v1"
+    },
+    "action_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "assessment_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "context_fingerprint": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "finding_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128
+      },
+      "minItems": 1
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:causalops:diagnostics-common:v1#/$defs/EvidenceRef"
+      },
+      "minItems": 1
+    },
+    "type": {
+      "enum": [
+        "view_source",
+        "provide_evidence",
+        "review_scope",
+        "draft_followup"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000
+    },
+    "research_question": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 800
+    },
+    "additional_data": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128
+      }
+    },
+    "requires_plan_change": {
+      "type": "boolean"
+    },
+    "requires_new_approval": {
+      "type": "boolean"
+    },
+    "support": {
+      "enum": [
+        "supported_read_only",
+        "draft_only",
+        "unsupported"
+      ]
+    },
+    "candidate_method_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128
+      },
+      "maxItems": 2
+    },
+    "authority": {
+      "const": "suggestion_only_no_execution"
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "enum": [
+            "rule_template",
+            "model_candidate"
+          ]
+        },
+        "interpretation_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "interpretation_ref"
+      ],
+      "additionalProperties": false
+    },
+    "review_state": {
+      "enum": [
+        "ready_for_user_decision",
+        "needs_human_review"
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "action_id",
+    "assessment_id",
+    "context_fingerprint",
+    "finding_ids",
+    "evidence_refs",
+    "type",
+    "title",
+    "reason",
+    "research_question",
+    "additional_data",
+    "requires_plan_change",
+    "requires_new_approval",
+    "support",
+    "candidate_method_ids",
+    "authority",
+    "source",
+    "review_state"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "requires_plan_change": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "requires_new_approval": {
+            "const": true
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "source": {
+            "properties": {
+              "kind": {
+                "const": "model_candidate"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "review_state": {
+            "const": "needs_human_review"
+          }
+        }
+      }
+    }
+  ]
+}

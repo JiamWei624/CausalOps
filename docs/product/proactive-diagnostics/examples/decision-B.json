@@ -1,0 +1,40 @@
+{
+  "artifact_type": "design_fixture_not_real_diagnostic",
+  "ids_and_hashes": "fictional; not production evidence",
+  "decision_event": {
+    "schema_version": "research-decision-event-v1",
+    "event_id": "design-decision-B",
+    "task_ref": {
+      "kind": "research_session",
+      "task_id": "design-preflight-B",
+      "session_id": "design-session-B"
+    },
+    "assessment_id": "design-assessment-B",
+    "action_id": "design-action-B",
+    "finding_ids": [
+      "design-finding-B"
+    ],
+    "context_fingerprint": "6666666666666666666666666666666666666666666666666666666666666666",
+    "actor": {
+      "role": "local_researcher",
+      "explicit_human_action": true
+    },
+    "decision": "evidence_requested",
+    "reason": "用户选择补充来源；这不是批准执行。",
+    "condition_refs_before": [
+      {
+        "artifact_kind": "validation_observation",
+        "artifact_id": "design-observation",
+        "sha": "7777777777777777777777777777777777777777777777777777777777777777",
+        "json_pointer": "/checks",
+        "availability": "valid"
+      }
+    ],
+    "condition_refs_after": [],
+    "followup_draft_id": null,
+    "candidate_plan_ref": null,
+    "supersedes_event_id": null,
+    "created_at": "2026-11-06T00:00:00+08:00",
+    "execution_authority": "none"
+  }
+}

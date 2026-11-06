@@ -1,0 +1,76 @@
+{
+  "baseline_commit": "f9e876a654164f49bed837064cbc3530a3abe37f",
+  "scope": "documentation_only_not_product_evaluation",
+  "documents": {
+    "scope": "documentation_and_schema_quality_only_not_agent_or_user_evaluation",
+    "schemas_validated": 5,
+    "valid_design_examples": [
+      "A.json",
+      "B.json",
+      "C.json",
+      "action-B.json",
+      "decision-B.json",
+      "assessment-A.json"
+    ],
+    "negative_contract_checks_rejected": [
+      "verified_without_check",
+      "unknown_without_specific_missing",
+      "model_cannot_author_finding",
+      "not_checked_is_not_performed",
+      "severity_not_free_text",
+      "not_applicable_must_be_inapplicable",
+      "plan_change_requires_new_approval",
+      "decision_requires_explicit_user",
+      "disabled_model_cannot_claim_requests",
+      "no_arbitrary_file_pointer",
+      "enabled_model_requires_separate_grant"
+    ],
+    "local_document_links_checked": 69,
+    "missing_links": [],
+    "audited_source_files": 19,
+    "source_hash_mismatch": [],
+    "rules": 14,
+    "prototype_js": "syntax_passed",
+    "product_business_tests_run": false,
+    "v23_tasks_run": false,
+    "real_model_calls": 0
+  },
+  "prototype": {
+    "scope": "design_prototype_only_not_product_evaluation",
+    "checks": [
+      "A clearly labelled historic numeric design",
+      "source distinction and evidence drawer",
+      "B no plan/run or borrowed effect",
+      "adoption only records evidence request",
+      "C blocks integrated values; deferral preserves limit",
+      "follow-up draft not approval",
+      "390px layout has no viewport overflow",
+      "SVG render"
+    ],
+    "console_errors": [],
+    "real_model_calls": 0,
+    "product_backend_calls": 0
+  },
+  "safety_scope": "new_documentation_tree_only",
+  "external_model_calls": 0,
+  "product_backend_calls": 0,
+  "documentation_safety": {
+    "scope": "new_documentation_tree_only_not_full_git_history_release_scan",
+    "text_files_checked": 28,
+    "design_png_files_checked": 7,
+    "rules": [
+      "credential_value",
+      "local_absolute_path",
+      "private_account_directory",
+      "credential_url"
+    ],
+    "findings": [],
+    "scanner_counterchecks": 5,
+    "first_pass_false_positives": "6 HTTPS namespace/schema URL matches; added drive-prefix boundary; credential rule unchanged",
+    "limitations": [
+      "Pattern scanning cannot prove absence of every kind of sensitive content.",
+      "PNG checked visually: synthetic design content, no product workspace screenshot.",
+      "No publishing or history changes authorized."
+    ]
+  }
+}

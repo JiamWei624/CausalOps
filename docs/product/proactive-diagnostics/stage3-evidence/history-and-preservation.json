@@ -1,0 +1,246 @@
+{
+  "fixture": {
+    "mode": "controller_fixture_only_not_browser_actions",
+    "cases": {
+      "A": {
+        "task": "3b0c40cd031a46af8f9fee7c9dc663fd",
+        "session": "b655e8e589814ec5b2b866b3f89ec6d5",
+        "runs": [
+          "6c73d90f94d94fc88b084ec5b0a84739",
+          "5478f34f257a41c380e1434e0e5f2d15"
+        ],
+        "effect": {
+          "estimand": "risk_difference",
+          "outcome": "visit",
+          "raw_unit": "probability",
+          "raw": 0.07658956365153125,
+          "control_rate": 0.10616727682343002,
+          "treated_rate": 0.18275684047496127,
+          "pp": 7.6589563651531245,
+          "ci_pp": [
+            6.995322354054364,
+            8.322590376251885
+          ],
+          "relative_pct": 72.1404616781399,
+          "formulas": {
+            "pp": "100 * raw",
+            "ci_pp": "100 * each raw interval bound",
+            "relative_pct": "100 * raw / control_rate (positive control_rate only)"
+          }
+        }
+      },
+      "C-foreign": {
+        "task": "0bc64bfbf62d4ca089b716db44680b51",
+        "session": "749484878d9746f784fb94fa4b8adb04",
+        "old_report": "fb40ea08323e5463f2e3863e94db27632de996b90ffbb9c0268624662972a146",
+        "injection": "foreign"
+      },
+      "C-metric": {
+        "task": "c5a1959cad5140ce893a93aca32ffe38",
+        "session": "350512ebf0bb4a9ab0c8092afbfc10ba",
+        "old_report": "40fec965026dae10dbbda9b4177f9a6aef168ee2afa96716f7f4de6b1b70bc52",
+        "injection": "metric"
+      },
+      "C-unit": {
+        "task": "3ef7788e90244b24b3d1c6bcd7580ceb",
+        "session": "ea48b725837d45038fa3a1a1f52432dc",
+        "old_report": "6306fc820bf4762fe4ece835c9e44641183c8e779183703ab4ab5645c21d9a2a",
+        "injection": "unit"
+      },
+      "C-window": {
+        "task": "7fe3cd93d46f454fbe16ee185302a1f5",
+        "session": "e0f99173a398498babb6732215a011fe",
+        "old_report": "08567dba2cfb4463a4491c16ca699186103a54b09b11bb1dda65c3df0410928b",
+        "injection": "window"
+      },
+      "C-hash": {
+        "task": "dd558b640d694ec5a3a237d89e2d339e",
+        "session": "84400af7513e44dd9bfe087653ef2f06",
+        "old_report": "bc386b0c140e7d452b89311b627884ba4e7420aec33a579d356c226d75daa2c2",
+        "injection": "hash"
+      },
+      "B": {
+        "task": "9f9bb6b54fce40b09bb2038aeb25d152",
+        "session": "9f9bb6b54fce40b09bb2038aeb25d152",
+        "synthetic": true,
+        "assignment_evidence": "unknown"
+      }
+    },
+    "source_sha": "5c80c4911234d13632fab7be2e71e2f1fff5571e1c391d1a507b891577fd6038"
+  },
+  "before": {
+    "tables": {
+      "analysis_runs": "9ccb5ca490869ed3668df98435b981ec071fbc57799d79f79ca5e0213290328c",
+      "exploration_runs": "1ae5da85bc2a2e38748a33e51f0fc44a7aeed1a12c33188d1e48fcea5acb1391",
+      "assistant_plans": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "workflow_approvals": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "automation_v2_tasks": "a7bfea85a56a16c93313a1be2bffe9716b00aa0b6573196d86d28fafb2478079",
+      "automation_v2_steps": "54261cf2e1266ee9fc18b0a5c9b827c987fc6f3eabad5ae001aa6bf85cdb664b",
+      "automation_v2_approvals": "4d8b3cb7418a61d6cb29a35a3e9778e6e13fc93e8f351265bf5397e04bcea88c",
+      "assistant_tasks": "7b6f41b6360d1e541fef3a69fa8f9d09dada7f642211f216b6b82a476853f2cd"
+    },
+    "statistical_files": {
+      "runs/session_0686c48fd5404cf2af5251051b4e7d16/evidence/run-71bb8281d613407a8a783e9ddf82857b.json": "34bb6bf341847ea27c3afba0026fbfa7aef1b69e84f015b0dc4d2a7749260b51",
+      "runs/session_0686c48fd5404cf2af5251051b4e7d16/reports/interpretation-71bb8281d613407a8a783e9ddf82857b-business_interpretation_v2.json": "f54cab830b51dd42c592d0478214556b0e9d18dd79d065eb87d216935f98fb53",
+      "runs/session_0686c48fd5404cf2af5251051b4e7d16/reports/report-71bb8281d613407a8a783e9ddf82857b.html": "1f2477067407f19f509e442d774b71b5f9c21689739a18b268f11e2c428e31e3",
+      "runs/session_0686c48fd5404cf2af5251051b4e7d16/reports/report-71bb8281d613407a8a783e9ddf82857b.md": "a6c46c82c9b06e916c86b7b67260603a6197c4f82f7aacaaae9aa2928f2041d6",
+      "runs/session_0686c48fd5404cf2af5251051b4e7d16/traces/agent-run-71bb8281d613407a8a783e9ddf82857b.json": "9da80544926347fc5a7823fbd2a401de5afb9f9126a3cad3743d55d69aa469fd",
+      "runs/session_20dd9d53bc444b6f8601c872dd6ef034/evidence/run-5478f34f257a41c380e1434e0e5f2d15.json": "38c8159d04445a93ad44b4a490496be5c91fd4b3061d54d72df93f5540cba1d0",
+      "runs/session_20dd9d53bc444b6f8601c872dd6ef034/reports/interpretation-5478f34f257a41c380e1434e0e5f2d15-business_interpretation_v2.json": "505423a8bff36fba3c2263858dad6ca1ec676eff5271e74e9229e73421b92909",
+      "runs/session_20dd9d53bc444b6f8601c872dd6ef034/reports/report-5478f34f257a41c380e1434e0e5f2d15.html": "489ad77e8163dbf150742cf27516209d400b43b5adcf8b9e1149f09408f3746a",
+      "runs/session_20dd9d53bc444b6f8601c872dd6ef034/reports/report-5478f34f257a41c380e1434e0e5f2d15.md": "d891cc7b1cf7f69d99384a63c0183b6a5371b956407921bfc6d4cc98fe07d281",
+      "runs/session_20dd9d53bc444b6f8601c872dd6ef034/traces/agent-run-5478f34f257a41c380e1434e0e5f2d15.json": "43ad5b629cfe65c0add6e17d546ad6ddbecad35604ad42e2632e9b07774a5ba1",
+      "runs/session_482631ccddba4d6794221bd367d2cf42/evidence/run-204331ee3614455f8dfd71bae57763e3.json": "9ac60fdc8e83f897d0fbb11e0880a89de5b482c89a471cd2099ce090d6784726",
+      "runs/session_482631ccddba4d6794221bd367d2cf42/reports/interpretation-204331ee3614455f8dfd71bae57763e3-business_interpretation_v2.json": "5dc13a16e8eeb2b6590aed0f3168493e31fd8972a4bf089b4c0530ab56825aa5",
+      "runs/session_482631ccddba4d6794221bd367d2cf42/reports/report-204331ee3614455f8dfd71bae57763e3.html": "fd142961b1bc92f7b6741be2e79797b966d4bbf96938bf90bb793291de82d517",
+      "runs/session_482631ccddba4d6794221bd367d2cf42/reports/report-204331ee3614455f8dfd71bae57763e3.md": "00b4056b459c61fc65b10516b522020e362700ccb5dda059d4040b9acbcfe20a",
+      "runs/session_482631ccddba4d6794221bd367d2cf42/traces/agent-run-204331ee3614455f8dfd71bae57763e3.json": "fd1853e31cac8ce9955190a36514b3eb169bd827899a6e6a6197ec9a9f4ac150",
+      "runs/session_652ddc85221543d697523bfd54b18587/evidence/run-8258557634eb4b85ad0630f2883f2b20.json": "0c9a37b474e42f1207b94f1fb4b7aa410af3db74350e1b7a5482bb2816b25a8d",
+      "runs/session_652ddc85221543d697523bfd54b18587/reports/interpretation-8258557634eb4b85ad0630f2883f2b20-business_interpretation_v2.json": "2c2e29ea9439755ac068064f1c39be1ceb5fe2fb47e7a18a205bc86f10e66f8e",
+      "runs/session_652ddc85221543d697523bfd54b18587/reports/report-8258557634eb4b85ad0630f2883f2b20.html": "18bce5b893dbbe14c5f428960c5324ed85cd3d02343f6ebe587a219004c7cad8",
+      "runs/session_652ddc85221543d697523bfd54b18587/reports/report-8258557634eb4b85ad0630f2883f2b20.md": "3f9ce89e297882aac16c4a87717ab0dc091b136fc9915d1c4e31a6ea61f1f7cb",
+      "runs/session_652ddc85221543d697523bfd54b18587/traces/agent-run-8258557634eb4b85ad0630f2883f2b20.json": "e4cdbbebb65ab4afbb3af05cf34ebedf1a98753b86edf221286caddfc54b61a2",
+      "runs/session_b1ee3cff70644b0facb184cb6126be9a/evidence/run-e21031f67b53404e907232ed84896c58.json": "5a4424f615a60a64ef101674701dfe3dabb91cf11a99ac1abd2ec2e6d09240aa",
+      "runs/session_b1ee3cff70644b0facb184cb6126be9a/reports/interpretation-e21031f67b53404e907232ed84896c58-business_interpretation_v2.json": "5e8453d9580a9feb109f7c1e89c6c209ba7079426762a652e0baf21eed2503d4",
+      "runs/session_b1ee3cff70644b0facb184cb6126be9a/reports/report-e21031f67b53404e907232ed84896c58.html": "1263f09555c5b29cadd18c7a3ef3f03bf66132773781a5eff85d8925fc007443",
+      "runs/session_b1ee3cff70644b0facb184cb6126be9a/reports/report-e21031f67b53404e907232ed84896c58.md": "68ece4688b274ff57fc993c04a6422a64fee4f6c85fcb5df0dca1246cf6f763f",
+      "runs/session_b1ee3cff70644b0facb184cb6126be9a/traces/agent-run-e21031f67b53404e907232ed84896c58.json": "98340cc182a0c9327a7ecdfbf460b5dae6e22d21a4bbb06187ca834dea8c7c42",
+      "runs/session_d692c1aa8d2e4d30bf4ef43d7046a524/evidence/run-c2539f907f514f0280933bacf6fa5d37.json": "516eb18cadabc905e3f11d4878a8df0ac9495200d83fe126beb7ae4174ebe16e",
+      "runs/session_d692c1aa8d2e4d30bf4ef43d7046a524/reports/interpretation-c2539f907f514f0280933bacf6fa5d37-business_interpretation_v2.json": "4de0143412aee1de87e9ac865f55361da1c61f73c80ae08a6b8ca2f1c7138509",
+      "runs/session_d692c1aa8d2e4d30bf4ef43d7046a524/reports/report-c2539f907f514f0280933bacf6fa5d37.html": "3e39623aac595c56110c948e105a4548c0c6354059d164e060896fd120004b8e",
+      "runs/session_d692c1aa8d2e4d30bf4ef43d7046a524/reports/report-c2539f907f514f0280933bacf6fa5d37.md": "b8907f22b9a151250cd2473e3f984d9347258f67d719ee7c0530270e1d1c548f",
+      "runs/session_d692c1aa8d2e4d30bf4ef43d7046a524/traces/agent-run-c2539f907f514f0280933bacf6fa5d37.json": "1b30cb57856a33cbe529172a1deeb49557a151a23da0af054d1cc515afa3714c",
+      "exploration-runs/9c9d5b9c65fb45288085c757eb9a7e14/f45ec7d0891e4bdeb3fa627dc1320326.json": "93efe62f5e2e1cf4db0fa1761df805118c00743e49e0180d87d27b550b4bb47b",
+      "exploration-runs/be433e6171504b13a115b06ebed05056/c9f42da278184983b4a412140293d1e3.json": "bb5076d8f84f590fcb2467f66c62c8288c442d9c7282a3881dc4738fa31996a3",
+      "exploration-runs/cb5fc523ef254ae5b3e7e050db61125e/965219b7c9a740f28bf1e14d0039d73b.json": "ed14a8c778378927dee364548dd26084fe45e3e17c963b8eb06a545878c5333b",
+      "exploration-runs/deb0b78db8814872826828a96ce01959/6c73d90f94d94fc88b084ec5b0a84739.json": "cb73cc7d4ae0a94d4186c1e7bf60451c47c6a7729c41e3aac00b09b220e10bad",
+      "exploration-runs/e480fe9f12ff47ebb51cfeca860d3b4e/028d7c6a039845db8b3bae03f817eba7.json": "0e952afbec42d10f6cf643cdcb14a98ad80a0ed11698a4ed029a5832e49392c6",
+      "exploration-runs/f120d1d212f8449e9b30f7e442d7c5b1/47ab3945c1f7432495a98fa3c389e41d.json": "4567898a3c161e033765f5abfc5d33334d4e7b3290c1b1a09b8fb69e62c84cea"
+    }
+  },
+  "after": {
+    "tables": {
+      "analysis_runs": "9ccb5ca490869ed3668df98435b981ec071fbc57799d79f79ca5e0213290328c",
+      "exploration_runs": "1ae5da85bc2a2e38748a33e51f0fc44a7aeed1a12c33188d1e48fcea5acb1391",
+      "assistant_plans": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "workflow_approvals": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "automation_v2_tasks": "a7bfea85a56a16c93313a1be2bffe9716b00aa0b6573196d86d28fafb2478079",
+      "automation_v2_steps": "54261cf2e1266ee9fc18b0a5c9b827c987fc6f3eabad5ae001aa6bf85cdb664b",
+      "automation_v2_approvals": "4d8b3cb7418a61d6cb29a35a3e9778e6e13fc93e8f351265bf5397e04bcea88c",
+      "assistant_tasks": "7b6f41b6360d1e541fef3a69fa8f9d09dada7f642211f216b6b82a476853f2cd"
+    },
+    "statistical_files": {
+      "runs/session_0686c48fd5404cf2af5251051b4e7d16/evidence/run-71bb8281d613407a8a783e9ddf82857b.json": "34bb6bf341847ea27c3afba0026fbfa7aef1b69e84f015b0dc4d2a7749260b51",
+      "runs/session_0686c48fd5404cf2af5251051b4e7d16/reports/interpretation-71bb8281d613407a8a783e9ddf82857b-business_interpretation_v2.json": "f54cab830b51dd42c592d0478214556b0e9d18dd79d065eb87d216935f98fb53",
+      "runs/session_0686c48fd5404cf2af5251051b4e7d16/reports/report-71bb8281d613407a8a783e9ddf82857b.html": "1f2477067407f19f509e442d774b71b5f9c21689739a18b268f11e2c428e31e3",
+      "runs/session_0686c48fd5404cf2af5251051b4e7d16/reports/report-71bb8281d613407a8a783e9ddf82857b.md": "a6c46c82c9b06e916c86b7b67260603a6197c4f82f7aacaaae9aa2928f2041d6",
+      "runs/session_0686c48fd5404cf2af5251051b4e7d16/traces/agent-run-71bb8281d613407a8a783e9ddf82857b.json": "9da80544926347fc5a7823fbd2a401de5afb9f9126a3cad3743d55d69aa469fd",
+      "runs/session_20dd9d53bc444b6f8601c872dd6ef034/evidence/run-5478f34f257a41c380e1434e0e5f2d15.json": "38c8159d04445a93ad44b4a490496be5c91fd4b3061d54d72df93f5540cba1d0",
+      "runs/session_20dd9d53bc444b6f8601c872dd6ef034/reports/interpretation-5478f34f257a41c380e1434e0e5f2d15-business_interpretation_v2.json": "505423a8bff36fba3c2263858dad6ca1ec676eff5271e74e9229e73421b92909",
+      "runs/session_20dd9d53bc444b6f8601c872dd6ef034/reports/report-5478f34f257a41c380e1434e0e5f2d15.html": "489ad77e8163dbf150742cf27516209d400b43b5adcf8b9e1149f09408f3746a",
+      "runs/session_20dd9d53bc444b6f8601c872dd6ef034/reports/report-5478f34f257a41c380e1434e0e5f2d15.md": "d891cc7b1cf7f69d99384a63c0183b6a5371b956407921bfc6d4cc98fe07d281",
+      "runs/session_20dd9d53bc444b6f8601c872dd6ef034/traces/agent-run-5478f34f257a41c380e1434e0e5f2d15.json": "43ad5b629cfe65c0add6e17d546ad6ddbecad35604ad42e2632e9b07774a5ba1",
+      "runs/session_482631ccddba4d6794221bd367d2cf42/evidence/run-204331ee3614455f8dfd71bae57763e3.json": "9ac60fdc8e83f897d0fbb11e0880a89de5b482c89a471cd2099ce090d6784726",
+      "runs/session_482631ccddba4d6794221bd367d2cf42/reports/interpretation-204331ee3614455f8dfd71bae57763e3-business_interpretation_v2.json": "5dc13a16e8eeb2b6590aed0f3168493e31fd8972a4bf089b4c0530ab56825aa5",
+      "runs/session_482631ccddba4d6794221bd367d2cf42/reports/report-204331ee3614455f8dfd71bae57763e3.html": "fd142961b1bc92f7b6741be2e79797b966d4bbf96938bf90bb793291de82d517",
+      "runs/session_482631ccddba4d6794221bd367d2cf42/reports/report-204331ee3614455f8dfd71bae57763e3.md": "00b4056b459c61fc65b10516b522020e362700ccb5dda059d4040b9acbcfe20a",
+      "runs/session_482631ccddba4d6794221bd367d2cf42/traces/agent-run-204331ee3614455f8dfd71bae57763e3.json": "fd1853e31cac8ce9955190a36514b3eb169bd827899a6e6a6197ec9a9f4ac150",
+      "runs/session_652ddc85221543d697523bfd54b18587/evidence/run-8258557634eb4b85ad0630f2883f2b20.json": "0c9a37b474e42f1207b94f1fb4b7aa410af3db74350e1b7a5482bb2816b25a8d",
+      "runs/session_652ddc85221543d697523bfd54b18587/reports/interpretation-8258557634eb4b85ad0630f2883f2b20-business_interpretation_v2.json": "2c2e29ea9439755ac068064f1c39be1ceb5fe2fb47e7a18a205bc86f10e66f8e",
+      "runs/session_652ddc85221543d697523bfd54b18587/reports/report-8258557634eb4b85ad0630f2883f2b20.html": "18bce5b893dbbe14c5f428960c5324ed85cd3d02343f6ebe587a219004c7cad8",
+      "runs/session_652ddc85221543d697523bfd54b18587/reports/report-8258557634eb4b85ad0630f2883f2b20.md": "3f9ce89e297882aac16c4a87717ab0dc091b136fc9915d1c4e31a6ea61f1f7cb",
+      "runs/session_652ddc85221543d697523bfd54b18587/traces/agent-run-8258557634eb4b85ad0630f2883f2b20.json": "e4cdbbebb65ab4afbb3af05cf34ebedf1a98753b86edf221286caddfc54b61a2",
+      "runs/session_b1ee3cff70644b0facb184cb6126be9a/evidence/run-e21031f67b53404e907232ed84896c58.json": "5a4424f615a60a64ef101674701dfe3dabb91cf11a99ac1abd2ec2e6d09240aa",
+      "runs/session_b1ee3cff70644b0facb184cb6126be9a/reports/interpretation-e21031f67b53404e907232ed84896c58-business_interpretation_v2.json": "5e8453d9580a9feb109f7c1e89c6c209ba7079426762a652e0baf21eed2503d4",
+      "runs/session_b1ee3cff70644b0facb184cb6126be9a/reports/report-e21031f67b53404e907232ed84896c58.html": "1263f09555c5b29cadd18c7a3ef3f03bf66132773781a5eff85d8925fc007443",
+      "runs/session_b1ee3cff70644b0facb184cb6126be9a/reports/report-e21031f67b53404e907232ed84896c58.md": "68ece4688b274ff57fc993c04a6422a64fee4f6c85fcb5df0dca1246cf6f763f",
+      "runs/session_b1ee3cff70644b0facb184cb6126be9a/traces/agent-run-e21031f67b53404e907232ed84896c58.json": "98340cc182a0c9327a7ecdfbf460b5dae6e22d21a4bbb06187ca834dea8c7c42",
+      "runs/session_d692c1aa8d2e4d30bf4ef43d7046a524/evidence/run-c2539f907f514f0280933bacf6fa5d37.json": "516eb18cadabc905e3f11d4878a8df0ac9495200d83fe126beb7ae4174ebe16e",
+      "runs/session_d692c1aa8d2e4d30bf4ef43d7046a524/reports/interpretation-c2539f907f514f0280933bacf6fa5d37-business_interpretation_v2.json": "4de0143412aee1de87e9ac865f55361da1c61f73c80ae08a6b8ca2f1c7138509",
+      "runs/session_d692c1aa8d2e4d30bf4ef43d7046a524/reports/report-c2539f907f514f0280933bacf6fa5d37.html": "3e39623aac595c56110c948e105a4548c0c6354059d164e060896fd120004b8e",
+      "runs/session_d692c1aa8d2e4d30bf4ef43d7046a524/reports/report-c2539f907f514f0280933bacf6fa5d37.md": "b8907f22b9a151250cd2473e3f984d9347258f67d719ee7c0530270e1d1c548f",
+      "runs/session_d692c1aa8d2e4d30bf4ef43d7046a524/traces/agent-run-c2539f907f514f0280933bacf6fa5d37.json": "1b30cb57856a33cbe529172a1deeb49557a151a23da0af054d1cc515afa3714c",
+      "exploration-runs/9c9d5b9c65fb45288085c757eb9a7e14/f45ec7d0891e4bdeb3fa627dc1320326.json": "93efe62f5e2e1cf4db0fa1761df805118c00743e49e0180d87d27b550b4bb47b",
+      "exploration-runs/be433e6171504b13a115b06ebed05056/c9f42da278184983b4a412140293d1e3.json": "bb5076d8f84f590fcb2467f66c62c8288c442d9c7282a3881dc4738fa31996a3",
+      "exploration-runs/cb5fc523ef254ae5b3e7e050db61125e/965219b7c9a740f28bf1e14d0039d73b.json": "ed14a8c778378927dee364548dd26084fe45e3e17c963b8eb06a545878c5333b",
+      "exploration-runs/deb0b78db8814872826828a96ce01959/6c73d90f94d94fc88b084ec5b0a84739.json": "cb73cc7d4ae0a94d4186c1e7bf60451c47c6a7729c41e3aac00b09b220e10bad",
+      "exploration-runs/e480fe9f12ff47ebb51cfeca860d3b4e/028d7c6a039845db8b3bae03f817eba7.json": "0e952afbec42d10f6cf643cdcb14a98ad80a0ed11698a4ed029a5832e49392c6",
+      "exploration-runs/f120d1d212f8449e9b30f7e442d7c5b1/47ab3945c1f7432495a98fa3c389e41d.json": "4567898a3c161e033765f5abfc5d33334d4e7b3290c1b1a09b8fb69e62c84cea"
+    }
+  },
+  "native_records_unchanged": true,
+  "all_report_ids": [
+    {
+      "id": "fb40ea08323e5463f2e3863e94db27632de996b90ffbb9c0268624662972a146",
+      "task": "0bc64bfbf62d4ca089b716db44680b51",
+      "version": 1,
+      "status": "available"
+    },
+    {
+      "id": "40fec965026dae10dbbda9b4177f9a6aef168ee2afa96716f7f4de6b1b70bc52",
+      "task": "c5a1959cad5140ce893a93aca32ffe38",
+      "version": 1,
+      "status": "available"
+    },
+    {
+      "id": "6306fc820bf4762fe4ece835c9e44641183c8e779183703ab4ab5645c21d9a2a",
+      "task": "3ef7788e90244b24b3d1c6bcd7580ceb",
+      "version": 1,
+      "status": "available"
+    },
+    {
+      "id": "08567dba2cfb4463a4491c16ca699186103a54b09b11bb1dda65c3df0410928b",
+      "task": "7fe3cd93d46f454fbe16ee185302a1f5",
+      "version": 1,
+      "status": "available"
+    },
+    {
+      "id": "bc386b0c140e7d452b89311b627884ba4e7420aec33a579d356c226d75daa2c2",
+      "task": "dd558b640d694ec5a3a237d89e2d339e",
+      "version": 1,
+      "status": "available"
+    },
+    {
+      "id": "02e77f700c6696ffa27004a25c5002a8ca59d5b57b111e6c3d2f71bdbe987736",
+      "task": "3b0c40cd031a46af8f9fee7c9dc663fd",
+      "version": 1,
+      "status": "available"
+    },
+    {
+      "id": "1fabf601f234fcbc776ffc978210639c978deebbbdbd1d6df2445fa0e436bf0f",
+      "task": "9f9bb6b54fce40b09bb2038aeb25d152",
+      "version": 1,
+      "status": "not_run"
+    },
+    {
+      "id": "bbc4f044a105bb5d513d8e060dd4719ec8961840094750d4675356b229198b0d",
+      "task": "0bc64bfbf62d4ca089b716db44680b51",
+      "version": 2,
+      "status": "restricted"
+    },
+    {
+      "id": "8e01df43862963188bd101ad28b8601dcb1984e209daf9560b7315350f92c52f",
+      "task": "c5a1959cad5140ce893a93aca32ffe38",
+      "version": 2,
+      "status": "restricted"
+    },
+    {
+      "id": "0a81a59a0ef4761ac7ba6b4b9dab15db25b52faa48962d80ff7b6429c33b5bc6",
+      "task": "3ef7788e90244b24b3d1c6bcd7580ceb",
+      "version": 2,
+      "status": "restricted"
+    },
+    {
+      "id": "6d0d16a4436f3bbf9ccc29c3ddbb088aac2dfbd8bbad2b88b88a4f1de41d0c89",
+      "task": "7fe3cd93d46f454fbe16ee185302a1f5",
+      "version": 2,
+      "status": "restricted"
+    },
+    {
+      "id": "f74954ec064a80e8ee0ba414b01e5d0daf21eded207c4552aee416c846bf961c",
+      "task": "dd558b640d694ec5a3a237d89e2d339e",
+      "version": 2,
+      "status": "restricted"
+    }
+  ]
+}

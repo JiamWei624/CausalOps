@@ -1,0 +1,115 @@
+{
+  "artifact_type": "design_fixture_not_real_diagnostic",
+  "ids_and_hashes": "fictional; production resolution must reject these nonexistent references",
+  "finding": {
+    "schema_version": "diagnostic-finding-v1",
+    "finding_id": "design-finding-A",
+    "assessment_id": "design-assessment-A",
+    "context": {
+      "task_ref": {
+        "kind": "automation_v2",
+        "task_id": "design-task-A",
+        "session_id": "design-session-A"
+      },
+      "plan_ref": {
+        "id": "design-plan-A",
+        "version": 1,
+        "sha": "1111111111111111111111111111111111111111111111111111111111111111"
+      },
+      "no_plan_reason": null,
+      "data_ref": {
+        "upload_id": "design-upload",
+        "frame_sha": "2222222222222222222222222222222222222222222222222222222222222222"
+      },
+      "contract_ref": {
+        "id": "design-contract",
+        "version": 1,
+        "sha": "3333333333333333333333333333333333333333333333333333333333333333",
+        "data_sha": "2222222222222222222222222222222222222222222222222222222222222222"
+      },
+      "run_refs": [
+        {
+          "run_id": "00000000000000000000000000000001",
+          "kind": "exploration",
+          "plan_id": "design-plan-A",
+          "result_fingerprint": "4444444444444444444444444444444444444444444444444444444444444444"
+        },
+        {
+          "run_id": "00000000000000000000000000000002",
+          "kind": "research",
+          "plan_id": "design-plan-A",
+          "result_fingerprint": "5555555555555555555555555555555555555555555555555555555555555555"
+        }
+      ],
+      "scope": {
+        "analysis_unit": "客户",
+        "outcome_field": "visit",
+        "metric_label": "两周访问率",
+        "statistic_type": "risk_difference",
+        "unit": "概率",
+        "observation_window": "分配后两周",
+        "group_labels": [
+          "未发邮件",
+          "男装邮件"
+        ],
+        "numerator": "各组访问客户数",
+        "denominator": "各分配组客户数",
+        "aggregation": "组内比例与概率差"
+      },
+      "fingerprint": "6666666666666666666666666666666666666666666666666666666666666666",
+      "phase": "post_run",
+      "provenance": {
+        "recorded_execution_source_sha": "9999999999999999999999999999999999999999999999999999999999999999",
+        "diagnostic_source_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "reading_mode": "historical_read_only"
+      }
+    },
+    "rule": {
+      "id": "PD-07",
+      "version": "1",
+      "pack": "hillstrom-diagnostics-v1",
+      "check_method": "verified_saved_run_comparison"
+    },
+    "diagnostic_type": "binding",
+    "applicability": "applicable",
+    "check_performed": true,
+    "status": "verified",
+    "result": {
+      "observed": {
+        "same_group_sample": true
+      },
+      "expected": {
+        "same_group_sample": true
+      },
+      "reason_code": "saved_runs_consistent",
+      "missing_items": []
+    },
+    "evidence_refs": [
+      {
+        "artifact_kind": "validation_observation",
+        "artifact_id": "design-observation",
+        "sha": "7777777777777777777777777777777777777777777777777777777777777777",
+        "json_pointer": "/checks",
+        "availability": "valid"
+      }
+    ],
+    "impact": {
+      "claim_effect": "unchanged",
+      "explanation": "设计示例：两个已验证运行的范围一致。不是本轮真实检查。",
+      "execution_authority": "original_service_only"
+    },
+    "severity": {
+      "level": "information",
+      "policy_id": "hillstrom-diagnostics-v1",
+      "reason_code": "saved_runs_consistent"
+    },
+    "human_confirmation_required": false,
+    "eligible_action_ids": [],
+    "generated_at": "2026-11-06T00:00:00+08:00",
+    "source": {
+      "mechanism": "deterministic_rule",
+      "origin": "program_fact",
+      "generator_version": "design-only-v1"
+    }
+  }
+}

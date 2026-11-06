@@ -1,0 +1,45 @@
+{
+  "raw_logs_stay_local": true,
+  "records": [
+    {
+      "log": "before-implementation.log",
+      "sha256": "d1cac3f92180402715a611fca83ddf3de9b78efd7f391b3407088a6cad1c1031",
+      "conclusion": "预先保存的反例测试：诊断模块尚不存在，收集失败。"
+    },
+    {
+      "log": "targeted01.log",
+      "sha256": "dda0df2a5159d1af76b6e0acce4b10db8872d11cd8f72f1ac9177341e2a17886",
+      "conclusion": "19项初步通过；当时副本路径尚未补充有效性前置证明，不作为最终规则验收。"
+    },
+    {
+      "log": "targeted02.log",
+      "sha256": "f7e4ad4ed6eadbcec67657213fec22042823489962bbfdfa48122921f037ce8b",
+      "conclusion": "26项初步通过；同上。"
+    },
+    {
+      "log": "targeted03.log",
+      "sha256": "0d2524c45c7ff0d2ccbe8009e7de5f0e09de9ac4fca9fe3355a3624ae4b1df96",
+      "conclusion": "受控副本保留原绝对工件路径，effect_file反例失败，首次记录保留。"
+    },
+    {
+      "log": "targeted04.log",
+      "sha256": "b5dab58b206cca650ec8b93810cfa244b60fc1ca8bc41a6b87025491426856b5",
+      "conclusion": "原始哈希门禁先阻断被改写的S03；PD-07为未检查，反例未能单独验证语义规则。"
+    },
+    {
+      "log": "targeted05.log",
+      "sha256": "0ea6ed82a40f630eda7b547895eace82dbb98fb697a5a22466db1d69275dbfdb",
+      "conclusion": "修正隔离副本路径，并对门禁语义反例保持依赖哈希自洽后，34项全部通过。"
+    },
+    {
+      "log": "affected01.log",
+      "sha256": "61816e4ec085b38243d38dfbddb329c4f9bbd7dc1dbf10d378f755403fdeab20",
+      "conclusion": "冻结代码上的受影响模块回归完成。"
+    },
+    {
+      "log": "full01.log",
+      "sha256": "113be24d9e86336a440f96a69cb01cbe0302a0a89b99e702a2b90158e5b39b1b",
+      "conclusion": "冻结代码上的完整工程回归完成。"
+    }
+  ]
+}

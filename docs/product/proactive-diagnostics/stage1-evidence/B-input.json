@@ -1,0 +1,16 @@
+{
+  "synthetic_csv": "customer,arm,visited\n1,0,0\n2,0,1\n3,1,1\n4,1,0\n",
+  "registered_contract": {
+    "purpose": "causal",
+    "analysis_unit": "customer",
+    "entity": "customer",
+    "treatment": "arm",
+    "control_value": "0",
+    "treated_value": "1",
+    "outcome": "visited",
+    "metric_label": "visit rate",
+    "metric_unit": "probability",
+    "metric_kind": "binary",
+    "metric_window": "14 days"
+  }
+}

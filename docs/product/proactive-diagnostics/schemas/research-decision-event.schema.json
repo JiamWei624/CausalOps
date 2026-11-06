@@ -1,0 +1,195 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:causalops:research-decision-event:v1",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "research-decision-event-v1"
+    },
+    "event_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "task_ref": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "enum": [
+            "automation_v2",
+            "research_session"
+          ]
+        },
+        "task_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "session_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "kind",
+        "task_id",
+        "session_id"
+      ],
+      "additionalProperties": false
+    },
+    "assessment_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "action_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "finding_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128
+      },
+      "minItems": 1
+    },
+    "context_fingerprint": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "actor": {
+      "type": "object",
+      "properties": {
+        "role": {
+          "const": "local_researcher"
+        },
+        "explicit_human_action": {
+          "const": true
+        }
+      },
+      "required": [
+        "role",
+        "explicit_human_action"
+      ],
+      "additionalProperties": false
+    },
+    "decision": {
+      "enum": [
+        "accepted",
+        "deferred",
+        "rejected",
+        "evidence_requested",
+        "superseded"
+      ]
+    },
+    "reason": {
+      "type": "string",
+      "maxLength": 1000
+    },
+    "condition_refs_before": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:causalops:diagnostics-common:v1#/$defs/EvidenceRef"
+      }
+    },
+    "condition_refs_after": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:causalops:diagnostics-common:v1#/$defs/EvidenceRef"
+      }
+    },
+    "followup_draft_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "candidate_plan_ref": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "version": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "sha": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "id",
+            "version",
+            "sha"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "supersedes_event_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "execution_authority": {
+      "const": "none"
+    }
+  },
+  "required": [
+    "schema_version",
+    "event_id",
+    "task_ref",
+    "assessment_id",
+    "action_id",
+    "finding_ids",
+    "context_fingerprint",
+    "actor",
+    "decision",
+    "reason",
+    "condition_refs_before",
+    "condition_refs_after",
+    "followup_draft_id",
+    "candidate_plan_ref",
+    "supersedes_event_id",
+    "created_at",
+    "execution_authority"
+  ],
+  "additionalProperties": false
+}

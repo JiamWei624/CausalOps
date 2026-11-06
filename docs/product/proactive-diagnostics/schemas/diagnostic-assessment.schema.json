@@ -1,0 +1,190 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:causalops:diagnostic-assessment:v1",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "diagnostic-assessment-v1"
+    },
+    "assessment_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "context": {
+      "$ref": "urn:causalops:diagnostics-common:v1#/$defs/Context"
+    },
+    "context_fingerprint": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "rule_pack": {
+      "const": "hillstrom-diagnostics-v1"
+    },
+    "knowledge_fingerprint": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "status": {
+      "enum": [
+        "pending",
+        "assessing",
+        "ready",
+        "partial",
+        "unavailable"
+      ]
+    },
+    "freshness": {
+      "enum": [
+        "current",
+        "superseded",
+        "stale_input"
+      ]
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "finding_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "sha": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "required": [
+          "finding_id",
+          "sha"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "model_interpretation": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "grant_ref": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "physical_requests": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2
+        }
+      },
+      "required": [
+        "enabled",
+        "grant_ref",
+        "physical_requests"
+      ],
+      "additionalProperties": false
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "supersedes_assessment_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "assessment_id",
+    "context",
+    "context_fingerprint",
+    "rule_pack",
+    "knowledge_fingerprint",
+    "status",
+    "freshness",
+    "findings",
+    "model_interpretation",
+    "created_at",
+    "supersedes_assessment_id"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "model_interpretation": {
+            "properties": {
+              "enabled": {
+                "const": false
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "model_interpretation": {
+            "properties": {
+              "physical_requests": {
+                "const": 0
+              },
+              "grant_ref": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "model_interpretation": {
+            "properties": {
+              "enabled": {
+                "const": true
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "model_interpretation": {
+            "properties": {
+              "grant_ref": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

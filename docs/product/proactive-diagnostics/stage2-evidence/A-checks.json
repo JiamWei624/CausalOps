@@ -1,0 +1,35 @@
+{
+  "exact_original_effect": {
+    "estimand": "risk_difference",
+    "outcome": "visit",
+    "raw_unit": "probability",
+    "raw": 0.07658956365153125,
+    "control_rate": 0.10616727682343002,
+    "treated_rate": 0.18275684047496127,
+    "pp": 7.6589563651531245,
+    "ci_pp": [
+      6.995322354054364,
+      8.322590376251885
+    ],
+    "relative_pct": 72.1404616781399,
+    "formulas": {
+      "pp": "100 * raw",
+      "ci_pp": "100 * each raw interval bound",
+      "relative_pct": "100 * raw / control_rate (positive control_rate only)"
+    }
+  },
+  "unchanged_markers": {
+    "analysis_runs": "2c2980ea78ec18f429ac1c0c9312d4f562fb4e2e6806af905a18a9c5e08e8163",
+    "exploration_runs": "85787d753f056b27935a1593c31a51285063894f11973f9848a3c22ebc559a65",
+    "assistant_plans": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "automation_v2_tasks": "227df7b141aa25162058ea90b3c3c14395476b355133013632849374d46c8d79",
+    "automation_v2_steps": "07d89a8bd0b866415914b0236e50fcd82831f313504424e05360897597b39e55",
+    "automation_v2_approvals": "3be6cdbbd9d277fd71ea09ccfc1c10dc0eae2a5476333e1d73d46f10caa4fb5b",
+    "assistant_tasks": "03f6d57464e3849f2e0a9a264871499e0310ce305bb319a756dfb42db07c2a35"
+  },
+  "two_run_ids": [
+    "157ee38733eb45e5b6e1fb1d227b0017",
+    "128f782659204665bb45a51d0a6b3910"
+  ],
+  "repeat_equal": true
+}

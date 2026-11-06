@@ -169,6 +169,11 @@ def render():
         _open(choice);st.rerun()
     st.button("创建新的自动化研究",on_click=_new)
     if selected:
+        from causalops.ui.diagnostics_app import open_diagnostics
+        task=co.task(selected)
+        st.button("查看当前研究的证据诊断",on_click=open_diagnostics,args=("post_run",selected),key="auto_diag_"+selected)
+        st.button("检查当前数据的研究条件",on_click=open_diagnostics,args=("preflight",task["session_id"]),key="auto_prediag_"+selected)
+    if selected:
         jobs=AutomationJobs(co.s)
         watching=any(j["status"] in ("queued","running") for j in jobs.reconcile(selected))
         @st.fragment(run_every=2 if watching else None)

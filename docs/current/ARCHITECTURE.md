@@ -1,6 +1,10 @@
 # 系统架构 · CausalOps 阶段性公开测试版
 
-应用包0.17.0b1。当前候选来自第三阶段f568f3e；新增受限固定自动化，旧单次LangGraph路径保留。软件不是通用自主规划系统。
+应用包0.18.0b1；继承公开f9e876a并整合P1第三阶段bea02f8。旧单次LangGraph路径保留。软件不是通用自主规划系统。
+
+## 显式诊断路径（当前实现）
+
+Streamlit diagnostics_app → DiagnosticWorkbench → 原DiagnosticReportService / DiagnosticService / NativeEvidenceReader → 不可变快照及三层报告。点击才检查，刷新和历史读取不执行统计。六项规则、五态、八项未实现、最多三条建议；草案显式确认、来源复核和幂等，无执行权限。固定报告输出区在切换前清除旧正文。无模型解释或后台调度。[诊断教程](DIAGNOSTICS_GUIDE.md)
 
 ## 受限自动化执行路径（当前实现）
 

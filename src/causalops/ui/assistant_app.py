@@ -294,6 +294,8 @@ def render_assistant():
     s=a.session(sid);frame=a.ws.load_upload(s['upload_id']);pr=profile(frame)
     st.title(s['title'],anchor=False)
     st.caption('当前任务编号：'+sid+'。研究问题、方案版本与运行记录保存在此任务中。')
+    from causalops.ui.diagnostics_app import open_diagnostics
+    st.button("检查本任务的研究条件",on_click=open_diagnostics,args=("preflight",sid),key="native_diagnostics_"+sid)
     if not a.plans(sid):
         st.info('数据已登记。可先查看数据质量，或在下方输入研究问题。')
     with st.sidebar.expander('当前任务 · 数据与权限'):

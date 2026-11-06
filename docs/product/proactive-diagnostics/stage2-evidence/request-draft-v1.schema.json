@@ -1,0 +1,110 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "research-request-draft-v1",
+      "default": "research-request-draft-v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "draft_id": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Draft Id",
+      "type": "string"
+    },
+    "report_id": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Report Id",
+      "type": "string"
+    },
+    "session_id": {
+      "title": "Session Id",
+      "type": "string"
+    },
+    "suggestion_id": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Suggestion Id",
+      "type": "string"
+    },
+    "diagnostic_id": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Diagnostic Id",
+      "type": "string"
+    },
+    "assessment_id": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Assessment Id",
+      "type": "string"
+    },
+    "user_intent": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "User Intent",
+      "type": "string"
+    },
+    "proposed_action": {
+      "title": "Proposed Action",
+      "type": "string"
+    },
+    "required_evidence": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Required Evidence",
+      "type": "array"
+    },
+    "related_refs": {
+      "additionalProperties": true,
+      "title": "Related Refs",
+      "type": "object"
+    },
+    "new_scope": {
+      "title": "New Scope",
+      "type": "string"
+    },
+    "status": {
+      "const": "needs_information",
+      "default": "needs_information",
+      "title": "Status",
+      "type": "string"
+    },
+    "actor": {
+      "const": "explicit_user_save",
+      "default": "explicit_user_save",
+      "title": "Actor",
+      "type": "string"
+    },
+    "human_review_required": {
+      "const": true,
+      "default": true,
+      "title": "Human Review Required",
+      "type": "boolean"
+    },
+    "execution_authorized": {
+      "const": false,
+      "default": false,
+      "title": "Execution Authorized",
+      "type": "boolean"
+    },
+    "created_at": {
+      "title": "Created At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "draft_id",
+    "report_id",
+    "session_id",
+    "suggestion_id",
+    "diagnostic_id",
+    "assessment_id",
+    "user_intent",
+    "proposed_action",
+    "required_evidence",
+    "related_refs",
+    "new_scope",
+    "created_at"
+  ],
+  "title": "ResearchRequestDraft",
+  "type": "object"
+}

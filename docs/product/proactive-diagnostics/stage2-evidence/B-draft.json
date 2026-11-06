@@ -1,0 +1,49 @@
+{
+  "schema_version": "research-request-draft-v1",
+  "draft_id": "22deef8abd87dde85302ddf53e8252e07bd32eff1b1969c1e72edbfa7f2d1e8c",
+  "report_id": "6bd79a107676ac01ebaec780e6eb7beebef2e1b9bd0ba9af8459c3dbe0ea4310",
+  "session_id": "64f2873c0d194ded8fde7f1315e9ac76",
+  "suggestion_id": "2a88a69262363bf5753b7d4481834c0854aa8f9cb54ead66642850388e0f36e4",
+  "diagnostic_id": "2daebafeacc2681c3acfb40d035c38624bff571fa6b6f9ee71e34e774a0853c5",
+  "assessment_id": "9924f875b1590c81aa8040270d3be322c7dfae0144379539f057b963ea25509b",
+  "user_intent": "用户明确保存：待补充随机分配设计来源",
+  "proposed_action": "补充可核对的分配设计来源、适用人群和期间，并由使用者核对。",
+  "required_evidence": [
+    "可核对的随机分配设计来源及其适用范围"
+  ],
+  "related_refs": {
+    "data": {
+      "frame_sha": "29e0205ddfe477f1281e6abccc5de788df64b616e8f6d7f6c07bf0ec45183928",
+      "upload_id": "b434f675633c9d58e195ebf4c3eb954acbcc458f2e5f04843ae5942b0341a862"
+    },
+    "evidence": [
+      {
+        "artifact_id": "a17312d0b13b4d864da10fcb0694e9843b9ba9497d2f948e8595ac3e458a00d0",
+        "artifact_kind": "validation_observation",
+        "availability": "valid",
+        "json_pointer": "/checks",
+        "sha": "82d0227e7e51a4ce3143be0500f0daa304abe2ed9e66539cb80c8d27510019ec"
+      },
+      {
+        "artifact_id": "1e177eb7a9094cebae3a40c9b3ff102d",
+        "artifact_kind": "data_contract",
+        "availability": "valid",
+        "json_pointer": "",
+        "sha": "b31ed204ab0ae426bafe632e9922f9831c14a444bdab5d93371657e365b5485f"
+      }
+    ],
+    "plan": null,
+    "runs": [],
+    "task": {
+      "kind": "research_session",
+      "session_id": "64f2873c0d194ded8fde7f1315e9ac76",
+      "task_id": "64f2873c0d194ded8fde7f1315e9ac76"
+    }
+  },
+  "new_scope": "requires_separate_request",
+  "status": "needs_information",
+  "actor": "explicit_user_save",
+  "human_review_required": true,
+  "execution_authorized": false,
+  "created_at": "2026-11-06T15:44:41.445126+00:00"
+}

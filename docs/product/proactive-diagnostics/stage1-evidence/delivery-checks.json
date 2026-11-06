@@ -1,0 +1,12 @@
+{
+  "scope": "new_stage1_files_only_not_remote_history_release_scan",
+  "product_commit": "cf02474ceaddccaee9057b37047130434b3399d5",
+  "source_sha": "d7b4e1bb2d9ed2d6510f6c2101a3db2f9ccca5560fce2efcb6493806da455793",
+  "files_checked": 32,
+  "sensitive_pattern_hits": [],
+  "relative_links_checked": 38,
+  "original_runtime_files_modified": false,
+  "new_diagnostic_modules": 6,
+  "model_requests": 0,
+  "caveat": "Pattern checks do not prove the absence of every sensitive information category."
+}

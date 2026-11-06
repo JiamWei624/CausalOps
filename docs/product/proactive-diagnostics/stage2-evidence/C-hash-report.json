@@ -1,0 +1,783 @@
+{
+  "schema_version": "diagnostic-report-v1",
+  "report_id": "9b26b0d2c92de0b7617b3f79b2456c963b134d954e7aad835c77046407656b5f",
+  "version": 3,
+  "assessment_id": "ba62f8e7c982f776a0db4e417d143da78cce0a6eb713ea709a68013e35af15b4",
+  "assessment_sha": "7214b878fbba26dcba89f2bb787e3b029202953cdabee0ef059b5768fca6cdad",
+  "context": {
+    "task_ref": {
+      "kind": "automation_v2",
+      "task_id": "b2627763e002439f860c1d09b48adea7",
+      "session_id": "79f1b44aaf744a779683f0e0ec0e8a6e"
+    },
+    "plan_ref": {
+      "id": "423fd19069c447c48e544decf6b47e39",
+      "version": 1,
+      "sha": "a97ab68ace5c32e0d145669202a60f0a9f0d8133bf14616d0fdc44494453094c"
+    },
+    "no_plan_reason": null,
+    "data_ref": {
+      "upload_id": "3df734138678a6c628c9a8a26403a406d7e4ece9c2f96eb4e39fe9dbc3dd967b",
+      "frame_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+    },
+    "contract_ref": {
+      "id": "9c640739b1d24260be5c795dd1f66ea9",
+      "version": 1,
+      "sha": "8865c2cffc0b8135f2170dcd1ffbc4dc4a4d516325871e7cfb5d074f49028412",
+      "data_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+    },
+    "run_refs": [],
+    "scope": {
+      "analysis_unit": "客户",
+      "outcome_field": "visit",
+      "metric_label": "两周访问率",
+      "statistic_type": "risk_difference",
+      "unit": "概率",
+      "observation_window": "分配后两周",
+      "group_labels": [
+        "未发邮件",
+        "男装邮件"
+      ],
+      "numerator": "各组访问客户数",
+      "denominator": "各分配组客户数",
+      "aggregation": "组内比例与概率差"
+    },
+    "fingerprint": "23135fe217fb7feb43924f8a6299a64be80d11db8b9d2b4744e9324f665d29f7",
+    "phase": "post_run",
+    "provenance": {
+      "recorded_execution_source_sha": "e6957396f465c8cc835b2938a34f8ad58fe5aa7424b1161c75cae4ae2b3952ae",
+      "diagnostic_source_sha": "e6957396f465c8cc835b2938a34f8ad58fe5aa7424b1161c75cae4ae2b3952ae",
+      "reading_mode": "historical_read_only"
+    }
+  },
+  "rule_pack": "hillstrom-diagnostics-stage1",
+  "rule_pack_version": "1",
+  "suggestion_version": "six-rule-suggestions-v1",
+  "generator_sha": "0dc18fce7978bb9ac6325bf6a49c70c074067cee0cafa11d454f4d337bd4e51f",
+  "results": {
+    "status": "restricted",
+    "objective": "使用 A/B 随机实验比较男装邮件与未发邮件客户在两周内的访问率，并给出绝对差与区间。",
+    "scope": {
+      "aggregation": "组内比例与概率差",
+      "analysis_unit": "客户",
+      "denominator": "各分配组客户数",
+      "group_labels": [
+        "未发邮件",
+        "男装邮件"
+      ],
+      "metric_label": "两周访问率",
+      "numerator": "各组访问客户数",
+      "observation_window": "分配后两周",
+      "outcome_field": "visit",
+      "statistic_type": "risk_difference",
+      "unit": "概率"
+    },
+    "approval": null,
+    "runs": [],
+    "original_manifest": null,
+    "method": null,
+    "estimate": null,
+    "effect": null,
+    "group_summary": [],
+    "sample_size": null,
+    "design_observations": {
+      "declared_groups_present": true,
+      "group_field_present": true,
+      "missing_group_records": 0,
+      "nonmissing_group_count": 2
+    },
+    "limitations": [
+      "历史回执只描述原批准；新计算仍需原服务核验。",
+      "来源登记一致不能证明所有识别假设；两周访问指标不能推断长期利润。"
+    ]
+  },
+  "quality": {
+    "findings": [
+      {
+        "schema_version": "diagnostic-finding-v1.1",
+        "finding_id": "059a765e69e909a2adfc6d5b2f5e90414e1644008849c54eef3317ae5f8570dd",
+        "assessment_id": "ba62f8e7c982f776a0db4e417d143da78cce0a6eb713ea709a68013e35af15b4",
+        "context": {
+          "task_ref": {
+            "kind": "automation_v2",
+            "task_id": "b2627763e002439f860c1d09b48adea7",
+            "session_id": "79f1b44aaf744a779683f0e0ec0e8a6e"
+          },
+          "plan_ref": {
+            "id": "423fd19069c447c48e544decf6b47e39",
+            "version": 1,
+            "sha": "a97ab68ace5c32e0d145669202a60f0a9f0d8133bf14616d0fdc44494453094c"
+          },
+          "no_plan_reason": null,
+          "data_ref": {
+            "upload_id": "3df734138678a6c628c9a8a26403a406d7e4ece9c2f96eb4e39fe9dbc3dd967b",
+            "frame_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+          },
+          "contract_ref": {
+            "id": "9c640739b1d24260be5c795dd1f66ea9",
+            "version": 1,
+            "sha": "8865c2cffc0b8135f2170dcd1ffbc4dc4a4d516325871e7cfb5d074f49028412",
+            "data_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+          },
+          "run_refs": [],
+          "scope": {
+            "analysis_unit": "客户",
+            "outcome_field": "visit",
+            "metric_label": "两周访问率",
+            "statistic_type": "risk_difference",
+            "unit": "概率",
+            "observation_window": "分配后两周",
+            "group_labels": [
+              "未发邮件",
+              "男装邮件"
+            ],
+            "numerator": "各组访问客户数",
+            "denominator": "各分配组客户数",
+            "aggregation": "组内比例与概率差"
+          },
+          "fingerprint": "23135fe217fb7feb43924f8a6299a64be80d11db8b9d2b4744e9324f665d29f7",
+          "phase": "post_run",
+          "provenance": {
+            "recorded_execution_source_sha": "e6957396f465c8cc835b2938a34f8ad58fe5aa7424b1161c75cae4ae2b3952ae",
+            "diagnostic_source_sha": "e6957396f465c8cc835b2938a34f8ad58fe5aa7424b1161c75cae4ae2b3952ae",
+            "reading_mode": "historical_read_only"
+          }
+        },
+        "rule": {
+          "id": "PD-01",
+          "version": "1",
+          "pack": "hillstrom-diagnostics-stage1:1",
+          "check_method": "native_identity_and_artifact_verification"
+        },
+        "diagnostic_type": "binding",
+        "applicability": "applicable",
+        "check_performed": true,
+        "status": "issue",
+        "result": {
+          "observed": {
+            "checks": [
+              {
+                "code": "step_or_run_integrity_conflict",
+                "missing": false,
+                "step": "S02"
+              },
+              {
+                "code": "step_or_run_integrity_conflict",
+                "missing": false,
+                "step": "S03"
+              },
+              {
+                "code": "step_or_run_integrity_conflict",
+                "missing": false,
+                "step": "S04"
+              },
+              {
+                "code": "step_or_run_integrity_conflict",
+                "missing": false,
+                "step": "S05"
+              }
+            ]
+          },
+          "expected": {},
+          "reason_code": "native_evidence_conflict",
+          "missing_items": [],
+          "required_work": [
+            "核对本任务的数据、批准和工件来源，不重算替代缺失证据。"
+          ]
+        },
+        "evidence_refs": [
+          {
+            "artifact_kind": "validation_observation",
+            "artifact_id": "f724378fd7c40dfa2fa659de79d174767777f05a7c462cf6afdffef49bbbd2d2",
+            "sha": "e9f88cf5cc6a124b7bd7cbc604d18c1053c76afece2a606f67593e81a0c5e81a",
+            "json_pointer": "/checks",
+            "availability": "valid"
+          }
+        ],
+        "impact": {
+          "claim_effect": "hide_integrated_estimate",
+          "explanation": "原生数据、批准或步骤工件无法完整关联；停止引用联合结论，不从其他任务补数。",
+          "execution_authority": "original_service_only"
+        },
+        "severity": {
+          "level": "critical",
+          "policy_id": "hillstrom-diagnostics-stage1:1",
+          "reason_code": "native_evidence_conflict"
+        },
+        "human_confirmation_required": true,
+        "eligible_action_ids": [],
+        "generated_at": "2026-11-06T15:45:02.543603+00:00",
+        "source": {
+          "mechanism": "deterministic_rule",
+          "origin": "program_fact",
+          "generator_version": "e6957396f465c8cc835b2938a34f8ad58fe5aa7424b1161c75cae4ae2b3952ae"
+        }
+      },
+      {
+        "schema_version": "diagnostic-finding-v1.1",
+        "finding_id": "fd4d63f0a805a3773bea053656d1ef82ecb96de16cb57b63c6640618fe2179f8",
+        "assessment_id": "ba62f8e7c982f776a0db4e417d143da78cce0a6eb713ea709a68013e35af15b4",
+        "context": {
+          "task_ref": {
+            "kind": "automation_v2",
+            "task_id": "b2627763e002439f860c1d09b48adea7",
+            "session_id": "79f1b44aaf744a779683f0e0ec0e8a6e"
+          },
+          "plan_ref": {
+            "id": "423fd19069c447c48e544decf6b47e39",
+            "version": 1,
+            "sha": "a97ab68ace5c32e0d145669202a60f0a9f0d8133bf14616d0fdc44494453094c"
+          },
+          "no_plan_reason": null,
+          "data_ref": {
+            "upload_id": "3df734138678a6c628c9a8a26403a406d7e4ece9c2f96eb4e39fe9dbc3dd967b",
+            "frame_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+          },
+          "contract_ref": {
+            "id": "9c640739b1d24260be5c795dd1f66ea9",
+            "version": 1,
+            "sha": "8865c2cffc0b8135f2170dcd1ffbc4dc4a4d516325871e7cfb5d074f49028412",
+            "data_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+          },
+          "run_refs": [],
+          "scope": {
+            "analysis_unit": "客户",
+            "outcome_field": "visit",
+            "metric_label": "两周访问率",
+            "statistic_type": "risk_difference",
+            "unit": "概率",
+            "observation_window": "分配后两周",
+            "group_labels": [
+              "未发邮件",
+              "男装邮件"
+            ],
+            "numerator": "各组访问客户数",
+            "denominator": "各分配组客户数",
+            "aggregation": "组内比例与概率差"
+          },
+          "fingerprint": "23135fe217fb7feb43924f8a6299a64be80d11db8b9d2b4744e9324f665d29f7",
+          "phase": "post_run",
+          "provenance": {
+            "recorded_execution_source_sha": "e6957396f465c8cc835b2938a34f8ad58fe5aa7424b1161c75cae4ae2b3952ae",
+            "diagnostic_source_sha": "e6957396f465c8cc835b2938a34f8ad58fe5aa7424b1161c75cae4ae2b3952ae",
+            "reading_mode": "historical_read_only"
+          }
+        },
+        "rule": {
+          "id": "PD-02",
+          "version": "1",
+          "pack": "hillstrom-diagnostics-stage1:1",
+          "check_method": "registered_source_attestation_not_randomization_proof"
+        },
+        "diagnostic_type": "design",
+        "applicability": "applicable",
+        "check_performed": false,
+        "status": "not_checked",
+        "result": {
+          "observed": {},
+          "expected": {},
+          "reason_code": "upstream_evidence_unavailable",
+          "missing_items": [],
+          "required_work": []
+        },
+        "evidence_refs": [
+          {
+            "artifact_kind": "validation_observation",
+            "artifact_id": "47db070473cf20efede39b1828b05b91a4451d4e2776e339d7a4124813a97f3f",
+            "sha": "3c11cfaca425582b6acd8ad7f647772bfa0e6063dc40bf7fefafaf602386138f",
+            "json_pointer": "/checks",
+            "availability": "valid"
+          }
+        ],
+        "impact": {
+          "claim_effect": "show_limitation",
+          "explanation": "未读取不完整或未获核验的上游产物，不能将本项显示为通过。",
+          "execution_authority": "original_service_only"
+        },
+        "severity": {
+          "level": "information",
+          "policy_id": "hillstrom-diagnostics-stage1:1",
+          "reason_code": "upstream_evidence_unavailable"
+        },
+        "human_confirmation_required": false,
+        "eligible_action_ids": [],
+        "generated_at": "2026-11-06T15:45:02.543603+00:00",
+        "source": {
+          "mechanism": "deterministic_rule",
+          "origin": "program_fact",
+          "generator_version": "e6957396f465c8cc835b2938a34f8ad58fe5aa7424b1161c75cae4ae2b3952ae"
+        }
+      },
+      {
+        "schema_version": "diagnostic-finding-v1.1",
+        "finding_id": "965a35ce2ffd0d27fd206160b164150d858ff8d3d2626fc1d500ebebe2482654",
+        "assessment_id": "ba62f8e7c982f776a0db4e417d143da78cce0a6eb713ea709a68013e35af15b4",
+        "context": {
+          "task_ref": {
+            "kind": "automation_v2",
+            "task_id": "b2627763e002439f860c1d09b48adea7",
+            "session_id": "79f1b44aaf744a779683f0e0ec0e8a6e"
+          },
+          "plan_ref": {
+            "id": "423fd19069c447c48e544decf6b47e39",
+            "version": 1,
+            "sha": "a97ab68ace5c32e0d145669202a60f0a9f0d8133bf14616d0fdc44494453094c"
+          },
+          "no_plan_reason": null,
+          "data_ref": {
+            "upload_id": "3df734138678a6c628c9a8a26403a406d7e4ece9c2f96eb4e39fe9dbc3dd967b",
+            "frame_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+          },
+          "contract_ref": {
+            "id": "9c640739b1d24260be5c795dd1f66ea9",
+            "version": 1,
+            "sha": "8865c2cffc0b8135f2170dcd1ffbc4dc4a4d516325871e7cfb5d074f49028412",
+            "data_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+          },
+          "run_refs": [],
+          "scope": {
+            "analysis_unit": "客户",
+            "outcome_field": "visit",
+            "metric_label": "两周访问率",
+            "statistic_type": "risk_difference",
+            "unit": "概率",
+            "observation_window": "分配后两周",
+            "group_labels": [
+              "未发邮件",
+              "男装邮件"
+            ],
+            "numerator": "各组访问客户数",
+            "denominator": "各分配组客户数",
+            "aggregation": "组内比例与概率差"
+          },
+          "fingerprint": "23135fe217fb7feb43924f8a6299a64be80d11db8b9d2b4744e9324f665d29f7",
+          "phase": "post_run",
+          "provenance": {
+            "recorded_execution_source_sha": "e6957396f465c8cc835b2938a34f8ad58fe5aa7424b1161c75cae4ae2b3952ae",
+            "diagnostic_source_sha": "e6957396f465c8cc835b2938a34f8ad58fe5aa7424b1161c75cae4ae2b3952ae",
+            "reading_mode": "historical_read_only"
+          }
+        },
+        "rule": {
+          "id": "PD-06",
+          "version": "1",
+          "pack": "hillstrom-diagnostics-stage1:1",
+          "check_method": "bound_observation_window_comparison"
+        },
+        "diagnostic_type": "metric",
+        "applicability": "applicable",
+        "check_performed": false,
+        "status": "not_checked",
+        "result": {
+          "observed": {},
+          "expected": {},
+          "reason_code": "upstream_evidence_unavailable",
+          "missing_items": [],
+          "required_work": []
+        },
+        "evidence_refs": [
+          {
+            "artifact_kind": "validation_observation",
+            "artifact_id": "a21ab21652b591c20de0c460dc5746b76b5af1ad69ac9b3cf9d2bd9b2abf4e66",
+            "sha": "3de4bcda7ca95d8b24b617af09bdff57729fcc7cdc305a3c7aef877932ad0a34",
+            "json_pointer": "/checks",
+            "availability": "valid"
+          }
+        ],
+        "impact": {
+          "claim_effect": "show_limitation",
+          "explanation": "未读取不完整或未获核验的上游产物，不能将本项显示为通过。",
+          "execution_authority": "original_service_only"
+        },
+        "severity": {
+          "level": "information",
+          "policy_id": "hillstrom-diagnostics-stage1:1",
+          "reason_code": "upstream_evidence_unavailable"
+        },
+        "human_confirmation_required": false,
+        "eligible_action_ids": [],
+        "generated_at": "2026-11-06T15:45:02.543603+00:00",
+        "source": {
+          "mechanism": "deterministic_rule",
+          "origin": "program_fact",
+          "generator_version": "e6957396f465c8cc835b2938a34f8ad58fe5aa7424b1161c75cae4ae2b3952ae"
+        }
+      },
+      {
+        "schema_version": "diagnostic-finding-v1.1",
+        "finding_id": "d90d5425bd9fde52da5469fc71af388b702544a79f62d22907d18930891e948c",
+        "assessment_id": "ba62f8e7c982f776a0db4e417d143da78cce0a6eb713ea709a68013e35af15b4",
+        "context": {
+          "task_ref": {
+            "kind": "automation_v2",
+            "task_id": "b2627763e002439f860c1d09b48adea7",
+            "session_id": "79f1b44aaf744a779683f0e0ec0e8a6e"
+          },
+          "plan_ref": {
+            "id": "423fd19069c447c48e544decf6b47e39",
+            "version": 1,
+            "sha": "a97ab68ace5c32e0d145669202a60f0a9f0d8133bf14616d0fdc44494453094c"
+          },
+          "no_plan_reason": null,
+          "data_ref": {
+            "upload_id": "3df734138678a6c628c9a8a26403a406d7e4ece9c2f96eb4e39fe9dbc3dd967b",
+            "frame_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+          },
+          "contract_ref": {
+            "id": "9c640739b1d24260be5c795dd1f66ea9",
+            "version": 1,
+            "sha": "8865c2cffc0b8135f2170dcd1ffbc4dc4a4d516325871e7cfb5d074f49028412",
+            "data_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+          },
+          "run_refs": [],
+          "scope": {
+            "analysis_unit": "客户",
+            "outcome_field": "visit",
+            "metric_label": "两周访问率",
+            "statistic_type": "risk_difference",
+            "unit": "概率",
+            "observation_window": "分配后两周",
+            "group_labels": [
+              "未发邮件",
+              "男装邮件"
+            ],
+            "numerator": "各组访问客户数",
+            "denominator": "各分配组客户数",
+            "aggregation": "组内比例与概率差"
+          },
+          "fingerprint": "23135fe217fb7feb43924f8a6299a64be80d11db8b9d2b4744e9324f665d29f7",
+          "phase": "post_run",
+          "provenance": {
+            "recorded_execution_source_sha": "e6957396f465c8cc835b2938a34f8ad58fe5aa7424b1161c75cae4ae2b3952ae",
+            "diagnostic_source_sha": "e6957396f465c8cc835b2938a34f8ad58fe5aa7424b1161c75cae4ae2b3952ae",
+            "reading_mode": "historical_read_only"
+          }
+        },
+        "rule": {
+          "id": "PD-07",
+          "version": "1",
+          "pack": "hillstrom-diagnostics-stage1:1",
+          "check_method": "saved_gate_and_two_run_sample_comparison"
+        },
+        "diagnostic_type": "binding",
+        "applicability": "applicable",
+        "check_performed": false,
+        "status": "not_checked",
+        "result": {
+          "observed": {},
+          "expected": {},
+          "reason_code": "upstream_evidence_unavailable",
+          "missing_items": [],
+          "required_work": []
+        },
+        "evidence_refs": [
+          {
+            "artifact_kind": "validation_observation",
+            "artifact_id": "53c8820c175aaf40ac66838ecfd03d599b46452db1921be7a65fecdbfe4ee6db",
+            "sha": "aca6985b0cfa7749110a61c94fd1641a60b001a96506d93ecc908c9bd46ae57e",
+            "json_pointer": "/checks",
+            "availability": "valid"
+          }
+        ],
+        "impact": {
+          "claim_effect": "show_limitation",
+          "explanation": "未读取不完整或未获核验的上游产物，不能将本项显示为通过。",
+          "execution_authority": "original_service_only"
+        },
+        "severity": {
+          "level": "information",
+          "policy_id": "hillstrom-diagnostics-stage1:1",
+          "reason_code": "upstream_evidence_unavailable"
+        },
+        "human_confirmation_required": false,
+        "eligible_action_ids": [],
+        "generated_at": "2026-11-06T15:45:02.543603+00:00",
+        "source": {
+          "mechanism": "deterministic_rule",
+          "origin": "program_fact",
+          "generator_version": "e6957396f465c8cc835b2938a34f8ad58fe5aa7424b1161c75cae4ae2b3952ae"
+        }
+      },
+      {
+        "schema_version": "diagnostic-finding-v1.1",
+        "finding_id": "3c72dc9bd0d827db8034c723cddaaa40538783d08778c29fcb4686ae2d405c1e",
+        "assessment_id": "ba62f8e7c982f776a0db4e417d143da78cce0a6eb713ea709a68013e35af15b4",
+        "context": {
+          "task_ref": {
+            "kind": "automation_v2",
+            "task_id": "b2627763e002439f860c1d09b48adea7",
+            "session_id": "79f1b44aaf744a779683f0e0ec0e8a6e"
+          },
+          "plan_ref": {
+            "id": "423fd19069c447c48e544decf6b47e39",
+            "version": 1,
+            "sha": "a97ab68ace5c32e0d145669202a60f0a9f0d8133bf14616d0fdc44494453094c"
+          },
+          "no_plan_reason": null,
+          "data_ref": {
+            "upload_id": "3df734138678a6c628c9a8a26403a406d7e4ece9c2f96eb4e39fe9dbc3dd967b",
+            "frame_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+          },
+          "contract_ref": {
+            "id": "9c640739b1d24260be5c795dd1f66ea9",
+            "version": 1,
+            "sha": "8865c2cffc0b8135f2170dcd1ffbc4dc4a4d516325871e7cfb5d074f49028412",
+            "data_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+          },
+          "run_refs": [],
+          "scope": {
+            "analysis_unit": "客户",
+            "outcome_field": "visit",
+            "metric_label": "两周访问率",
+            "statistic_type": "risk_difference",
+            "unit": "概率",
+            "observation_window": "分配后两周",
+            "group_labels": [
+              "未发邮件",
+              "男装邮件"
+            ],
+            "numerator": "各组访问客户数",
+            "denominator": "各分配组客户数",
+            "aggregation": "组内比例与概率差"
+          },
+          "fingerprint": "23135fe217fb7feb43924f8a6299a64be80d11db8b9d2b4744e9324f665d29f7",
+          "phase": "post_run",
+          "provenance": {
+            "recorded_execution_source_sha": "e6957396f465c8cc835b2938a34f8ad58fe5aa7424b1161c75cae4ae2b3952ae",
+            "diagnostic_source_sha": "e6957396f465c8cc835b2938a34f8ad58fe5aa7424b1161c75cae4ae2b3952ae",
+            "reading_mode": "historical_read_only"
+          }
+        },
+        "rule": {
+          "id": "PD-09",
+          "version": "1",
+          "pack": "hillstrom-diagnostics-stage1:1",
+          "check_method": "saved_metric_and_deterministic_rate_units"
+        },
+        "diagnostic_type": "metric",
+        "applicability": "applicable",
+        "check_performed": false,
+        "status": "not_checked",
+        "result": {
+          "observed": {},
+          "expected": {},
+          "reason_code": "upstream_evidence_unavailable",
+          "missing_items": [],
+          "required_work": []
+        },
+        "evidence_refs": [
+          {
+            "artifact_kind": "validation_observation",
+            "artifact_id": "319c55326df117c5d49ce3697ce24aba588677e2f46e7a43ef2904b94d9d05f3",
+            "sha": "2ae71fe04126ed89d7fe717c3f20c71e8cc6906f0d0a1a62f5ed2e6b421c9b9c",
+            "json_pointer": "/checks",
+            "availability": "valid"
+          }
+        ],
+        "impact": {
+          "claim_effect": "show_limitation",
+          "explanation": "未读取不完整或未获核验的上游产物，不能将本项显示为通过。",
+          "execution_authority": "original_service_only"
+        },
+        "severity": {
+          "level": "information",
+          "policy_id": "hillstrom-diagnostics-stage1:1",
+          "reason_code": "upstream_evidence_unavailable"
+        },
+        "human_confirmation_required": false,
+        "eligible_action_ids": [],
+        "generated_at": "2026-11-06T15:45:02.543603+00:00",
+        "source": {
+          "mechanism": "deterministic_rule",
+          "origin": "program_fact",
+          "generator_version": "e6957396f465c8cc835b2938a34f8ad58fe5aa7424b1161c75cae4ae2b3952ae"
+        }
+      },
+      {
+        "schema_version": "diagnostic-finding-v1.1",
+        "finding_id": "3ae9981abdca8fc8d8fcc43c3bbb26218e9ce96be8588e74a47cce98fd7108af",
+        "assessment_id": "ba62f8e7c982f776a0db4e417d143da78cce0a6eb713ea709a68013e35af15b4",
+        "context": {
+          "task_ref": {
+            "kind": "automation_v2",
+            "task_id": "b2627763e002439f860c1d09b48adea7",
+            "session_id": "79f1b44aaf744a779683f0e0ec0e8a6e"
+          },
+          "plan_ref": {
+            "id": "423fd19069c447c48e544decf6b47e39",
+            "version": 1,
+            "sha": "a97ab68ace5c32e0d145669202a60f0a9f0d8133bf14616d0fdc44494453094c"
+          },
+          "no_plan_reason": null,
+          "data_ref": {
+            "upload_id": "3df734138678a6c628c9a8a26403a406d7e4ece9c2f96eb4e39fe9dbc3dd967b",
+            "frame_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+          },
+          "contract_ref": {
+            "id": "9c640739b1d24260be5c795dd1f66ea9",
+            "version": 1,
+            "sha": "8865c2cffc0b8135f2170dcd1ffbc4dc4a4d516325871e7cfb5d074f49028412",
+            "data_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+          },
+          "run_refs": [],
+          "scope": {
+            "analysis_unit": "客户",
+            "outcome_field": "visit",
+            "metric_label": "两周访问率",
+            "statistic_type": "risk_difference",
+            "unit": "概率",
+            "observation_window": "分配后两周",
+            "group_labels": [
+              "未发邮件",
+              "男装邮件"
+            ],
+            "numerator": "各组访问客户数",
+            "denominator": "各分配组客户数",
+            "aggregation": "组内比例与概率差"
+          },
+          "fingerprint": "23135fe217fb7feb43924f8a6299a64be80d11db8b9d2b4744e9324f665d29f7",
+          "phase": "post_run",
+          "provenance": {
+            "recorded_execution_source_sha": "e6957396f465c8cc835b2938a34f8ad58fe5aa7424b1161c75cae4ae2b3952ae",
+            "diagnostic_source_sha": "e6957396f465c8cc835b2938a34f8ad58fe5aa7424b1161c75cae4ae2b3952ae",
+            "reading_mode": "historical_read_only"
+          }
+        },
+        "rule": {
+          "id": "PD-14",
+          "version": "1",
+          "pack": "hillstrom-diagnostics-stage1:1",
+          "check_method": "saved_step_and_report_manifest_comparison"
+        },
+        "diagnostic_type": "execution",
+        "applicability": "applicable",
+        "check_performed": false,
+        "status": "not_checked",
+        "result": {
+          "observed": {},
+          "expected": {},
+          "reason_code": "upstream_evidence_unavailable",
+          "missing_items": [],
+          "required_work": []
+        },
+        "evidence_refs": [
+          {
+            "artifact_kind": "validation_observation",
+            "artifact_id": "50e0795bdac2f01fc90a66d3f46462538f4ad24b4f6c51f46a2bc8c4e936911d",
+            "sha": "a703dee23998a69aa868c2b7f6a3be4561bc1ced04449371b7db69fcbb7958d9",
+            "json_pointer": "/checks",
+            "availability": "valid"
+          }
+        ],
+        "impact": {
+          "claim_effect": "show_limitation",
+          "explanation": "未读取不完整或未获核验的上游产物，不能将本项显示为通过。",
+          "execution_authority": "original_service_only"
+        },
+        "severity": {
+          "level": "information",
+          "policy_id": "hillstrom-diagnostics-stage1:1",
+          "reason_code": "upstream_evidence_unavailable"
+        },
+        "human_confirmation_required": false,
+        "eligible_action_ids": [],
+        "generated_at": "2026-11-06T15:45:02.543603+00:00",
+        "source": {
+          "mechanism": "deterministic_rule",
+          "origin": "program_fact",
+          "generator_version": "e6957396f465c8cc835b2938a34f8ad58fe5aa7424b1161c75cae4ae2b3952ae"
+        }
+      }
+    ],
+    "status_labels": {
+      "issue": "已发现问题",
+      "not_applicable": "不适用",
+      "not_checked": "尚未检查",
+      "unknown": "条件未知或证据不足",
+      "verified": "已核验满足"
+    },
+    "implemented_rules": [
+      "PD-01",
+      "PD-02",
+      "PD-06",
+      "PD-07",
+      "PD-09",
+      "PD-14"
+    ],
+    "unimplemented_rules": [
+      "PD-03",
+      "PD-04",
+      "PD-05",
+      "PD-08",
+      "PD-10",
+      "PD-11",
+      "PD-12",
+      "PD-13"
+    ],
+    "conclusion_policy": "hide_integrated_estimate",
+    "limitations": [
+      "本阶段仅实现六项证据规则；其余规则未实现，不统计为通过。",
+      "来源与人工声明一致不代表程序证明随机分配真实发生。",
+      "未新增基线平衡、功效、无干扰或长期利润检验，不能据此声称研究假设全部满足。",
+      "诊断不授予执行权限；历史保存事实与当前执行授权分别核验。",
+      "没有模型解释、完整建议、用户采纳、三层报告或长期决策记忆。"
+    ]
+  },
+  "suggestions": [
+    {
+      "suggestion_id": "c8760389cacf62bf3c51b57e780f9d4e29a7313ae0b972348743c8cd849ab134",
+      "diagnostic_id": "059a765e69e909a2adfc6d5b2f5e90414e1644008849c54eef3317ae5f8570dd",
+      "assessment_id": "ba62f8e7c982f776a0db4e417d143da78cce0a6eb713ea709a68013e35af15b4",
+      "rule_id": "PD-01",
+      "rule_version": "1",
+      "template_version": "six-rule-suggestions-v1",
+      "context_fingerprint": "23135fe217fb7feb43924f8a6299a64be80d11db8b9d2b4744e9324f665d29f7",
+      "related_refs": {
+        "data": {
+          "frame_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226",
+          "upload_id": "3df734138678a6c628c9a8a26403a406d7e4ece9c2f96eb4e39fe9dbc3dd967b"
+        },
+        "evidence": [
+          {
+            "artifact_id": "f724378fd7c40dfa2fa659de79d174767777f05a7c462cf6afdffef49bbbd2d2",
+            "artifact_kind": "validation_observation",
+            "availability": "valid",
+            "json_pointer": "/checks",
+            "sha": "e9f88cf5cc6a124b7bd7cbc604d18c1053c76afece2a606f67593e81a0c5e81a"
+          }
+        ],
+        "plan": {
+          "id": "423fd19069c447c48e544decf6b47e39",
+          "sha": "a97ab68ace5c32e0d145669202a60f0a9f0d8133bf14616d0fdc44494453094c",
+          "version": 1
+        },
+        "runs": [],
+        "task": {
+          "kind": "automation_v2",
+          "session_id": "79f1b44aaf744a779683f0e0ec0e8a6e",
+          "task_id": "b2627763e002439f860c1d09b48adea7"
+        }
+      },
+      "action": "核对本任务数据、合同、批准与运行工件的归属及指纹，恢复可核对的原生引用。",
+      "reason_code": "native_evidence_conflict",
+      "reason": "原生数据、批准或步骤工件无法完整关联；停止引用联合结论，不从其他任务补数。",
+      "required_evidence": [
+        "核对本任务的数据、批准和工件来源，不重算替代缺失证据。"
+      ],
+      "new_scope": "requires_separate_request",
+      "human_review_required": true,
+      "status": "needs_information",
+      "limitations": [
+        "建议只登记核查事项；不会修改合同或批准。",
+        "正式数据、口径或方法变化须另行请求待审方案。"
+      ],
+      "source": "deterministic_rule_mapping",
+      "execution_authorized": false
+    }
+  ],
+  "generation_source": "explicit_read_only_request",
+  "snapshot_semantics": "immutable_at_generation_time",
+  "model_requests": 0,
+  "execution_authorized": false,
+  "created_at": "2026-11-06T15:45:02.793530+00:00"
+}

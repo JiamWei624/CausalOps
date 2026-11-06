@@ -1,0 +1,55 @@
+{
+  "unchanged_markers": {
+    "analysis_runs": "08a4466bf8a6760f37f4fb3cf56f9004c81fa59aa81b99e8e5344b0f4b4ccbbf",
+    "exploration_runs": "a1aa094789ff3eeb64e87c717b29575b5acdc7c97a889307e9b58c064eead6b3",
+    "automation_v2_tasks": "b246c841e3abd8529cd42ecd0b62b3af99c8b99e0415bb217987a5cf2c8efb5b",
+    "automation_v2_steps": "567bca69e1a055366b079d21ecce7fc0097d516e965233be71c84e2376068048",
+    "automation_v2_approvals": "bd2acc8f634e6b6ccd2353a861713e81cee435a70433fc266df79075b90e7163",
+    "assistant_tasks": "32a5a77ca64ae3deaeb4b0c5aa3bcd6e241a1d071eaad11c4046e021173a88d3",
+    "step_evidence": {
+      "S01": "e5a638271ce3ef8f2b3b934b7d54ae6df77deabc49e571799385e6d7105228a5",
+      "S02": "5bdc239c6730fabbd7828e9f0a42619d4733b42d1dcc77b5bf4cb1f77db4ad2d",
+      "S03": "13263a27d34ad4512955d77202a7b38d256118ce086cc9b30b32ab6d7924e56a",
+      "S04": "795ad1a9770f3458bc2da639db1fbcef82a42ff33c160233fdf1a7935cc654b1",
+      "S05": "1c0ed532469553cc5bf6e58fe2de193de70210a8794ab10a500b6b41a3260a9c"
+    }
+  },
+  "run_counts": {
+    "analysis_runs": 1,
+    "exploration_runs": 1,
+    "assistant_plans": 0,
+    "workflow_approvals": 0,
+    "automation_v2_approvals": 1
+  },
+  "actual_rates": {
+    "estimand": "risk_difference",
+    "outcome": "visit",
+    "raw_unit": "probability",
+    "raw": 0.07658956365153125,
+    "control_rate": 0.10616727682343002,
+    "treated_rate": 0.18275684047496127,
+    "pp": 7.6589563651531245,
+    "ci_pp": [
+      6.995322354054364,
+      8.322590376251885
+    ],
+    "relative_pct": 72.1404616781399,
+    "formulas": {
+      "pp": "100 * raw",
+      "ci_pp": "100 * each raw interval bound",
+      "relative_pct": "100 * raw / control_rate (positive control_rate only)"
+    }
+  },
+  "idempotent": true,
+  "all_six_rules_verified": true,
+  "unimplemented_rules": [
+    "PD-03",
+    "PD-04",
+    "PD-05",
+    "PD-08",
+    "PD-10",
+    "PD-11",
+    "PD-12",
+    "PD-13"
+  ]
+}

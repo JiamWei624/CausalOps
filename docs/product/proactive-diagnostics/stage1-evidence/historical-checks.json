@@ -1,0 +1,9 @@
+{
+  "published_baseline_commit": "f9e876a654164f49bed837064cbc3530a3abe37f",
+  "original_execution_source_sha": "b6aa23b24f20e8b1d2c58b7dc0509bc0dc1def807a0583c1e24a03e7d8e23f9a",
+  "diagnostic_source_sha": "d7b4e1bb2d9ed2d6510f6c2101a3db2f9ccca5560fce2efcb6493806da455793",
+  "old_approval_not_reauthorized": true,
+  "all_six_historical_checks_verified": true,
+  "assessment_id": "1a5aa99b2bbf1bfc32853eeb524e6c64e1d1b457ad4e6c156f1bb023b53a67a8",
+  "model_requests": 0
+}

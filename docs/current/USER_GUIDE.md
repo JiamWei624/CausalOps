@@ -1,6 +1,6 @@
-# 操作说明 · 0.17.0b1
+# 操作说明 · 0.18.0b1
 
-> 本候选新增受限Hillstrom五步工作台，见[自动化教程](AUTOMATION_GUIDE.md)。旧版单次流程继续保留。安装后请核对软件包0.17.0b1与启动地址构建指纹。
+> 本候选新增受限Hillstrom五步工作台，见[自动化教程](AUTOMATION_GUIDE.md)。旧版单次流程继续保留；新增[显式诊断与需求草案教程](DIAGNOSTICS_GUIDE.md)。安装后请核对软件包0.18.0b1与启动地址构建指纹。
 
 [完整公共示例教程](PUBLIC_TUTORIAL.md) · [安装与故障排查](INSTALLATION.md)
 

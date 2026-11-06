@@ -1,0 +1,1268 @@
+{
+  "schema_version": "diagnostic-assessment-v1.1",
+  "assessment_id": "ed28589152f0cb5ce581943f731a53748cdebb0904cba16fe48df6a2bbbbb3cd",
+  "context": {
+    "task_ref": {
+      "kind": "automation_v2",
+      "task_id": "c21f63fa57a44bfab1b62cba053442fe",
+      "session_id": "ea1caa105c914a8a84c87a8bba151110"
+    },
+    "plan_ref": {
+      "id": "1c8dedfcfe7b4d8a892f2977a960e723",
+      "version": 1,
+      "sha": "888016dde04b14e3b0ab4afda54b3f549b16d1a5492b484aaea17fff51fb3f12"
+    },
+    "no_plan_reason": null,
+    "data_ref": {
+      "upload_id": "3df734138678a6c628c9a8a26403a406d7e4ece9c2f96eb4e39fe9dbc3dd967b",
+      "frame_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+    },
+    "contract_ref": {
+      "id": "01dac8f4b31a4fe28dfb2c1e203489cb",
+      "version": 1,
+      "sha": "8865c2cffc0b8135f2170dcd1ffbc4dc4a4d516325871e7cfb5d074f49028412",
+      "data_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+    },
+    "run_refs": [
+      {
+        "run_id": "10fb40e7b9b2476792bec2ab7adbd74e",
+        "kind": "exploration",
+        "plan_id": "1c8dedfcfe7b4d8a892f2977a960e723",
+        "result_fingerprint": "215f1ab4edfdedef09940d7cc741a93aa1eda35a717896e4778a926993ba79b2"
+      },
+      {
+        "run_id": "9767111e9d5340aca06cdc186f3abe87",
+        "kind": "research",
+        "plan_id": "1c8dedfcfe7b4d8a892f2977a960e723",
+        "result_fingerprint": "60fdbb06ab25087f24bd3ba8ddc9f093fecb4c50a7c92ffff3a2b0be298479cf"
+      }
+    ],
+    "scope": {
+      "analysis_unit": "客户",
+      "outcome_field": "visit",
+      "metric_label": "两周访问率",
+      "statistic_type": "risk_difference",
+      "unit": "概率",
+      "observation_window": "分配后两周",
+      "group_labels": [
+        "未发邮件",
+        "男装邮件"
+      ],
+      "numerator": "各组访问客户数",
+      "denominator": "各分配组客户数",
+      "aggregation": "组内比例与概率差"
+    },
+    "fingerprint": "a5c63065c72624079146b9439e559ef5f2abedace30a98133230000bbe9bf119",
+    "phase": "post_run",
+    "provenance": {
+      "recorded_execution_source_sha": "d7b4e1bb2d9ed2d6510f6c2101a3db2f9ccca5560fce2efcb6493806da455793",
+      "diagnostic_source_sha": "d7b4e1bb2d9ed2d6510f6c2101a3db2f9ccca5560fce2efcb6493806da455793",
+      "reading_mode": "historical_read_only"
+    }
+  },
+  "context_fingerprint": "a5c63065c72624079146b9439e559ef5f2abedace30a98133230000bbe9bf119",
+  "rule_pack": "hillstrom-diagnostics-stage1",
+  "rule_pack_version": "1",
+  "coverage": {
+    "implemented": [
+      "PD-01",
+      "PD-02",
+      "PD-06",
+      "PD-07",
+      "PD-09",
+      "PD-14"
+    ],
+    "not_implemented": [
+      "PD-03",
+      "PD-04",
+      "PD-05",
+      "PD-08",
+      "PD-10",
+      "PD-11",
+      "PD-12",
+      "PD-13"
+    ],
+    "evaluated": [
+      "PD-01",
+      "PD-02",
+      "PD-06",
+      "PD-07",
+      "PD-09",
+      "PD-14"
+    ]
+  },
+  "status": "ready",
+  "snapshot_semantics": "immutable_at_assessment_time",
+  "findings": [
+    {
+      "schema_version": "diagnostic-finding-v1.1",
+      "finding_id": "1157897178ad7c493af4ea06b1767125a48351a9e5e318850736cade220a26b1",
+      "assessment_id": "ed28589152f0cb5ce581943f731a53748cdebb0904cba16fe48df6a2bbbbb3cd",
+      "context": {
+        "task_ref": {
+          "kind": "automation_v2",
+          "task_id": "c21f63fa57a44bfab1b62cba053442fe",
+          "session_id": "ea1caa105c914a8a84c87a8bba151110"
+        },
+        "plan_ref": {
+          "id": "1c8dedfcfe7b4d8a892f2977a960e723",
+          "version": 1,
+          "sha": "888016dde04b14e3b0ab4afda54b3f549b16d1a5492b484aaea17fff51fb3f12"
+        },
+        "no_plan_reason": null,
+        "data_ref": {
+          "upload_id": "3df734138678a6c628c9a8a26403a406d7e4ece9c2f96eb4e39fe9dbc3dd967b",
+          "frame_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+        },
+        "contract_ref": {
+          "id": "01dac8f4b31a4fe28dfb2c1e203489cb",
+          "version": 1,
+          "sha": "8865c2cffc0b8135f2170dcd1ffbc4dc4a4d516325871e7cfb5d074f49028412",
+          "data_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+        },
+        "run_refs": [
+          {
+            "run_id": "10fb40e7b9b2476792bec2ab7adbd74e",
+            "kind": "exploration",
+            "plan_id": "1c8dedfcfe7b4d8a892f2977a960e723",
+            "result_fingerprint": "215f1ab4edfdedef09940d7cc741a93aa1eda35a717896e4778a926993ba79b2"
+          },
+          {
+            "run_id": "9767111e9d5340aca06cdc186f3abe87",
+            "kind": "research",
+            "plan_id": "1c8dedfcfe7b4d8a892f2977a960e723",
+            "result_fingerprint": "60fdbb06ab25087f24bd3ba8ddc9f093fecb4c50a7c92ffff3a2b0be298479cf"
+          }
+        ],
+        "scope": {
+          "analysis_unit": "客户",
+          "outcome_field": "visit",
+          "metric_label": "两周访问率",
+          "statistic_type": "risk_difference",
+          "unit": "概率",
+          "observation_window": "分配后两周",
+          "group_labels": [
+            "未发邮件",
+            "男装邮件"
+          ],
+          "numerator": "各组访问客户数",
+          "denominator": "各分配组客户数",
+          "aggregation": "组内比例与概率差"
+        },
+        "fingerprint": "a5c63065c72624079146b9439e559ef5f2abedace30a98133230000bbe9bf119",
+        "phase": "post_run",
+        "provenance": {
+          "recorded_execution_source_sha": "d7b4e1bb2d9ed2d6510f6c2101a3db2f9ccca5560fce2efcb6493806da455793",
+          "diagnostic_source_sha": "d7b4e1bb2d9ed2d6510f6c2101a3db2f9ccca5560fce2efcb6493806da455793",
+          "reading_mode": "historical_read_only"
+        }
+      },
+      "rule": {
+        "id": "PD-01",
+        "version": "1",
+        "pack": "hillstrom-diagnostics-stage1:1",
+        "check_method": "native_identity_and_artifact_verification"
+      },
+      "diagnostic_type": "binding",
+      "applicability": "applicable",
+      "check_performed": true,
+      "status": "verified",
+      "result": {
+        "observed": {
+          "phase": "post_run",
+          "verified_run_count": 2
+        },
+        "expected": {},
+        "reason_code": "native_identity_verified",
+        "missing_items": [],
+        "required_work": []
+      },
+      "evidence_refs": [
+        {
+          "artifact_kind": "validation_observation",
+          "artifact_id": "b67ab772cb8da1d8d4ba797345935fdeda9ebed5c6ac43966bf158c9dc3ed091",
+          "sha": "c338b100aa5ce75f5e3d8e0329d70c668fa18125d26c8cf480eecb49f053ab23",
+          "json_pointer": "/checks",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "data_contract",
+          "artifact_id": "01dac8f4b31a4fe28dfb2c1e203489cb",
+          "sha": "8865c2cffc0b8135f2170dcd1ffbc4dc4a4d516325871e7cfb5d074f49028412",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "source_record",
+          "artifact_id": "c21f63fa57a44bfab1b62cba053442fe",
+          "sha": "0a2e80ddf294772fc90d0a29354c5b50c8d7d6c8a12b83cf805e5d5129c69373",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "c21f63fa57a44bfab1b62cba053442fe:S01",
+          "sha": "e5a638271ce3ef8f2b3b934b7d54ae6df77deabc49e571799385e6d7105228a5",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "c21f63fa57a44bfab1b62cba053442fe:S02",
+          "sha": "5bdc239c6730fabbd7828e9f0a42619d4733b42d1dcc77b5bf4cb1f77db4ad2d",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "run_bundle",
+          "artifact_id": "10fb40e7b9b2476792bec2ab7adbd74e",
+          "sha": "215f1ab4edfdedef09940d7cc741a93aa1eda35a717896e4778a926993ba79b2",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "c21f63fa57a44bfab1b62cba053442fe:S03",
+          "sha": "13263a27d34ad4512955d77202a7b38d256118ce086cc9b30b32ab6d7924e56a",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "c21f63fa57a44bfab1b62cba053442fe:S04",
+          "sha": "795ad1a9770f3458bc2da639db1fbcef82a42ff33c160233fdf1a7935cc654b1",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "run_bundle",
+          "artifact_id": "9767111e9d5340aca06cdc186f3abe87",
+          "sha": "60fdbb06ab25087f24bd3ba8ddc9f093fecb4c50a7c92ffff3a2b0be298479cf",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "c21f63fa57a44bfab1b62cba053442fe:S05",
+          "sha": "88e8a35c3dc2397f208cb7736c345e181005076925792b6ead595630054d2976",
+          "json_pointer": "",
+          "availability": "valid"
+        }
+      ],
+      "impact": {
+        "claim_effect": "unchanged",
+        "explanation": "已核验当前引用的归属及保存指纹；这不授予执行权限。",
+        "execution_authority": "original_service_only"
+      },
+      "severity": {
+        "level": "information",
+        "policy_id": "hillstrom-diagnostics-stage1:1",
+        "reason_code": "native_identity_verified"
+      },
+      "human_confirmation_required": false,
+      "eligible_action_ids": [],
+      "generated_at": "2026-11-06T12:02:38.280662+00:00",
+      "source": {
+        "mechanism": "deterministic_rule",
+        "origin": "program_fact",
+        "generator_version": "d7b4e1bb2d9ed2d6510f6c2101a3db2f9ccca5560fce2efcb6493806da455793"
+      }
+    },
+    {
+      "schema_version": "diagnostic-finding-v1.1",
+      "finding_id": "4dd82e7ecfa453a0b9329bfd0f4d1e5798d29b4731b45a0f2e591985d0a35699",
+      "assessment_id": "ed28589152f0cb5ce581943f731a53748cdebb0904cba16fe48df6a2bbbbb3cd",
+      "context": {
+        "task_ref": {
+          "kind": "automation_v2",
+          "task_id": "c21f63fa57a44bfab1b62cba053442fe",
+          "session_id": "ea1caa105c914a8a84c87a8bba151110"
+        },
+        "plan_ref": {
+          "id": "1c8dedfcfe7b4d8a892f2977a960e723",
+          "version": 1,
+          "sha": "888016dde04b14e3b0ab4afda54b3f549b16d1a5492b484aaea17fff51fb3f12"
+        },
+        "no_plan_reason": null,
+        "data_ref": {
+          "upload_id": "3df734138678a6c628c9a8a26403a406d7e4ece9c2f96eb4e39fe9dbc3dd967b",
+          "frame_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+        },
+        "contract_ref": {
+          "id": "01dac8f4b31a4fe28dfb2c1e203489cb",
+          "version": 1,
+          "sha": "8865c2cffc0b8135f2170dcd1ffbc4dc4a4d516325871e7cfb5d074f49028412",
+          "data_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+        },
+        "run_refs": [
+          {
+            "run_id": "10fb40e7b9b2476792bec2ab7adbd74e",
+            "kind": "exploration",
+            "plan_id": "1c8dedfcfe7b4d8a892f2977a960e723",
+            "result_fingerprint": "215f1ab4edfdedef09940d7cc741a93aa1eda35a717896e4778a926993ba79b2"
+          },
+          {
+            "run_id": "9767111e9d5340aca06cdc186f3abe87",
+            "kind": "research",
+            "plan_id": "1c8dedfcfe7b4d8a892f2977a960e723",
+            "result_fingerprint": "60fdbb06ab25087f24bd3ba8ddc9f093fecb4c50a7c92ffff3a2b0be298479cf"
+          }
+        ],
+        "scope": {
+          "analysis_unit": "客户",
+          "outcome_field": "visit",
+          "metric_label": "两周访问率",
+          "statistic_type": "risk_difference",
+          "unit": "概率",
+          "observation_window": "分配后两周",
+          "group_labels": [
+            "未发邮件",
+            "男装邮件"
+          ],
+          "numerator": "各组访问客户数",
+          "denominator": "各分配组客户数",
+          "aggregation": "组内比例与概率差"
+        },
+        "fingerprint": "a5c63065c72624079146b9439e559ef5f2abedace30a98133230000bbe9bf119",
+        "phase": "post_run",
+        "provenance": {
+          "recorded_execution_source_sha": "d7b4e1bb2d9ed2d6510f6c2101a3db2f9ccca5560fce2efcb6493806da455793",
+          "diagnostic_source_sha": "d7b4e1bb2d9ed2d6510f6c2101a3db2f9ccca5560fce2efcb6493806da455793",
+          "reading_mode": "historical_read_only"
+        }
+      },
+      "rule": {
+        "id": "PD-02",
+        "version": "1",
+        "pack": "hillstrom-diagnostics-stage1:1",
+        "check_method": "registered_source_attestation_not_randomization_proof"
+      },
+      "diagnostic_type": "design",
+      "applicability": "applicable",
+      "check_performed": true,
+      "status": "verified",
+      "result": {
+        "observed": {
+          "assignment_declaration": "randomized",
+          "evidence_type": "legacy_source_attestation"
+        },
+        "expected": {},
+        "reason_code": "legacy_source_attestation_consistent",
+        "missing_items": [],
+        "required_work": []
+      },
+      "evidence_refs": [
+        {
+          "artifact_kind": "validation_observation",
+          "artifact_id": "fb89136d892e86fe7fd96bd629fea791526678e3ffce505d07922dc0cad4f8fe",
+          "sha": "83783325e7b371280b7210213c4c955580fb2d58e79a364b469d8fa2b3fbf292",
+          "json_pointer": "/checks",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "data_contract",
+          "artifact_id": "01dac8f4b31a4fe28dfb2c1e203489cb",
+          "sha": "8865c2cffc0b8135f2170dcd1ffbc4dc4a4d516325871e7cfb5d074f49028412",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "source_record",
+          "artifact_id": "c21f63fa57a44bfab1b62cba053442fe",
+          "sha": "0a2e80ddf294772fc90d0a29354c5b50c8d7d6c8a12b83cf805e5d5129c69373",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "c21f63fa57a44bfab1b62cba053442fe:S01",
+          "sha": "e5a638271ce3ef8f2b3b934b7d54ae6df77deabc49e571799385e6d7105228a5",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "c21f63fa57a44bfab1b62cba053442fe:S02",
+          "sha": "5bdc239c6730fabbd7828e9f0a42619d4733b42d1dcc77b5bf4cb1f77db4ad2d",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "run_bundle",
+          "artifact_id": "10fb40e7b9b2476792bec2ab7adbd74e",
+          "sha": "215f1ab4edfdedef09940d7cc741a93aa1eda35a717896e4778a926993ba79b2",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "c21f63fa57a44bfab1b62cba053442fe:S03",
+          "sha": "13263a27d34ad4512955d77202a7b38d256118ce086cc9b30b32ab6d7924e56a",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "c21f63fa57a44bfab1b62cba053442fe:S04",
+          "sha": "795ad1a9770f3458bc2da639db1fbcef82a42ff33c160233fdf1a7935cc654b1",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "run_bundle",
+          "artifact_id": "9767111e9d5340aca06cdc186f3abe87",
+          "sha": "60fdbb06ab25087f24bd3ba8ddc9f093fecb4c50a7c92ffff3a2b0be298479cf",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "c21f63fa57a44bfab1b62cba053442fe:S05",
+          "sha": "88e8a35c3dc2397f208cb7736c345e181005076925792b6ead595630054d2976",
+          "json_pointer": "",
+          "availability": "valid"
+        }
+      ],
+      "impact": {
+        "claim_effect": "unchanged",
+        "explanation": "公开包身份、来源登记和人工声明一致；本项核对来源记录，不是程序证明随机分配真实发生。",
+        "execution_authority": "original_service_only"
+      },
+      "severity": {
+        "level": "information",
+        "policy_id": "hillstrom-diagnostics-stage1:1",
+        "reason_code": "legacy_source_attestation_consistent"
+      },
+      "human_confirmation_required": false,
+      "eligible_action_ids": [],
+      "generated_at": "2026-11-06T12:02:38.280662+00:00",
+      "source": {
+        "mechanism": "declaration_record_check",
+        "origin": "human_declaration",
+        "generator_version": "d7b4e1bb2d9ed2d6510f6c2101a3db2f9ccca5560fce2efcb6493806da455793"
+      }
+    },
+    {
+      "schema_version": "diagnostic-finding-v1.1",
+      "finding_id": "a9ad56c6395bcef2fa9dc01309ac8f8ae286158c3cd87fb8fd6da4140d0429b7",
+      "assessment_id": "ed28589152f0cb5ce581943f731a53748cdebb0904cba16fe48df6a2bbbbb3cd",
+      "context": {
+        "task_ref": {
+          "kind": "automation_v2",
+          "task_id": "c21f63fa57a44bfab1b62cba053442fe",
+          "session_id": "ea1caa105c914a8a84c87a8bba151110"
+        },
+        "plan_ref": {
+          "id": "1c8dedfcfe7b4d8a892f2977a960e723",
+          "version": 1,
+          "sha": "888016dde04b14e3b0ab4afda54b3f549b16d1a5492b484aaea17fff51fb3f12"
+        },
+        "no_plan_reason": null,
+        "data_ref": {
+          "upload_id": "3df734138678a6c628c9a8a26403a406d7e4ece9c2f96eb4e39fe9dbc3dd967b",
+          "frame_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+        },
+        "contract_ref": {
+          "id": "01dac8f4b31a4fe28dfb2c1e203489cb",
+          "version": 1,
+          "sha": "8865c2cffc0b8135f2170dcd1ffbc4dc4a4d516325871e7cfb5d074f49028412",
+          "data_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+        },
+        "run_refs": [
+          {
+            "run_id": "10fb40e7b9b2476792bec2ab7adbd74e",
+            "kind": "exploration",
+            "plan_id": "1c8dedfcfe7b4d8a892f2977a960e723",
+            "result_fingerprint": "215f1ab4edfdedef09940d7cc741a93aa1eda35a717896e4778a926993ba79b2"
+          },
+          {
+            "run_id": "9767111e9d5340aca06cdc186f3abe87",
+            "kind": "research",
+            "plan_id": "1c8dedfcfe7b4d8a892f2977a960e723",
+            "result_fingerprint": "60fdbb06ab25087f24bd3ba8ddc9f093fecb4c50a7c92ffff3a2b0be298479cf"
+          }
+        ],
+        "scope": {
+          "analysis_unit": "客户",
+          "outcome_field": "visit",
+          "metric_label": "两周访问率",
+          "statistic_type": "risk_difference",
+          "unit": "概率",
+          "observation_window": "分配后两周",
+          "group_labels": [
+            "未发邮件",
+            "男装邮件"
+          ],
+          "numerator": "各组访问客户数",
+          "denominator": "各分配组客户数",
+          "aggregation": "组内比例与概率差"
+        },
+        "fingerprint": "a5c63065c72624079146b9439e559ef5f2abedace30a98133230000bbe9bf119",
+        "phase": "post_run",
+        "provenance": {
+          "recorded_execution_source_sha": "d7b4e1bb2d9ed2d6510f6c2101a3db2f9ccca5560fce2efcb6493806da455793",
+          "diagnostic_source_sha": "d7b4e1bb2d9ed2d6510f6c2101a3db2f9ccca5560fce2efcb6493806da455793",
+          "reading_mode": "historical_read_only"
+        }
+      },
+      "rule": {
+        "id": "PD-06",
+        "version": "1",
+        "pack": "hillstrom-diagnostics-stage1:1",
+        "check_method": "bound_observation_window_comparison"
+      },
+      "diagnostic_type": "metric",
+      "applicability": "applicable",
+      "check_performed": true,
+      "status": "issue",
+      "result": {
+        "observed": {
+          "actual_run": "分配后两周",
+          "contract": "分配后两周",
+          "plan": "分配后两周",
+          "report": "unmatched_window",
+          "tool_config": "分配后两周"
+        },
+        "expected": {
+          "same_registered_window": "分配后两周"
+        },
+        "reason_code": "observation_window_conflict",
+        "missing_items": [],
+        "required_work": [
+          "核对窗口与可用数据；当前两周访问字段不提供逐日七天结果。"
+        ]
+      },
+      "evidence_refs": [
+        {
+          "artifact_kind": "validation_observation",
+          "artifact_id": "dc2ebf341ab418eecae9bc3bd3529d73bd81e138a6929f5097d1215c42b67c9d",
+          "sha": "4d258c357093b0aeeade13b7a9c517795e77a92e0e330a4542d6d484c9e3c31d",
+          "json_pointer": "/checks",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "data_contract",
+          "artifact_id": "01dac8f4b31a4fe28dfb2c1e203489cb",
+          "sha": "8865c2cffc0b8135f2170dcd1ffbc4dc4a4d516325871e7cfb5d074f49028412",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "source_record",
+          "artifact_id": "c21f63fa57a44bfab1b62cba053442fe",
+          "sha": "0a2e80ddf294772fc90d0a29354c5b50c8d7d6c8a12b83cf805e5d5129c69373",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "c21f63fa57a44bfab1b62cba053442fe:S01",
+          "sha": "e5a638271ce3ef8f2b3b934b7d54ae6df77deabc49e571799385e6d7105228a5",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "c21f63fa57a44bfab1b62cba053442fe:S02",
+          "sha": "5bdc239c6730fabbd7828e9f0a42619d4733b42d1dcc77b5bf4cb1f77db4ad2d",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "run_bundle",
+          "artifact_id": "10fb40e7b9b2476792bec2ab7adbd74e",
+          "sha": "215f1ab4edfdedef09940d7cc741a93aa1eda35a717896e4778a926993ba79b2",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "c21f63fa57a44bfab1b62cba053442fe:S03",
+          "sha": "13263a27d34ad4512955d77202a7b38d256118ce086cc9b30b32ab6d7924e56a",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "c21f63fa57a44bfab1b62cba053442fe:S04",
+          "sha": "795ad1a9770f3458bc2da639db1fbcef82a42ff33c160233fdf1a7935cc654b1",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "run_bundle",
+          "artifact_id": "9767111e9d5340aca06cdc186f3abe87",
+          "sha": "60fdbb06ab25087f24bd3ba8ddc9f093fecb4c50a7c92ffff3a2b0be298479cf",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "c21f63fa57a44bfab1b62cba053442fe:S05",
+          "sha": "88e8a35c3dc2397f208cb7736c345e181005076925792b6ead595630054d2976",
+          "json_pointer": "",
+          "availability": "valid"
+        }
+      ],
+      "impact": {
+        "claim_effect": "hide_integrated_estimate",
+        "explanation": "请求或已保存报告的窗口不匹配；当前结果不能回答该窗口问题。",
+        "execution_authority": "original_service_only"
+      },
+      "severity": {
+        "level": "major",
+        "policy_id": "hillstrom-diagnostics-stage1:1",
+        "reason_code": "observation_window_conflict"
+      },
+      "human_confirmation_required": true,
+      "eligible_action_ids": [],
+      "generated_at": "2026-11-06T12:02:38.280662+00:00",
+      "source": {
+        "mechanism": "deterministic_rule",
+        "origin": "program_fact",
+        "generator_version": "d7b4e1bb2d9ed2d6510f6c2101a3db2f9ccca5560fce2efcb6493806da455793"
+      }
+    },
+    {
+      "schema_version": "diagnostic-finding-v1.1",
+      "finding_id": "33497dbc986824fcc45e42b8b6e6a0139784f138fed22d4bab16a5824eb02ecb",
+      "assessment_id": "ed28589152f0cb5ce581943f731a53748cdebb0904cba16fe48df6a2bbbbb3cd",
+      "context": {
+        "task_ref": {
+          "kind": "automation_v2",
+          "task_id": "c21f63fa57a44bfab1b62cba053442fe",
+          "session_id": "ea1caa105c914a8a84c87a8bba151110"
+        },
+        "plan_ref": {
+          "id": "1c8dedfcfe7b4d8a892f2977a960e723",
+          "version": 1,
+          "sha": "888016dde04b14e3b0ab4afda54b3f549b16d1a5492b484aaea17fff51fb3f12"
+        },
+        "no_plan_reason": null,
+        "data_ref": {
+          "upload_id": "3df734138678a6c628c9a8a26403a406d7e4ece9c2f96eb4e39fe9dbc3dd967b",
+          "frame_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+        },
+        "contract_ref": {
+          "id": "01dac8f4b31a4fe28dfb2c1e203489cb",
+          "version": 1,
+          "sha": "8865c2cffc0b8135f2170dcd1ffbc4dc4a4d516325871e7cfb5d074f49028412",
+          "data_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+        },
+        "run_refs": [
+          {
+            "run_id": "10fb40e7b9b2476792bec2ab7adbd74e",
+            "kind": "exploration",
+            "plan_id": "1c8dedfcfe7b4d8a892f2977a960e723",
+            "result_fingerprint": "215f1ab4edfdedef09940d7cc741a93aa1eda35a717896e4778a926993ba79b2"
+          },
+          {
+            "run_id": "9767111e9d5340aca06cdc186f3abe87",
+            "kind": "research",
+            "plan_id": "1c8dedfcfe7b4d8a892f2977a960e723",
+            "result_fingerprint": "60fdbb06ab25087f24bd3ba8ddc9f093fecb4c50a7c92ffff3a2b0be298479cf"
+          }
+        ],
+        "scope": {
+          "analysis_unit": "客户",
+          "outcome_field": "visit",
+          "metric_label": "两周访问率",
+          "statistic_type": "risk_difference",
+          "unit": "概率",
+          "observation_window": "分配后两周",
+          "group_labels": [
+            "未发邮件",
+            "男装邮件"
+          ],
+          "numerator": "各组访问客户数",
+          "denominator": "各分配组客户数",
+          "aggregation": "组内比例与概率差"
+        },
+        "fingerprint": "a5c63065c72624079146b9439e559ef5f2abedace30a98133230000bbe9bf119",
+        "phase": "post_run",
+        "provenance": {
+          "recorded_execution_source_sha": "d7b4e1bb2d9ed2d6510f6c2101a3db2f9ccca5560fce2efcb6493806da455793",
+          "diagnostic_source_sha": "d7b4e1bb2d9ed2d6510f6c2101a3db2f9ccca5560fce2efcb6493806da455793",
+          "reading_mode": "historical_read_only"
+        }
+      },
+      "rule": {
+        "id": "PD-07",
+        "version": "1",
+        "pack": "hillstrom-diagnostics-stage1:1",
+        "check_method": "saved_gate_and_two_run_sample_comparison"
+      },
+      "diagnostic_type": "binding",
+      "applicability": "applicable",
+      "check_performed": true,
+      "status": "verified",
+      "result": {
+        "observed": {
+          "group_counts": {
+            "0": 21306,
+            "1": 21307
+          },
+          "sample_size": 42613,
+          "significance_used": false
+        },
+        "expected": {},
+        "reason_code": "two_runs_and_gate_consistent",
+        "missing_items": [],
+        "required_work": []
+      },
+      "evidence_refs": [
+        {
+          "artifact_kind": "validation_observation",
+          "artifact_id": "31bf422a0718ae8f5fbf4be384fd296c41b78ec44c43b3717d4a7f1d466618cd",
+          "sha": "c45a5660bb2eb7359c7e2425c7da0719039b8de48f089ab715a0611c841554b8",
+          "json_pointer": "/checks",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "data_contract",
+          "artifact_id": "01dac8f4b31a4fe28dfb2c1e203489cb",
+          "sha": "8865c2cffc0b8135f2170dcd1ffbc4dc4a4d516325871e7cfb5d074f49028412",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "source_record",
+          "artifact_id": "c21f63fa57a44bfab1b62cba053442fe",
+          "sha": "0a2e80ddf294772fc90d0a29354c5b50c8d7d6c8a12b83cf805e5d5129c69373",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "c21f63fa57a44bfab1b62cba053442fe:S01",
+          "sha": "e5a638271ce3ef8f2b3b934b7d54ae6df77deabc49e571799385e6d7105228a5",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "c21f63fa57a44bfab1b62cba053442fe:S02",
+          "sha": "5bdc239c6730fabbd7828e9f0a42619d4733b42d1dcc77b5bf4cb1f77db4ad2d",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "run_bundle",
+          "artifact_id": "10fb40e7b9b2476792bec2ab7adbd74e",
+          "sha": "215f1ab4edfdedef09940d7cc741a93aa1eda35a717896e4778a926993ba79b2",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "c21f63fa57a44bfab1b62cba053442fe:S03",
+          "sha": "13263a27d34ad4512955d77202a7b38d256118ce086cc9b30b32ab6d7924e56a",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "c21f63fa57a44bfab1b62cba053442fe:S04",
+          "sha": "795ad1a9770f3458bc2da639db1fbcef82a42ff33c160233fdf1a7935cc654b1",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "run_bundle",
+          "artifact_id": "9767111e9d5340aca06cdc186f3abe87",
+          "sha": "60fdbb06ab25087f24bd3ba8ddc9f093fecb4c50a7c92ffff3a2b0be298479cf",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "c21f63fa57a44bfab1b62cba053442fe:S05",
+          "sha": "88e8a35c3dc2397f208cb7736c345e181005076925792b6ead595630054d2976",
+          "json_pointer": "",
+          "availability": "valid"
+        }
+      ],
+      "impact": {
+        "claim_effect": "unchanged",
+        "explanation": "已从真实描述Run、S03与A/B Run核对分组、样本和均值。",
+        "execution_authority": "original_service_only"
+      },
+      "severity": {
+        "level": "information",
+        "policy_id": "hillstrom-diagnostics-stage1:1",
+        "reason_code": "two_runs_and_gate_consistent"
+      },
+      "human_confirmation_required": false,
+      "eligible_action_ids": [],
+      "generated_at": "2026-11-06T12:02:38.280662+00:00",
+      "source": {
+        "mechanism": "engine_adapter",
+        "origin": "program_fact",
+        "generator_version": "d7b4e1bb2d9ed2d6510f6c2101a3db2f9ccca5560fce2efcb6493806da455793"
+      }
+    },
+    {
+      "schema_version": "diagnostic-finding-v1.1",
+      "finding_id": "414e6fe0078330408c4d6fa2a7b3409c8b33f679c1a0d458b17b999511a74530",
+      "assessment_id": "ed28589152f0cb5ce581943f731a53748cdebb0904cba16fe48df6a2bbbbb3cd",
+      "context": {
+        "task_ref": {
+          "kind": "automation_v2",
+          "task_id": "c21f63fa57a44bfab1b62cba053442fe",
+          "session_id": "ea1caa105c914a8a84c87a8bba151110"
+        },
+        "plan_ref": {
+          "id": "1c8dedfcfe7b4d8a892f2977a960e723",
+          "version": 1,
+          "sha": "888016dde04b14e3b0ab4afda54b3f549b16d1a5492b484aaea17fff51fb3f12"
+        },
+        "no_plan_reason": null,
+        "data_ref": {
+          "upload_id": "3df734138678a6c628c9a8a26403a406d7e4ece9c2f96eb4e39fe9dbc3dd967b",
+          "frame_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+        },
+        "contract_ref": {
+          "id": "01dac8f4b31a4fe28dfb2c1e203489cb",
+          "version": 1,
+          "sha": "8865c2cffc0b8135f2170dcd1ffbc4dc4a4d516325871e7cfb5d074f49028412",
+          "data_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+        },
+        "run_refs": [
+          {
+            "run_id": "10fb40e7b9b2476792bec2ab7adbd74e",
+            "kind": "exploration",
+            "plan_id": "1c8dedfcfe7b4d8a892f2977a960e723",
+            "result_fingerprint": "215f1ab4edfdedef09940d7cc741a93aa1eda35a717896e4778a926993ba79b2"
+          },
+          {
+            "run_id": "9767111e9d5340aca06cdc186f3abe87",
+            "kind": "research",
+            "plan_id": "1c8dedfcfe7b4d8a892f2977a960e723",
+            "result_fingerprint": "60fdbb06ab25087f24bd3ba8ddc9f093fecb4c50a7c92ffff3a2b0be298479cf"
+          }
+        ],
+        "scope": {
+          "analysis_unit": "客户",
+          "outcome_field": "visit",
+          "metric_label": "两周访问率",
+          "statistic_type": "risk_difference",
+          "unit": "概率",
+          "observation_window": "分配后两周",
+          "group_labels": [
+            "未发邮件",
+            "男装邮件"
+          ],
+          "numerator": "各组访问客户数",
+          "denominator": "各分配组客户数",
+          "aggregation": "组内比例与概率差"
+        },
+        "fingerprint": "a5c63065c72624079146b9439e559ef5f2abedace30a98133230000bbe9bf119",
+        "phase": "post_run",
+        "provenance": {
+          "recorded_execution_source_sha": "d7b4e1bb2d9ed2d6510f6c2101a3db2f9ccca5560fce2efcb6493806da455793",
+          "diagnostic_source_sha": "d7b4e1bb2d9ed2d6510f6c2101a3db2f9ccca5560fce2efcb6493806da455793",
+          "reading_mode": "historical_read_only"
+        }
+      },
+      "rule": {
+        "id": "PD-09",
+        "version": "1",
+        "pack": "hillstrom-diagnostics-stage1:1",
+        "check_method": "saved_metric_and_deterministic_rate_units"
+      },
+      "diagnostic_type": "metric",
+      "applicability": "applicable",
+      "check_performed": true,
+      "status": "verified",
+      "result": {
+        "observed": {
+          "outcome": "visit",
+          "percentage_point_conversion": "100 * raw probability difference",
+          "statistic_type": "risk_difference",
+          "unit": "概率"
+        },
+        "expected": {},
+        "reason_code": "metric_and_rate_units_bound",
+        "missing_items": [],
+        "required_work": []
+      },
+      "evidence_refs": [
+        {
+          "artifact_kind": "validation_observation",
+          "artifact_id": "1df96fa0916a7e38906b4924340902a19a0a34e94c84488ea6be5a312b91b636",
+          "sha": "3280b3ccb3e52baaace3101b4da3a74964eed7a32d0e20be3f74f3a2c8fea353",
+          "json_pointer": "/checks",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "data_contract",
+          "artifact_id": "01dac8f4b31a4fe28dfb2c1e203489cb",
+          "sha": "8865c2cffc0b8135f2170dcd1ffbc4dc4a4d516325871e7cfb5d074f49028412",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "source_record",
+          "artifact_id": "c21f63fa57a44bfab1b62cba053442fe",
+          "sha": "0a2e80ddf294772fc90d0a29354c5b50c8d7d6c8a12b83cf805e5d5129c69373",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "c21f63fa57a44bfab1b62cba053442fe:S01",
+          "sha": "e5a638271ce3ef8f2b3b934b7d54ae6df77deabc49e571799385e6d7105228a5",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "c21f63fa57a44bfab1b62cba053442fe:S02",
+          "sha": "5bdc239c6730fabbd7828e9f0a42619d4733b42d1dcc77b5bf4cb1f77db4ad2d",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "run_bundle",
+          "artifact_id": "10fb40e7b9b2476792bec2ab7adbd74e",
+          "sha": "215f1ab4edfdedef09940d7cc741a93aa1eda35a717896e4778a926993ba79b2",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "c21f63fa57a44bfab1b62cba053442fe:S03",
+          "sha": "13263a27d34ad4512955d77202a7b38d256118ce086cc9b30b32ab6d7924e56a",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "c21f63fa57a44bfab1b62cba053442fe:S04",
+          "sha": "795ad1a9770f3458bc2da639db1fbcef82a42ff33c160233fdf1a7935cc654b1",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "run_bundle",
+          "artifact_id": "9767111e9d5340aca06cdc186f3abe87",
+          "sha": "60fdbb06ab25087f24bd3ba8ddc9f093fecb4c50a7c92ffff3a2b0be298479cf",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "c21f63fa57a44bfab1b62cba053442fe:S05",
+          "sha": "88e8a35c3dc2397f208cb7736c345e181005076925792b6ead595630054d2976",
+          "json_pointer": "",
+          "availability": "valid"
+        }
+      ],
+      "impact": {
+        "claim_effect": "unchanged",
+        "explanation": "指标和组别已绑定，概率差与百分点由原确定性函数核对；不把相对变化当百分点。",
+        "execution_authority": "original_service_only"
+      },
+      "severity": {
+        "level": "information",
+        "policy_id": "hillstrom-diagnostics-stage1:1",
+        "reason_code": "metric_and_rate_units_bound"
+      },
+      "human_confirmation_required": false,
+      "eligible_action_ids": [],
+      "generated_at": "2026-11-06T12:02:38.280662+00:00",
+      "source": {
+        "mechanism": "engine_adapter",
+        "origin": "program_fact",
+        "generator_version": "d7b4e1bb2d9ed2d6510f6c2101a3db2f9ccca5560fce2efcb6493806da455793"
+      }
+    },
+    {
+      "schema_version": "diagnostic-finding-v1.1",
+      "finding_id": "d2da9ceb6689bca9304e75f1f08821f343ebbc0aadf06bb9bc0ae0d607055728",
+      "assessment_id": "ed28589152f0cb5ce581943f731a53748cdebb0904cba16fe48df6a2bbbbb3cd",
+      "context": {
+        "task_ref": {
+          "kind": "automation_v2",
+          "task_id": "c21f63fa57a44bfab1b62cba053442fe",
+          "session_id": "ea1caa105c914a8a84c87a8bba151110"
+        },
+        "plan_ref": {
+          "id": "1c8dedfcfe7b4d8a892f2977a960e723",
+          "version": 1,
+          "sha": "888016dde04b14e3b0ab4afda54b3f549b16d1a5492b484aaea17fff51fb3f12"
+        },
+        "no_plan_reason": null,
+        "data_ref": {
+          "upload_id": "3df734138678a6c628c9a8a26403a406d7e4ece9c2f96eb4e39fe9dbc3dd967b",
+          "frame_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+        },
+        "contract_ref": {
+          "id": "01dac8f4b31a4fe28dfb2c1e203489cb",
+          "version": 1,
+          "sha": "8865c2cffc0b8135f2170dcd1ffbc4dc4a4d516325871e7cfb5d074f49028412",
+          "data_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+        },
+        "run_refs": [
+          {
+            "run_id": "10fb40e7b9b2476792bec2ab7adbd74e",
+            "kind": "exploration",
+            "plan_id": "1c8dedfcfe7b4d8a892f2977a960e723",
+            "result_fingerprint": "215f1ab4edfdedef09940d7cc741a93aa1eda35a717896e4778a926993ba79b2"
+          },
+          {
+            "run_id": "9767111e9d5340aca06cdc186f3abe87",
+            "kind": "research",
+            "plan_id": "1c8dedfcfe7b4d8a892f2977a960e723",
+            "result_fingerprint": "60fdbb06ab25087f24bd3ba8ddc9f093fecb4c50a7c92ffff3a2b0be298479cf"
+          }
+        ],
+        "scope": {
+          "analysis_unit": "客户",
+          "outcome_field": "visit",
+          "metric_label": "两周访问率",
+          "statistic_type": "risk_difference",
+          "unit": "概率",
+          "observation_window": "分配后两周",
+          "group_labels": [
+            "未发邮件",
+            "男装邮件"
+          ],
+          "numerator": "各组访问客户数",
+          "denominator": "各分配组客户数",
+          "aggregation": "组内比例与概率差"
+        },
+        "fingerprint": "a5c63065c72624079146b9439e559ef5f2abedace30a98133230000bbe9bf119",
+        "phase": "post_run",
+        "provenance": {
+          "recorded_execution_source_sha": "d7b4e1bb2d9ed2d6510f6c2101a3db2f9ccca5560fce2efcb6493806da455793",
+          "diagnostic_source_sha": "d7b4e1bb2d9ed2d6510f6c2101a3db2f9ccca5560fce2efcb6493806da455793",
+          "reading_mode": "historical_read_only"
+        }
+      },
+      "rule": {
+        "id": "PD-14",
+        "version": "1",
+        "pack": "hillstrom-diagnostics-stage1:1",
+        "check_method": "saved_step_and_report_manifest_comparison"
+      },
+      "diagnostic_type": "execution",
+      "applicability": "applicable",
+      "check_performed": true,
+      "status": "issue",
+      "result": {
+        "observed": {},
+        "expected": {},
+        "reason_code": "report_manifest_identity_conflict",
+        "missing_items": [],
+        "required_work": []
+      },
+      "evidence_refs": [
+        {
+          "artifact_kind": "validation_observation",
+          "artifact_id": "92334e3f23300b91df16145eac44edc442130b4f7facd66253b503ffc7b3893d",
+          "sha": "293b435bcbf1b1d33f2a038d9dc1a646ee14d25b5f309c07be61201f5ee503fe",
+          "json_pointer": "/checks",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "data_contract",
+          "artifact_id": "01dac8f4b31a4fe28dfb2c1e203489cb",
+          "sha": "8865c2cffc0b8135f2170dcd1ffbc4dc4a4d516325871e7cfb5d074f49028412",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "source_record",
+          "artifact_id": "c21f63fa57a44bfab1b62cba053442fe",
+          "sha": "0a2e80ddf294772fc90d0a29354c5b50c8d7d6c8a12b83cf805e5d5129c69373",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "c21f63fa57a44bfab1b62cba053442fe:S01",
+          "sha": "e5a638271ce3ef8f2b3b934b7d54ae6df77deabc49e571799385e6d7105228a5",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "c21f63fa57a44bfab1b62cba053442fe:S02",
+          "sha": "5bdc239c6730fabbd7828e9f0a42619d4733b42d1dcc77b5bf4cb1f77db4ad2d",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "run_bundle",
+          "artifact_id": "10fb40e7b9b2476792bec2ab7adbd74e",
+          "sha": "215f1ab4edfdedef09940d7cc741a93aa1eda35a717896e4778a926993ba79b2",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "c21f63fa57a44bfab1b62cba053442fe:S03",
+          "sha": "13263a27d34ad4512955d77202a7b38d256118ce086cc9b30b32ab6d7924e56a",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "c21f63fa57a44bfab1b62cba053442fe:S04",
+          "sha": "795ad1a9770f3458bc2da639db1fbcef82a42ff33c160233fdf1a7935cc654b1",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "run_bundle",
+          "artifact_id": "9767111e9d5340aca06cdc186f3abe87",
+          "sha": "60fdbb06ab25087f24bd3ba8ddc9f093fecb4c50a7c92ffff3a2b0be298479cf",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "c21f63fa57a44bfab1b62cba053442fe:S05",
+          "sha": "88e8a35c3dc2397f208cb7736c345e181005076925792b6ead595630054d2976",
+          "json_pointer": "",
+          "availability": "valid"
+        }
+      ],
+      "impact": {
+        "claim_effect": "hide_integrated_estimate",
+        "explanation": "报告引用、指标范围或批准版本与真实步骤不一致；停止整合引用。",
+        "execution_authority": "original_service_only"
+      },
+      "severity": {
+        "level": "critical",
+        "policy_id": "hillstrom-diagnostics-stage1:1",
+        "reason_code": "report_manifest_identity_conflict"
+      },
+      "human_confirmation_required": false,
+      "eligible_action_ids": [],
+      "generated_at": "2026-11-06T12:02:38.280662+00:00",
+      "source": {
+        "mechanism": "deterministic_rule",
+        "origin": "program_fact",
+        "generator_version": "d7b4e1bb2d9ed2d6510f6c2101a3db2f9ccca5560fce2efcb6493806da455793"
+      }
+    }
+  ],
+  "observations": {
+    "data": {
+      "declared_groups_present": true,
+      "group_field_present": true,
+      "missing_group_records": 0,
+      "nonmissing_group_count": 2
+    }
+  },
+  "input_manifest": {
+    "diagnostic_source_sha": "d7b4e1bb2d9ed2d6510f6c2101a3db2f9ccca5560fce2efcb6493806da455793",
+    "implemented": [
+      "PD-01",
+      "PD-02",
+      "PD-06",
+      "PD-07",
+      "PD-09",
+      "PD-14"
+    ],
+    "native_inputs": {
+      "context": {
+        "contract_ref": {
+          "data_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226",
+          "id": "01dac8f4b31a4fe28dfb2c1e203489cb",
+          "sha": "8865c2cffc0b8135f2170dcd1ffbc4dc4a4d516325871e7cfb5d074f49028412",
+          "version": 1
+        },
+        "data_ref": {
+          "frame_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226",
+          "upload_id": "3df734138678a6c628c9a8a26403a406d7e4ece9c2f96eb4e39fe9dbc3dd967b"
+        },
+        "no_plan_reason": null,
+        "phase": "post_run",
+        "plan_ref": {
+          "id": "1c8dedfcfe7b4d8a892f2977a960e723",
+          "sha": "888016dde04b14e3b0ab4afda54b3f549b16d1a5492b484aaea17fff51fb3f12",
+          "version": 1
+        },
+        "provenance": {
+          "diagnostic_source_sha": "d7b4e1bb2d9ed2d6510f6c2101a3db2f9ccca5560fce2efcb6493806da455793",
+          "reading_mode": "historical_read_only",
+          "recorded_execution_source_sha": "d7b4e1bb2d9ed2d6510f6c2101a3db2f9ccca5560fce2efcb6493806da455793"
+        },
+        "run_refs": [
+          {
+            "kind": "exploration",
+            "plan_id": "1c8dedfcfe7b4d8a892f2977a960e723",
+            "result_fingerprint": "215f1ab4edfdedef09940d7cc741a93aa1eda35a717896e4778a926993ba79b2",
+            "run_id": "10fb40e7b9b2476792bec2ab7adbd74e"
+          },
+          {
+            "kind": "research",
+            "plan_id": "1c8dedfcfe7b4d8a892f2977a960e723",
+            "result_fingerprint": "60fdbb06ab25087f24bd3ba8ddc9f093fecb4c50a7c92ffff3a2b0be298479cf",
+            "run_id": "9767111e9d5340aca06cdc186f3abe87"
+          }
+        ],
+        "scope": {
+          "aggregation": "组内比例与概率差",
+          "analysis_unit": "客户",
+          "denominator": "各分配组客户数",
+          "group_labels": [
+            "未发邮件",
+            "男装邮件"
+          ],
+          "metric_label": "两周访问率",
+          "numerator": "各组访问客户数",
+          "observation_window": "分配后两周",
+          "outcome_field": "visit",
+          "statistic_type": "risk_difference",
+          "unit": "概率"
+        },
+        "task_ref": {
+          "kind": "automation_v2",
+          "session_id": "ea1caa105c914a8a84c87a8bba151110",
+          "task_id": "c21f63fa57a44bfab1b62cba053442fe"
+        }
+      },
+      "contract_row_sha": "dfddb0b1326a5eba0f6a8289e200f9aea7ce32c19be548b895d74545eb4a4cd3",
+      "current_contract_ref_sha": "d3add61e72d76eca0b77bf62253e4ec479c51142bf48b11af45b9db17d422ca3",
+      "errors": [],
+      "original_approval_sha": "c7936a70a64f0b08734956aa60371b5c4471e757da0d652fa37db25d3b707c29",
+      "requested_window": null,
+      "run_artifacts": {
+        "S02": {
+          "file": "e3a62334af61eff20451c91abd897b4eaf1fcadd361c0536478b7c45ca0b25fc",
+          "record": "8658dc4df8fc744d8a91229454d51b9b09d3c2bfe68051a1b7dad2c5393a8112",
+          "run_record": "a1aa094789ff3eeb64e87c717b29575b5acdc7c97a889307e9b58c064eead6b3"
+        },
+        "S04": {
+          "domain_approval": "c0987f23ca2bf882151eaff95bcb0a005d46e4d987b9825b2a7f944a45efe039",
+          "file": "325d2b333ede02e39afd022fed4ec3297e6565e7a277352f260bf90cc9f7069e",
+          "record": "1e622998243815c4300bd58a289a9d2ad1ecc1c6348cdcea742dcad390d3d212",
+          "revision": "c98cbb649f32b618d6a33124979bd71abad0b99c356d34c4566eeded6926ffe3",
+          "run_record": "d3d087090231b707a628280cfbb57d1bba8e2429dc5e6c0ad796c1cf1edb5424"
+        }
+      },
+      "steps_sha": "689907284ae5aa1d1288b0de54e880203c840b9b7dc887270b7dba95543ef8d0",
+      "task_sha": "ee9fd4a2fd8be2081dad18f017be04b2311b71306c99059185149f19134596d5",
+      "upload_file_sha": "1e8c21fc2c5f793dbbe0fb1c91744e0f1797bb45fb2ba0bca82c17d31d253785",
+      "upload_record_sha": "0f99947cb369f0ba6234b476f3e2a078046d87fadce997427fdce861597c509f"
+    },
+    "rule_pack": "hillstrom-diagnostics-stage1",
+    "rule_version": "1",
+    "schema": "diagnostic-assessment-v1.1"
+  },
+  "limitations": [
+    "本阶段仅实现六项证据规则；其余规则未实现，不统计为通过。",
+    "来源与人工声明一致不代表程序证明随机分配真实发生。",
+    "未新增基线平衡、功效、无干扰或长期利润检验，不能据此声称研究假设全部满足。",
+    "诊断不授予执行权限；历史保存事实与当前执行授权分别核验。",
+    "没有模型解释、完整建议、用户采纳、三层报告或长期决策记忆。"
+  ],
+  "conclusion_policy": "hide_integrated_estimate",
+  "model_requests": 0,
+  "execution_authorized": false,
+  "created_at": "2026-11-06T12:02:38.280662+00:00"
+}

@@ -1,0 +1,454 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:causalops:diagnostics-common:v1",
+  "$defs": {
+    "Identifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "Hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "Context": {
+      "type": "object",
+      "properties": {
+        "task_ref": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "enum": [
+                "automation_v2",
+                "research_session"
+              ]
+            },
+            "task_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "session_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          "required": [
+            "kind",
+            "task_id",
+            "session_id"
+          ],
+          "additionalProperties": false
+        },
+        "plan_ref": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "version": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "sha": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                }
+              },
+              "required": [
+                "id",
+                "version",
+                "sha"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "no_plan_reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "data_ref": {
+          "type": "object",
+          "properties": {
+            "upload_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "frame_sha": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "upload_id",
+            "frame_sha"
+          ],
+          "additionalProperties": false
+        },
+        "contract_ref": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "version": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "sha": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "data_sha": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "id",
+            "version",
+            "sha",
+            "data_sha"
+          ],
+          "additionalProperties": false
+        },
+        "run_refs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "run_id": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{32}$"
+              },
+              "kind": {
+                "enum": [
+                  "exploration",
+                  "research"
+                ]
+              },
+              "plan_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "result_fingerprint": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "run_id",
+              "kind",
+              "plan_id",
+              "result_fingerprint"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 2
+        },
+        "scope": {
+          "type": "object",
+          "properties": {
+            "analysis_unit": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "outcome_field": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "metric_label": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "statistic_type": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "unit": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "observation_window": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "group_labels": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "maxItems": 2
+            },
+            "numerator": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "denominator": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "aggregation": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "analysis_unit",
+            "outcome_field",
+            "metric_label",
+            "statistic_type",
+            "unit",
+            "observation_window",
+            "group_labels",
+            "numerator",
+            "denominator",
+            "aggregation"
+          ],
+          "additionalProperties": false
+        },
+        "fingerprint": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "phase": {
+          "enum": [
+            "preflight",
+            "post_run",
+            "partial_run"
+          ]
+        },
+        "provenance": {
+          "type": "object",
+          "properties": {
+            "recorded_execution_source_sha": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "diagnostic_source_sha": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "reading_mode": {
+              "enum": [
+                "current_execution",
+                "historical_read_only",
+                "preflight"
+              ]
+            }
+          },
+          "required": [
+            "recorded_execution_source_sha",
+            "diagnostic_source_sha",
+            "reading_mode"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "task_ref",
+        "plan_ref",
+        "no_plan_reason",
+        "data_ref",
+        "contract_ref",
+        "run_refs",
+        "scope",
+        "fingerprint",
+        "phase",
+        "provenance"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "plan_ref": {
+                "type": "null"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "no_plan_reason": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "EvidenceRef": {
+      "type": "object",
+      "properties": {
+        "artifact_kind": {
+          "enum": [
+            "data_contract",
+            "source_record",
+            "step_evidence",
+            "run_bundle",
+            "tool_result",
+            "report_manifest",
+            "validation_observation",
+            "method_card"
+          ]
+        },
+        "artifact_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "sha": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "json_pointer": {
+          "type": "string",
+          "pattern": "^(?:/.*)?$"
+        },
+        "availability": {
+          "enum": [
+            "valid",
+            "missing",
+            "invalid",
+            "not_checked"
+          ]
+        }
+      },
+      "required": [
+        "artifact_kind",
+        "artifact_id",
+        "sha",
+        "json_pointer",
+        "availability"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "availability": {
+                "const": "valid"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "sha": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Timestamp": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

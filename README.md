@@ -1,19 +1,19 @@
-<!-- release: 0.17.0b1 -->
+<!-- release: 0.18.0b1 -->
 # CausalOps Beta
 
 **面向科研与业务分析的可审核、可追溯 AI 数据科学 Agent。**
 
-`0.17.0b1` · Windows x64 / Python 3.11 · 本地单用户 · 受限自动化首版候选
+`0.18.0b1` · Windows x64 / Python 3.11 · 本地单用户 · 主动研究诊断受限首版候选
 
 CausalOps 将研究问题、版本化数据合同、方法建议、人工审核、本地统计与运行证据连接起来。使用者可以从单表数据提出问题，审核方案后执行注册工具，并按具体运行查看报告。新增的自动化入口只支持已核验的 Hillstrom 营销实验：一次整体审核，按固定五步推进两次真实统计计算。
 
-**当前不是通用自主研究系统。** 不支持任意自然语言目标的自动多步骤规划、通用多表研究、完整主动诊断或云端多人协作。开放式方法建议和研究解释仍有已记录的准确性限制。没有真人完成率、提效或生产可靠性数据。
+**当前不是通用自主研究系统。** 不支持任意自然语言目标的自动多步骤规划、通用多表研究、完整主动诊断或云端多人协作。当前诊断是用户显式触发的确定性检查，不是后台持续监控或模型自主推理。开放式方法建议和研究解释仍有已记录的准确性限制。没有真人完成率、提效或生产可靠性数据。
 
-[自动化使用教程](docs/current/AUTOMATION_GUIDE.md) · [安装](docs/current/INSTALLATION.md) · [本候选验收](docs/releases/automation-v2-beta/ACCEPTANCE.md) · [已知限制](docs/releases/automation-v2-beta/LIMITATIONS.md) · [架构](docs/current/ARCHITECTURE.md)
+[诊断教程](docs/current/DIAGNOSTICS_GUIDE.md) · [自动化使用教程](docs/current/AUTOMATION_GUIDE.md) · [安装](docs/current/INSTALLATION.md) · [本候选验收](docs/releases/proactive-diagnostics-beta/ACCEPTANCE.md) · [已知限制](docs/releases/proactive-diagnostics-beta/LIMITATIONS.md) · [架构](docs/current/ARCHITECTURE.md)
 
 ![实际首页与自动化入口](docs/releases/automation-v2-beta/assets/home.png)
 
-*图1：候选包独立安装后的实际首页。营销实验成果预览不等于本任务已执行。*
+*图1：此前0.17自动化候选的历史首页；当前诊断界面见新教程。营销实验成果预览不等于本任务已执行。*
 
 ## 已实现与验证范围
 
@@ -24,7 +24,18 @@ CausalOps 将研究问题、版本化数据合同、方法建议、人工审核�
 |人工审核与本地统计|17 个注册方法入口；批准绑定数据、合同、方案及执行范围。各方法验证深度不同。|
 |运行证据与报告|统计结果来自实际工具，关联 Run、计划和数据版本；可导出 HTML 与证据。|
 |受限五步自动化|审计→分组描述→真实上游证据核验→A/B→报告整合。描述与A/B各自生成Run，门禁失败停止下游。|
+|研究诊断|显式预诊断／执行后诊断、六项规则、同源三层报告、有限建议、无执行权限草案和历史版本。|
 |执行控制|持久预算、步骤边界暂停、取消终态、恢复前调和、异常人工核查；不承诺任意进程故障下物理恰好一次。|
+
+## 新增：研究证据诊断
+
+- 运行前：选择已登记数据，点击“检查研究条件”；无正式Run也能核对合同与分组事实，设计依据不足就显示未知。
+- 运行后：从已完成Hillstrom任务进入“研究证据诊断”，点击“检查研究证据”，核对本任务双Run、计划、批准及来源。
+- 三层报告：真实研究结果→证据质量→最多三条有依据建议。六项规则已实现，八项规则未实现；五种检查状态分别展示，不提供总可信度分数。
+- 需求草案：用户显式确认后保存；重复提交幂等，来源过期拒绝。草案没有执行权限，不是正式计划或批准。
+- 历史查询：刷新不重新计算，冲突时不借用其他任务的旧成功数字。
+
+模型解释关闭，本诊断路径不发送收费模型请求。部分检查满足不代表全部识别假设成立；随机化依据需要来源，不从两组名称推断。[教程和实际页面](docs/current/DIAGNOSTICS_GUIDE.md)
 
 ## 快速安装与启动
 
@@ -70,7 +81,7 @@ py -3.11 -m venv .venv
 
 ## 质量记录与能力限制
 
-- 自动化三个阶段的工程与固定浏览器证据按版本保存；本候选的实际安装、测试数、四条自动化流程及旧流程结果见[本次验收](docs/releases/automation-v2-beta/ACCEPTANCE.md)，不能沿用旧成绩代替新测。
+- 自动化三个阶段的工程与固定浏览器证据按版本保存；本候选的实际安装、测试数、四条自动化流程及旧流程结果见[本次验收](docs/releases/proactive-diagnostics-beta/ACCEPTANCE.md)，不能沿用旧成绩代替新测。
 - Eval V2.2固定流程8/8，但最后N06自由探索3次未完整完成；固定脚本不代表自主导航或真人效率。
 - Eval V2.3最终开发集为本地9/30、DeepSeek15/30。保留集每模式实际执行13题，已确认正确0/13，另7题未执行；模型6项评分争议仍保留。不能合并成50题通用准确率。[归档汇总](docs/evaluation/v23/PUBLIC_SUMMARY.md)
 - PSM等方法有统计推断限制；高风险研究与业务决策须专业复核。部分复杂只读问题、指标与统计解释仍不可靠。两周访问率不支持推算次年净利润。
@@ -88,7 +99,7 @@ Streamlit→ResearchService。单次研究走LangGraph与本地方法知识检�
 |第一次运行|[安装](docs/current/INSTALLATION.md) · [自动化教程](docs/current/AUTOMATION_GUIDE.md) · [日常操作](docs/current/USER_GUIDE.md)|
 |理解结果|[方法合同](docs/METHOD_CONTRACTS.md) · [研究质量](docs/current/RESEARCH_QUALITY.md) · [运行核验](docs/current/VALIDATION.md)|
 |理解代码|[架构](docs/current/ARCHITECTURE.md) · [五步设计与历史](docs/product/automation-v2/README.md) · [完整功能手册](docs/current/COMPLETE_MANUAL.md)|
-|本次候选|[变更与范围](docs/releases/automation-v2-beta/README.md) · [验收](docs/releases/automation-v2-beta/ACCEPTANCE.md) · [限制](docs/releases/automation-v2-beta/LIMITATIONS.md)|
+|本次候选|[变更与范围](docs/releases/proactive-diagnostics-beta/README.md) · [验收](docs/releases/proactive-diagnostics-beta/ACCEPTANCE.md) · [限制](docs/releases/proactive-diagnostics-beta/LIMITATIONS.md)|
 |贡献与许可|[贡献](CONTRIBUTING.md) · [MIT许可](LICENSE) · [第三方许可](THIRD_PARTY_NOTICES.md) · [全部索引](docs/README.md)|
 
-未来规划包括有界自然语言规划、基于证据的主动诊断、多表指标管理和RAG专项优化，均不作为当前自动化首版能力。[版本历史](docs/HISTORY.md)
+未来规划包括有界自然语言规划、更完整的诊断规则与决策记忆、多表指标管理和RAG专项优化，均不作为当前能力。[版本历史](docs/HISTORY.md)

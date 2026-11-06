@@ -1,0 +1,7 @@
+{
+  "controlled_copy": true,
+  "damage": "report_metric",
+  "step": "S05",
+  "original_task_id": "c21f63fa57a44bfab1b62cba053442fe",
+  "copy_paths_relocated_before_injection": true
+}

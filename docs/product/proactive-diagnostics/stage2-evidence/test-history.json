@@ -1,0 +1,29 @@
+{
+  "records": [
+    {
+      "file": "before-implementation.log",
+      "sha256": "4f5832e7c8593cc9f890df82e9f20afb58a9016947b35563aa3df5b38102821a",
+      "size": 998,
+      "scope": "preimplementation_missing_module"
+    },
+    {
+      "file": "targeted01.log",
+      "sha256": "ae0d9f78142e554a4b474d089e7aff2cfd5447da67f903657451994f211efcc9",
+      "size": 102,
+      "scope": "engineering_run"
+    },
+    {
+      "file": "targeted02.log",
+      "sha256": "502b6ad4e86182b98448f228ae90672b35ff697f49dcca062026b3379143e8a3",
+      "size": 102,
+      "scope": "engineering_run"
+    },
+    {
+      "file": "affected01.log",
+      "sha256": "7896a2ddcdd6ebf7dca04f2bb44cb79594e07d4a588a5749dc5dc30ac1d85d8c",
+      "size": 195,
+      "scope": "engineering_run"
+    }
+  ],
+  "note": "实现前收集失败保留；初轮12项，补充来源冲突/陈旧草案与损坏回执后最终16项。129项批次先于四个补充用例收集；完整回归包含最终全部用例。"
+}

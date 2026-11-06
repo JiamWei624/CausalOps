@@ -151,6 +151,7 @@ def home():
         st.write("公开 Hillstrom 营销实验：核对固定五步计划，整体审核一次，自动执行两次统计并整合证据报告。支持暂停、核查恢复和取消。")
         st.caption("仅支持已核验案例，模型自主规划关闭。")
         st.button("启动自动化研究",on_click=navigate,args=('automation',),type='primary')
+    st.button("查看研究证据与诊断",on_click=navigate,args=("evidence",))
     render_examples()
     from causalops.ui.model_setup import render_model_setup
     with st.expander('模型连接与隐私设置'):
@@ -248,7 +249,7 @@ def main():
     initial=requested_route if requested_route in allowed_routes else 'home'
     if requested_route not in allowed_routes:st.info('此历史入口不属于默认发行版，已返回首页。可载入公共示例或导入自己的数据。')
     route = initial
-    navigation=[('home','首页','home'), ('assistant','我的研究','assignment'), ('automation','自动化研究','account_tree'), ('examples','分析示例','view_column'), ('analysis','专业分析','functions'), ('history','研究记录','list'), ('settings','模型与隐私','settings'), ('guide','使用说明','help'), ('status','系统状态','monitor_heart')]
+    navigation=[('home','首页','home'), ('assistant','我的研究','assignment'), ('automation','自动化研究','account_tree'), ('evidence','研究证据诊断','fact_check'), ('examples','分析示例','view_column'), ('analysis','专业分析','functions'), ('history','研究记录','list'), ('settings','模型与隐私','settings'), ('guide','使用说明','help'), ('status','系统状态','monitor_heart')]
     with st.sidebar:
         st.html('<div class="co-brand"><span class="co-logo">◇</span>CausalOps</div><div class="co-navcap">研究空间</div>')
         for dest,label,icon in navigation:
@@ -272,6 +273,9 @@ def main():
             from causalops.ui.assistant_app import render_assistant
             render_assistant()
         elif route=='home':home()
+        elif route=='evidence':
+            from causalops.ui.diagnostics_app import render
+            render()
         elif route=='automation':
             from causalops.ui.automation_app import render
             render()

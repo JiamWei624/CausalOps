@@ -1,0 +1,12 @@
+{
+  "original_markers_preserved": {
+    "analysis_runs": "d0d9ee136e7751c0a91cc70df185b0881d9b33b9e53ba9b4ff5741421a29b23e",
+    "exploration_runs": "85787d753f056b27935a1593c31a51285063894f11973f9848a3c22ebc559a65",
+    "assistant_plans": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "automation_v2_tasks": "227df7b141aa25162058ea90b3c3c14395476b355133013632849374d46c8d79",
+    "automation_v2_steps": "0381fbad3e327d3de7657b1d1507a807a55c1b5e196714f62f0a42b3e3030aad",
+    "automation_v2_approvals": "3be6cdbbd9d277fd71ea09ccfc1c10dc0eae2a5476333e1d73d46f10caa4fb5b",
+    "assistant_tasks": "03f6d57464e3849f2e0a9a264871499e0310ce305bb319a756dfb42db07c2a35"
+  },
+  "prior_report_preserved": true
+}

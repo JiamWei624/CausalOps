@@ -1,0 +1,55 @@
+{
+  "timestamp": "2026-11-06T12:02:39.686672+00:00",
+  "execution_source_sha": "d7b4e1bb2d9ed2d6510f6c2101a3db2f9ccca5560fce2efcb6493806da455793",
+  "scope": "service_acceptance_not_browser_or_human_user_test",
+  "model_requests": 0,
+  "seconds": 15.8752578000001,
+  "results": [
+    {
+      "scenario": "A",
+      "status": "通过",
+      "task_id": "c21f63fa57a44bfab1b62cba053442fe",
+      "assessment_id": "5362a2de9ad9402871e7319e0b299c24e5672c63b194c23c142375426338e2db",
+      "runs": [
+        "10fb40e7b9b2476792bec2ab7adbd74e",
+        "9767111e9d5340aca06cdc186f3abe87"
+      ],
+      "unchanged": true
+    },
+    {
+      "scenario": "B",
+      "status": "正确澄清",
+      "assessment_id": "81db6785f6df3a0c4d77b33e8cdc98ac5f2987e907ba32f70e208f8a753d69ba",
+      "unchanged": true
+    },
+    {
+      "scenario": "C",
+      "variant": "foreign_run",
+      "status": "正确限制结论",
+      "assessment_id": "eae8846a32128c8547ea3d2e9151a36e303f8bbf48d876b76044a6a504bd02bc",
+      "no_additional_statistics": true
+    },
+    {
+      "scenario": "C",
+      "variant": "report_metric",
+      "status": "正确限制结论",
+      "assessment_id": "d423dc01fd4cbc7faf67595c533dd16075b134fdba5dae4274df0b41b52015b5",
+      "no_additional_statistics": true
+    },
+    {
+      "scenario": "C",
+      "variant": "report_window",
+      "status": "正确限制结论",
+      "assessment_id": "ed28589152f0cb5ce581943f731a53748cdebb0904cba16fe48df6a2bbbbb3cd",
+      "no_additional_statistics": true
+    },
+    {
+      "scenario": "C",
+      "variant": "content_hash",
+      "status": "正确限制结论",
+      "assessment_id": "e3c0460b37c93f228b9f22b38abec36b8c9f7df7d5ebb3db68ededa14984d595",
+      "no_additional_statistics": true
+    }
+  ],
+  "original_A_preserved": true
+}

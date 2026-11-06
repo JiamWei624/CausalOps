@@ -1,0 +1,23 @@
+{
+  "approve_draft": {
+    "refused": true,
+    "reason": "自动化任务编号不合法。"
+  },
+  "run_draft": {
+    "refused": true,
+    "reason": "自动化任务编号不合法。"
+  },
+  "before": {
+    "analysis_runs": 0,
+    "exploration_runs": 0,
+    "automation_v2_tasks": 0,
+    "automation_v2_approvals": 0
+  },
+  "after": {
+    "analysis_runs": 0,
+    "exploration_runs": 0,
+    "automation_v2_tasks": 0,
+    "automation_v2_approvals": 0
+  },
+  "report_schema_validation": true
+}

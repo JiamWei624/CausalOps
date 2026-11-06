@@ -1,0 +1,143 @@
+{
+  "links": [],
+  "release_path_and_secret_scan_hits": [
+    {
+      "file": "src\\causalops\\ui\\assistant_app.py",
+      "check": "private_material_name",
+      "line": 29,
+      "unchanged_from_base": true,
+      "manual_classification": "现有页面路由、范围提示或方法文献说明中的普通词语；本阶段未增加私人数据或论文文件"
+    },
+    {
+      "file": "src\\causalops\\ui\\showcase_support.py",
+      "check": "private_material_name",
+      "line": 22,
+      "unchanged_from_base": true,
+      "manual_classification": "现有页面路由、范围提示或方法文献说明中的普通词语；本阶段未增加私人数据或论文文件"
+    },
+    {
+      "file": "src\\causalops\\ui\\workbench.py",
+      "check": "private_material_name",
+      "line": 160,
+      "unchanged_from_base": true,
+      "manual_classification": "现有页面路由、范围提示或方法文献说明中的普通词语；本阶段未增加私人数据或论文文件"
+    },
+    {
+      "file": "src\\causalops\\ui\\workbench.py",
+      "check": "private_material_name",
+      "line": 166,
+      "unchanged_from_base": true,
+      "manual_classification": "现有页面路由、范围提示或方法文献说明中的普通词语；本阶段未增加私人数据或论文文件"
+    },
+    {
+      "file": "src\\causalops\\ui\\workbench.py",
+      "check": "private_material_name",
+      "line": 170,
+      "unchanged_from_base": true,
+      "manual_classification": "现有页面路由、范围提示或方法文献说明中的普通词语；本阶段未增加私人数据或论文文件"
+    },
+    {
+      "file": "src\\causalops\\ui\\workbench.py",
+      "check": "private_material_name",
+      "line": 247,
+      "unchanged_from_base": true,
+      "manual_classification": "现有页面路由、范围提示或方法文献说明中的普通词语；本阶段未增加私人数据或论文文件"
+    },
+    {
+      "file": "src\\causalops\\ui\\workbench.py",
+      "check": "private_material_name",
+      "line": 316,
+      "unchanged_from_base": true,
+      "manual_classification": "现有页面路由、范围提示或方法文献说明中的普通词语；本阶段未增加私人数据或论文文件"
+    },
+    {
+      "file": "scripts\\automation_v2_browser.cjs",
+      "check": "absolute_private_path",
+      "line": 89,
+      "unchanged_from_base": true,
+      "manual_classification": "现有浏览器测试的标准系统浏览器安装位置；非个人目录，无本阶段路径新增"
+    }
+  ],
+  "forbidden_new_payloads": [],
+  "protected_scopes": [
+    {
+      "scope": "src/causalops/application/diagnostics/contracts.py",
+      "changed_files": []
+    },
+    {
+      "scope": "src/causalops/application/diagnostics/service.py",
+      "changed_files": []
+    },
+    {
+      "scope": "src/causalops/application/diagnostics/rules.py",
+      "changed_files": []
+    },
+    {
+      "scope": "src/causalops/application/diagnostics/evidence.py",
+      "changed_files": []
+    },
+    {
+      "scope": "src/causalops/application/diagnostics/reports.py",
+      "changed_files": []
+    },
+    {
+      "scope": "src/causalops/application/diagnostics/suggestions.py",
+      "changed_files": []
+    },
+    {
+      "scope": "src/causalops/application/automation_coordinator.py",
+      "changed_files": []
+    },
+    {
+      "scope": "src/causalops/application/automation_contracts.py",
+      "changed_files": []
+    },
+    {
+      "scope": "src/causalops/application/automation_results.py",
+      "changed_files": []
+    },
+    {
+      "scope": "src/causalops/application/automation_budget.py",
+      "changed_files": []
+    },
+    {
+      "scope": "src/causalops/estimators",
+      "changed_files": []
+    },
+    {
+      "scope": "src/causalops/general",
+      "changed_files": []
+    },
+    {
+      "scope": "src/causalops/advanced",
+      "changed_files": []
+    },
+    {
+      "scope": "src/causalops/assistant/contracts.py",
+      "changed_files": []
+    },
+    {
+      "scope": "src/causalops/assistant/runtime.py",
+      "changed_files": []
+    },
+    {
+      "scope": "src/causalops/application/research_service.py",
+      "changed_files": []
+    },
+    {
+      "scope": "src/causalops/orchestration",
+      "changed_files": []
+    },
+    {
+      "scope": "src/causalops/llm",
+      "changed_files": []
+    },
+    {
+      "scope": "src/causalops/knowledge",
+      "changed_files": []
+    }
+  ],
+  "scan_scope": "本阶段新增或修改的文本与必要截图文件名；不是完整历史重新发布安全认证",
+  "no_new_secret_or_private_path_findings": true,
+  "notes": "词语和路径模式命中已逐行与基线核对；并非忽略所有同类凭据或目录。本轮不推送，亦未进行完整历史发布安全认证。"
+}

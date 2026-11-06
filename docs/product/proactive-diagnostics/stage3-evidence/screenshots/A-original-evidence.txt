@@ -1,0 +1,533 @@
+Skip to main content
+◇
+CausalOps
+研究空间
+home
+
+首页
+
+assignment
+
+我的研究
+
+account_tree
+
+自动化研究
+
+fact_check
+
+研究证据诊断
+
+view_column
+
+分析示例
+
+functions
+
+专业分析
+
+list
+
+研究记录
+
+帮助与设置
+settings
+
+模型与隐私
+
+help
+
+使用说明
+
+monitor_heart
+
+系统状态
+
+● 本地模式
+研究数据保存在本地
+模型连接为可选能力
+研究证据诊断
+研究结果、证据质量与受控研究需求。
+本地单用户预览版 · 0.17.0b1
+研究证据诊断
+
+显式触发、本地只读核验、模型解释关闭。历史诊断与研究计划、批准和统计运行分别保存。
+
+诊断阶段
+
+执行前 · 研究条件
+
+执行后 · 研究证据
+
+诊断任务
+
+检查范围：本任务已保存的五步研究证据
+
+执行前只读取登记数据与合同；执行后仅引用本任务固定五步保存的证据。更换指标、窗口或方法仍需正式研究流程。
+
+检查研究证据
+
+历史诊断报告
+
+研究结果与证据报告
+
+报告版本 1 · 生成于 2026-11-06T17:33:53.174970+00:00 · 模型解释关闭
+
+研究任务：3b0c40cd031a46af8f9fee7c9dc663fd
+诊断报告：02e77f700c6696ffa27004a25c5002a8ca59d5b57b111e6c3d2f71bdbe987736
+诊断快照：44623b6d5734d0dfaa50c9e8187671e87202d272306b5c995c4a70bf61e4aa4a
+
+正式计划：fd504468f026476391094c0ffd1e3f21 · v1
+
+研究风险摘要
+已核验满足 · 身份与证据完整性 · 说明
+
+已核验当前引用的归属及保存指纹；这不授予执行权限。
+
+查看依据
+已核验满足 · 随机分配依据记录 · 说明
+
+公开包身份、来源登记和人工声明一致；本项核对来源记录，不是程序证明随机分配真实发生。
+
+查看依据
+已核验满足 · 观察窗口 · 说明
+
+已核对登记窗口；未根据相似文字或日期重解释口径。
+
+查看依据
+
+范围限于六项已实现规则。来源声明核对不等于证明随机分配过程或全部研究假设。
+
+第一层 · 研究结果
+研究问题
+使用 A/B 随机实验比较男装邮件与未发邮件客户在两周内的访问率，并给出绝对差与区间。
+分析对象
+客户
+目标指标
+两周访问率
+指标字段
+visit
+指标单位
+概率
+观察窗口
+分配后两周
+比较对象
+未发邮件 / 男装邮件
+计划版本
+v1
+批准版本
+计划v1
+未发邮件访问率
+10.62%
+男装邮件访问率
+18.28%
+绝对差异
+7.66 个百分点
+原95%区间
+[6.995, 8.323] 个百分点
+
+本次分析包含 42,613 名客户；使用原 A/B 工具的组间均值差与原区间。访问率差不等于相对增长，也不能直接解释为长期利润。
+
+比较组	实际样本	访问率
+未发邮件	21,306	10.62%
+男装邮件	21,307	18.28%
+描述统计 Run：6c73d90f94d94fc88b084ec5b0a84739
+效果分析 Run：5478f34f257a41c380e1434e0e5f2d15
+
+原批准：523813cecfd24c239c857309b3e9ed82。历史回执不授予新的执行权限。
+
+数据版本：d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226；合同：4c9b52003b7849ee90f2114acd90bb24 / v1
+
+第二层 · 证据质量
+
+以下状态来自已保存诊断；不计算研究可信度总分。
+
+已实现检查	实际状态	重要程度与来源	对结论的影响
+PD-01 身份与证据完整性	已核验满足	说明
+程序事实	已核验当前引用的归属及保存指纹；这不授予执行权限。
+PD-02 随机分配依据记录	已核验满足	说明
+人工声明核对	公开包身份、来源登记和人工声明一致；本项核对来源记录，不是程序证明随机分配真实发生。
+PD-06 观察窗口	已核验满足	说明
+程序事实	已核对登记窗口；未根据相似文字或日期重解释口径。
+PD-07 双运行与上游门禁	已核验满足	说明
+程序事实	已从真实描述Run、S03与A/B Run核对分组、样本和均值。
+PD-09 指标与单位数值链	已核验满足	说明
+程序事实	指标和组别已绑定，概率差与百分点由原确定性函数核对；不把相对变化当百分点。
+PD-14 步骤与报告来源	已核验满足	说明
+程序事实	已验证S05引用两个独立Run及原批准；只读诊断不改写原报告。
+未实现的八项规则：PD-03、PD-04、PD-05、PD-08、PD-10、PD-11、PD-12、PD-13。没有将这些项目计为通过，也没有据此判定研究违规。
+
+未实施完整的基线、功效、无干扰、外推或长期收益检验。当前仅显示已有六项规则的实际结果。
+
+第三层 · 下一步研究建议
+当前检查未生成后续建议。
+
+诊断建议 → 研究需求草案 → 正式待审方案 → 已批准计划 → 真实统计运行，是不同状态。此页只能查看诊断和保存需求，不创建批准或派发统计。
+
+查看依据与研究需求
+
+下列回执属于本报告生成时点；来源变化不会改写历史记录，也不会取得执行权限。
+
+keyboard_arrow_right
+
+查看依据 · PD-01 身份与证据完整性
+
+keyboard_arrow_right
+
+查看依据 · PD-02 随机分配依据记录
+
+keyboard_arrow_right
+
+查看依据 · PD-06 观察窗口
+
+keyboard_arrow_right
+
+查看依据 · PD-07 双运行与上游门禁
+
+keyboard_arrow_right
+
+查看依据 · PD-09 指标与单位数值链
+
+keyboard_arrow_right
+
+查看依据 · PD-14 步骤与报告来源
+
+查看两个 Run 与原报告的运行证据
+
+{
+"S02":{
+"schema":"DescriptiveRun"
+"task_id":"3b0c40cd031a46af8f9fee7c9dc663fd"
+"step_id":"S02"
+"plan_id":"fd504468f026476391094c0ffd1e3f21"
+"plan_sha":"b9bee8f399b8aa124cdf6ea1b720bb397ed38c210d7d6d4883b97473ddae62b3"
+"data":{
+"upload_id":"3df734138678a6c628c9a8a26403a406d7e4ece9c2f96eb4e39fe9dbc3dd967b"
+"frame_sha":"d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+"parquet_sha":"1e8c21fc2c5f793dbbe0fb1c91744e0f1797bb45fb2ba0bca82c17d31d253785"
+}
+"contract_ref":{
+"id":"4c9b52003b7849ee90f2114acd90bb24"
+"version":1
+"sha":"8865c2cffc0b8135f2170dcd1ffbc4dc4a4d516325871e7cfb5d074f49028412"
+"data_sha":"d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+}
+"scope":{
+"analysis_unit":"客户"
+"entity":"entity_id"
+"outcome":"visit"
+"metric":"两周访问率"
+"unit":"概率"
+"window":"分配后两周"
+"treatment":"assigned"
+"groups":{
+"0":"未发邮件"
+"1":"男装邮件"
+}
+"inclusion":[
+0:"Mens E-Mail"
+1:"No E-Mail"
+]
+"missing_policy":"stop"
+"assignment_source":"https://blog.minethatdata.com/2008/03/minethatdata-e-mail-analytics-and-data.html"
+}
+"approval_id":"523813cecfd24c239c857309b3e9ed82"
+"config_sha":"08a5da8f56095efb3367c75bc267d3d45b49bf4c0bb08d54dcc3663ed8d1c2eb"
+"upstreams":{
+"S01":"8cf68bf9fa8afb494e8e49e7ad206e41ea63398c5f5d73c37006bd8b188e409b"
+}
+"body":{
+"run_id":"6c73d90f94d94fc88b084ec5b0a84739"
+"tool_result":{
+"contract_version":"1"
+"run_id":"6c73d90f94d94fc88b084ec5b0a84739"
+"upload_id":"3df734138678a6c628c9a8a26403a406d7e4ece9c2f96eb4e39fe9dbc3dd967b"
+"method":"descriptive"
+"kind":"exploration"
+"data_fingerprint":"d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+"result_fingerprint":"63e797054f8ed9bfa5aac1a9f971fbd3ede8b4592d938edadd3cd64db6c585d0"
+"claim":"descriptive"
+"plan_id":"fd504468f026476391094c0ffd1e3f21"
+"plan_sha":"b9bee8f399b8aa124cdf6ea1b720bb397ed38c210d7d6d4883b97473ddae62b3"
+"ordinal":1
+"ref":{
+"kind":"exploration"
+"study_id":"deb0b78db8814872826828a96ce01959"
+"version":1
+"run_id":"6c73d90f94d94fc88b084ec5b0a84739"
+"automation_task_id":"3b0c40cd031a46af8f9fee7c9dc663fd"
+"automation_plan_sha":"b9bee8f399b8aa124cdf6ea1b720bb397ed38c210d7d6d4883b97473ddae62b3"
+"step_id":"S02"
+"approval_id":"523813cecfd24c239c857309b3e9ed82"
+"dispatch_started":true
+}
+}
+"approval_id":"523813cecfd24c239c857309b3e9ed82"
+"grouped":[
+0:{
+"group_value":"0"
+"field":"visit"
+"rows":21306
+"finite_n":21306
+"mean":0.10616727682343002
+"median":0
+"std_ddof1":0.308058826055964
+}
+1:{
+"group_value":"1"
+"field":"visit"
+"rows":21307
+"finite_n":21307
+"mean":0.18275684047496127
+"median":0
+"std_ddof1":0.3864761154524209
+}
+]
+}
+}
+"S03":{
+"schema":"GateEvidence"
+"task_id":"3b0c40cd031a46af8f9fee7c9dc663fd"
+"step_id":"S03"
+"plan_id":"fd504468f026476391094c0ffd1e3f21"
+"plan_sha":"b9bee8f399b8aa124cdf6ea1b720bb397ed38c210d7d6d4883b97473ddae62b3"
+"data":{
+"upload_id":"3df734138678a6c628c9a8a26403a406d7e4ece9c2f96eb4e39fe9dbc3dd967b"
+"frame_sha":"d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+"parquet_sha":"1e8c21fc2c5f793dbbe0fb1c91744e0f1797bb45fb2ba0bca82c17d31d253785"
+}
+"contract_ref":{
+"id":"4c9b52003b7849ee90f2114acd90bb24"
+"version":1
+"sha":"8865c2cffc0b8135f2170dcd1ffbc4dc4a4d516325871e7cfb5d074f49028412"
+"data_sha":"d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+}
+"scope":{
+"analysis_unit":"客户"
+"entity":"entity_id"
+"outcome":"visit"
+"metric":"两周访问率"
+"unit":"概率"
+"window":"分配后两周"
+"treatment":"assigned"
+"groups":{
+"0":"未发邮件"
+"1":"男装邮件"
+}
+"inclusion":[
+0:"Mens E-Mail"
+1:"No E-Mail"
+]
+"missing_policy":"stop"
+"assignment_source":"https://blog.minethatdata.com/2008/03/minethatdata-e-mail-analytics-and-data.html"
+}
+"approval_id":"523813cecfd24c239c857309b3e9ed82"
+"config_sha":"09bfab42b47ac5bca1742316d742b3fd645c93e3f9258de928b47c0dd56c8c5f"
+"upstreams":{
+"S01":"8cf68bf9fa8afb494e8e49e7ad206e41ea63398c5f5d73c37006bd8b188e409b"
+"S02":"5b571a2ca04a0503466a24e83af8a1ce427ce248c920d1c8b1160102b9993df6"
+}
+"body":{
+"decision":"proceed"
+"descriptive_run_id":"6c73d90f94d94fc88b084ec5b0a84739"
+"descriptive_evidence_sha":"5b571a2ca04a0503466a24e83af8a1ce427ce248c920d1c8b1160102b9993df6"
+"audit_evidence_sha":"8cf68bf9fa8afb494e8e49e7ad206e41ea63398c5f5d73c37006bd8b188e409b"
+"sample_size":42613
+"checks":[
+0:"same_plan_data_metric_window"
+1:"two_groups"
+2:"complete_cases_without_exclusion"
+3:"same_sample_counts"
+4:"engine_minimum_sample_and_variation"
+]
+"significance_used":false
+}
+}
+"S04":{
+"schema":"EffectRun"
+"task_id":"3b0c40cd031a46af8f9fee7c9dc663fd"
+"step_id":"S04"
+"plan_id":"fd504468f026476391094c0ffd1e3f21"
+"plan_sha":"b9bee8f399b8aa124cdf6ea1b720bb397ed38c210d7d6d4883b97473ddae62b3"
+"data":{
+"upload_id":"3df734138678a6c628c9a8a26403a406d7e4ece9c2f96eb4e39fe9dbc3dd967b"
+"frame_sha":"d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+"parquet_sha":"1e8c21fc2c5f793dbbe0fb1c91744e0f1797bb45fb2ba0bca82c17d31d253785"
+}
+"contract_ref":{
+"id":"4c9b52003b7849ee90f2114acd90bb24"
+"version":1
+"sha":"8865c2cffc0b8135f2170dcd1ffbc4dc4a4d516325871e7cfb5d074f49028412"
+"data_sha":"d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+}
+"scope":{
+"analysis_unit":"客户"
+"entity":"entity_id"
+"outcome":"visit"
+"metric":"两周访问率"
+"unit":"概率"
+"window":"分配后两周"
+"treatment":"assigned"
+"groups":{
+"0":"未发邮件"
+"1":"男装邮件"
+}
+"inclusion":[
+0:"Mens E-Mail"
+1:"No E-Mail"
+]
+"missing_policy":"stop"
+"assignment_source":"https://blog.minethatdata.com/2008/03/minethatdata-e-mail-analytics-and-data.html"
+}
+"approval_id":"523813cecfd24c239c857309b3e9ed82"
+"config_sha":"1fd77fb90de8cef0beb28ed1c2b34b15e5e24809a2fe871072907008e1cd4723"
+"upstreams":{
+"S03":"7a2e6b5ad6de12d8e042cf3c37814d58e47e7ce8b17a5941f1c5e566c0547460"
+}
+"body":{
+"run_id":"5478f34f257a41c380e1434e0e5f2d15"
+"tool_result":{
+"contract_version":"1"
+"run_id":"5478f34f257a41c380e1434e0e5f2d15"
+"upload_id":"3df734138678a6c628c9a8a26403a406d7e4ece9c2f96eb4e39fe9dbc3dd967b"
+"method":"ab_test"
+"kind":"research"
+"data_fingerprint":"d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+"result_fingerprint":"b693e3eb0b1832f0e04cb92532b56d13b7ed06f051de7a23ea7c82e2ae8c1bc2"
+"claim":"identified_causal"
+"plan_id":"fd504468f026476391094c0ffd1e3f21"
+"plan_sha":"b9bee8f399b8aa124cdf6ea1b720bb397ed38c210d7d6d4883b97473ddae62b3"
+"ordinal":3
+"ref":{
+"kind":"research"
+"study_id":"session_20dd9d53bc444b6f8601c872dd6ef034"
+"revision_id":"revision_d8cf13f0b3b846dcb0e4ee61045bad45"
+"automation_task_id":"3b0c40cd031a46af8f9fee7c9dc663fd"
+"automation_plan_sha":"b9bee8f399b8aa124cdf6ea1b720bb397ed38c210d7d6d4883b97473ddae62b3"
+"step_id":"S04"
+"approval_id":"523813cecfd24c239c857309b3e9ed82"
+"dispatch_started":true
+"run_id":"5478f34f257a41c380e1434e0e5f2d15"
+}
+}
+"approval_id":"523813cecfd24c239c857309b3e9ed82"
+}
+}
+"S05":{
+"schema":"ReportManifest"
+"task_id":"3b0c40cd031a46af8f9fee7c9dc663fd"
+"step_id":"S05"
+"plan_id":"fd504468f026476391094c0ffd1e3f21"
+"plan_sha":"b9bee8f399b8aa124cdf6ea1b720bb397ed38c210d7d6d4883b97473ddae62b3"
+"data":{
+"upload_id":"3df734138678a6c628c9a8a26403a406d7e4ece9c2f96eb4e39fe9dbc3dd967b"
+"frame_sha":"d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+"parquet_sha":"1e8c21fc2c5f793dbbe0fb1c91744e0f1797bb45fb2ba0bca82c17d31d253785"
+}
+"contract_ref":{
+"id":"4c9b52003b7849ee90f2114acd90bb24"
+"version":1
+"sha":"8865c2cffc0b8135f2170dcd1ffbc4dc4a4d516325871e7cfb5d074f49028412"
+"data_sha":"d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+}
+"scope":{
+"analysis_unit":"客户"
+"entity":"entity_id"
+"outcome":"visit"
+"metric":"两周访问率"
+"unit":"概率"
+"window":"分配后两周"
+"treatment":"assigned"
+"groups":{
+"0":"未发邮件"
+"1":"男装邮件"
+}
+"inclusion":[
+0:"Mens E-Mail"
+1:"No E-Mail"
+]
+"missing_policy":"stop"
+"assignment_source":"https://blog.minethatdata.com/2008/03/minethatdata-e-mail-analytics-and-data.html"
+}
+"approval_id":"523813cecfd24c239c857309b3e9ed82"
+"config_sha":"08790497ece09a8e68705801dd636ab748af705bdf39f1a51a7a80839067654c"
+"upstreams":{
+"S01":"8cf68bf9fa8afb494e8e49e7ad206e41ea63398c5f5d73c37006bd8b188e409b"
+"S02":"5b571a2ca04a0503466a24e83af8a1ce427ce248c920d1c8b1160102b9993df6"
+"S03":"7a2e6b5ad6de12d8e042cf3c37814d58e47e7ce8b17a5941f1c5e566c0547460"
+"S04":"19dbcc6a2564e846182efc2e15d0fb1acf6caa761f2a15195e5280fa9ce6509b"
+}
+"body":{
+"status":"complete"
+"objective":"使用 A/B 随机实验比较男装邮件与未发邮件客户在两周内的访问率，并给出绝对差与区间。"
+"scope":{
+"analysis_unit":"客户"
+"entity":"entity_id"
+"outcome":"visit"
+"metric":"两周访问率"
+"unit":"概率"
+"window":"分配后两周"
+"treatment":"assigned"
+"groups":{
+"0":"未发邮件"
+"1":"男装邮件"
+}
+"inclusion":[
+0:"Mens E-Mail"
+1:"No E-Mail"
+]
+"missing_policy":"stop"
+"assignment_source":"https://blog.minethatdata.com/2008/03/minethatdata-e-mail-analytics-and-data.html"
+}
+"source_runs":[
+0:"6c73d90f94d94fc88b084ec5b0a84739"
+1:"5478f34f257a41c380e1434e0e5f2d15"
+]
+"sample_size":42613
+"group_summary":[
+0:{
+"treatment":0
+"n":21306
+"outcome_mean":0.10616727682343002
+}
+1:{
+"treatment":1
+"n":21307
+"outcome_mean":0.18275684047496127
+}
+]
+"effect":{
+"estimand":"risk_difference"
+"outcome":"visit"
+"raw_unit":"probability"
+"raw":0.07658956365153125
+"control_rate":0.10616727682343002
+"treated_rate":0.18275684047496127
+"pp":7.6589563651531245
+"ci_pp":[
+0:6.995322354054364
+1:8.322590376251885
+]
+"relative_pct":72.1404616781399
+"formulas":{
+"pp":"100 * raw"
+"ci_pp":"100 * each raw interval bound"
+"relative_pct":"100 * raw / control_rate (positive control_rate only)"
+}
+}
+"standard_error":0.0033858878117283653
+"method":"ab_test"
+"interval_method":"independent-group mean difference; normal approximation 1.96"
+"design_source":"https://blog.minethatdata.com/2008/03/minethatdata-e-mail-analytics-and-data.html"
+"approval_id":"523813cecfd24c239c857309b3e9ed82"
+"plan_version":1
+"domain_revision_id":"revision_d8cf13f0b3b846dcb0e4ee61045bad45"
+"model_calls":0
+"text":"研究目标：使用 A/B 随机实验比较男装邮件与未发邮件客户在两周内的访问率，并给出绝对差与区间。\n未发邮件组两周访问率为10.62%，男装邮件组为18.28%。绝对差为7.66个百分点，原工具95%置信区间为[7.00, 8.32]个百分点。\n样本量：未发邮件21306名、男装邮件21307名，总计42613名客户。估计对象是分配邮件的意向处理访问概率差；采用原A/B独立组均值差及正态近似区间，未修改估计器。\n随机分配和两周窗口依据：https://blog.minethatdata.com/2008/03/minethatdata-e-mail-analytics-and-data.html，已经使用者核对，不是由两组或样本均衡推断。未指定基线协变量，未实施协变量平衡检查；程序不证明无干扰等全部识别假设。结果仅适用于该公开实验两组客户的分配后两周访问，不代表长期利润、总体营销收益或生产级可靠性。\n描述统计Run：6c73d90f94d94fc88b084ec5b0a84739；A/B Run：5478f34f257a41c380e1434e0e5f2d15；计划：fd504468f026476391094c0ffd1e3f21 v1；批准：523813cecfd24c239c857309b3e9ed82。"
+}
+}
+}
+
+导出诊断报告快照
+
+导出为生成时点的原始快照；过期快照不能作为当前结论或新执行授权。

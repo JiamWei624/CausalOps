@@ -1,0 +1,14 @@
+{
+  "tested_commit": "e0537479e9e81c69beea24617a7bda3c42141bd3",
+  "base": "b4b3a02f8a054eabf376e05893efa9687d57b634",
+  "runtime_product_commit": "f25daaefab64c45a16f52779ef9d6dadba922cfd",
+  "execution_source_sha": "5c80c4911234d13632fab7be2e71e2f1fff5571e1c391d1a507b891577fd6038",
+  "operating_system": "Windows",
+  "python": "3.11.5",
+  "streamlit": "1.66.1",
+  "edge": "156.0.4314.58",
+  "model_requests": 0,
+  "public_archive_sha256": "bab6578f60db5d792f1c2372c502f029152a5249cf5ea84390f3b7f885d7234f",
+  "raw_evidence_policy": "原始隔离工作区、数据库、日志与失败DOM留在本地独立归档；此目录仅收录公开或合成案例的必要证据与截图。",
+  "registered_methods": 17
+}

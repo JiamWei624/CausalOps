@@ -1,0 +1,33 @@
+{
+  "product_commit": "cf02474ceaddccaee9057b37047130434b3399d5",
+  "environment": {
+    "python": "3.11.5",
+    "platform": "win32",
+    "packages": {
+      "pytest": "9.1.1",
+      "pydantic": "2.14.1",
+      "pandas": "2.3.3",
+      "numpy": "2.4.6",
+      "pyarrow": "26.0.0",
+      "scipy": "1.15.3",
+      "langgraph": "1.2.19"
+    }
+  },
+  "affected_modules": {
+    "tests": 117,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 220.23
+  },
+  "full_project": {
+    "tests": 1008,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 569.447
+  },
+  "new_targeted_cases": 34,
+  "interpretation": "engineering_tests_not_agent_accuracy_or_human_success",
+  "model_requests": 0
+}

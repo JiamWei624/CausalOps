@@ -1,0 +1,39 @@
+{
+  "artifact_type": "design_fixture_not_real_diagnostic",
+  "ids_and_hashes": "fictional; not production evidence",
+  "action": {
+    "schema_version": "research-action-v1",
+    "action_id": "design-action-B",
+    "assessment_id": "design-assessment-B",
+    "context_fingerprint": "6666666666666666666666666666666666666666666666666666666666666666",
+    "finding_ids": [
+      "design-finding-B"
+    ],
+    "evidence_refs": [
+      {
+        "artifact_kind": "validation_observation",
+        "artifact_id": "design-observation",
+        "sha": "7777777777777777777777777777777777777777777777777777777777777777",
+        "json_pointer": "/checks",
+        "availability": "valid"
+      }
+    ],
+    "type": "provide_evidence",
+    "title": "补充分配设计来源",
+    "reason": "缺少研究设计来源与人工核对记录，不能确认随机分配。",
+    "research_question": "哪些设计资料支持分配机制？",
+    "additional_data": [
+      "可核对的公开设计来源"
+    ],
+    "requires_plan_change": false,
+    "requires_new_approval": false,
+    "support": "supported_read_only",
+    "candidate_method_ids": [],
+    "authority": "suggestion_only_no_execution",
+    "source": {
+      "kind": "rule_template",
+      "interpretation_ref": null
+    },
+    "review_state": "ready_for_user_decision"
+  }
+}

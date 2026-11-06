@@ -1,0 +1,1168 @@
+{
+  "$defs": {
+    "CheckResult": {
+      "additionalProperties": false,
+      "properties": {
+        "observed": {
+          "additionalProperties": true,
+          "title": "Observed",
+          "type": "object"
+        },
+        "expected": {
+          "additionalProperties": true,
+          "title": "Expected",
+          "type": "object"
+        },
+        "reason_code": {
+          "title": "Reason Code",
+          "type": "string"
+        },
+        "missing_items": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Missing Items",
+          "type": "array"
+        },
+        "required_work": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Required Work",
+          "type": "array"
+        }
+      },
+      "required": [
+        "observed",
+        "expected",
+        "reason_code"
+      ],
+      "title": "CheckResult",
+      "type": "object"
+    },
+    "ContractReference": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "version": {
+          "minimum": 1,
+          "title": "Version",
+          "type": "integer"
+        },
+        "sha": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha",
+          "type": "string"
+        },
+        "data_sha": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Data Sha",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "sha",
+        "data_sha"
+      ],
+      "title": "ContractReference",
+      "type": "object"
+    },
+    "DataReference": {
+      "additionalProperties": false,
+      "properties": {
+        "upload_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Upload Id",
+          "type": "string"
+        },
+        "frame_sha": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Frame Sha",
+          "type": "string"
+        }
+      },
+      "required": [
+        "upload_id",
+        "frame_sha"
+      ],
+      "title": "DataReference",
+      "type": "object"
+    },
+    "DiagnosticContext": {
+      "additionalProperties": false,
+      "properties": {
+        "task_ref": {
+          "$ref": "#/$defs/TaskReference"
+        },
+        "plan_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PlanReference"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "no_plan_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "No Plan Reason"
+        },
+        "data_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DataReference"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "contract_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ContractReference"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "run_refs": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/RunReference"
+          },
+          "title": "Run Refs",
+          "type": "array"
+        },
+        "scope": {
+          "$ref": "#/$defs/DiagnosticScope"
+        },
+        "fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Fingerprint",
+          "type": "string"
+        },
+        "phase": {
+          "enum": [
+            "preflight",
+            "post_run",
+            "partial_run"
+          ],
+          "title": "Phase",
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/DiagnosticProvenance"
+        }
+      },
+      "required": [
+        "task_ref",
+        "plan_ref",
+        "no_plan_reason",
+        "data_ref",
+        "contract_ref",
+        "scope",
+        "fingerprint",
+        "phase",
+        "provenance"
+      ],
+      "title": "DiagnosticContext",
+      "type": "object"
+    },
+    "DiagnosticFinding": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "diagnostic-finding-v1.1",
+          "default": "diagnostic-finding-v1.1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "finding_id": {
+          "title": "Finding Id",
+          "type": "string"
+        },
+        "assessment_id": {
+          "title": "Assessment Id",
+          "type": "string"
+        },
+        "context": {
+          "$ref": "#/$defs/DiagnosticContext"
+        },
+        "rule": {
+          "$ref": "#/$defs/RuleReference"
+        },
+        "diagnostic_type": {
+          "enum": [
+            "binding",
+            "design",
+            "metric",
+            "execution"
+          ],
+          "title": "Diagnostic Type",
+          "type": "string"
+        },
+        "applicability": {
+          "default": "applicable",
+          "enum": [
+            "applicable",
+            "not_applicable",
+            "unknown"
+          ],
+          "title": "Applicability",
+          "type": "string"
+        },
+        "check_performed": {
+          "title": "Check Performed",
+          "type": "boolean"
+        },
+        "status": {
+          "enum": [
+            "verified",
+            "issue",
+            "unknown",
+            "not_applicable",
+            "not_checked"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "result": {
+          "$ref": "#/$defs/CheckResult"
+        },
+        "evidence_refs": {
+          "items": {
+            "$ref": "#/$defs/EvidenceReference"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "impact": {
+          "$ref": "#/$defs/Impact"
+        },
+        "severity": {
+          "$ref": "#/$defs/Severity"
+        },
+        "human_confirmation_required": {
+          "title": "Human Confirmation Required",
+          "type": "boolean"
+        },
+        "eligible_action_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Eligible Action Ids",
+          "type": "array"
+        },
+        "generated_at": {
+          "title": "Generated At",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/FindingSource"
+        }
+      },
+      "required": [
+        "finding_id",
+        "assessment_id",
+        "context",
+        "rule",
+        "diagnostic_type",
+        "check_performed",
+        "status",
+        "result",
+        "evidence_refs",
+        "impact",
+        "severity",
+        "human_confirmation_required",
+        "generated_at",
+        "source"
+      ],
+      "title": "DiagnosticFinding",
+      "type": "object"
+    },
+    "DiagnosticProvenance": {
+      "additionalProperties": false,
+      "properties": {
+        "recorded_execution_source_sha": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Recorded Execution Source Sha"
+        },
+        "diagnostic_source_sha": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Diagnostic Source Sha",
+          "type": "string"
+        },
+        "reading_mode": {
+          "enum": [
+            "preflight",
+            "historical_read_only",
+            "current_execution"
+          ],
+          "title": "Reading Mode",
+          "type": "string"
+        }
+      },
+      "required": [
+        "recorded_execution_source_sha",
+        "diagnostic_source_sha",
+        "reading_mode"
+      ],
+      "title": "DiagnosticProvenance",
+      "type": "object"
+    },
+    "DiagnosticScope": {
+      "additionalProperties": false,
+      "properties": {
+        "analysis_unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Analysis Unit"
+        },
+        "outcome_field": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Outcome Field"
+        },
+        "metric_label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Metric Label"
+        },
+        "statistic_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Statistic Type"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unit"
+        },
+        "observation_window": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Observation Window"
+        },
+        "group_labels": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Group Labels",
+          "type": "array"
+        },
+        "numerator": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Numerator"
+        },
+        "denominator": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Denominator"
+        },
+        "aggregation": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Aggregation"
+        }
+      },
+      "required": [
+        "analysis_unit",
+        "outcome_field",
+        "metric_label",
+        "statistic_type",
+        "unit",
+        "observation_window",
+        "group_labels",
+        "numerator",
+        "denominator",
+        "aggregation"
+      ],
+      "title": "DiagnosticScope",
+      "type": "object"
+    },
+    "EvidenceQuality": {
+      "additionalProperties": false,
+      "properties": {
+        "findings": {
+          "items": {
+            "$ref": "#/$defs/DiagnosticFinding"
+          },
+          "title": "Findings",
+          "type": "array"
+        },
+        "status_labels": {
+          "additionalProperties": true,
+          "title": "Status Labels",
+          "type": "object"
+        },
+        "implemented_rules": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Implemented Rules",
+          "type": "array"
+        },
+        "unimplemented_rules": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Unimplemented Rules",
+          "type": "array"
+        },
+        "conclusion_policy": {
+          "title": "Conclusion Policy",
+          "type": "string"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        }
+      },
+      "required": [
+        "findings",
+        "status_labels",
+        "implemented_rules",
+        "unimplemented_rules",
+        "conclusion_policy",
+        "limitations"
+      ],
+      "title": "EvidenceQuality",
+      "type": "object"
+    },
+    "EvidenceReference": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_kind": {
+          "enum": [
+            "data_contract",
+            "source_record",
+            "step_evidence",
+            "run_bundle",
+            "validation_observation"
+          ],
+          "title": "Artifact Kind",
+          "type": "string"
+        },
+        "artifact_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "sha": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha",
+          "type": "string"
+        },
+        "json_pointer": {
+          "default": "",
+          "pattern": "^(?:/.*)?$",
+          "title": "Json Pointer",
+          "type": "string"
+        },
+        "availability": {
+          "const": "valid",
+          "default": "valid",
+          "title": "Availability",
+          "type": "string"
+        }
+      },
+      "required": [
+        "artifact_kind",
+        "artifact_id",
+        "sha"
+      ],
+      "title": "EvidenceReference",
+      "type": "object"
+    },
+    "FindingSource": {
+      "additionalProperties": false,
+      "properties": {
+        "mechanism": {
+          "enum": [
+            "deterministic_rule",
+            "engine_adapter",
+            "declaration_record_check"
+          ],
+          "title": "Mechanism",
+          "type": "string"
+        },
+        "origin": {
+          "enum": [
+            "program_fact",
+            "human_declaration",
+            "mixed"
+          ],
+          "title": "Origin",
+          "type": "string"
+        },
+        "generator_version": {
+          "title": "Generator Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "mechanism",
+        "origin",
+        "generator_version"
+      ],
+      "title": "FindingSource",
+      "type": "object"
+    },
+    "Impact": {
+      "additionalProperties": false,
+      "properties": {
+        "claim_effect": {
+          "enum": [
+            "unchanged",
+            "conditional_causal_only",
+            "show_limitation",
+            "hide_integrated_estimate"
+          ],
+          "title": "Claim Effect",
+          "type": "string"
+        },
+        "explanation": {
+          "title": "Explanation",
+          "type": "string"
+        },
+        "execution_authority": {
+          "const": "original_service_only",
+          "default": "original_service_only",
+          "title": "Execution Authority",
+          "type": "string"
+        }
+      },
+      "required": [
+        "claim_effect",
+        "explanation"
+      ],
+      "title": "Impact",
+      "type": "object"
+    },
+    "PlanReference": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "version": {
+          "minimum": 1,
+          "title": "Version",
+          "type": "integer"
+        },
+        "sha": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "sha"
+      ],
+      "title": "PlanReference",
+      "type": "object"
+    },
+    "ResearchResults": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": [
+            "not_run",
+            "partial",
+            "available",
+            "restricted"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "objective": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Objective"
+        },
+        "scope": {
+          "additionalProperties": true,
+          "title": "Scope",
+          "type": "object"
+        },
+        "approval": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Approval"
+        },
+        "runs": {
+          "default": [],
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Runs",
+          "type": "array"
+        },
+        "original_manifest": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Original Manifest"
+        },
+        "method": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Method"
+        },
+        "estimate": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Estimate"
+        },
+        "effect": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Effect"
+        },
+        "group_summary": {
+          "default": [],
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Group Summary",
+          "type": "array"
+        },
+        "sample_size": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sample Size"
+        },
+        "design_observations": {
+          "additionalProperties": true,
+          "title": "Design Observations",
+          "type": "object"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        }
+      },
+      "required": [
+        "status",
+        "objective",
+        "scope",
+        "design_observations",
+        "limitations"
+      ],
+      "title": "ResearchResults",
+      "type": "object"
+    },
+    "ResearchSuggestion": {
+      "additionalProperties": false,
+      "properties": {
+        "suggestion_id": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Suggestion Id",
+          "type": "string"
+        },
+        "diagnostic_id": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Diagnostic Id",
+          "type": "string"
+        },
+        "assessment_id": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Assessment Id",
+          "type": "string"
+        },
+        "rule_id": {
+          "title": "Rule Id",
+          "type": "string"
+        },
+        "rule_version": {
+          "title": "Rule Version",
+          "type": "string"
+        },
+        "template_version": {
+          "const": "six-rule-suggestions-v1",
+          "default": "six-rule-suggestions-v1",
+          "title": "Template Version",
+          "type": "string"
+        },
+        "context_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Context Fingerprint",
+          "type": "string"
+        },
+        "related_refs": {
+          "additionalProperties": true,
+          "title": "Related Refs",
+          "type": "object"
+        },
+        "action": {
+          "title": "Action",
+          "type": "string"
+        },
+        "reason_code": {
+          "title": "Reason Code",
+          "type": "string"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        },
+        "required_evidence": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Required Evidence",
+          "type": "array"
+        },
+        "new_scope": {
+          "default": "requires_separate_request",
+          "enum": [
+            "not_proposed",
+            "requires_separate_request"
+          ],
+          "title": "New Scope",
+          "type": "string"
+        },
+        "human_review_required": {
+          "const": true,
+          "default": true,
+          "title": "Human Review Required",
+          "type": "boolean"
+        },
+        "status": {
+          "const": "needs_information",
+          "default": "needs_information",
+          "title": "Status",
+          "type": "string"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        },
+        "source": {
+          "const": "deterministic_rule_mapping",
+          "default": "deterministic_rule_mapping",
+          "title": "Source",
+          "type": "string"
+        },
+        "execution_authorized": {
+          "const": false,
+          "default": false,
+          "title": "Execution Authorized",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "suggestion_id",
+        "diagnostic_id",
+        "assessment_id",
+        "rule_id",
+        "rule_version",
+        "context_fingerprint",
+        "related_refs",
+        "action",
+        "reason_code",
+        "reason",
+        "required_evidence",
+        "limitations"
+      ],
+      "title": "ResearchSuggestion",
+      "type": "object"
+    },
+    "RuleReference": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "enum": [
+            "PD-01",
+            "PD-02",
+            "PD-06",
+            "PD-07",
+            "PD-09",
+            "PD-14"
+          ],
+          "title": "Id",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        },
+        "pack": {
+          "title": "Pack",
+          "type": "string"
+        },
+        "check_method": {
+          "title": "Check Method",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "pack",
+        "check_method"
+      ],
+      "title": "RuleReference",
+      "type": "object"
+    },
+    "RunReference": {
+      "additionalProperties": false,
+      "properties": {
+        "run_id": {
+          "pattern": "^[a-f0-9]{32}$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "exploration",
+            "research"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "plan_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Plan Id",
+          "type": "string"
+        },
+        "result_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Result Fingerprint",
+          "type": "string"
+        }
+      },
+      "required": [
+        "run_id",
+        "kind",
+        "plan_id",
+        "result_fingerprint"
+      ],
+      "title": "RunReference",
+      "type": "object"
+    },
+    "Severity": {
+      "additionalProperties": false,
+      "properties": {
+        "level": {
+          "enum": [
+            "critical",
+            "major",
+            "moderate",
+            "information"
+          ],
+          "title": "Level",
+          "type": "string"
+        },
+        "policy_id": {
+          "title": "Policy Id",
+          "type": "string"
+        },
+        "reason_code": {
+          "title": "Reason Code",
+          "type": "string"
+        }
+      },
+      "required": [
+        "level",
+        "policy_id",
+        "reason_code"
+      ],
+      "title": "Severity",
+      "type": "object"
+    },
+    "TaskReference": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "automation_v2",
+            "research_session"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "task_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Task Id",
+          "type": "string"
+        },
+        "session_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Session Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "task_id",
+        "session_id"
+      ],
+      "title": "TaskReference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "diagnostic-report-v1",
+      "default": "diagnostic-report-v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "report_id": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Report Id",
+      "type": "string"
+    },
+    "version": {
+      "minimum": 1,
+      "title": "Version",
+      "type": "integer"
+    },
+    "assessment_id": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Assessment Id",
+      "type": "string"
+    },
+    "assessment_sha": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Assessment Sha",
+      "type": "string"
+    },
+    "context": {
+      "$ref": "#/$defs/DiagnosticContext"
+    },
+    "rule_pack": {
+      "title": "Rule Pack",
+      "type": "string"
+    },
+    "rule_pack_version": {
+      "title": "Rule Pack Version",
+      "type": "string"
+    },
+    "suggestion_version": {
+      "title": "Suggestion Version",
+      "type": "string"
+    },
+    "generator_sha": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Generator Sha",
+      "type": "string"
+    },
+    "results": {
+      "$ref": "#/$defs/ResearchResults"
+    },
+    "quality": {
+      "$ref": "#/$defs/EvidenceQuality"
+    },
+    "suggestions": {
+      "items": {
+        "$ref": "#/$defs/ResearchSuggestion"
+      },
+      "maxItems": 3,
+      "title": "Suggestions",
+      "type": "array"
+    },
+    "generation_source": {
+      "const": "explicit_read_only_request",
+      "default": "explicit_read_only_request",
+      "title": "Generation Source",
+      "type": "string"
+    },
+    "snapshot_semantics": {
+      "const": "immutable_at_generation_time",
+      "default": "immutable_at_generation_time",
+      "title": "Snapshot Semantics",
+      "type": "string"
+    },
+    "model_requests": {
+      "const": 0,
+      "default": 0,
+      "title": "Model Requests",
+      "type": "integer"
+    },
+    "execution_authorized": {
+      "const": false,
+      "default": false,
+      "title": "Execution Authorized",
+      "type": "boolean"
+    },
+    "created_at": {
+      "title": "Created At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "report_id",
+    "version",
+    "assessment_id",
+    "assessment_sha",
+    "context",
+    "rule_pack",
+    "rule_pack_version",
+    "suggestion_version",
+    "generator_sha",
+    "results",
+    "quality",
+    "suggestions",
+    "created_at"
+  ],
+  "title": "DiagnosticReportManifest",
+  "type": "object"
+}
