@@ -14,7 +14,8 @@
   },
   "source_archive": {
     "name": "CausalOps-0.18.0b1-beta-source.zip",
-    "policy": "在最终候选HEAD以git archive生成；SHA256及完整文件校验放在独立本地发行清单，不在文件内部形成自引用。"
+    "policy": "在最终候选HEAD以git archive生成；SHA256及完整文件校验放在独立本地发行清单，不在文件内部形成自引用。",
+    "line_endings": "按.gitattributes导出Windows.cmd为CRLF；其余内容及受保护冻结文件保持Git声明字节。根PACKAGE_MANIFEST重新生成并核验，排除自身。"
   },
   "distribution": "本轮仅本地交付；未上传PyPI、GitHub附件或Release。运行wheel不包含完整教程，文档随源码压缩包。",
   "readme_wheel_metadata": "与最终候选README逐字核对；随后只追加发行收据，不修改运行包或README。"

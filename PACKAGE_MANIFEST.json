@@ -26,8 +26,8 @@
   },
   {
     "file": "README.md",
-    "bytes": 8553,
-    "sha256": "aa9e6a8a9932db47ad336888e48eaa5cdf4aaa99f04cfbd968068f1dceb10db7"
+    "bytes": 10002,
+    "sha256": "2df63fcb02ca6e85a263790466c826ad40d8b26c79931facfd5cf350cd06985b"
   },
   {
     "file": "SECURITY.md",
@@ -66,8 +66,8 @@
   },
   {
     "file": "docs/HISTORY.md",
-    "bytes": 4811,
-    "sha256": "e470807aa3e974219c2aa5219225c7e1d62765d1378226a3521625e49f0657c4"
+    "bytes": 5195,
+    "sha256": "9cd70210722103f77c84ec7f4ec56a5f09f645a6687e029cf60b13ba7cb182ab"
   },
   {
     "file": "docs/IMPLEMENTATION_0.7.0.md",
@@ -101,8 +101,8 @@
   },
   {
     "file": "docs/README.md",
-    "bytes": 1218,
-    "sha256": "b0fa2a26413cdd9d4e03169054937ebdecfae6157ff86faaac2579ddebf0f9d2"
+    "bytes": 1496,
+    "sha256": "8d7e2e2c93e01263de25f87b8bae8ae6be18391753907960326e4cac6d252186"
   },
   {
     "file": "docs/REFERENCE_PROJECT_REVIEW.md",
@@ -546,13 +546,13 @@
   },
   {
     "file": "docs/current/ARCHITECTURE.md",
-    "bytes": 13531,
-    "sha256": "3dcf03a3b960ce949780d49c57aae7ea86275d75c7cae216bf3a950d02ce3f1d"
+    "bytes": 14020,
+    "sha256": "bf4c61c606564dc1912c61f8faa1b055c11eb142d89c25bae33a56233a924f1d"
   },
   {
     "file": "docs/current/AUTOMATION_GUIDE.md",
-    "bytes": 3429,
-    "sha256": "252a0131f9c6873b2e5366be7bbe7ac68bd3d99aee48294ef4430057f72d088d"
+    "bytes": 3972,
+    "sha256": "66820729323fe70f9b9d5ab716cff3d76668455817d5b9aedd102027e8ccb212"
   },
   {
     "file": "docs/current/COMPLETE_MANUAL.html",
@@ -561,13 +561,18 @@
   },
   {
     "file": "docs/current/COMPLETE_MANUAL.md",
-    "bytes": 53971,
-    "sha256": "839aebe68ae2d32448837662528e2f196e7d7ee29396ebf89e1af5f5c83b221f"
+    "bytes": 54060,
+    "sha256": "3ea7138b282510b901e412cab30406987f81cf9eeea1eaf6ae76a7297b079bed"
   },
   {
     "file": "docs/current/DESIGN_REVIEW.md",
     "bytes": 1789,
     "sha256": "2171f115dc3515f6a7f45f7f48b9fa8aeb73f20ef3e8261e011a0950247c94fc"
+  },
+  {
+    "file": "docs/current/DIAGNOSTICS_GUIDE.md",
+    "bytes": 5463,
+    "sha256": "f95ad1971d0f64890bb1b82e793e2bb71b48aff146b77c53edb889d6e779c1d1"
   },
   {
     "file": "docs/current/FIGURES.md",
@@ -576,8 +581,8 @@
   },
   {
     "file": "docs/current/INSTALLATION.md",
-    "bytes": 7878,
-    "sha256": "948275179bc4126812cfebf662a59b3fcd3a0a696177f103ab6559f68f31f639"
+    "bytes": 8411,
+    "sha256": "ef43ffbd7d3ff282a3c89fa0d70767d4c9f497d953e23e126a069248947bc737"
   },
   {
     "file": "docs/current/PHASE2_ACCEPTANCE.md",
@@ -596,8 +601,8 @@
   },
   {
     "file": "docs/current/PUBLIC_TUTORIAL.md",
-    "bytes": 4335,
-    "sha256": "8a8e57b2af8023cb51e5210312b0ea99af3ff6faded3bc18d8cffe0c7571477f"
+    "bytes": 4673,
+    "sha256": "624b0fa1fca83d001744d86545e3a65f05307c228d1e02fabbe6c06a0d0d9e3a"
   },
   {
     "file": "docs/current/REAL_DATA_EXPERIENCE.md",
@@ -626,8 +631,8 @@
   },
   {
     "file": "docs/current/USER_GUIDE.md",
-    "bytes": 6458,
-    "sha256": "f5dc2c0268a29c25d39e91978788dd2d91c36e874c305929f265458043a1fba4"
+    "bytes": 6524,
+    "sha256": "29cfdf730a0e91bf74bc52d24c200e187c827e37120d01dd9cf8a0aa59ad38a6"
   },
   {
     "file": "docs/current/VALIDATION.md",
@@ -1415,6 +1420,616 @@
     "sha256": "f996108b014659f724d3965d01b4a8e047058af80cdc31f740050406cf34837d"
   },
   {
+    "file": "docs/product/proactive-diagnostics/ACCEPTANCE.md",
+    "bytes": 5971,
+    "sha256": "170f5c263e2e189309ad8490eab2777d1e577cf67228acd68e71b3124c8d7280"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/CONTRACTS.md",
+    "bytes": 8673,
+    "sha256": "fcfb46a5a9c6c4ec0155d90f3972a9d399378df7adde78116f27d1fe96dd7ad3"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/DECISIONS.md",
+    "bytes": 2103,
+    "sha256": "55b6e08ccdab77dcf38ae64c63f45b9e08db227fe2de14b5a38822eea09f2bcb"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/DOCUMENT_CHECKS.json",
+    "bytes": 2582,
+    "sha256": "f3c1fe53a8d95bee6728ac4544db92b840c26a158d2b373d4f08695463c764d5"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/FEASIBILITY.md",
+    "bytes": 11680,
+    "sha256": "ba7b6e6e8af0d61b1dc43073165a24510b95ca62bd101dde2c44e9d66a1f0d2a"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/PRD.md",
+    "bytes": 16096,
+    "sha256": "91de7ebe0cf20608c28a940662d5126e6db56bf87754dd0f82cd40d14e0e8db5"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/README.md",
+    "bytes": 2362,
+    "sha256": "29812435f3c4abfe93b78acdbeec365c47a95bbe4ae54627f189d24b10eab7c2"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/REVIEW_NOTES.md",
+    "bytes": 3659,
+    "sha256": "fa377696aa072d32f65766b0164905f422e02bc6889fcc6cf4ff9a73dae0d5f5"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/RULES.md",
+    "bytes": 9501,
+    "sha256": "477ec1bad8f570b6210ac1bbff19f7763554467d37a9420fa122d5a373f4890e"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/SOURCE_AUDIT.json",
+    "bytes": 29485,
+    "sha256": "ecb33049463d7a9130dcaea4097a3af9fac7e599c7666cb6bcff49604af07f00"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/SOURCE_MAP.md",
+    "bytes": 4540,
+    "sha256": "dae6bf8e34f27307f7a7917fd548faed0513f10c3c5386b4d6b99d937ee6e3d5"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/STAGE_ONE.md",
+    "bytes": 15811,
+    "sha256": "d992fd21c765208c6f8522fe91e9b1b191a5653b46599787fa22aa3c871689d3"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/STAGE_THREE.md",
+    "bytes": 20449,
+    "sha256": "1dc0f93050f0d64934342ca90451553178eef53501c8d0d93676f8f3420fbf91"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/STAGE_TWO.md",
+    "bytes": 9580,
+    "sha256": "a66e1fe469d85c4fec019db1e29bc4ee926969b26f423393f1648b8592e40972"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/diagrams/evidence-flow.svg",
+    "bytes": 2822,
+    "sha256": "92719cc530b672365bf94b655523f21cab13d18cd7e9b4f978b7687dc194f2a1"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/diagrams/flow.mmd",
+    "bytes": 644,
+    "sha256": "33c6e0f20c654dc909edccf3cde330780ef266753328c9ca583825e6a0c298de"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/diagrams/lifecycle.mmd",
+    "bytes": 606,
+    "sha256": "eccb7008fc0d5ca88520db447107a99d4f83b5eff5c8897b9973b3b9cf2991c7"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/examples/A.json",
+    "bytes": 3910,
+    "sha256": "ea02e3744a900fb09ad2fab13a41a98a9e6d1a12830e3e130266f367c5742860"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/examples/B.json",
+    "bytes": 3308,
+    "sha256": "cad4fac714434db1c748da27f605168feda1dbd6a71b3d1656652b8ef9ee3aa0"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/examples/C.json",
+    "bytes": 3961,
+    "sha256": "c34b19904479cbfae35c13245f016ddfdc06771b204fdddd784937b9a039e987"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/examples/README.md",
+    "bytes": 329,
+    "sha256": "c4f4ee3d0080b5d5d1860dfbeafe5e721d49c7288841523eda3ff6e026648baa"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/examples/action-B.json",
+    "bytes": 1329,
+    "sha256": "7f72dcc168282f7adcfc6641c933292b2c9479dde3abbcb647c1725d15b96093"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/examples/assessment-A.json",
+    "bytes": 3007,
+    "sha256": "5920ea9d09ef1750cdf535909e81e0eec5294831a5bbc9830b096947de4361ac"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/examples/decision-B.json",
+    "bytes": 1307,
+    "sha256": "423b53e0f3861cb9ec60a33a5d65dc48a4de46bc439f3fd7d4cbb518101528d9"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/previews/A-证据完整.png",
+    "bytes": 152255,
+    "sha256": "16872a8f20229f00fce8fb2818fac5a360729c4582608824bbf0d1b79d219ae6"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/previews/B-设计依据不足.png",
+    "bytes": 140785,
+    "sha256": "686f01c7bfe9c8b29e7f8684f5877ff742bb0e87b355472c09978186e9f775d2"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/previews/C-引用冲突.png",
+    "bytes": 150352,
+    "sha256": "101ae0c54101a6a92a620016ec646431e9767a32638ee7633f1a4d4c631be23f"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/previews/README.md",
+    "bytes": 827,
+    "sha256": "c3fc812e3b4a9060680c16fe0203ad8255b23bef9b3f59237243326e982350c8"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/previews/查看依据.png",
+    "bytes": 155381,
+    "sha256": "2a6a2ccab074f596d9795999b516b17fca2b37cf0df0fecc57628fc1d70f5d23"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/previews/登记补充事项.png",
+    "bytes": 149921,
+    "sha256": "3f0347449415b99cc035501aed15dd46bf1f61c6afc37bec044f3c1ecdedd988"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/previews/窄屏设计.png",
+    "bytes": 128289,
+    "sha256": "f296d4a18f3896deece16debf1b4bc3acbb4be4c1c4b74476305ddb34bc8c6f2"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/previews/证据流设计.png",
+    "bytes": 54203,
+    "sha256": "bcf7761614eef760ce4c0a9260c20e0a1409b076f23cdda7022504147368e777"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/prototypes/index.html",
+    "bytes": 17418,
+    "sha256": "b3013bf2fd484c86dadd31e651fd8a282b87851afd3260a2277f6d40ca39f72f"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/schemas/common.schema.json",
+    "bytes": 10832,
+    "sha256": "eadde8c133388e810a17d5671f23f745ff06e37950584d33d6e08707f5098837"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/schemas/diagnostic-assessment.schema.json",
+    "bytes": 3803,
+    "sha256": "24bfa71d45db4cc60dd591b9d363712d1ff01b3c5c7bc770817e42e93938d69c"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/schemas/diagnostic-finding.schema.json",
+    "bytes": 7011,
+    "sha256": "0bdbdabf763a881ed2745805c6d26b4b8164fa71dab8bd86bcf3fae1059c41ae"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/schemas/research-action.schema.json",
+    "bytes": 3557,
+    "sha256": "382e643322ad6c24b56efd9b3e2fcfcad0fb345410d2bf9cf8d1e38e55978f14"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/schemas/research-decision-event.schema.json",
+    "bytes": 3946,
+    "sha256": "94a065a9ff5d9f1f6e6f6d223a7609169ddf383b163b7f8043f0fdbb354aa2f2"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage1-evidence/A-checks.json",
+    "bytes": 1923,
+    "sha256": "86522a32fdd5ff3f6c33bae995b5f2a13ebef352424466f6ebc1742bea9f2406"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage1-evidence/A-input.json",
+    "bytes": 6982,
+    "sha256": "6d63dffcad70f4c7ab68f7d1d4dd9b44befcb9ea98957badf306af566519d4ff"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage1-evidence/A-output.json",
+    "bytes": 49735,
+    "sha256": "c3973496b67351edb64a79c81c78ca1a1d1dab2de4ce087757df2860ff82bac8"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage1-evidence/B-checks.json",
+    "bytes": 293,
+    "sha256": "84170975b4172487ded0ea699df5615b38da496588568aa1de175c86e6d3a4f4"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage1-evidence/B-input.json",
+    "bytes": 422,
+    "sha256": "d02e8a2bdf9842e9210bf8dc2ceae4c1b35d4116fdb9f4c755ed47c50d73ba78"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage1-evidence/B-output.json",
+    "bytes": 27967,
+    "sha256": "9da357838a2cb4832c003ac508dbba265300080727445ec26bd3cda592ab8517"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage1-evidence/C-content_hash-input.json",
+    "bytes": 182,
+    "sha256": "5db010e215d75e12db25c5edc575b1e8a484ef745ecaf86667d8529a524b8f98"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage1-evidence/C-content_hash-output.json",
+    "bytes": 30856,
+    "sha256": "5b4d5d84f6eb2e350fbb7379506080f40b3ba90b2129f45eddad81999c090db7"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage1-evidence/C-foreign_run-input.json",
+    "bytes": 181,
+    "sha256": "1348dd368d36f1436310fa3ee60fcf3809f8af769afd3977a2a48e5083fd2cd2"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage1-evidence/C-foreign_run-output.json",
+    "bytes": 30856,
+    "sha256": "ac6f3399a0d316eaf1b3b8f4fd9118b1e77747e982d4901b31ba3daddfb98815"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage1-evidence/C-report_metric-input.json",
+    "bytes": 183,
+    "sha256": "85890e4af7fc78975e13740714f45e055465bbdd7cef13b982ce9fea77cd5bd9"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage1-evidence/C-report_metric-output.json",
+    "bytes": 49718,
+    "sha256": "98ac9a4057c41f849d178fd1ee5939d379bbe75330e5ae87583b5c34a2201fd0"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage1-evidence/C-report_window-input.json",
+    "bytes": 183,
+    "sha256": "1540e236c24ff0930f14359f8ad85c057bcd1f9a202de07b95da1a0585fcbd02"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage1-evidence/C-report_window-output.json",
+    "bytes": 49914,
+    "sha256": "a230000713080d1f1e2e0d6b904a45fa4554f6b8075fc4d0c46ca530d34c0aff"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage1-evidence/assessment-v1.1.schema.json",
+    "bytes": 20316,
+    "sha256": "6513d22293fc01a6b166212fa39218d7b4205785bffd6b0188c47a9648e0bf18"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage1-evidence/delivery-checks.json",
+    "bytes": 499,
+    "sha256": "d48e4309d55af1eac202445889c2f1b7c142b57467de35345b45855509814608"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage1-evidence/engineering-results.json",
+    "bytes": 718,
+    "sha256": "4be00208785f1c6fefd90042f3d84be7022c84c42d41d4d9e58ae56992bf2fa9"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage1-evidence/finding-v1.1.schema.json",
+    "bytes": 16268,
+    "sha256": "8cd616dbd2b544b49e8ea7a929becc465d549145bad3c06b333cfe0115a950c1"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage1-evidence/historical-beta-input.json",
+    "bytes": 263,
+    "sha256": "68049fce58cccab5c39b5482b1d3940838ec9c791160e3bf2262ad1027bc1404"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage1-evidence/historical-checks.json",
+    "bytes": 473,
+    "sha256": "a870162c10b66753877bada08f9593271c90d0f2e4ddd1852e388f0a13751380"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage1-evidence/historical-output.json",
+    "bytes": 49735,
+    "sha256": "b615a49bd5bd70a3bc2ab4b9d97a213308e8dfa24d562573d0eefa6c46745531"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage1-evidence/summary.json",
+    "bytes": 1791,
+    "sha256": "350eb5c1f9d98a7ba379b17b5c088831f72549443ec6334e068a0de35c51f68e"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage1-evidence/test-cases.json",
+    "bytes": 220838,
+    "sha256": "e683b41c1fd46f4226a514b818245864c7a98e154764b422ccf8d0d496effaf0"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage1-evidence/test-history.json",
+    "bytes": 1860,
+    "sha256": "ec36d802556cb964b7f26c1a697a204c8e101bf340f46a5eeef4014cbf9cdec1"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage2-evidence/A-checks.json",
+    "bytes": 1362,
+    "sha256": "782c005f21c1c98b5f61f966bd3f8ce0fbfd7f426cbdd6c1cad5433cab9e7412"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage2-evidence/A-report.json",
+    "bytes": 51018,
+    "sha256": "87509f5b109a82e57cbce23faeef8d5c1c8bff2535688f5a3d3bd9fba9ab4fa2"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage2-evidence/B-checks.json",
+    "bytes": 94,
+    "sha256": "22b86202ef0365b5a9b3332645f989a0657199b2767f65be279a40ab0d395345"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage2-evidence/B-draft.json",
+    "bytes": 2044,
+    "sha256": "240285585c06cc99e915a4083c13a0c22040a48d7009ed352938664e0b6f41b6"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage2-evidence/B-report.json",
+    "bytes": 30325,
+    "sha256": "946f2e13e868f2315b6d2c39964c56659393e65fc9d02ccd3074fbb2f279d7b6"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage2-evidence/C-foreign_run-checks.json",
+    "bytes": 726,
+    "sha256": "3e27f4d31b5b1397ce9e25545d0a19dd1eb5305b9ebbe2d1902bb77229917d60"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage2-evidence/C-foreign_run-report.json",
+    "bytes": 31581,
+    "sha256": "de1f409533469c955d046f34ffc38d6421e091e519ecc827e3585b38e44b452c"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage2-evidence/C-hash-checks.json",
+    "bytes": 726,
+    "sha256": "f2241fe90506a9b815a23df3820e89f8b6a9d640614ba872194e2831d9994da6"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage2-evidence/C-hash-report.json",
+    "bytes": 31581,
+    "sha256": "28e6dccc90c70c5c2705ff1eb804e1fb926f2bb9a09bddfd36ecebbacaf7ce89"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage2-evidence/C-metric-checks.json",
+    "bytes": 726,
+    "sha256": "318a82f844e55ef03d01c9bee3cf417bf991de5106b94990b135691c38fe2359"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage2-evidence/C-metric-report.json",
+    "bytes": 55179,
+    "sha256": "6b9161432bf4aa9d698379dbf33710ea31fcf3f497c92d78e3d3d6ad840561bb"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage2-evidence/C-unit-checks.json",
+    "bytes": 726,
+    "sha256": "ac307f10cc9c4a1af33d1e643840855229d536e322767e16d8ea4cd7fb78d85b"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage2-evidence/C-unit-report.json",
+    "bytes": 54970,
+    "sha256": "72225c8b32b50b25719e0d92ad28f9329ec51355eb502be648bca577dfb15752"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage2-evidence/C-window-checks.json",
+    "bytes": 726,
+    "sha256": "72dd890b84e8edd82db7959b3faac028238660ad11612b39403700dee7982ab7"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage2-evidence/C-window-report.json",
+    "bytes": 60822,
+    "sha256": "47e13fe1c760cb4f001fe462e6c73530dd74cdf73116b84c5910550500e1c3fe"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage2-evidence/READING_EXAMPLE.md",
+    "bytes": 1291,
+    "sha256": "57cb60a30f7930718cc80bd9b7232fb51d62434fb622117344b96f26b021cba2"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage2-evidence/draft-authority-checks.json",
+    "bytes": 493,
+    "sha256": "807d34f2425c0d0e8c33a4aad632070c1df7ace7342af6e5890a9314d93a925e"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage2-evidence/engineering-results.json",
+    "bytes": 1124,
+    "sha256": "b97e806a7f35dcf875efa171571bd80279ab0aa2204328d5cde5a45e5a461b0b"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage2-evidence/report-v1.schema.json",
+    "bytes": 26844,
+    "sha256": "274c627f3ec3a01233419608ee1a7460ea173cfdeb8558b87ef77a71a9d5e766"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage2-evidence/request-draft-v1.schema.json",
+    "bytes": 2423,
+    "sha256": "7850c51157e83e3d95caca5401b663bbff18e3bf6caf5f18efa0002726e6486d"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage2-evidence/summary.json",
+    "bytes": 1178,
+    "sha256": "f21f2add2136aadebb9a8d1a6b78d19417a46c30d7dafd3e7c3119a9cfbf77a3"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage2-evidence/test-cases.json",
+    "bytes": 175344,
+    "sha256": "866b9e55aad7156125649ea7e3a8f90ec1adddf976c8515485c1bb839f74afd2"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage2-evidence/test-history.json",
+    "bytes": 978,
+    "sha256": "c898bdeaeafc60518676091e8a58d369a1ca3cc01d54543d1eaeac51853ea49b"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/A-native-evidence.json",
+    "bytes": 13738,
+    "sha256": "234cf576fed7c29b01c4c63220780ca4df2a8c9f17b63f5d93ccce4a7dbc0820"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/FILES.json",
+    "bytes": 5951,
+    "sha256": "279acbc9b3538560d82eaccf7da579d28d61bf8e4d9c99580f960e5f551ba348"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/README.md",
+    "bytes": 2960,
+    "sha256": "7462ff716bd3956166618970d287141defaa1154eb49661b6d4ee94652e6330c"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/browser-attempt-history.json",
+    "bytes": 5648,
+    "sha256": "b4743d992b8c1d6ae501c6b58181c94049eb3909cdb4c883a5dc616abf7d0cb8"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/browser-results.json",
+    "bytes": 24002,
+    "sha256": "a87814b218f0b479021289cc679893fbe2cd03f4418e57acfd12fa0b7f9d5a68"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/engineering-results.json",
+    "bytes": 270526,
+    "sha256": "f2db63ee87f39795af207d6f2807a6ac02f57fef272fe2198021ad16bd3b373a"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/history-and-preservation.json",
+    "bytes": 19520,
+    "sha256": "69eb763d6ccc15ac473ac8b764d8d169cdc7e169357962901ce7de433d406799"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/initial-failure-receipts.json",
+    "bytes": 594,
+    "sha256": "500a54e70090e18bb142290734a67f11cc3822be9c2740e37bec40c9fc2e390f"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/original-workflows.json",
+    "bytes": 44174,
+    "sha256": "2d4c36abd6fde3a7ae97b4d93441a54dc30f45761f5928d9435f58c013deb8bc"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/reports.json",
+    "bytes": 349737,
+    "sha256": "a479ff33d59f364597f93062325643b9e0865ef6d63fa36e0f458198150986dc"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/review-checks.json",
+    "bytes": 4786,
+    "sha256": "fe9b7d370e9bcb9d9f011c5335d6bb984a4e0a1cee19e2f58595a571f7518ffe"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/screenshots/A-original-evidence.png",
+    "bytes": 158834,
+    "sha256": "fe854e59bc5660893617438c00d74ef7bb2a753016047344eb71f07e43468d0f"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/screenshots/A-original-evidence.txt",
+    "bytes": 16533,
+    "sha256": "fde12d4827a573ab568a107fc83d5518187425f3c1fd246595308fa10dff8fb3"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/screenshots/A-quality.png",
+    "bytes": 133892,
+    "sha256": "02ea0c132f2b039381296d00ef4f3840f413af77e2b3254afb7092df4a240229"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/screenshots/A-quality.txt",
+    "bytes": 5431,
+    "sha256": "193bced3cf7631d9448bf2f6766c32cddc92a4797ef4a99f1785985b0d76e1e4"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/screenshots/A-results.png",
+    "bytes": 124474,
+    "sha256": "e92511b6413f8521e90b1d6feb13bd814e08d81e7c42bedaf4fb11c8aaa747a4"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/screenshots/A-results.txt",
+    "bytes": 5405,
+    "sha256": "8e1f1d8aab20841b2c565cdda0e9d8da861ce069fa11228d96ea6b96a1f7e9e5"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/screenshots/A-risk.png",
+    "bytes": 131872,
+    "sha256": "08d8b51e378a24a4c7223b7068bf3ec0fd7a384d29ca3a50f888f1d74576623d"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/screenshots/A-risk.txt",
+    "bytes": 5426,
+    "sha256": "72e016b383fbe65f935aea7c6084d68541d90d3c4823a7ebb4993892379f7d73"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/screenshots/A-suggestions.png",
+    "bytes": 122883,
+    "sha256": "ea6ccbd09bd2f4a53d52ca06475fc8a822406f8414e68b375f37dfd3cf9fb4a2"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/screenshots/A-suggestions.txt",
+    "bytes": 5431,
+    "sha256": "193bced3cf7631d9448bf2f6766c32cddc92a4797ef4a99f1785985b0d76e1e4"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/screenshots/B-draft.png",
+    "bytes": 155131,
+    "sha256": "4ea9f9cb6f59efe1fd7e0f0d185cf15722f881f7f80e4b5306900e23bcdab1e9"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/screenshots/B-draft.txt",
+    "bytes": 6461,
+    "sha256": "45d985a8fe997ed43df9fe22f99d4c2b18e1e52a8623ee46cedec6d0f0ddfcae"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/screenshots/B-preflight.png",
+    "bytes": 116187,
+    "sha256": "b3c6bae7503139e2c65778420bfa6ee704ef367243685fa87c59633a1a7974ce"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/screenshots/B-preflight.txt",
+    "bytes": 5814,
+    "sha256": "4e0848b4d2e2a1bf226ede08260dc05bca272f9269cf5393e07ee8cf0045ddb8"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/screenshots/B-stale-source.png",
+    "bytes": 132281,
+    "sha256": "558205b7d49f6c5116257dda1bb76d13932f1c559619a0802dd652de561d70af"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/screenshots/B-stale-source.txt",
+    "bytes": 6536,
+    "sha256": "9c6e006eadf43cdb4ca829e55ba9ad977b05fe7521a586fa3282a31eb3a8d5b0"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/screenshots/C-foreign-evidence.png",
+    "bytes": 137037,
+    "sha256": "8210cc2116acefec1491eb7761087f8ff7fccfb74e554a5d36fc63aec0373e2c"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/screenshots/C-foreign-evidence.txt",
+    "bytes": 7127,
+    "sha256": "96414f38009b2e7fe88142eecf9b44355cc99c35edcb9730208cddce20e31c09"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/screenshots/C-hash-evidence.png",
+    "bytes": 138287,
+    "sha256": "3af67c9f881e6d32b148ea62b87f8f4500fa34266cdfa24481731484a1376d85"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/screenshots/C-hash-evidence.txt",
+    "bytes": 7127,
+    "sha256": "9c6446e6c19500c810beca52b50c1bd3c2a6473045dbcf30f81a92fbd3ee4e3e"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/screenshots/C-window-risk.png",
+    "bytes": 128504,
+    "sha256": "9a9455eb9706bb7a8f00e6823915043164a1e570cd06c446d0f19c2d2eefaa19"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/screenshots/C-window-risk.txt",
+    "bytes": 7333,
+    "sha256": "a1f079e59158c45a5cd7258ee4004373fab4913b4b3c04714a0227e194cf2333"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/screenshots/history-switch.png",
+    "bytes": 126481,
+    "sha256": "357ddfff370724f2ae43fc39a89f413e835d1774035e9d82dd52b77dc38d66af"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/screenshots/history-switch.txt",
+    "bytes": 5515,
+    "sha256": "83d111c045f81c9de6938a23dd3698cc061b13f4af3fb927431c4c2e7b67dc9e"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/source-and-environment.json",
+    "bytes": 715,
+    "sha256": "c5c26c1ae3408cb9158e2b6348d6b3a376115851100a1202bb084a99de358dfc"
+  },
+  {
+    "file": "docs/product/proactive-diagnostics/stage3-evidence/state-samples.json",
+    "bytes": 443991,
+    "sha256": "fa9927e9661e03eda8de445067fd3b17c23f637eaafed0d56b5ce21da2249e4e"
+  },
+  {
     "file": "docs/releases/automation-v2-beta/ACCEPTANCE.md",
     "bytes": 5940,
     "sha256": "1ca0676c5af642dd2c82ab53f24bb82a813be6915c59d8939706cb333c2e1a07"
@@ -1493,6 +2108,106 @@
     "file": "docs/releases/automation-v2-beta/diagrams/fixed-chain.svg",
     "bytes": 2680,
     "sha256": "4cde2892c505893c51717dfe4ace0345af27ae0652baec0ed90ac5bee10fece2"
+  },
+  {
+    "file": "docs/releases/proactive-diagnostics-beta/ACCEPTANCE.md",
+    "bytes": 9367,
+    "sha256": "a8cf881d554f2c0a1e97ebb5750737ec3214f50d7a6f407378e5303bea78dc23"
+  },
+  {
+    "file": "docs/releases/proactive-diagnostics-beta/ARTIFACTS.json",
+    "bytes": 1116,
+    "sha256": "e0b115f2acd63b061acb293d0e77ac93ab02bd67f5aebfee178711216336d2f5"
+  },
+  {
+    "file": "docs/releases/proactive-diagnostics-beta/EVIDENCE.json",
+    "bytes": 38456,
+    "sha256": "d236d363871096ed16bae7f69d7fcea0755b29dd86fabd9b7e85e5556b6a41ca"
+  },
+  {
+    "file": "docs/releases/proactive-diagnostics-beta/LIMITATIONS.md",
+    "bytes": 1996,
+    "sha256": "eefeae9f572d14a9722be676e86be4df371a9d59ddb61af8b40a5ec3e3c4f4ea"
+  },
+  {
+    "file": "docs/releases/proactive-diagnostics-beta/MAIN_STRATEGY.md",
+    "bytes": 1420,
+    "sha256": "13528d56fd100379b1f52e6294db2d7f65da174ebfd1e83038a68776c8efc81a"
+  },
+  {
+    "file": "docs/releases/proactive-diagnostics-beta/README.md",
+    "bytes": 953,
+    "sha256": "151ae6d526b610f35cabd1e6e39cef35aa5ffd6e17e96f688f898e94d892c8fa"
+  },
+  {
+    "file": "docs/releases/proactive-diagnostics-beta/SECURITY_CHECK.json",
+    "bytes": 3704,
+    "sha256": "01e69d3e37e05ca9dd82f700b35c0311249672ed6ca54c3ce49793886b760530"
+  },
+  {
+    "file": "docs/releases/proactive-diagnostics-beta/assets/PROVENANCE.json",
+    "bytes": 3429,
+    "sha256": "01453b770ac269b8e895bddd34e8f0ada433dd600d0902707311aad0db80caaa"
+  },
+  {
+    "file": "docs/releases/proactive-diagnostics-beta/assets/automation-report.png",
+    "bytes": 149244,
+    "sha256": "ca42474bedb31c56e3ba5608dacbc53eef2045819e6ee416754202732b735c7e"
+  },
+  {
+    "file": "docs/releases/proactive-diagnostics-beta/assets/automation-review.png",
+    "bytes": 200030,
+    "sha256": "f6469870cf43cd7564ae9d20679ceb92906e163dd838da4997bbd284b8d1125e"
+  },
+  {
+    "file": "docs/releases/proactive-diagnostics-beta/assets/conflict-window.png",
+    "bytes": 128454,
+    "sha256": "462c8d421437077957c6395e6c347c3e747d56b5b9efaa82c55e2f268266003b"
+  },
+  {
+    "file": "docs/releases/proactive-diagnostics-beta/assets/diagnostic-overview.png",
+    "bytes": 132121,
+    "sha256": "d80b41fffe7826f535c67d45ad4504a7b44fc92773deb7710056173c20058119"
+  },
+  {
+    "file": "docs/releases/proactive-diagnostics-beta/assets/diagnostic-quality.png",
+    "bytes": 133733,
+    "sha256": "a66ff727ceca1e3b200e432cfe7e2fb7fdc1fea2e63e4c972954b6625136752c"
+  },
+  {
+    "file": "docs/releases/proactive-diagnostics-beta/assets/diagnostic-results.png",
+    "bytes": 124536,
+    "sha256": "53d37a2797085a714cd108000f95ce91e2d48cf1cbe1a64556b61e576b79fafb"
+  },
+  {
+    "file": "docs/releases/proactive-diagnostics-beta/assets/diagnostic-suggestions.png",
+    "bytes": 122942,
+    "sha256": "75369bc32d174e5c0187e630796dcda16f776179abc9ab642085969368c2e44f"
+  },
+  {
+    "file": "docs/releases/proactive-diagnostics-beta/assets/home.png",
+    "bytes": 160203,
+    "sha256": "c8807c6693302bdc8dbdbb8d7f1a3e50bf34171c78efd81066c501f34caac0be"
+  },
+  {
+    "file": "docs/releases/proactive-diagnostics-beta/assets/native-evidence.png",
+    "bytes": 158242,
+    "sha256": "e645181ecebcbdbcf10bfd77aa89e1eeba1dfe2485224f97a4f07232612b5a9d"
+  },
+  {
+    "file": "docs/releases/proactive-diagnostics-beta/assets/preflight-unknown.png",
+    "bytes": 116396,
+    "sha256": "8c4a2b5ec041b81818dedd8e317fe1ac2a7b4931c892fd20e9e0b1888b895415"
+  },
+  {
+    "file": "docs/releases/proactive-diagnostics-beta/assets/request-draft.png",
+    "bytes": 156016,
+    "sha256": "c1353ffb427ac11e488e8d44ad324605bacef6065a22b48016e7cc21ee4ffd3a"
+  },
+  {
+    "file": "docs/releases/proactive-diagnostics-beta/assets/stale-source.png",
+    "bytes": 132713,
+    "sha256": "b22bf108d59a98ddb82a490a08a19e990537311aed6a6ab1cd9754519bad1242"
   },
   {
     "file": "docs/stage/case.png",
@@ -1667,7 +2382,7 @@
   {
     "file": "pyproject.toml",
     "bytes": 1393,
-    "sha256": "77a56eba862a2d6845b8ba1817015ab539cb2dbe2e52fe254a2dbb085ffaa081"
+    "sha256": "11fb7a84641058ef1589d10eb551ba4fde558c00b32630aa52e23e92a06fa5b7"
   },
   {
     "file": "requirements-runtime-win-py311.txt",
@@ -1681,8 +2396,8 @@
   },
   {
     "file": "scripts/automation_v2_browser.cjs",
-    "bytes": 18577,
-    "sha256": "ce76519ce8369165a265c3ad29b05ed93f33d245b5c554460ecc11c0a8b40bd3"
+    "bytes": 20110,
+    "sha256": "bd3eefcdfb50afaf6b5ae67b6cea85803e43248390020b8c443029ba75756a5f"
   },
   {
     "file": "scripts/automation_v2_history_browser.cjs",
@@ -1698,6 +2413,26 @@
     "file": "scripts/configure_readonly_hosts.py",
     "bytes": 2358,
     "sha256": "822a57e8fa9da2ec31b08306d937edd95a8d0c9e38e0e4e21a750c8dbf98fb86"
+  },
+  {
+    "file": "scripts/diagnostics_stage1_acceptance.py",
+    "bytes": 8435,
+    "sha256": "f5f8d0abd4419181f007f88b436de56f20b4ecce1f873e7dab282775fa59ef25"
+  },
+  {
+    "file": "scripts/diagnostics_stage2_acceptance.py",
+    "bytes": 6514,
+    "sha256": "2050b9a84a1055dffe4ab331ab54e54cd38f7c722ea87b96d6d71fc7fcaa89d8"
+  },
+  {
+    "file": "scripts/diagnostics_stage3_browser.cjs",
+    "bytes": 17406,
+    "sha256": "c966fc01518ccbca31cf038964b1feb38eec03bf287d2a9d04d79ea36887ab5a"
+  },
+  {
+    "file": "scripts/diagnostics_stage3_fixture.py",
+    "bytes": 5933,
+    "sha256": "c903dfca474777ecd054accee5c36f16190ee8de560b80443e89a3ec2a5edfd3"
   },
   {
     "file": "scripts/download_hillstrom_benchmark.py",
@@ -2002,7 +2737,7 @@
   {
     "file": "src/causalops/__init__.py",
     "bytes": 66,
-    "sha256": "2b6e44d12a9f33bee3294e8aac24798202cb5aea7f37f740e52e81521df49259"
+    "sha256": "d0a90068f340a1eed412dab142503df589f6c864fd900fb96da10fe68e63180a"
   },
   {
     "file": "src/causalops/advanced/__init__.py",
@@ -2088,6 +2823,61 @@
     "file": "src/causalops/application/data_contracts.py",
     "bytes": 10118,
     "sha256": "cef780b80a026e1504fcfac3cdb2b5c5f8c4b00846c2062145a4ab3167f0de46"
+  },
+  {
+    "file": "src/causalops/application/diagnostics/__init__.py",
+    "bytes": 151,
+    "sha256": "c3fc4fc11240bfdaf5ffe8d8aab1d66d7c66786bb6374d4f0534aa390c75b4e5"
+  },
+  {
+    "file": "src/causalops/application/diagnostics/contracts.py",
+    "bytes": 6926,
+    "sha256": "3389631d190a4f19a96d43686581e80ae772e407a20d19a1e5117e85dc6a2079"
+  },
+  {
+    "file": "src/causalops/application/diagnostics/evidence.py",
+    "bytes": 14624,
+    "sha256": "22e530ea50d8be0be9e50c4ff01fe0009d27eedf821b1c3e611c472222514f85"
+  },
+  {
+    "file": "src/causalops/application/diagnostics/report_contracts.py",
+    "bytes": 5311,
+    "sha256": "faab5fad94482cf3db2cfd9ad5bac834bf19eb8e57eb325cf7f6701e5aabbfa3"
+  },
+  {
+    "file": "src/causalops/application/diagnostics/report_repository.py",
+    "bytes": 4404,
+    "sha256": "46cadf76d8b3d8418b765f88b48d1faa510130a7ecd510167e0a7b75bdf0d026"
+  },
+  {
+    "file": "src/causalops/application/diagnostics/reports.py",
+    "bytes": 8603,
+    "sha256": "baa13dabc7f410c438568d3e958a63d3641b3186c5a9a99cf715e25340e5c200"
+  },
+  {
+    "file": "src/causalops/application/diagnostics/repository.py",
+    "bytes": 4446,
+    "sha256": "458451f01727bfbe7333a76657f0d6080b9e87d5a441da1642f8d4b705251362"
+  },
+  {
+    "file": "src/causalops/application/diagnostics/rules.py",
+    "bytes": 11774,
+    "sha256": "8847cf3b5d68e9fb2659009c23fe4d9f6f64fb431988ff0f87e50d7b2c1a0063"
+  },
+  {
+    "file": "src/causalops/application/diagnostics/service.py",
+    "bytes": 6946,
+    "sha256": "2f14584757d52720c5187c509fed88f50d0f6cb420ddbd5ec9158c5c1ee07fab"
+  },
+  {
+    "file": "src/causalops/application/diagnostics/suggestions.py",
+    "bytes": 2881,
+    "sha256": "92164fc83ec2bda7a96c9fec0481f7efb0aec43bb86970f7ef30a9a96ccaf448"
+  },
+  {
+    "file": "src/causalops/application/diagnostics/workbench.py",
+    "bytes": 5668,
+    "sha256": "ca14e996b058fc26db8b89c9a59f60f6695a2d587c9d5afbcab07cd1db6ebee5"
   },
   {
     "file": "src/causalops/application/guided_intake.py",
@@ -2761,13 +3551,13 @@
   },
   {
     "file": "src/causalops/ui/assistant_app.py",
-    "bytes": 43631,
-    "sha256": "5162e5b573079da195868aee36f28e03c641dca1f7e5da2c79af6e5677c99e6c"
+    "bytes": 43820,
+    "sha256": "71b6d6050d124bf810bd673baa3c286d68952cb0a347a3f9c69e100f771f6a01"
   },
   {
     "file": "src/causalops/ui/automation_app.py",
-    "bytes": 13399,
-    "sha256": "583173984e3e06d6fe24e5aeb574ddadc3f08c5f52d25982447984e3840382a8"
+    "bytes": 13795,
+    "sha256": "3f902b85020920a2d862be4979dae98e3284420be8bb3006de251d9f0e9920b0"
   },
   {
     "file": "src/causalops/ui/contracts_editor.py",
@@ -2778,6 +3568,11 @@
     "file": "src/causalops/ui/controller.py",
     "bytes": 6145,
     "sha256": "49c9d6d9d1b9e9d798cc14c649732591f8a9094a7b7b3d79a587764849fb9d1c"
+  },
+  {
+    "file": "src/causalops/ui/diagnostics_app.py",
+    "bytes": 21112,
+    "sha256": "0db0047d734f0030908cef38cc276004fb6d8f329e130b0b6609ff6d8b7afce7"
   },
   {
     "file": "src/causalops/ui/exploration_app.py",
@@ -2851,8 +3646,8 @@
   },
   {
     "file": "src/causalops/ui/showcase_support.py",
-    "bytes": 6202,
-    "sha256": "0d151b7a0c8d9af51292a4798f55d75131501c3ed5e22f750966d9fb0107c33c"
+    "bytes": 6292,
+    "sha256": "3185ebcc6b50d26a4b9a964f0194edc1356fb20e3ecebfa34c488dc6def2581d"
   },
   {
     "file": "src/causalops/ui/showcase_widgets.py",
@@ -2881,8 +3676,8 @@
   },
   {
     "file": "src/causalops/ui/workbench.py",
-    "bytes": 24598,
-    "sha256": "1d7eec7f2dcca3d2096bd1d17fae7ee614aefc8f13a67c7299ebefa7f9fb5367"
+    "bytes": 24841,
+    "sha256": "5cb9fa773897432ffae75d17d5e81758a029ca68f7fe1ccb89a519762236bdce"
   },
   {
     "file": "src/causalops/visualization.py",
@@ -2926,8 +3721,8 @@
   },
   {
     "file": "tests/test_beta_automation_release.py",
-    "bytes": 1512,
-    "sha256": "4a71a7ff599fe825feb23ed564ddc33434ea1e5eec62bd3f206e3711fd471014"
+    "bytes": 1513,
+    "sha256": "99a2ea7b8e905c57c91327326470a62b4a7d5cf1aa825fb92cfd7a443db66c5e"
   },
   {
     "file": "tests/test_boundaries_v051.py",
@@ -2973,6 +3768,21 @@
     "file": "tests/test_design_review.py",
     "bytes": 2364,
     "sha256": "cd61d2a8d30c30a38a16202c73d1b8e6269f56b891ed4e62ce065a0ee5b852c8"
+  },
+  {
+    "file": "tests/test_diagnostics_stage1.py",
+    "bytes": 17783,
+    "sha256": "d0f4b3557bbb89ea51f5ad6a968f7ec6fd69a52ef0a6ab379643777a2694bfc1"
+  },
+  {
+    "file": "tests/test_diagnostics_stage2.py",
+    "bytes": 10712,
+    "sha256": "773454f6fc7213db284a23544ecf477175000722347c1946a9834d9d97aee8db"
+  },
+  {
+    "file": "tests/test_diagnostics_stage3_ui.py",
+    "bytes": 9873,
+    "sha256": "c99acb22bb9bb3c5fab56fca8fdd0c27a54ade26b11018598fe591920f993aa4"
   },
   {
     "file": "tests/test_did_diagnostics.py",
