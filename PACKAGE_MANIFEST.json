@@ -26,8 +26,8 @@
   },
   {
     "file": "README.md",
-    "bytes": 10002,
-    "sha256": "2df63fcb02ca6e85a263790466c826ad40d8b26c79931facfd5cf350cd06985b"
+    "bytes": 11336,
+    "sha256": "e872b69f89ac1f39ace9836d0d7229e7a2d8153ec4020d40218c4212d843c80d"
   },
   {
     "file": "SECURITY.md",
@@ -101,8 +101,8 @@
   },
   {
     "file": "docs/README.md",
-    "bytes": 1496,
-    "sha256": "8d7e2e2c93e01263de25f87b8bae8ae6be18391753907960326e4cac6d252186"
+    "bytes": 1808,
+    "sha256": "2ed8562e826c29c21aa44eaeb995b19d3840c8162e0f31d05c26e665bf42e103"
   },
   {
     "file": "docs/REFERENCE_PROJECT_REVIEW.md",
@@ -546,8 +546,8 @@
   },
   {
     "file": "docs/current/ARCHITECTURE.md",
-    "bytes": 14020,
-    "sha256": "bf4c61c606564dc1912c61f8faa1b055c11eb142d89c25bae33a56233a924f1d"
+    "bytes": 14534,
+    "sha256": "5ba2462c8bd5ebf04a18d82b11cefcf7f767db822c20240aaf5eb53859573292"
   },
   {
     "file": "docs/current/AUTOMATION_GUIDE.md",
@@ -563,6 +563,11 @@
     "file": "docs/current/COMPLETE_MANUAL.md",
     "bytes": 54060,
     "sha256": "3ea7138b282510b901e412cab30406987f81cf9eeea1eaf6ae76a7297b079bed"
+  },
+  {
+    "file": "docs/current/DECISION_MEMORY_GUIDE.md",
+    "bytes": 5171,
+    "sha256": "d7037bbc543548f5af7d12b181fbce1097304439d122dc64d66efbe4e9862643"
   },
   {
     "file": "docs/current/DESIGN_REVIEW.md",
@@ -581,8 +586,8 @@
   },
   {
     "file": "docs/current/INSTALLATION.md",
-    "bytes": 8411,
-    "sha256": "ef43ffbd7d3ff282a3c89fa0d70767d4c9f497d953e23e126a069248947bc737"
+    "bytes": 8663,
+    "sha256": "ca6d55a7123bac3c37780873fa8da1375da40e559fab2b598fd51665f3a1675b"
   },
   {
     "file": "docs/current/PHASE2_ACCEPTANCE.md",
@@ -2210,6 +2215,76 @@
     "sha256": "b22bf108d59a98ddb82a490a08a19e990537311aed6a6ab1cd9754519bad1242"
   },
   {
+    "file": "docs/releases/research-decision-memory-beta/ACCEPTANCE.md",
+    "bytes": 5019,
+    "sha256": "db8ea7c04002ac58823d1004cd5edd489db157b463dba00e2a0d9dee66542781"
+  },
+  {
+    "file": "docs/releases/research-decision-memory-beta/ARTIFACTS.json",
+    "bytes": 689,
+    "sha256": "d8bf5b4106fe8b654d128b06a64b76b431d39722b7e0f90318c4295a031bae19"
+  },
+  {
+    "file": "docs/releases/research-decision-memory-beta/CHANGELOG.md",
+    "bytes": 876,
+    "sha256": "a6b5c145c60a1ce6e3898c7d23f13bdae6d11f4938646bc5cd5f3145bf916bf0"
+  },
+  {
+    "file": "docs/releases/research-decision-memory-beta/EVIDENCE.json",
+    "bytes": 35130,
+    "sha256": "04e430c41706ac310010d90c40e246857caa31c3cf18c95d5d2426078a1b1f85"
+  },
+  {
+    "file": "docs/releases/research-decision-memory-beta/LIMITATIONS.md",
+    "bytes": 1565,
+    "sha256": "427a04f6f3bf1f0b8addc7f0a912e89c3d97b8db074ee24b971d50ee0da619ec"
+  },
+  {
+    "file": "docs/releases/research-decision-memory-beta/SECURITY_CHECK.json",
+    "bytes": 4107,
+    "sha256": "6ee4ee79e098678cfb69e43da6ff66062f0224829eca6c3461cfb65dc9c23133"
+  },
+  {
+    "file": "docs/releases/research-decision-memory-beta/assets/PROVENANCE.json",
+    "bytes": 1755,
+    "sha256": "19580880d91598210a50f0354f0ca42d5d94ba461f03f038ca4d4869b92cd9f7"
+  },
+  {
+    "file": "docs/releases/research-decision-memory-beta/assets/append-revision.png",
+    "bytes": 162833,
+    "sha256": "a1a40ee3efcf01d0fe6a6af7a36a0a83639c4e36bfa76cc5861c492fe5000512"
+  },
+  {
+    "file": "docs/releases/research-decision-memory-beta/assets/changed-evidence.png",
+    "bytes": 159891,
+    "sha256": "03c2a367314a5f85b55c64cba4df05d9b24d613d44a9941ecfc2390bff5caf18"
+  },
+  {
+    "file": "docs/releases/research-decision-memory-beta/assets/cross-task-rejected.png",
+    "bytes": 93519,
+    "sha256": "25aff3d8b3c21f2c1196fdfd9cb3bd7dcc58fb422c0aedf2fe01c4e478bff651"
+  },
+  {
+    "file": "docs/releases/research-decision-memory-beta/assets/home.png",
+    "bytes": 160155,
+    "sha256": "6f979cad382da900ef1a938858e8b61066f6775f974e2692b1fb0aabc65c03e4"
+  },
+  {
+    "file": "docs/releases/research-decision-memory-beta/assets/record-and-refresh.png",
+    "bytes": 157651,
+    "sha256": "cccf299e7015fb4b6b8583e983dd5b96445a006048ab7f698906bb7882d0c7f6"
+  },
+  {
+    "file": "docs/releases/research-decision-memory-beta/assets/same-problem.png",
+    "bytes": 164622,
+    "sha256": "06524042b2fd67a076826ab8525a6a18bb992e934d36d619aabc2b9f1a38dbed"
+  },
+  {
+    "file": "docs/releases/research-decision-memory-beta/assets/stale-source.png",
+    "bytes": 133895,
+    "sha256": "fc84b733ff4999fdc33112d62a60a944224d125cb40bddf46aac9d9e9595f72d"
+  },
+  {
     "file": "docs/stage/case.png",
     "bytes": 118346,
     "sha256": "5f68632314844a91c69ff88b4e38acccadd647e61d1b02786cb8facf6801ee17"
@@ -2382,7 +2457,7 @@
   {
     "file": "pyproject.toml",
     "bytes": 1393,
-    "sha256": "11fb7a84641058ef1589d10eb551ba4fde558c00b32630aa52e23e92a06fa5b7"
+    "sha256": "48746ab98320204ac113c521973e3e172dad286954aad769908f4e5acc8ecd77"
   },
   {
     "file": "requirements-runtime-win-py311.txt",
@@ -2413,6 +2488,16 @@
     "file": "scripts/configure_readonly_hosts.py",
     "bytes": 2358,
     "sha256": "822a57e8fa9da2ec31b08306d937edd95a8d0c9e38e0e4e21a750c8dbf98fb86"
+  },
+  {
+    "file": "scripts/decision_memory_browser.cjs",
+    "bytes": 11847,
+    "sha256": "489c848b660bbbbc9e78ab1e7eab363fc6c071a59d80ee1dc68d0e7feee9b31c"
+  },
+  {
+    "file": "scripts/decision_memory_fixture.py",
+    "bytes": 5883,
+    "sha256": "a20163deef1ed1677032151b06d008d8b87195236a758375f6a2a2392726c46b"
   },
   {
     "file": "scripts/diagnostics_stage1_acceptance.py",
@@ -2737,7 +2822,7 @@
   {
     "file": "src/causalops/__init__.py",
     "bytes": 66,
-    "sha256": "d0a90068f340a1eed412dab142503df589f6c864fd900fb96da10fe68e63180a"
+    "sha256": "257c100e82532c8ffd95201a821695cfdb601975ab0352c47eb5c34da0700f1a"
   },
   {
     "file": "src/causalops/advanced/__init__.py",
@@ -2833,6 +2918,16 @@
     "file": "src/causalops/application/diagnostics/contracts.py",
     "bytes": 6926,
     "sha256": "3389631d190a4f19a96d43686581e80ae772e407a20d19a1e5117e85dc6a2079"
+  },
+  {
+    "file": "src/causalops/application/diagnostics/decision_contracts.py",
+    "bytes": 2536,
+    "sha256": "fc72fe4a19d4f77c8e225cdaa6def9fa5af83d512a23d3200c6a4416a415cf0b"
+  },
+  {
+    "file": "src/causalops/application/diagnostics/decisions.py",
+    "bytes": 15473,
+    "sha256": "0ade6a2b56d7633ba39af6e9e7dc002b8238c8a2d1f21c22673672ba7c1e7bd1"
   },
   {
     "file": "src/causalops/application/diagnostics/evidence.py",
@@ -3570,9 +3665,14 @@
     "sha256": "49c9d6d9d1b9e9d798cc14c649732591f8a9094a7b7b3d79a587764849fb9d1c"
   },
   {
+    "file": "src/causalops/ui/decision_memory.py",
+    "bytes": 8084,
+    "sha256": "54c8a02b9b0fe5929607e68205396464beffc08d980651522e224b22e1fe6e88"
+  },
+  {
     "file": "src/causalops/ui/diagnostics_app.py",
-    "bytes": 21112,
-    "sha256": "0db0047d734f0030908cef38cc276004fb6d8f329e130b0b6609ff6d8b7afce7"
+    "bytes": 21227,
+    "sha256": "e19a77b054d3ef8a69f16cc2047efb5a811908bf8a6c0390046ea439440c3404"
   },
   {
     "file": "src/causalops/ui/exploration_app.py",
@@ -3988,6 +4088,16 @@
     "file": "tests/test_recovery_v0151.py",
     "bytes": 4124,
     "sha256": "8753475aaa49f42f1d0176bd2af21ccfc1f08a1a4489ae66dd3545e95901af78"
+  },
+  {
+    "file": "tests/test_research_decisions.py",
+    "bytes": 11950,
+    "sha256": "6a97ecbcd4a508df3a24dfd9011a44e50bccac68f4d72889a4da46a7e34a3e9c"
+  },
+  {
+    "file": "tests/test_research_decisions_ui.py",
+    "bytes": 3651,
+    "sha256": "8ee1044db12cafa26f9043b6b3fe9e20fac93eb20bdba428a74de5b8c90b6bf9"
   },
   {
     "file": "tests/test_research_quality_v016.py",

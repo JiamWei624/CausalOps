@@ -102,5 +102,11 @@
     "模式扫描不能证明不存在所有类型敏感信息。",
     "完整本地历史保留；本轮不公开开发分支或标签。",
     "当前status=review来自人工核实的测试标识／哈希数字形态，未关闭或放宽扫描器。"
-  ]
+  ],
+  "wheel_final": {
+    "filename": "causalops_agent-0.19.0b1-py3-none-any.whl",
+    "sha256": "f0d0a57bec5f2abcee72582904d80aa244c9cd060e1878f77caa2982420be350",
+    "application_resources_verified": 193,
+    "findings": []
+  }
 }

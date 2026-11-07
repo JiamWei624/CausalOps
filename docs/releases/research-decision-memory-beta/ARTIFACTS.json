@@ -1,0 +1,16 @@
+{
+  "version": "0.19.0b1",
+  "application_source_sha": "60cd6d1f2114f7f32903ddc5a3b78947ba4cce5cc31965077d9ed794f077fdf8",
+  "wheel": {
+    "filename": "causalops_agent-0.19.0b1-py3-none-any.whl",
+    "bytes": 1799825,
+    "sha256": "f0d0a57bec5f2abcee72582904d80aa244c9cd060e1878f77caa2982420be350"
+  },
+  "installed_again": true,
+  "pip_check": "passed",
+  "application_resource_byte_match": 193,
+  "README_matches_final_source": true,
+  "source_archive": "最终精确提交、源码ZIP和完整SHA256清单在本地发行目录交付，避免本文件与其所在提交自身哈希循环。",
+  "not_a_full_offline_dependency_bundle": true,
+  "not_uploaded_to_PyPI_or_Release": true
+}

@@ -2,7 +2,7 @@
 
 > 本候选新增受限Hillstrom五步工作台，见[自动化教程](AUTOMATION_GUIDE.md)。旧版单次流程继续保留；新增[显式诊断与需求草案教程](DIAGNOSTICS_GUIDE.md)。安装后请核对软件包0.19.0b1与启动地址构建指纹。
 
-新增[研究决策记忆教程](DECISION_MEMORY_GUIDE.md)。本地候选尚未推送，当前公开0.18.0b1仍在其原Beta分支；不要假定PyPI或Release存在本版本。
+新增[研究决策记忆教程](DECISION_MEMORY_GUIDE.md)。本次发布准备记录时0.19.0b1尚未推送，0.18.0b1为此前公开版本。公开状态以GitHub对应分支及精确提交核对为准；不要假定PyPI或Release存在本版本。
 
 本文面向第一次运行 CausalOps 的使用者。先完成本地示例，再选择是否接入模型。仓库公开只代表源码可获取，不代表把本机工作区公开或提供在线多人服务。
 
