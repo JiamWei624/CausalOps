@@ -4,11 +4,11 @@
 <!-- latest-public-beta:start -->
 ## 最新公开 Beta 版本
 
-**[CausalOps 0.18.0b1 · 最新公开 Beta](https://github.com/JiamWei624/CausalOps/tree/beta/proactive-diagnostics-20261107)**
+**[CausalOps 0.19.0b1 · 最新公开 Beta](https://github.com/JiamWei624/CausalOps/tree/beta/research-decision-memory-20261107)**
 
-最新 Beta 包含受控数据科学研究流程、固定 Hillstrom 五步自动化，以及显式触发的确定性证据诊断和三层研究报告。
+最新 Beta 包含受控数据科学研究流程、固定 Hillstrom 五步自动化、显式触发的确定性证据诊断和三层研究报告，以及用户主动记录的研究决策记忆。研究决策记忆只做同任务、证据可核对的确定性关联，不提供通用语义记忆或自主执行。
 
-[安装说明](https://github.com/JiamWei624/CausalOps/blob/beta/proactive-diagnostics-20261107/docs/current/INSTALLATION.md) · [自动化教程](https://github.com/JiamWei624/CausalOps/blob/beta/proactive-diagnostics-20261107/docs/current/AUTOMATION_GUIDE.md) · [诊断教程](https://github.com/JiamWei624/CausalOps/blob/beta/proactive-diagnostics-20261107/docs/current/DIAGNOSTICS_GUIDE.md) · [已知限制](https://github.com/JiamWei624/CausalOps/blob/beta/proactive-diagnostics-20261107/docs/releases/proactive-diagnostics-beta/LIMITATIONS.md)
+[版本 README](https://github.com/JiamWei624/CausalOps/blob/beta/research-decision-memory-20261107/README.md) · [安装说明](https://github.com/JiamWei624/CausalOps/blob/beta/research-decision-memory-20261107/docs/current/INSTALLATION.md) · [自动化教程](https://github.com/JiamWei624/CausalOps/blob/beta/research-decision-memory-20261107/docs/current/AUTOMATION_GUIDE.md) · [诊断教程](https://github.com/JiamWei624/CausalOps/blob/beta/research-decision-memory-20261107/docs/current/DIAGNOSTICS_GUIDE.md) · [研究决策记忆教程](https://github.com/JiamWei624/CausalOps/blob/beta/research-decision-memory-20261107/docs/current/DECISION_MEMORY_GUIDE.md) · [已知限制](https://github.com/JiamWei624/CausalOps/blob/beta/research-decision-memory-20261107/docs/releases/research-decision-memory-beta/LIMITATIONS.md)
 
 **本页其余内容及 main 源码仍对应 0.16.0，与最新 Beta 分支不同。** 请从上述 Beta 分支获取新版源码，勿把 main 当作新版安装来源。Beta 主要用于本地单用户；不支持通用自主研究，工程验收不代表真人可用性或通用研究可靠性已经验证。
 
