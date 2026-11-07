@@ -1,6 +1,19 @@
 <!-- release: 0.16.0 -->
 # CausalOps
 
+<!-- latest-public-beta:start -->
+## 最新公开 Beta 版本
+
+**[CausalOps 0.18.0b1 · 最新公开 Beta](https://github.com/JiamWei624/CausalOps/tree/beta/proactive-diagnostics-20261107)**
+
+最新 Beta 包含受控数据科学研究流程、固定 Hillstrom 五步自动化，以及显式触发的确定性证据诊断和三层研究报告。
+
+[安装说明](https://github.com/JiamWei624/CausalOps/blob/beta/proactive-diagnostics-20261107/docs/current/INSTALLATION.md) · [自动化教程](https://github.com/JiamWei624/CausalOps/blob/beta/proactive-diagnostics-20261107/docs/current/AUTOMATION_GUIDE.md) · [诊断教程](https://github.com/JiamWei624/CausalOps/blob/beta/proactive-diagnostics-20261107/docs/current/DIAGNOSTICS_GUIDE.md) · [已知限制](https://github.com/JiamWei624/CausalOps/blob/beta/proactive-diagnostics-20261107/docs/releases/proactive-diagnostics-beta/LIMITATIONS.md)
+
+**本页其余内容及 main 源码仍对应 0.16.0，与最新 Beta 分支不同。** 请从上述 Beta 分支获取新版源码，勿把 main 当作新版安装来源。Beta 主要用于本地单用户；不支持通用自主研究，工程验收不代表真人可用性或通用研究可靠性已经验证。
+
+<!-- latest-public-beta:end -->
+
 **AI 辅助数据分析与因果推断** · 0.16.0 公开预览 · Windows x64 / Python 3.11
 
 CausalOps 是本地单用户研究工作台。业务分析人员可以导入一张表，从样本分布开始提出问题，也可以直接输入研究目标。助手协助制定和修订方案；使用者核对字段与研究条件后，由本地统计工具计算。每份报告关联一次具体运行，可据此复核数字、诊断和解释范围。
