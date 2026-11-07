@@ -11,9 +11,9 @@ CausalOps 将研究问题、版本化数据合同、方法建议、人工审核�
 
 [研究决策记忆教程](docs/current/DECISION_MEMORY_GUIDE.md) · [诊断教程](docs/current/DIAGNOSTICS_GUIDE.md) · [自动化使用教程](docs/current/AUTOMATION_GUIDE.md) · [安装](docs/current/INSTALLATION.md) · [本候选验收](docs/releases/research-decision-memory-beta/ACCEPTANCE.md) · [已知限制](docs/releases/research-decision-memory-beta/LIMITATIONS.md) · [架构](docs/current/ARCHITECTURE.md)
 
-![实际首页与自动化入口](docs/releases/proactive-diagnostics-beta/assets/home.png)
+![实际首页与自动化入口](docs/releases/research-decision-memory-beta/assets/home.png)
 
-*图1：沿用已公开0.18.0b1安装包首页，展示既有入口；不是0.19.0b1的新截图。诊断入口见侧栏和诊断教程。营销实验成果预览不等于本任务已执行。*
+*图1：0.19.0b1候选独立安装后的实际首页。研究决策记忆在诊断报告内；营销实验成果预览不等于本任务已执行。*
 
 ## 已实现与验证范围
 
@@ -68,13 +68,13 @@ py -3.11 -m venv .venv
 
 ![完整计划与整体审批](docs/releases/proactive-diagnostics-beta/assets/automation-review.png)
 
-*图2：预览、正式计划、批准与执行分别记录。普通聊天中的“同意”不授予执行权限。*
+*图2：沿用0.18.0b1已验证页面截图。预览、正式计划、批准与执行分别记录。普通聊天中的“同意”不授予执行权限。*
 
 公开原始表预先取两组共42,613名客户：未发邮件2,262/21,306（10.62%），男装邮件3,894/21,307（18.28%）。差值约7.66个百分点，原A/B工具95%区间约[6.995,8.323]个百分点。每次安装必须实际运行产生自己的证据，不将这些公开参考数值冒充新计算。随机分配依据原发布者资料与用户确认，不能仅凭有两组推断。[发布者说明](https://blog.minethatdata.com/2008/03/minethatdata-e-mail-analytics-and-data.html)
 
 ![整体报告与独立运行来源](docs/releases/proactive-diagnostics-beta/assets/automation-report.png)
 
-*图3：报告数值由持久化结构化证据生成。模型自主规划关闭，本固定链无真实模型请求。*
+*图3：沿用0.18.0b1已验证页面截图。报告数值由持久化结构化证据生成。模型自主规划关闭，本固定链无真实模型请求。*
 
 ## 其他现有路径
 

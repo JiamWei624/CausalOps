@@ -1,0 +1,949 @@
+{
+  "version": "0.19.0b1",
+  "frozen_application_export": "f8b1de17452b471233da57055f778f0e8e17c3a0",
+  "application_source_sha": "60cd6d1f2114f7f32903ddc5a3b78947ba4cce5cc31965077d9ed794f077fdf8",
+  "installation": {
+    "new_venv": true,
+    "system_site_packages": false,
+    "app_resources_byte_verified": 193,
+    "methods": [
+      "descriptive",
+      "correlation",
+      "ols",
+      "logit",
+      "poisson",
+      "ab_test",
+      "cuped",
+      "regression_adjustment",
+      "psm",
+      "ipw",
+      "double_ml",
+      "did",
+      "aipw",
+      "iv_2sls",
+      "rd_sharp",
+      "rd_fuzzy",
+      "staggered_did"
+    ],
+    "business_resources_match_development": true,
+    "only_runtime_change": "package version metadata",
+    "dependency_source": "existing public offline wheel cache; not a new-machine or full internet-download claim"
+  },
+  "new_release_regression": {
+    "tests": "183",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "time": "327.560",
+    "timestamp": "2026-11-07T14:27:14.538514+08:00"
+  },
+  "reused_development_full_regression": {
+    "commit": "32da3fbeeafe277a0a0ef5399dcdb73ed29d43ab",
+    "passed": 1067,
+    "failed": 0,
+    "skipped": 0,
+    "not_claimed_as_this_candidate_new_run": true
+  },
+  "startup": {
+    "status": "passed",
+    "health_status": 200,
+    "version": "0.19.0b1",
+    "browser": {
+      "browser": "156.0.4314.58",
+      "page_version": "0.19.0b1",
+      "diagnostics_entry": true,
+      "model_calls": 0
+    },
+    "source_fingerprint": "60cd6d1f2114f7f32903ddc5a3b78947ba4cce5cc31965077d9ed794f077fdf8",
+    "installed_package": true,
+    "actual_launcher": "python -m causalops.launch --no-browser"
+  },
+  "browser": {
+    "results": [
+      {
+        "case": "A-record-refresh",
+        "mode": "fixed_real_browser_not_human_test",
+        "status": "passed",
+        "model_requests": 0,
+        "installed_package": true,
+        "decision": "08e75007652107626c04e537df0b531f0d56329637c11255e1dd750e5a0b8552",
+        "checked": {
+          "explicit_note": true,
+          "no_suggestion": true,
+          "two_real_runs": true,
+          "refresh_preserved": true
+        },
+        "seconds": 25.604,
+        "operations": 5,
+        "events": [
+          {
+            "action": "open_saved_report",
+            "at": "2026-11-07T06:27:03.330Z",
+            "milliseconds": 664
+          },
+          {
+            "action": "explicit_decision_confirmation",
+            "at": "2026-11-07T06:27:10.801Z",
+            "milliseconds": 31
+          },
+          {
+            "action": "enter_reason",
+            "at": "2026-11-07T06:27:13.734Z",
+            "milliseconds": 16
+          },
+          {
+            "action": "submit_decision",
+            "at": "2026-11-07T06:27:13.789Z",
+            "milliseconds": 55
+          },
+          {
+            "action": "reload_decision_history",
+            "at": "2026-11-07T06:27:24.728Z",
+            "milliseconds": 59
+          }
+        ]
+      },
+      {
+        "case": "B-same-problem",
+        "mode": "fixed_real_browser_not_human_test",
+        "status": "passed",
+        "model_requests": 0,
+        "installed_package": true,
+        "new_report": "1bde9944c6bfe8f1d39cd62c3c47adc7f5937524d16f8ec8d19665bb991efbcf",
+        "checked": {
+          "same_task_rule_scope": true,
+          "original_choice_retained": true,
+          "current_unknown": true
+        },
+        "seconds": 11.049,
+        "operations": 8,
+        "events": [
+          {
+            "action": "open_saved_report",
+            "at": "2026-11-07T06:27:28.531Z",
+            "milliseconds": 239
+          },
+          {
+            "action": "choose_decision",
+            "at": "2026-11-07T06:27:29.618Z",
+            "milliseconds": 87
+          },
+          {
+            "action": "open_decision_options_keyboard",
+            "at": "2026-11-07T06:27:29.652Z",
+            "milliseconds": 34
+          },
+          {
+            "action": "select_decision",
+            "at": "2026-11-07T06:27:29.702Z",
+            "milliseconds": 50
+          },
+          {
+            "action": "explicit_decision_confirmation",
+            "at": "2026-11-07T06:27:30.266Z",
+            "milliseconds": 499
+          },
+          {
+            "action": "enter_reason",
+            "at": "2026-11-07T06:27:30.840Z",
+            "milliseconds": 112
+          },
+          {
+            "action": "submit_decision",
+            "at": "2026-11-07T06:27:30.932Z",
+            "milliseconds": 92
+          },
+          {
+            "action": "explicit_new_diagnostic",
+            "at": "2026-11-07T06:27:37.961Z",
+            "milliseconds": 25
+          }
+        ]
+      },
+      {
+        "case": "C-changed-evidence",
+        "mode": "fixed_real_browser_not_human_test",
+        "status": "passed",
+        "model_requests": 0,
+        "installed_package": true,
+        "new_report": "7165e1bf479bf4d860239e60d7b77962879939bc61d12fd913a8c775a6b0f296",
+        "checked": {
+          "new_actual_diagnostic": true,
+          "current_verified": true,
+          "history_not_overwritten": true,
+          "no_user_resolution_fact": true
+        },
+        "seconds": 28.443,
+        "operations": 8,
+        "events": [
+          {
+            "action": "open_saved_report",
+            "at": "2026-11-07T06:27:39.662Z",
+            "milliseconds": 216
+          },
+          {
+            "action": "choose_decision",
+            "at": "2026-11-07T06:27:43.098Z",
+            "milliseconds": 71
+          },
+          {
+            "action": "open_decision_options_keyboard",
+            "at": "2026-11-07T06:27:43.127Z",
+            "milliseconds": 30
+          },
+          {
+            "action": "select_decision",
+            "at": "2026-11-07T06:27:43.177Z",
+            "milliseconds": 49
+          },
+          {
+            "action": "explicit_decision_confirmation",
+            "at": "2026-11-07T06:27:46.047Z",
+            "milliseconds": 2782
+          },
+          {
+            "action": "enter_reason",
+            "at": "2026-11-07T06:27:49.067Z",
+            "milliseconds": 41
+          },
+          {
+            "action": "submit_decision",
+            "at": "2026-11-07T06:27:49.130Z",
+            "milliseconds": 63
+          },
+          {
+            "action": "explicit_new_diagnostic",
+            "at": "2026-11-07T06:28:01.784Z",
+            "milliseconds": 36
+          }
+        ]
+      },
+      {
+        "case": "D-safety-revisions",
+        "mode": "fixed_real_browser_not_human_test",
+        "status": "passed",
+        "model_requests": 0,
+        "installed_package": true,
+        "checked": {
+          "duplicate_idempotent": true,
+          "append_revision": true,
+          "stale_rejected": true,
+          "cross_task_rejected": true
+        },
+        "seconds": 24.398,
+        "operations": 19,
+        "events": [
+          {
+            "action": "open_saved_report",
+            "at": "2026-11-07T06:28:08.067Z",
+            "milliseconds": 236
+          },
+          {
+            "action": "choose_decision",
+            "at": "2026-11-07T06:28:09.035Z",
+            "milliseconds": 52
+          },
+          {
+            "action": "open_decision_options_keyboard",
+            "at": "2026-11-07T06:28:09.055Z",
+            "milliseconds": 20
+          },
+          {
+            "action": "select_decision",
+            "at": "2026-11-07T06:28:09.094Z",
+            "milliseconds": 39
+          },
+          {
+            "action": "explicit_decision_confirmation",
+            "at": "2026-11-07T06:28:09.621Z",
+            "milliseconds": 466
+          },
+          {
+            "action": "enter_reason",
+            "at": "2026-11-07T06:28:10.573Z",
+            "milliseconds": 11
+          },
+          {
+            "action": "submit_decision",
+            "at": "2026-11-07T06:28:10.632Z",
+            "milliseconds": 60
+          },
+          {
+            "action": "choose_decision",
+            "at": "2026-11-07T06:28:11.679Z",
+            "milliseconds": 41
+          },
+          {
+            "action": "open_decision_options_keyboard",
+            "at": "2026-11-07T06:28:11.696Z",
+            "milliseconds": 17
+          },
+          {
+            "action": "select_decision",
+            "at": "2026-11-07T06:28:11.734Z",
+            "milliseconds": 38
+          },
+          {
+            "action": "enter_reason",
+            "at": "2026-11-07T06:28:11.755Z",
+            "milliseconds": 8
+          },
+          {
+            "action": "submit_decision",
+            "at": "2026-11-07T06:28:11.795Z",
+            "milliseconds": 40
+          },
+          {
+            "action": "choose_decision",
+            "at": "2026-11-07T06:28:18.392Z",
+            "milliseconds": 40
+          },
+          {
+            "action": "open_decision_options_keyboard",
+            "at": "2026-11-07T06:28:18.416Z",
+            "milliseconds": 24
+          },
+          {
+            "action": "select_decision",
+            "at": "2026-11-07T06:28:18.458Z",
+            "milliseconds": 42
+          },
+          {
+            "action": "enter_reason",
+            "at": "2026-11-07T06:28:19.384Z",
+            "milliseconds": 10
+          },
+          {
+            "action": "submit_decision",
+            "at": "2026-11-07T06:28:19.433Z",
+            "milliseconds": 49
+          },
+          {
+            "action": "reload_stale_report",
+            "at": "2026-11-07T06:28:30.624Z",
+            "milliseconds": 49
+          },
+          {
+            "action": "request_cross_task_report",
+            "at": "2026-11-07T06:28:31.622Z",
+            "milliseconds": 45
+          }
+        ]
+      }
+    ],
+    "source_sha": "60cd6d1f2114f7f32903ddc5a3b78947ba4cce5cc31965077d9ed794f077fdf8",
+    "statistical_history_unchanged": true,
+    "old_reports_preserved": true,
+    "counts": {
+      "analysis_runs": 2,
+      "exploration_runs": 2,
+      "assistant_plans": 0,
+      "workflow_approvals": 0,
+      "automation_v2_approvals": 2,
+      "diagnostic_request_drafts": 0,
+      "research_decisions": 5,
+      "diagnostic_reports": 6
+    },
+    "model_requests": 0
+  },
+  "protected": {
+    "statistics_and_approvals_unchanged": true,
+    "old_reports_preserved": true,
+    "execution_gates": [
+      {
+        "decision": "08e75007652107626c04e537df0b531f0d56329637c11255e1dd750e5a0b8552",
+        "legacy_approval_denied": true,
+        "automation_execution_denied": true
+      },
+      {
+        "decision": "84b210ab185178d380621090f3f8a7c625e0ab4d9056ae6ce46b988211e19479",
+        "legacy_approval_denied": true,
+        "automation_execution_denied": true
+      },
+      {
+        "decision": "1362c227ace78d146d0849b1c2216ba928c8dea5bea52144186de58a7dcbc32c",
+        "legacy_approval_denied": true,
+        "automation_execution_denied": true
+      },
+      {
+        "decision": "4a32b9b0c1256746cc8b6a8307228c000281aafaba09da315660b800b3403a8e",
+        "legacy_approval_denied": true,
+        "automation_execution_denied": true
+      },
+      {
+        "decision": "88742997f79ef17fe1ab6f61cadb39efd8166296f7ae858f99962fe3b1d689e1",
+        "legacy_approval_denied": true,
+        "automation_execution_denied": true
+      }
+    ]
+  },
+  "decisions": [
+    {
+      "decision_id": "08e75007652107626c04e537df0b531f0d56329637c11255e1dd750e5a0b8552",
+      "context": {
+        "task_ref": {
+          "kind": "automation_v2",
+          "task_id": "e115e06c43554444931fd8340643561c",
+          "session_id": "c74c0e656d9348af958e2f2cbe4b495d"
+        },
+        "plan_ref": {
+          "id": "567fd8ff7728417c8731da53672f40cb",
+          "version": 1,
+          "sha": "7f9525f6825175ba26b1ae7413612c9cfb0e3fa02b93e2ed49937e945651d0f7"
+        },
+        "no_plan_reason": null,
+        "data_ref": {
+          "upload_id": "3df734138678a6c628c9a8a26403a406d7e4ece9c2f96eb4e39fe9dbc3dd967b",
+          "frame_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+        },
+        "contract_ref": {
+          "id": "68f566d216ec4b8ab984f0bbf07304ce",
+          "version": 1,
+          "sha": "8865c2cffc0b8135f2170dcd1ffbc4dc4a4d516325871e7cfb5d074f49028412",
+          "data_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+        },
+        "run_refs": [
+          {
+            "run_id": "c9419bb7c132445c99c2ad09c3a0953d",
+            "kind": "exploration",
+            "plan_id": "567fd8ff7728417c8731da53672f40cb",
+            "result_fingerprint": "b1cd84a7c1bc0d0362a3efe00e10837d93e0c8b32b720d975fbb8d715615880d"
+          },
+          {
+            "run_id": "b012217c254145a296dfb0bf32326729",
+            "kind": "research",
+            "plan_id": "567fd8ff7728417c8731da53672f40cb",
+            "result_fingerprint": "657b1bc8c5110ec1e6f42df9d8721f366591e71555ff89e5faf7cf9058895239"
+          }
+        ],
+        "scope": {
+          "analysis_unit": "客户",
+          "outcome_field": "visit",
+          "metric_label": "两周访问率",
+          "statistic_type": "risk_difference",
+          "unit": "概率",
+          "observation_window": "分配后两周",
+          "group_labels": [
+            "未发邮件",
+            "男装邮件"
+          ],
+          "numerator": "各组访问客户数",
+          "denominator": "各分配组客户数",
+          "aggregation": "组内比例与概率差"
+        },
+        "fingerprint": "0280bd10db66801d3fe1bce8cc05b04e1c60ca941e7c38dd771e867a02329af9",
+        "phase": "post_run",
+        "provenance": {
+          "recorded_execution_source_sha": "60cd6d1f2114f7f32903ddc5a3b78947ba4cce5cc31965077d9ed794f077fdf8",
+          "diagnostic_source_sha": "60cd6d1f2114f7f32903ddc5a3b78947ba4cce5cc31965077d9ed794f077fdf8",
+          "reading_mode": "historical_read_only"
+        }
+      },
+      "report_id": "bff16d93afb3574fd68ae77d243a953468ccc2f5d4477b094868fc2ae7e776d7",
+      "report_version": 1,
+      "assessment_id": "09221c625aed09d67597d93c9671329b2fbbf7df15e2ed39afcaf137601be92c",
+      "suggestion_id": null,
+      "diagnostic_id": null,
+      "rule": null,
+      "decision_type": "note",
+      "reason": "当前研究仅支持登记的两周访问率，不将结果解释为长期利润收益。",
+      "evidence_refs": [
+        {
+          "artifact_kind": "validation_observation",
+          "artifact_id": "83dcda597bb1e4c61e6368bc528e42acc70fbc1b6931d706ff78f9cf86aad668",
+          "sha": "f50b0cc98b36f66b38848a0703651416ee90d4e32a1cf539b07042e6ffd7e294",
+          "json_pointer": "/checks",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "data_contract",
+          "artifact_id": "68f566d216ec4b8ab984f0bbf07304ce",
+          "sha": "8865c2cffc0b8135f2170dcd1ffbc4dc4a4d516325871e7cfb5d074f49028412",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "source_record",
+          "artifact_id": "e115e06c43554444931fd8340643561c",
+          "sha": "15333c4836e4fd2fa3d23d66cd5798f7c760705d1df8af42e5a772e3a9ac76d0",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "e115e06c43554444931fd8340643561c:S01",
+          "sha": "9169539c4581215a9c41d596db1f588042e0a1fb557b027506ffab071507f374",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "e115e06c43554444931fd8340643561c:S02",
+          "sha": "6a1d6aee9ce474774a5e2cfd6d9bcac2a4a96299dea4515e09ce22996495297f",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "run_bundle",
+          "artifact_id": "c9419bb7c132445c99c2ad09c3a0953d",
+          "sha": "b1cd84a7c1bc0d0362a3efe00e10837d93e0c8b32b720d975fbb8d715615880d",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "e115e06c43554444931fd8340643561c:S03",
+          "sha": "b515bdd7b7058226ed176c8223c09f5db0e98cb9aa37bd3888eaf61c170bccb3",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "e115e06c43554444931fd8340643561c:S04",
+          "sha": "436f80b942c644625e2c4d3d0945a52a7b30d5d9e6e6f21d2c147c63a3d43279",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "run_bundle",
+          "artifact_id": "b012217c254145a296dfb0bf32326729",
+          "sha": "657b1bc8c5110ec1e6f42df9d8721f366591e71555ff89e5faf7cf9058895239",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "e115e06c43554444931fd8340643561c:S05",
+          "sha": "2f4ee313f7e40c6f3f66fcbdb02953734a3739ef218b6a779cd73812ec3b9693",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "validation_observation",
+          "artifact_id": "6dc9a171d5842d425089c86bc5edd0ae3321ae59b4aeacc0723d1aab8f00f227",
+          "sha": "71b7c20f79a481a70edba5184a724608c4654bad1073405568b983aacd021aec",
+          "json_pointer": "/checks",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "validation_observation",
+          "artifact_id": "e3bc0ec77d73ca50504bbbf26f504cb7488d424a467a12314c80a8916115cd44",
+          "sha": "5544bb8b5f41ef835e92848036cb5fc7fd9fe913a33e85d6fe7df00455d2a260",
+          "json_pointer": "/checks",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "validation_observation",
+          "artifact_id": "091206b160185d76b114ac49edf3f3f43a0a2be474613135bb92757998480507",
+          "sha": "47ec1008823b96da7f7353a51f7e2349492d74acbb5659f9a4d44b77e91e26e3",
+          "json_pointer": "/checks",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "validation_observation",
+          "artifact_id": "c7ca1947b94e3137a11cef04b822e6ce724936b309e5b5089331348d518a7977",
+          "sha": "cc3ad30dbed71310fdec5cb0ff7900a7521a7414dbad21422c01306daaa5933b",
+          "json_pointer": "/checks",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "validation_observation",
+          "artifact_id": "c10ff108671661b7416c7920294c20d9ec6a02b174ddb5ae4c1ac2a5a44c4dd9",
+          "sha": "2f14b2b7f7e018146b8abcb04898d945df066e9aacf12e4ed85ea70402ba2b54",
+          "json_pointer": "/checks",
+          "availability": "valid"
+        }
+      ],
+      "supersedes_id": null,
+      "created_at": "2026-11-07T06:27:16.903080+00:00",
+      "actor": "explicit_user_submit",
+      "execution_authorized": false
+    },
+    {
+      "decision_id": "84b210ab185178d380621090f3f8a7c625e0ab4d9056ae6ce46b988211e19479",
+      "context": {
+        "task_ref": {
+          "kind": "research_session",
+          "task_id": "2047144fa134474db7e73dc1727c27e2",
+          "session_id": "2047144fa134474db7e73dc1727c27e2"
+        },
+        "plan_ref": null,
+        "no_plan_reason": "只读预诊断；未建立正式统计计划或运行。",
+        "data_ref": {
+          "upload_id": "b434f675633c9d58e195ebf4c3eb954acbcc458f2e5f04843ae5942b0341a862",
+          "frame_sha": "29e0205ddfe477f1281e6abccc5de788df64b616e8f6d7f6c07bf0ec45183928"
+        },
+        "contract_ref": {
+          "id": "dca3a63c02c146018848a7120e334776",
+          "version": 1,
+          "sha": "fabe938fce993c5ac172a51f4b4bf3b00df0d0c4be1a805346f63985ffaaf380",
+          "data_sha": "29e0205ddfe477f1281e6abccc5de788df64b616e8f6d7f6c07bf0ec45183928"
+        },
+        "run_refs": [],
+        "scope": {
+          "analysis_unit": "客户",
+          "outcome_field": "visited",
+          "metric_label": "访问率",
+          "statistic_type": null,
+          "unit": "概率",
+          "observation_window": "登记14天窗口",
+          "group_labels": [
+            "未接受处理",
+            "接受处理"
+          ],
+          "numerator": null,
+          "denominator": null,
+          "aggregation": null
+        },
+        "fingerprint": "b557e9511f6665174c57156e38dd2e6487d56abc384bdc2b05bb4a1967575d2d",
+        "phase": "preflight",
+        "provenance": {
+          "recorded_execution_source_sha": null,
+          "diagnostic_source_sha": "60cd6d1f2114f7f32903ddc5a3b78947ba4cce5cc31965077d9ed794f077fdf8",
+          "reading_mode": "preflight"
+        }
+      },
+      "report_id": "d0bf58c4ab8b781139a42ef3546709ba89f18afa6965c748b15de75923fe6d40",
+      "report_version": 1,
+      "assessment_id": "41e85c7f3f423462a708f17740ea02f8ac0ecfe3be6acd716cfff868b979e2b1",
+      "suggestion_id": "48a948d22d0344b65ce3ff8edfebf0314939c53c09a0dfc64353af6a09ef3346",
+      "diagnostic_id": "1528cf03c1e598939e87f0f3a11586632fd35a887e6161ce4e9703f5c8db235f",
+      "rule": {
+        "id": "PD-02",
+        "version": "1",
+        "pack": "hillstrom-diagnostics-stage1:1",
+        "check_method": "registered_source_attestation_not_randomization_proof"
+      },
+      "decision_type": "deferred",
+      "reason": "先补充分配设计来源，暂缓因果解释。",
+      "evidence_refs": [
+        {
+          "artifact_kind": "validation_observation",
+          "artifact_id": "62fcc748c8c68bef39f791aad7688c7b3542506b30af4f1e1d2aa818d93b651c",
+          "sha": "5ae5e9eee09378d03ff6b453b710f3a55851efc464a00b68fc0f72845381e161",
+          "json_pointer": "/checks",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "data_contract",
+          "artifact_id": "dca3a63c02c146018848a7120e334776",
+          "sha": "fabe938fce993c5ac172a51f4b4bf3b00df0d0c4be1a805346f63985ffaaf380",
+          "json_pointer": "",
+          "availability": "valid"
+        }
+      ],
+      "supersedes_id": null,
+      "created_at": "2026-11-07T06:27:31.254222+00:00",
+      "actor": "explicit_user_submit",
+      "execution_authorized": false
+    },
+    {
+      "decision_id": "1362c227ace78d146d0849b1c2216ba928c8dea5bea52144186de58a7dcbc32c",
+      "context": {
+        "task_ref": {
+          "kind": "automation_v2",
+          "task_id": "821443cfc31b4e47a1d85d52cea2cdcc",
+          "session_id": "f9509b78def148919fe3a6c980efaa55"
+        },
+        "plan_ref": {
+          "id": "66760967025c4bbf8548376992b6676e",
+          "version": 1,
+          "sha": "5302a3d3e62c654f5756072c47af93a86c6ff6a6ff71303c54a16eb1feb7f9dd"
+        },
+        "no_plan_reason": null,
+        "data_ref": {
+          "upload_id": "3df734138678a6c628c9a8a26403a406d7e4ece9c2f96eb4e39fe9dbc3dd967b",
+          "frame_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+        },
+        "contract_ref": {
+          "id": "ae1904fd41ba45349055f581f7496d23",
+          "version": 1,
+          "sha": "8865c2cffc0b8135f2170dcd1ffbc4dc4a4d516325871e7cfb5d074f49028412",
+          "data_sha": "d200cd8f3328b9de7717f58fbbc4fee3a9f3fd3a75f89054a7897481a9297226"
+        },
+        "run_refs": [
+          {
+            "run_id": "ee2c1df6d90c4c52944b87fd9c807385",
+            "kind": "exploration",
+            "plan_id": "66760967025c4bbf8548376992b6676e",
+            "result_fingerprint": "20823d987a0a7df6d26e2d8b1c0da0435533339b19014a1e82f60c11e8b4fd6d"
+          },
+          {
+            "run_id": "b3e7e42ea32e40ad9796aa61c3663213",
+            "kind": "research",
+            "plan_id": "66760967025c4bbf8548376992b6676e",
+            "result_fingerprint": "695e159133b53123897ab4ab1e07bd1ee9af33ccf12ee40fdbfd485bae6a2bae"
+          }
+        ],
+        "scope": {
+          "analysis_unit": "客户",
+          "outcome_field": "visit",
+          "metric_label": "两周访问率",
+          "statistic_type": "risk_difference",
+          "unit": "概率",
+          "observation_window": "分配后两周",
+          "group_labels": [
+            "未发邮件",
+            "男装邮件"
+          ],
+          "numerator": "各组访问客户数",
+          "denominator": "各分配组客户数",
+          "aggregation": "组内比例与概率差"
+        },
+        "fingerprint": "fb49a3750390946e459ad15ee202c547360a7a206a7f089d5761b4fddc15992c",
+        "phase": "post_run",
+        "provenance": {
+          "recorded_execution_source_sha": "60cd6d1f2114f7f32903ddc5a3b78947ba4cce5cc31965077d9ed794f077fdf8",
+          "diagnostic_source_sha": "60cd6d1f2114f7f32903ddc5a3b78947ba4cce5cc31965077d9ed794f077fdf8",
+          "reading_mode": "historical_read_only"
+        }
+      },
+      "report_id": "1676bab5dc40d9386d40037aa8fd72801416fe463928b1b2d481723c06b8653e",
+      "report_version": 1,
+      "assessment_id": "d691fe6fc2240f85bae17d1c6fa51a18dc902fc0e868abbd6e06780ce103ad83",
+      "suggestion_id": "0d6b47b28626c0119947fdd073270c5493ace76a39820024d3ec1dc30d6f73dd",
+      "diagnostic_id": "4aa6ba98dd0e1f016df029007ee52569353cdc582488e053333ec749df46aead",
+      "rule": {
+        "id": "PD-06",
+        "version": "1",
+        "pack": "hillstrom-diagnostics-stage1:1",
+        "check_method": "bound_observation_window_comparison"
+      },
+      "decision_type": "deferred",
+      "reason": "先核对报告窗口冲突，暂不使用联合结论。",
+      "evidence_refs": [
+        {
+          "artifact_kind": "validation_observation",
+          "artifact_id": "ef2e9666f02d59eb6900d3c6e894b204e1e424add6aec9d13f697539fc4bad3c",
+          "sha": "6a551386a31ad53685e855da63a645067fdba43b344095104464b8ada79af141",
+          "json_pointer": "/checks",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "data_contract",
+          "artifact_id": "ae1904fd41ba45349055f581f7496d23",
+          "sha": "8865c2cffc0b8135f2170dcd1ffbc4dc4a4d516325871e7cfb5d074f49028412",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "source_record",
+          "artifact_id": "821443cfc31b4e47a1d85d52cea2cdcc",
+          "sha": "15333c4836e4fd2fa3d23d66cd5798f7c760705d1df8af42e5a772e3a9ac76d0",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "821443cfc31b4e47a1d85d52cea2cdcc:S01",
+          "sha": "58ec459237421d481ea2d75476d22d51be50a9575ef65bb92faffe151a274c32",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "821443cfc31b4e47a1d85d52cea2cdcc:S02",
+          "sha": "7e4ac638399649d60621b7a902f2072ea8ba09e7da519f46092ff364a57abada",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "run_bundle",
+          "artifact_id": "ee2c1df6d90c4c52944b87fd9c807385",
+          "sha": "20823d987a0a7df6d26e2d8b1c0da0435533339b19014a1e82f60c11e8b4fd6d",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "821443cfc31b4e47a1d85d52cea2cdcc:S03",
+          "sha": "7fdcaa1f9d963577477a9e6ff9db02bca1b1ec30b9b63b4c05f7cc076e5e08f8",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "821443cfc31b4e47a1d85d52cea2cdcc:S04",
+          "sha": "6421cd0e7780dcd6f131e6ff4969ef0e40129f43ffc2c68f32f13356aad57aed",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "run_bundle",
+          "artifact_id": "b3e7e42ea32e40ad9796aa61c3663213",
+          "sha": "695e159133b53123897ab4ab1e07bd1ee9af33ccf12ee40fdbfd485bae6a2bae",
+          "json_pointer": "",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "step_evidence",
+          "artifact_id": "821443cfc31b4e47a1d85d52cea2cdcc:S05",
+          "sha": "7000dd65e0dc4535deebd80d28402b9db82a5d08316307430ae86e5a3112e66e",
+          "json_pointer": "",
+          "availability": "valid"
+        }
+      ],
+      "supersedes_id": null,
+      "created_at": "2026-11-07T06:27:52.609453+00:00",
+      "actor": "explicit_user_submit",
+      "execution_authorized": false
+    },
+    {
+      "decision_id": "4a32b9b0c1256746cc8b6a8307228c000281aafaba09da315660b800b3403a8e",
+      "context": {
+        "task_ref": {
+          "kind": "research_session",
+          "task_id": "bd8b0aa181794b8ba60c537139abc819",
+          "session_id": "bd8b0aa181794b8ba60c537139abc819"
+        },
+        "plan_ref": null,
+        "no_plan_reason": "只读预诊断；未建立正式统计计划或运行。",
+        "data_ref": {
+          "upload_id": "b434f675633c9d58e195ebf4c3eb954acbcc458f2e5f04843ae5942b0341a862",
+          "frame_sha": "29e0205ddfe477f1281e6abccc5de788df64b616e8f6d7f6c07bf0ec45183928"
+        },
+        "contract_ref": {
+          "id": "e2883c7a330f4abb84c08100ffee642f",
+          "version": 1,
+          "sha": "fabe938fce993c5ac172a51f4b4bf3b00df0d0c4be1a805346f63985ffaaf380",
+          "data_sha": "29e0205ddfe477f1281e6abccc5de788df64b616e8f6d7f6c07bf0ec45183928"
+        },
+        "run_refs": [],
+        "scope": {
+          "analysis_unit": "客户",
+          "outcome_field": "visited",
+          "metric_label": "访问率",
+          "statistic_type": null,
+          "unit": "概率",
+          "observation_window": "登记14天窗口",
+          "group_labels": [
+            "未接受处理",
+            "接受处理"
+          ],
+          "numerator": null,
+          "denominator": null,
+          "aggregation": null
+        },
+        "fingerprint": "64ffba3d2a642d0b71b1b31b7248730be2da459588b6cfc0835e8342de2bcca6",
+        "phase": "preflight",
+        "provenance": {
+          "recorded_execution_source_sha": null,
+          "diagnostic_source_sha": "60cd6d1f2114f7f32903ddc5a3b78947ba4cce5cc31965077d9ed794f077fdf8",
+          "reading_mode": "preflight"
+        }
+      },
+      "report_id": "0103cde119a1c7aa913a54aaeee7ee834c46d0db6e644220148a2bc9554a68bc",
+      "report_version": 1,
+      "assessment_id": "cad50dac643b2eac157eaf97010da17d7daeceb743b5261ac01a4bf50f494d1e",
+      "suggestion_id": "2bb5031944fb3c3cda750da93cc0191e154f7b4dd31eab298b88a072e797d835",
+      "diagnostic_id": "5055c730d0348e201ea4af82bdfdbf5fb9e57eb1a5a119f0948eff497f66e745",
+      "rule": {
+        "id": "PD-02",
+        "version": "1",
+        "pack": "hillstrom-diagnostics-stage1:1",
+        "check_method": "registered_source_attestation_not_randomization_proof"
+      },
+      "decision_type": "accepted",
+      "reason": "采纳补充来源建议，不等于批准统计。",
+      "evidence_refs": [
+        {
+          "artifact_kind": "validation_observation",
+          "artifact_id": "6ff69d91dbb974f1b57004d1e97dc2678e3ef0f29b015c8df33520659979be40",
+          "sha": "a7c865bfbcf6b58175b11641608cc29a749b893f439e58506dea1ade08ff1359",
+          "json_pointer": "/checks",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "data_contract",
+          "artifact_id": "e2883c7a330f4abb84c08100ffee642f",
+          "sha": "fabe938fce993c5ac172a51f4b4bf3b00df0d0c4be1a805346f63985ffaaf380",
+          "json_pointer": "",
+          "availability": "valid"
+        }
+      ],
+      "supersedes_id": null,
+      "created_at": "2026-11-07T06:28:10.925717+00:00",
+      "actor": "explicit_user_submit",
+      "execution_authorized": false
+    },
+    {
+      "decision_id": "88742997f79ef17fe1ab6f61cadb39efd8166296f7ae858f99962fe3b1d689e1",
+      "context": {
+        "task_ref": {
+          "kind": "research_session",
+          "task_id": "bd8b0aa181794b8ba60c537139abc819",
+          "session_id": "bd8b0aa181794b8ba60c537139abc819"
+        },
+        "plan_ref": null,
+        "no_plan_reason": "只读预诊断；未建立正式统计计划或运行。",
+        "data_ref": {
+          "upload_id": "b434f675633c9d58e195ebf4c3eb954acbcc458f2e5f04843ae5942b0341a862",
+          "frame_sha": "29e0205ddfe477f1281e6abccc5de788df64b616e8f6d7f6c07bf0ec45183928"
+        },
+        "contract_ref": {
+          "id": "e2883c7a330f4abb84c08100ffee642f",
+          "version": 1,
+          "sha": "fabe938fce993c5ac172a51f4b4bf3b00df0d0c4be1a805346f63985ffaaf380",
+          "data_sha": "29e0205ddfe477f1281e6abccc5de788df64b616e8f6d7f6c07bf0ec45183928"
+        },
+        "run_refs": [],
+        "scope": {
+          "analysis_unit": "客户",
+          "outcome_field": "visited",
+          "metric_label": "访问率",
+          "statistic_type": null,
+          "unit": "概率",
+          "observation_window": "登记14天窗口",
+          "group_labels": [
+            "未接受处理",
+            "接受处理"
+          ],
+          "numerator": null,
+          "denominator": null,
+          "aggregation": null
+        },
+        "fingerprint": "64ffba3d2a642d0b71b1b31b7248730be2da459588b6cfc0835e8342de2bcca6",
+        "phase": "preflight",
+        "provenance": {
+          "recorded_execution_source_sha": null,
+          "diagnostic_source_sha": "60cd6d1f2114f7f32903ddc5a3b78947ba4cce5cc31965077d9ed794f077fdf8",
+          "reading_mode": "preflight"
+        }
+      },
+      "report_id": "0103cde119a1c7aa913a54aaeee7ee834c46d0db6e644220148a2bc9554a68bc",
+      "report_version": 1,
+      "assessment_id": "cad50dac643b2eac157eaf97010da17d7daeceb743b5261ac01a4bf50f494d1e",
+      "suggestion_id": "2bb5031944fb3c3cda750da93cc0191e154f7b4dd31eab298b88a072e797d835",
+      "diagnostic_id": "5055c730d0348e201ea4af82bdfdbf5fb9e57eb1a5a119f0948eff497f66e745",
+      "rule": {
+        "id": "PD-02",
+        "version": "1",
+        "pack": "hillstrom-diagnostics-stage1:1",
+        "check_method": "registered_source_attestation_not_randomization_proof"
+      },
+      "decision_type": "rejected",
+      "reason": "当前拒绝该建议，保留原决定与原因。",
+      "evidence_refs": [
+        {
+          "artifact_kind": "validation_observation",
+          "artifact_id": "6ff69d91dbb974f1b57004d1e97dc2678e3ef0f29b015c8df33520659979be40",
+          "sha": "a7c865bfbcf6b58175b11641608cc29a749b893f439e58506dea1ade08ff1359",
+          "json_pointer": "/checks",
+          "availability": "valid"
+        },
+        {
+          "artifact_kind": "data_contract",
+          "artifact_id": "e2883c7a330f4abb84c08100ffee642f",
+          "sha": "fabe938fce993c5ac172a51f4b4bf3b00df0d0c4be1a805346f63985ffaaf380",
+          "json_pointer": "",
+          "availability": "valid"
+        }
+      ],
+      "supersedes_id": "4a32b9b0c1256746cc8b6a8307228c000281aafaba09da315660b800b3403a8e",
+      "created_at": "2026-11-07T06:28:19.788673+00:00",
+      "actor": "explicit_user_submit",
+      "execution_authorized": false
+    }
+  ],
+  "test_input_notes": "A/C independently execute real Hillstrom tools in new installed environment. B/D synthetic. Controller only changes contract notes or restores isolated S05; never production evidence. No hidden tasks, no paid models."
+}

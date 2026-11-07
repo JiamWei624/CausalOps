@@ -1,0 +1,43 @@
+[
+  {
+    "file": "record-and-refresh.png",
+    "source_case": "A-record-refresh",
+    "source": "new isolated installed-wheel fixed-browser acceptance; public/synthetic test copy",
+    "sha256": "cccf299e7015fb4b6b8583e983dd5b96445a006048ab7f698906bb7882d0c7f6"
+  },
+  {
+    "file": "same-problem.png",
+    "source_case": "B-same-problem",
+    "source": "new isolated installed-wheel fixed-browser acceptance; public/synthetic test copy",
+    "sha256": "06524042b2fd67a076826ab8525a6a18bb992e934d36d619aabc2b9f1a38dbed"
+  },
+  {
+    "file": "changed-evidence.png",
+    "source_case": "C-changed-evidence",
+    "source": "new isolated installed-wheel fixed-browser acceptance; public/synthetic test copy",
+    "sha256": "03c2a367314a5f85b55c64cba4df05d9b24d613d44a9941ecfc2390bff5caf18"
+  },
+  {
+    "file": "append-revision.png",
+    "source_case": "D-safety-revisions",
+    "source": "new isolated installed-wheel fixed-browser acceptance; public/synthetic test copy",
+    "sha256": "a1a40ee3efcf01d0fe6a6af7a36a0a83639c4e36bfa76cc5861c492fe5000512"
+  },
+  {
+    "file": "stale-source.png",
+    "source_case": "D-safety-revisions",
+    "source": "new isolated installed-wheel fixed-browser acceptance; public/synthetic test copy",
+    "sha256": "fc84b733ff4999fdc33112d62a60a944224d125cb40bddf46aac9d9e9595f72d"
+  },
+  {
+    "file": "cross-task-rejected.png",
+    "source_case": "D-safety-revisions",
+    "source": "new isolated installed-wheel fixed-browser acceptance; public/synthetic test copy",
+    "sha256": "25aff3d8b3c21f2c1196fdfd9cb3bd7dcc58fb422c0aedf2fe01c4e478bff651"
+  },
+  {
+    "file": "home.png",
+    "source": "new installed 0.19.0b1 CLI startup",
+    "sha256": "6f979cad382da900ef1a938858e8b61066f6775f974e2692b1fb0aabc65c03e4"
+  }
+]

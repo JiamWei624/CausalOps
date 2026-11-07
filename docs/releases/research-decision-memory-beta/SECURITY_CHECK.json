@@ -1,0 +1,106 @@
+{
+  "scope": "candidate current tree, all reachable history, installed-wheel resources; final exact HEAD and ZIP scans retained in local final report to avoid self-reference",
+  "tree": {
+    "automatic_status": "review",
+    "blockers": 0,
+    "manual_reviews": [
+      {
+        "file": "docs/product/proactive-diagnostics/stage1-evidence/test-cases.json",
+        "line": 4300,
+        "code": "email_address",
+        "line_sha256": "d82d3271ea9edd603c0c5456e5912a1a4145804c7bafab1613c70457abee6c7e",
+        "review": "测试邮箱或测试用例参数，非真实账户"
+      },
+      {
+        "file": "docs/product/proactive-diagnostics/stage2-evidence/test-cases.json",
+        "line": 3688,
+        "code": "email_address",
+        "line_sha256": "9e28bbb2875b2cf69f6f9aaecc516237fb193785a920e2eb6b7956c74318a2f5",
+        "review": "测试邮箱或测试用例参数，非真实账户"
+      },
+      {
+        "file": "docs/product/proactive-diagnostics/stage3-evidence/engineering-results.json",
+        "line": 5605,
+        "code": "cn_mobile",
+        "line_sha256": "b27c84f75ff6ab6cc101fa8978fb274c21b7ed6cdfd0d7420fae254e8fead9d7",
+        "review": "结构化数值或SHA256的数字形态，非联系电话"
+      },
+      {
+        "file": "docs/product/proactive-diagnostics/stage3-evidence/reports.json",
+        "line": 1886,
+        "code": "cn_mobile",
+        "line_sha256": "6e0aa6277e2fadbc321d87d2ac7d6926218c5f8acd9b86360cea8d3e321d82f8",
+        "review": "结构化数值或SHA256的数字形态，非联系电话"
+      },
+      {
+        "file": "tests/test_providers_v070.py",
+        "line": 48,
+        "code": "email_address",
+        "line_sha256": "17dd043d0ae30044c607e1b11eb92656d0c7c9c6c61d0c2321e1687ee0547c06",
+        "review": "测试邮箱或测试用例参数，非真实账户"
+      }
+    ]
+  },
+  "reachable_history": {
+    "checked_commit": "f8b1de17452b471233da57055f778f0e8e17c3a0",
+    "public_parent": "21d24192c579f273274ac31918382ff5ab54414b",
+    "object_counts": {
+      "commit": 47,
+      "tree": 438,
+      "blob": 1382
+    },
+    "new_findings": [],
+    "inherited": [
+      {
+        "object": "294fe15c96f766010e862865eb524fb5bd947381",
+        "file": "tests/test_prepublish_audit.py",
+        "codes": [
+          "assigned_credential"
+        ]
+      },
+      {
+        "object": "2d99f5e7837b039c9888029723b1b5cabbfa5ff4",
+        "file": "tests/test_v13_transport.py",
+        "codes": [
+          "assigned_credential"
+        ]
+      },
+      {
+        "object": "76e80b8c99d27f3bdd86d17ee5d563fad186a280",
+        "file": "src/causalops/real_data.py",
+        "codes": [
+          "private_directory"
+        ]
+      }
+    ],
+    "inherited_risk_interpretation": "两个历史测试假值及一项旧目录名称已在公开父链中。不是新增真实凭据，不声称撤回已有公开信息。"
+  },
+  "application": {
+    "source_sha": "60cd6d1f2114f7f32903ddc5a3b78947ba4cce5cc31965077d9ed794f077fdf8",
+    "resources_byte_verified": 193,
+    "only_runtime_change_vs_verified_P2": "version metadata"
+  },
+  "wheel_initial": {
+    "findings": [],
+    "member_count": 199
+  },
+  "screenshots": {
+    "new_real_images": 7,
+    "source": "new installed package, public Hillstrom and isolated synthetic/controlled cases",
+    "visually_reviewed": true,
+    "personal_material_found": false
+  },
+  "not_included": [
+    "私人研究数据与数据库",
+    "论文或微博数据",
+    "隐藏评测答案",
+    "原始私有模型会话",
+    "完整本地开发历史",
+    "真实凭据和私人工作目录"
+  ],
+  "limitations": [
+    "模式扫描不能证明不存在所有类型敏感信息。",
+    "完整本地历史保留；本轮不公开开发分支或标签。",
+    "当前status=review来自人工核实的测试标识／哈希数字形态，未关闭或放宽扫描器。"
+  ]
+}
