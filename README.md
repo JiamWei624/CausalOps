@@ -1,19 +1,19 @@
-<!-- release: 0.18.0b1 -->
+<!-- release: 0.19.0b1 -->
 # CausalOps Beta
 
 **面向科研与业务分析的可审核、可追溯 AI 数据科学 Agent。**
 
-`0.18.0b1` · Windows x64 / Python 3.11 · 本地单用户 · 主动研究诊断受限首版候选
+`0.19.0b1` · Windows x64 / Python 3.11 · 本地单用户 · 研究决策记忆受限首版候选
 
 CausalOps 将研究问题、版本化数据合同、方法建议、人工审核、本地统计与运行证据连接起来。使用者可以从单表数据提出问题，审核方案后执行注册工具，并按具体运行查看报告。自动化入口只支持已核验的 Hillstrom 营销实验：一次整体审核，按固定五步推进两次真实统计计算。
 
 **当前不是通用自主研究系统。** 不支持任意自然语言目标的自动多步骤规划、通用多表研究、完整主动诊断或云端多人协作。当前诊断是用户显式触发的确定性检查，不是后台持续监控或模型自主推理。开放式方法建议和研究解释仍有已记录的准确性限制。没有真人完成率、提效或生产可靠性数据。
 
-[诊断教程](docs/current/DIAGNOSTICS_GUIDE.md) · [自动化使用教程](docs/current/AUTOMATION_GUIDE.md) · [安装](docs/current/INSTALLATION.md) · [本候选验收](docs/releases/proactive-diagnostics-beta/ACCEPTANCE.md) · [已知限制](docs/releases/proactive-diagnostics-beta/LIMITATIONS.md) · [架构](docs/current/ARCHITECTURE.md)
+[研究决策记忆教程](docs/current/DECISION_MEMORY_GUIDE.md) · [诊断教程](docs/current/DIAGNOSTICS_GUIDE.md) · [自动化使用教程](docs/current/AUTOMATION_GUIDE.md) · [安装](docs/current/INSTALLATION.md) · [本候选验收](docs/releases/research-decision-memory-beta/ACCEPTANCE.md) · [已知限制](docs/releases/research-decision-memory-beta/LIMITATIONS.md) · [架构](docs/current/ARCHITECTURE.md)
 
 ![实际首页与自动化入口](docs/releases/proactive-diagnostics-beta/assets/home.png)
 
-*图1：0.18.0b1新环境安装包的实际首页；诊断入口见侧栏和诊断教程。营销实验成果预览不等于本任务已执行。*
+*图1：沿用已公开0.18.0b1安装包首页，展示既有入口；不是0.19.0b1的新截图。诊断入口见侧栏和诊断教程。营销实验成果预览不等于本任务已执行。*
 
 ## 已实现与验证范围
 
@@ -24,8 +24,15 @@ CausalOps 将研究问题、版本化数据合同、方法建议、人工审核�
 |人工审核与本地统计|17 个注册方法入口；批准绑定数据、合同、方案及执行范围。各方法验证深度不同。|
 |运行证据与报告|统计结果来自实际工具，关联 Run、计划和数据版本；可导出 HTML 与证据。|
 |受限五步自动化|审计→分组描述→真实上游证据核验→A/B→报告整合。描述与A/B各自生成Run，门禁失败停止下游。|
+|研究决策记忆|显式决定及原因、不可变任务历史、追加修订、确定性历史提醒；不授予统计执行权限。|
 |研究诊断|显式预诊断／执行后诊断、六项规则、同源三层报告、有限建议、无执行权限草案和历史版本。|
 |执行控制|持久预算、步骤边界暂停、取消终态、恢复前调和、异常人工核查；不承诺任意进程故障下物理恰好一次。|
+
+## 新增：研究决策记忆
+
+在诊断报告内，对真实建议显式选择采纳、暂缓或拒绝并保存原因；无建议时也可记录自主研究决定。历史按任务、报告和证据版本绑定；修改追加修订，不覆盖原文。后续报告只对能够可靠对应的同任务、同规则和兼容范围作确定性提醒。
+
+**所有决定均由用户主动提交，不是模型代替用户作出的决定。** 历史决定不是研究事实证明，没有统计执行权限，也不会自动生成草案或批准。不同任务不模糊匹配，自由文本备注不做语义理解；证据或口径改变时要求人工核对。没有持续后台监控，模型解释默认关闭。[实际使用流程与截图](docs/current/DECISION_MEMORY_GUIDE.md)
 
 ## 新增：研究证据诊断
 
@@ -80,6 +87,8 @@ py -3.11 -m venv .venv
 描述统计、Pearson/Spearman相关、OLS、Logit、Poisson、A/B、CUPED、回归调整、PSM、IPW、AIPW、DoubleML、共同/交错时点DID、2SLS与清晰/模糊断点由17个注册入口管理。方法名称与注册别名以实际注册表为准。存在工具不代表其识别假设或所有场景已经全面验证。[方法合同](docs/METHOD_CONTRACTS.md) · [统计核查](docs/current/STATISTICAL_AUDIT.md)
 
 ## 质量记录与能力限制
+
+P2开发版32da3fb工程回归1067项通过、固定浏览器最终4/4；这是开发版历史成绩。本候选独立安装及发布验证结果另见本次验收，不把工程通过率或固定脚本结果解释为真人效率或通用Agent准确率。
 
 - 自动化三个阶段的工程与固定浏览器证据按版本保存；本候选的实际安装、测试数、四条自动化流程及旧流程结果见[本次验收](docs/releases/proactive-diagnostics-beta/ACCEPTANCE.md)，不能沿用旧成绩代替新测。
 - Eval V2.2固定流程8/8，但最后N06自由探索3次未完整完成；固定脚本不代表自主导航或真人效率。

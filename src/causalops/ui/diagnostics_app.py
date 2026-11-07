@@ -251,6 +251,8 @@ def render():
     with output.container():
         with st.container(key="diagnostic_snapshot_"+report_id):
             st.html(report_html(view))
+            from causalops.ui.decision_memory import render_memory
+            render_memory(w,mode,selected,view)
             _forms(w,mode,selected,view)
             st.download_button("导出诊断报告快照",view.report.model_dump_json(indent=2).encode("utf8"),
                 file_name="CausalOps_诊断报告快照.json",mime="application/json",key="diag_export_"+report_id)

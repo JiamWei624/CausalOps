@@ -1,6 +1,10 @@
 # 系统架构 · CausalOps 阶段性公开测试版
 
-应用包0.18.0b1；继承公开f9e876a并整合P1第三阶段bea02f8。旧单次LangGraph路径保留。软件不是通用自主规划系统。
+应用包候选0.19.0b1；基于公开21d2419，只移入已验收P2增量；保留原P1与自动化。旧单次LangGraph路径保留。软件不是通用自主规划系统。
+
+## 显式研究决策记录（当前实现）
+
+同源诊断报告 → decision_memory.render_memory → ResearchDecisionService → 原Workbench来源核查 → 同工作区SQLite追加ResearchDecision。无新统计事实库。修订保留原记录，重复提交幂等；后续同任务报告按规则、数据／计划及指标窗口等保守匹配，无法可靠对应时人工核对。没有新增审批或执行通路，模型关闭。[使用教程](DECISION_MEMORY_GUIDE.md)
 
 ## 显式诊断路径（当前实现）
 
