@@ -63,15 +63,21 @@ def report_html(view):
     if view.source_current and r.results.status=="available":
         effect=r.results.effect;labels=scope.get("group_labels") or ["对照组","处理组"];ci=effect["ci_pp"]
         parts.append('<div class="diag-metrics">'+''.join(f'<div><small>{e(label)}</small><strong>{e(value)}</strong></div>' for label,value in [
-            (labels[0]+"访问率",f'{effect["control_rate"]:.2%}'),(labels[1]+"访问率",f'{effect["treated_rate"]:.2%}'),
+            (labels[0]+" · "+(scope.get("metric_label") or "比例"),f'{effect["control_rate"]:.2%}'),(labels[1]+" · "+(scope.get("metric_label") or "比例"),f'{effect["treated_rate"]:.2%}'),
             ("绝对差异",f'{effect["pp"]:.2f} 个百分点'),("原95%区间",f'[{ci[0]:.3f}, {ci[1]:.3f}] 个百分点')
         ])+'</div>')
-        parts.append(f'<p>本次分析包含 <b>{r.results.sample_size:,}</b> 名客户；使用原 A/B 工具的组间均值差与原区间。访问率差不等于相对增长，也不能直接解释为长期利润。</p>')
-        parts.append('<table><thead><tr><th>比较组</th><th>实际样本</th><th>访问率</th></tr></thead><tbody>')
+        parts.append(f'<p>本次分析包含 <b>{r.results.sample_size:,}</b> 条登记观察单位记录；使用原 A/B 工具的组间均值差与原区间。百分点不等于相对增长，当前结果不能外推其他指标、人群或长期收益。</p>')
+        parts.append('<table><thead><tr><th>比较组</th><th>实际样本</th><th>实际比例</th></tr></thead><tbody>')
         for g in r.results.group_summary:
             label=labels[int(g["treatment"])]
             parts.append(f'<tr><td>{e(label)}</td><td>{g["n"]:,}</td><td>{g["outcome_mean"]:.2%}</td></tr>')
         parts.append('</tbody></table>')
+    elif view.source_current and r.results.descriptive is not None:
+        d=r.results.descriptive
+        parts.append('<div class="diag-info"><b>真实描述统计</b>：仅交付已保存比例与描述性差异，不提供未获证据支持的因果效应区间。</div>')
+        parts.append('<table><tr><th>比较组</th><th>实际样本</th><th>实际比例</th></tr>')
+        for g in d["groups"]:parts.append(f'<tr><td>{e(g["label"])}</td><td>{g["n"]}</td><td>{g["proportion"]:.2%}</td></tr>')
+        parts.append(f'</table><p>描述性比例差（后者减前者）：<b>{d["difference_pp"]:.4f} 个百分点</b>。方法：原 descriptive；来源 Run：<code>{e(d["source_run_id"])}</code>。</p>')
     else:
         label={"not_run":"尚无正式统计运行","partial":"研究部分完成","restricted":"联合统计结论受到限制","available":"历史数值暂不作为当前结论"}[r.results.status]
         parts.append('<div class="diag-info"><b>'+label+'</b>。不补写估计值或区间；可核对下方研究条件及保存时的证据引用。</div>')
@@ -138,8 +144,9 @@ def _forms(w,mode,subject,view):
             if f.result.required_work:st.write("核查事项："+"；".join(f.result.required_work))
             try:st.json(w.evidence(mode,subject,r.report_id,f.finding_id))
             except (ValueError,OSError,RuntimeError,KeyError) as exc:st.error("检查回执读取失败："+safe_error(exc))
-    if r.results.status=="available":
-        if st.button("查看两个 Run 与原报告的运行证据",key="diag_original_"+r.report_id,disabled=not view.source_current):
+    if r.results.status=="available" or r.results.descriptive is not None:
+        original_label="查看两个 Run 与原报告的运行证据" if r.results.status=="available" else "查看描述 Run 与保存证据"
+        if st.button(original_label,key="diag_original_"+r.report_id,disabled=not view.source_current):
             try:st.json(w.original_evidence(mode,subject,r.report_id))
             except (ValueError,OSError,RuntimeError,KeyError) as exc:st.error(safe_error(exc))
     try:

@@ -4,6 +4,7 @@ from dataclasses import dataclass, field
 import math
 from causalops.results.rate_units import rate_contrast
 from causalops.sample_data.hillstrom import SOURCE
+from causalops.application.configurable_research import is_configurable
 
 IMPLEMENTED=("PD-01","PD-02","PD-06","PD-07","PD-09","PD-14")
 NOT_IMPLEMENTED=tuple(f"PD-{i:02}" for i in range(1,15) if f"PD-{i:02}" not in IMPLEMENTED)
@@ -61,10 +62,24 @@ def _design(c,window):
             origin="human_declaration",mechanism="declaration_record_check")
     if c.task:
         s=c.task["source"];a=c.evidence.get("S01",{}).get("body")
-        confirmed=(assignment=="randomized" and s.get("human_source_confirmed") is True
-            and s.get("source_url")==SOURCE and body["research"]["provenance"]==SOURCE)
+        if is_configurable(c.task["plan"]):
+            cfg=c.task["plan"]["configuration"]
+            confirmed=(assignment=="randomized" and cfg["assignment"]=="randomized"
+                and cfg["source_confirmed"] is True and s.get("human_source_confirmed") is True
+                and bool(cfg["source_url"]) and len(cfg["design_evidence"].strip())>=12
+                and s.get("source_url")==cfg["source_url"]
+                and body["research"]["provenance"]==cfg["source_url"]+" "+cfg["design_evidence"])
+        else:
+            confirmed=(assignment=="randomized" and s.get("human_source_confirmed") is True
+                and s.get("source_url")==SOURCE and body["research"]["provenance"]==SOURCE)
         if a is not None:
-            confirmed=confirmed and a.get("assignment")=="randomized" and a.get("assignment_evidence")==SOURCE and a.get("assignment_evidence_type")=="source_and_human_confirmed_not_inferred_from_groups"
+            expected_source=c.task["plan"]["scope"]["assignment_source"]
+            confirmed=confirmed and a.get("assignment")=="randomized" and a.get("assignment_evidence")==expected_source and a.get("assignment_evidence_type")=="source_and_human_confirmed_not_inferred_from_groups"
+        if confirmed and is_configurable(c.task["plan"]):
+            return Decision("verified","registered_source_attestation_consistent",
+                "已核对本任务的数据、来源声明与人工登记一致；只验证声明链，不是程序证明随机分配真实发生。",
+                observed={"assignment_declaration":"randomized","evidence_type":"registered_contract_attestation"},
+                origin="human_declaration",mechanism="declaration_record_check")
         if confirmed:
             return Decision("verified","legacy_source_attestation_consistent",
                 "公开包身份、来源登记和人工声明一致；本项核对来源记录，不是程序证明随机分配真实发生。",
@@ -84,7 +99,8 @@ def _window(c,window):
     found={"contract":declared}
     if c.task:
         found["plan"]=c.task["plan"]["scope"]["window"]
-        found["tool_config"]=c.task["plan"]["steps"][3]["config"]["metric"]["window"]
+        effect_step=next((x for x in c.task["plan"]["steps"] if x["step_id"]=="S04"),None)
+        if effect_step:found["tool_config"]=effect_step["config"]["metric"]["window"]
         if "S04" in c.bundles:
             found["actual_run"]=c.bundles["S04"].evidence.get("interpretation_inputs",{}).get("metric_definition",{}).get("window")
         if "S05" in c.evidence:found["report"]=c.evidence["S05"]["body"].get("scope",{}).get("window")
@@ -92,10 +108,17 @@ def _window(c,window):
     if any(v!=declared for v in found.values()):
         return Decision("issue","observation_window_conflict","请求或已保存报告的窗口不匹配；当前结果不能回答该窗口问题。",
             observed=found,expected={"same_registered_window":declared},severity="major",claim="hide_integrated_estimate",
-            required=("核对窗口与可用数据；当前两周访问字段不提供逐日七天结果。",))
+            required=("核对登记窗口和原始分析表；不能仅修改窗口文字或将现有汇总结果当作其他窗口。",))
     return Decision("verified","observation_window_bound","已核对登记窗口；未根据相似文字或日期重解释口径。",observed=found)
 
 def _runs(c,window):
+    if c.task and c.task["plan"].get("research_path")=="descriptive_binary":
+        if not all(k in c.evidence for k in ("S01","S02","S03")):return unchecked("descriptive_gate_not_executed")
+        try:
+            if c.evidence["S03"]["body"]!=c.co._gate(c.task):raise ValueError("descriptive gate")
+        except (ValueError,KeyError,TypeError):
+            return Decision("issue","descriptive_gate_conflict","保存的描述性门禁与真实上游不一致。",severity="critical",claim="hide_integrated_estimate")
+        return Decision("not_applicable","no_effect_run_requested","本计划只授权一个描述Run；已核对上游门禁，不伪造第二个Run或声称完成双运行比较。",observed={"statistical_runs":1,"upstream_gate_checked":True})
     if not all(k in c.evidence for k in ("S01","S02","S03","S04")):return unchecked("statistical_steps_not_executed")
     audit=c.evidence["S01"]["body"];desc=c.evidence["S02"]["body"]["grouped"]
     gate=c.evidence["S03"]["body"];bundle=c.bundles["S04"]
@@ -104,7 +127,9 @@ def _runs(c,window):
         groups={str(r["treatment"]):r for r in bundle.evidence["interpretation_inputs"]["raw_group_summary"]}
         if set(groups)!={"0","1"} or len(desc)!=2:raise ValueError("groups")
         for r in desc:
-            g=groups[r["group_value"]]
+            scope=c.task["plan"]["scope"];raw=r["group_value"]
+            key="0" if raw==scope.get("control_value","0") else "1" if raw==scope.get("treated_value","1") else "invalid"
+            g=groups[key]
             if (r["field"]!=c.task["plan"]["scope"]["outcome"] or r["rows"]!=r["finite_n"]
                 or r["rows"]!=g["n"] or r["rows"]!=audit["group_counts"][r["group_value"]]
                 or not math.isclose(r["mean"],g["outcome_mean"],rel_tol=0,abs_tol=1e-10)):
@@ -118,6 +143,17 @@ def _runs(c,window):
         mechanism="engine_adapter")
 
 def _units(c,window):
+    if c.task and c.task["plan"].get("research_path")=="descriptive_binary":
+        if not all(k in c.evidence for k in ("S01","S02")):return unchecked("descriptive_run_not_executed")
+        from causalops.application.configurable_report import descriptive_summary
+        try:
+            d=descriptive_summary(c.task,c.evidence["S02"],c.evidence["S01"])
+            sc=c.task["plan"]["scope"];body=c.contract
+            if body["metric_kind"]!="binary" or body["metric_unit"]!=sc["unit"] or body["outcome"]!=sc["outcome"]:raise ValueError("metric")
+            if "S05" in c.evidence and c.evidence["S05"]["body"].get("descriptive")!=d:raise ValueError("description conversion")
+        except (ValueError,KeyError,TypeError):
+            return Decision("issue","descriptive_metric_or_unit_conflict","描述性指标、单位或保存数值不一致。",severity="critical",claim="hide_integrated_estimate")
+        return Decision("verified","descriptive_metric_units_bound","已核对真实二元均值与描述性百分点换算；未产生因果效果区间。",observed={"source_run_id":d["source_run_id"],"statistic_type":"descriptive_group_proportions"},mechanism="engine_adapter")
     if "S04" not in c.evidence:return unchecked("effect_run_not_executed")
     body=c.contract;scope=c.task["plan"]["scope"];bundle=c.bundles["S04"]
     metric=bundle.evidence.get("interpretation_inputs",{}).get("metric_definition",{})
@@ -141,6 +177,17 @@ def _report(c,window):
     if not c.task:return Decision("not_applicable","preflight_has_no_report","预诊断没有正式研究计划或统计报告，不虚构运行。")
     if "S05" not in c.evidence:return unchecked("report_step_not_completed")
     r=c.evidence["S05"]["body"];p=c.task["plan"]
+    if p.get("research_path")=="descriptive_binary":
+        from causalops.application.configurable_report import descriptive_summary
+        try:
+            d=descriptive_summary(c.task,c.evidence["S02"],c.evidence["S01"])
+            if (r.get("source_runs")!=[d["source_run_id"]] or r.get("scope")!=p["scope"] or r.get("objective")!=p["objective"]
+                or r.get("approval_id")!=c.evidence["S02"]["approval_id"] or r.get("plan_version")!=p["version"]
+                or r.get("status")!="descriptive_complete" or r.get("method")!="descriptive" or r.get("descriptive")!=d
+                or r.get("sample_size")!=d["sample_size"] or r.get("effect") is not None or r.get("design_source")!=p["scope"]["assignment_source"]):raise ValueError("description manifest")
+        except (ValueError,KeyError,TypeError):
+            return Decision("issue","report_manifest_identity_conflict","单运行报告来源不一致，不补入其他任务的Run。",severity="critical",claim="hide_integrated_estimate")
+        return Decision("verified","descriptive_report_sources_verified","已验证描述性S05仅引用一个真实Run与原批准，没有虚构A/B或区间。",observed={"statistical_runs":1,"plan_version":p["version"]})
     expected=[c.evidence[k]["body"]["run_id"] for k in ("S02","S04")]
     approval=c.evidence["S04"]["approval_id"]
     try:
@@ -150,7 +197,7 @@ def _report(c,window):
             or r.get("objective")!=p["objective"] or r.get("approval_id")!=approval
             or r.get("plan_version")!=p["version"] or r.get("status")!="complete"
             or r.get("sample_size")!=b.estimate.sample_size or r.get("method")!="ab_test"
-            or r.get("design_source")!=SOURCE or r.get("domain_revision_id")!=record.revision_id
+            or r.get("design_source")!=p["scope"]["assignment_source"] or r.get("domain_revision_id")!=record.revision_id
             or r.get("group_summary")!=b.evidence["interpretation_inputs"]["raw_group_summary"]):
             raise ValueError("manifest")
     except (ValueError,KeyError,TypeError,AttributeError):

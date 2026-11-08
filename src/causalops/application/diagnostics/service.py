@@ -12,14 +12,14 @@ from .evidence import NativeEvidenceReader
 from .repository import DiagnosticRepository
 from .rules import IMPLEMENTED,NOT_IMPLEMENTED,RULES,evaluate
 
-RULE_PACK="hillstrom-diagnostics-stage1"
-RULE_PACK_VERSION="1"
+RULE_PACK="two-arm-evidence-diagnostics"
+RULE_PACK_VERSION="2"
 LIMITATIONS=(
     "本阶段仅实现六项证据规则；其余规则未实现，不统计为通过。",
     "来源与人工声明一致不代表程序证明随机分配真实发生。",
     "未新增基线平衡、功效、无干扰或长期利润检验，不能据此声称研究假设全部满足。",
     "诊断不授予执行权限；历史保存事实与当前执行授权分别核验。",
-    "没有模型解释、完整建议、用户采纳、三层报告或长期决策记忆。",
+    "诊断由确定性规则完成，有限建议不等于已批准计划；不进行模型自由诊断或自动研究。",
 )
 
 class DiagnosticService:
@@ -80,14 +80,14 @@ class DiagnosticService:
         for rid in IMPLEMENTED:
             d=decisions[rid];fid=digest({"assessment":aid,"rule":rid})
             oid=digest({"finding":fid,"observation":1})
-            observation={"rule_id":rid,"rule_version":"1","context_fingerprint":fp,
+            observation={"rule_id":rid,"rule_version":RULE_PACK_VERSION,"context_fingerprint":fp,
                 "inputs":c.inputs,"input_manifest_sha":digest(c.manifest),
                 "checks":{"status":d.status,"reason_code":d.reason,"observed":d.observed,
                           "expected":d.expected,"missing_items":list(d.missing)}}
             refs=[EvidenceReference(artifact_kind="validation_observation",artifact_id=oid,sha=digest(observation),json_pointer="/checks")]
             refs.extend(EvidenceReference(**item) for item in c.inputs)
             f=DiagnosticFinding(finding_id=fid,assessment_id=aid,context=context,
-                rule=RuleReference(id=rid,version="1",pack=RULE_PACK+":"+RULE_PACK_VERSION,check_method=RULES[rid][1]),
+                rule=RuleReference(id=rid,version=RULE_PACK_VERSION,pack=RULE_PACK+":"+RULE_PACK_VERSION,check_method=RULES[rid][1]),
                 diagnostic_type=RULES[rid][0],applicability="not_applicable" if d.status=="not_applicable" else "applicable",
                 check_performed=d.status in ("verified","issue","unknown"),status=d.status,
                 result=CheckResult(observed=d.observed,expected=d.expected,reason_code=d.reason,

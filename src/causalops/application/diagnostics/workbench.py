@@ -32,7 +32,7 @@ class DiagnosticWorkbench:
         with self.s.ws.connection() as c:
             if not c.execute("SELECT 1 FROM sqlite_master WHERE name='automation_v2_tasks'").fetchone():
                 return []
-            rows=c.execute("SELECT id,session_id,status FROM automation_v2_tasks ORDER BY created DESC,id DESC").fetchall()
+            rows=c.execute("SELECT id,session_id,status FROM automation_v2_tasks WHERE json_extract(plan_json,'$.schema_version') IN ('automation-v2-stage1','configurable-research-stage1','configurable-research-stage2') ORDER BY created DESC,id DESC").fetchall()
         return [dict(id=r[0],session_id=r[1],title="自动化研究",status=r[2]) for r in rows]
 
     def subject(self,mode,identifier):
@@ -83,9 +83,9 @@ class DiagnosticWorkbench:
         self._binding(report,mode,item)
         assessment=self.reports.diagnostics.get(report.assessment_id,session_id=item["session_id"])
         native=self.reports._verify_inputs(assessment)
-        if not native.task or report.results.status!="available":
+        if not native.task or (report.results.status!="available" and report.results.descriptive is None):
             raise DesignError("当前没有可完整引用的双Run证据；请查看诊断回执与部分完成说明。")
-        return {step:native.evidence[step] for step in ("S02","S03","S04","S05")}
+        return {step:native.evidence[step] for step in ("S02","S03","S04","S05") if step in native.evidence}
 
     def save(self,mode,identifier,report_id,suggestion_id,intent,*,confirmed=False):
         item=self.subject(mode,identifier)

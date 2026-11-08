@@ -5,6 +5,7 @@ import json
 from html import escape
 from causalops.assistant.service import digest
 from causalops.general.service import DesignError
+from .configurable_research import is_configurable
 
 NAMES={"S01":"数据与设计审计","S02":"分组描述统计","S03":"上游证据核验","S04":"A/B 效果分析","S05":"报告整合"}
 STATES={"candidate":"待整体审核","approved":"已批准，等待执行","pending":"未执行","running":"执行中","succeeded":"已完成","completed":"已完成","blocked":"安全阻断","interrupted":"结果需要核查","paused":"已暂停","pause_requested":"已请求暂停，将在安全边界停止","cancel_requested":"已请求取消，将在安全边界停止","cancelled":"已取消","queued":"排队中"}
@@ -45,11 +46,21 @@ def snapshot(co,tid):
         if "S03" in evidence:
             risks.append(dict(rule="upstream_gate",level="程序检查已通过",detail="描述统计Run的分组、有效样本、原数据及配置哈希已核对；显著性不参与放行。"))
         risks.append(dict(rule="unverified_assumptions",level="解释限制",detail="未实施基线协变量平衡检查；程序不能证明无干扰等全部识别假设。两周访问率不能直接推算长期利润。"))
+        if is_configurable(task["plan"]):
+            sc=task["plan"]["scope"]
+            risks=[r for r in risks if r["rule"] not in ("audit_structure","source_confirmation","unverified_assumptions")]
+            if "S01" in evidence:
+                risks.append(dict(rule="audit_structure",level="程序检查已通过",detail=f"已核对{evidence['S01']['body']['rows']}条记录、用户登记的分析单位、两组及二元编码；不证明全部研究假设。"))
+                risks.append(dict(rule="source_confirmation",level="用户已确认" if sc["assignment"]=="randomized" else "证据未知",detail="分配机制依据用户登记的设计来源核对；两组标签不构成随机化证明。"))
+            risks.append(dict(rule="unverified_assumptions",level="解释限制",detail="未验证无干扰、外部代表性和全部识别假设。仅支持登记对象、指标和窗口；原工具采用正态近似区间。"))
         return dict(task=task,steps=steps,evidence=evidence,report=evidence.get("S05",{}).get("body") if not errors else None,
                     risks=risks,binding_error=binding_error,errors=errors,budget=co.budget(tid),events=co.events(tid))
     raise DesignError("任务状态正在更新，请稍后刷新；暂不展示可能混合的报告。")
 
 def report_html(view):
+    if is_configurable(view["task"]["plan"]):
+        from .configurable_report import html
+        return html(view)
     t=view["task"];p=t["plan"];r=view["report"];e=escape
     parts=['<!doctype html><html lang="zh-CN"><meta charset="utf-8"><style>.co-automation-report{font:15px/1.8 Microsoft YaHei,sans-serif;color:#203d43;max-width:980px;margin:24px auto;padding:16px}.co-automation-report h1,.co-automation-report h2{color:#136b65}.co-automation-report table{width:100%;border-collapse:collapse;margin:16px 0}.co-automation-report th,.co-automation-report td{padding:9px;border:1px solid #d4e0df;text-align:left;vertical-align:top}.co-automation-report th{background:#edf4f3}.co-automation-report .note{padding:12px;background:#f4f7f7}.co-automation-report code{overflow-wrap:anywhere}.co-automation-report a{color:#16736b}</style><article class="co-automation-report"><h1>营销邮件与两周访问率 · 整体研究报告</h1>']
     parts.append(f'<p><b>研究目标：</b>{e(p["objective"])}</p><p class="note">任务：<code>{e(t["id"])}</code> · 计划 v{p["version"]} · 状态：{e(STATES.get(t["status"],t["status"]))}</p>')

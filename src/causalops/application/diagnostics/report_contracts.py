@@ -1,6 +1,6 @@
 """Three-layer snapshots and bounded user-request drafts; no statistical authority."""
 from typing import Literal
-from pydantic import Field, model_validator
+from pydantic import Field, model_validator,model_serializer
 from .contracts import FrozenModel, DiagnosticContext, DiagnosticFinding, Hash
 
 REPORT_SCHEMA = "diagnostic-report-v1"
@@ -22,8 +22,15 @@ class ResearchResults(FrozenModel):
     effect: dict | None = None
     group_summary: tuple[dict, ...] = ()
     sample_size: int | None = None
+    descriptive: dict | None = None
     design_observations: dict
     limitations: tuple[str, ...]
+    @model_serializer(mode="wrap")
+    def legacy_serialization(self,handler):
+        value=handler(self)
+        if self.descriptive is None:value.pop("descriptive",None)
+        return value
+
     @model_validator(mode="after")
     def no_unsupported_results(self):
         if self.status != "available" and any(
@@ -34,6 +41,11 @@ class ResearchResults(FrozenModel):
             len(self.runs) != 2 or not self.original_manifest or not self.estimate or not self.effect
         ):
             raise ValueError("完整报告必须有两个原生运行及有效报告来源")
+        if self.descriptive is not None:
+            d=self.descriptive
+            if (self.status not in ("partial",) or not any(r["kind"]=="exploration" and r["run_id"]==d.get("source_run_id") for r in self.runs)
+                or d.get("method")!="descriptive" or d.get("interval") is not None or d.get("difference_kind")!="descriptive_not_causal_effect"):
+                raise ValueError("描述性结果必须绑定真实描述运行，不附会效果区间。")
         return self
 
 class EvidenceQuality(FrozenModel):

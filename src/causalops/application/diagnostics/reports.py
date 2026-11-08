@@ -101,7 +101,8 @@ class DiagnosticReportService:
             runs=tuple(x.model_dump(mode="json") for x in a.context.run_refs),
             design_observations=a.observations["data"],
             limitations=("历史回执只描述原批准；新计算仍需原服务核验。",
-                         "来源登记一致不能证明所有识别假设；两周访问指标不能推断长期利润。"),
+                         "来源登记一致不能证明所有识别假设；当前对象和窗口不能外推其他指标、人群或长期收益。",
+                         "如涉及A/B，原工具采用独立组均值差与1.96正态近似区间；小样本或稀少事件时近似可能不充分，不等于精确随机化检验。"),
         )
         if available:
             bundle = c.bundles["S04"]
@@ -117,6 +118,10 @@ class DiagnosticReportService:
                 group_summary=tuple(bundle.evidence["interpretation_inputs"]["raw_group_summary"]),
                 sample_size=bundle.estimate.sample_size,
             )
+        if (not available and status=="partial" and not c.errors and c.task and "S01" in c.evidence and "S02" in c.evidence
+            and states["PD-01"]=="verified" and states["PD-06"]=="verified"):
+            from causalops.application.configurable_report import descriptive_summary
+            result["descriptive"]=descriptive_summary(c.task,c.evidence["S02"],c.evidence["S01"])
         return ResearchResults(**result)
 
     def get(self, report_id, *, session_id):

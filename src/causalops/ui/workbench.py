@@ -149,8 +149,12 @@ def home():
     with st.container(border=True):
         st.subheader("受限自动化研究")
         st.write("公开 Hillstrom 营销实验：核对固定五步计划，整体审核一次，自动执行两次统计并整合证据报告。支持暂停、核查恢复和取消。")
-        st.caption("仅支持已核验案例，模型自主规划关闭。")
+        st.caption("已核验案例或用户配置的单表双组二元研究；模型自主规划关闭。")
         st.button("启动自动化研究",on_click=navigate,args=('automation',),type='primary')
+    def own_data():
+        st.session_state["automation_data_source"]="使用自己的数据开展研究"
+        navigate("automation")
+    st.button("使用自己的数据开展研究",on_click=own_data)
     st.button("查看研究证据与诊断",on_click=navigate,args=("evidence",))
     render_examples()
     from causalops.ui.model_setup import render_model_setup

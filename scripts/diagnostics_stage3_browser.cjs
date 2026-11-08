@@ -20,7 +20,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 async function port(){const s=net.createServer();await new Promise(r=>s.listen(0,'127.0.0.1',r));const p=s.address().port;await new Promise(r=>s.close(r));return p}
 (async()=>{
  let proc,browser,log,base,page,ctx,folder,seq=0;const results=[],samples=[],events=[];
- async function act(name,fn){const t=Date.now();await fn();events.push({seq:++seq,actor:'browser',event:name,at:new Date().toISOString(),milliseconds:Date.now()-t})}
+ async function act(name,fn){if(await page.locator('[data-testid="stApp"]').count())await page.locator('[data-testid="stApp"][data-test-script-state="notRunning"]').waitFor({state:'visible'});const t=Date.now();await fn();await sleep(150);if(page.url().startsWith(base))await page.locator('[data-testid="stApp"][data-test-script-state="notRunning"]').waitFor({state:'visible'});events.push({seq:++seq,actor:'browser',event:name,at:new Date().toISOString(),milliseconds:Date.now()-t})}
  async function capture(name){fs.writeFileSync(path.join(folder,name+'.txt'),await page.locator('body').innerText());await page.screenshot({path:path.join(folder,name+'.png'),fullPage:true})}
  async function select(label,match){
   let control=page.getByRole('combobox',{name:label,exact:true});

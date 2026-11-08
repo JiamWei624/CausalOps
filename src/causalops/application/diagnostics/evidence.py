@@ -5,7 +5,7 @@ import hashlib
 import json
 from pathlib import Path
 
-from causalops.application.automation_contracts import PlanV2
+from causalops.application.configurable_research import parse_plan,is_configurable,binding,approval_schema,authorized_facts
 from causalops.application.data_contracts import DataContract
 from causalops.assistant.service import digest
 from causalops.general.service import DesignError
@@ -91,13 +91,13 @@ class NativeEvidenceReader:
         return dict(uid=uid,frame_sha=frame_sha,ref=ref,body=body,manifest=manifest,errors=errors,data=data)
 
     @staticmethod
-    def scope(body,automation=False):
+    def scope(body,automation=False,legacy=True):
         body=body or {}
         return dict(analysis_unit=body.get("analysis_unit") or None,outcome_field=body.get("outcome") or None,
             metric_label=body.get("metric_label") or None,statistic_type="risk_difference" if automation else None,
             unit=body.get("metric_unit") or None,observation_window=body.get("metric_window") or None,
             group_labels=[v for v in (body.get("control_label"),body.get("treated_label")) if v],
-            numerator="各组访问客户数" if automation else None,denominator="各分配组客户数" if automation else None,
+            numerator=("各组访问客户数" if legacy else (body.get("metric_label") or "指标")+"的肯定事件记录数") if automation else None,denominator=("各分配组客户数" if legacy else (body.get("analysis_unit") or "观察单位")+"的有效记录数") if automation else None,
             aggregation="组内比例与概率差" if automation else None)
 
     def preflight(self,sid,requested_window,code_sha):
@@ -150,16 +150,24 @@ class NativeEvidenceReader:
         receipts=self.rows("SELECT id,body,sha,revoked FROM automation_v2_approvals WHERE task_id=?",(tid,))
         errors=[]
         try:
-            PlanV2.model_validate(p)
+            parsed=parse_plan(p)
             if digest(p)!=t["plan_sha"] or digest(t["source"])!=p["source_sha"]:raise ValueError("identity")
         except (ValueError,KeyError,TypeError):
             errors.append({"code":"plan_or_source_identity_conflict","missing":False})
         n=self._native(sid,bound_contract=p.get("contract_ref"))
         errors.extend(n["errors"])
-        if n["body"] and n["body"]!=DataContract.model_validate(fixed_contract()).model_dump(mode="json"):
+        if not is_configurable(p) and n["body"] and n["body"]!=DataContract.model_validate(fixed_contract()).model_dump(mode="json"):
             errors.append({"code":"fixed_contract_scope_conflict","missing":False})
         source=t["source"]
-        if (source.get("archive_sha256")!=ARCHIVE_SHA or source.get("source_url")!=SOURCE
+        if is_configurable(p):
+            try:
+                binding(co,t,parse_plan(p),contract_body=n["body"])
+                c=parse_plan(p).configuration
+                if source.get("source_url")!=c.source_url or source.get("human_source_confirmed")!=c.source_confirmed:
+                    raise ValueError("source declaration differs")
+            except (ValueError,KeyError,TypeError,OSError):
+                errors.append({"code":"configurable_source_identity_conflict","missing":False})
+        elif (source.get("archive_sha256")!=ARCHIVE_SHA or source.get("source_url")!=SOURCE
                 or source.get("derived_data")!=p.get("data") or source.get("scope")!=p.get("scope")):
             errors.append({"code":"public_source_identity_conflict","missing":False})
         if p.get("data",{}).get("upload_id")!=n["uid"] or p.get("data",{}).get("frame_sha")!=n["frame_sha"]:
@@ -172,9 +180,9 @@ class NativeEvidenceReader:
                 expected=dict(task_id=tid,session_id=sid,plan_id=p["plan_id"],plan_sha=t["plan_sha"],
                     data=p["data"],contract_ref=p["contract_ref"],scope=p["scope"],source_sha=p["source_sha"],
                     execution_source_sha=recorded,actor="explicit_human_whole_plan_review",
-                    facts={"S04":{"assignment":"randomized"}})
+                    facts=authorized_facts(t))
                 if (digest(receipt)!=receipts[0][2] or receipt.get("approval_id")!=receipts[0][0]
-                    or receipt.get("schema_version")!="automation-v2-approval-1"
+                    or receipt.get("schema_version")!=approval_schema(t)
                     or any(receipt.get(k)!=v for k,v in expected.items())):raise ValueError("receipt")
             except (ValueError,KeyError,TypeError):
                 errors.append({"code":"original_approval_binding_conflict","missing":False})
@@ -185,10 +193,13 @@ class NativeEvidenceReader:
         context=dict(task_ref=dict(kind="automation_v2",task_id=tid,session_id=sid),
             plan_ref=dict(id=p["plan_id"],version=p["version"],sha=t["plan_sha"]),
             no_plan_reason=None,data_ref=dict(upload_id=n["uid"],frame_sha=n["frame_sha"]),
-            contract_ref=n["ref"],run_refs=[],scope=self.scope(n["body"],True),
+            contract_ref=n["ref"],run_refs=[],scope=self.scope(n["body"],True,legacy=not is_configurable(p)),
             phase="post_run" if t["status"]=="completed" else "partial_run",
             provenance=dict(recorded_execution_source_sha=recorded,diagnostic_source_sha=code_sha,
                 reading_mode="historical_read_only"))
+        if p.get("research_path")=="descriptive_binary":
+            context["scope"]["statistic_type"]="descriptive_group_proportions"
+            context["scope"]["aggregation"]="组内比例与描述性百分点差，不是因果效应"
         ev={};bundles={};inputs=[]
         if n["ref"]:inputs.append(dict(artifact_kind="data_contract",artifact_id=n["ref"]["id"],sha=n["ref"]["sha"]))
         inputs.append(dict(artifact_kind="source_record",artifact_id=tid,sha=digest(source)))

@@ -17,6 +17,7 @@ from causalops.assistant.runtime import alive, process_birth
 from causalops.application.automation_budget import BudgetLedger
 
 from causalops.application.automation_contracts import PlanV2, fixed_steps, scope
+from causalops.application.configurable_research import parse_plan, ConfigurablePlan, approval_schema, authorized_facts, is_configurable
 from causalops.application.data_contracts import DataContract
 from causalops.application.locking import flow_lock
 from causalops.assistant.runtime import execution_source_sha
@@ -113,22 +114,54 @@ class BoundedCoordinator:
                           human_source_confirmed=True, scope=scope())
             plan = PlanV2(plan_id=uuid.uuid4().hex, data=binding, contract_ref=self.s.contracts.ref(sid),
                           scope=scope(), source_sha=digest(source), steps=fixed_steps()).model_dump(mode="json")
-            tid = uuid.uuid4().hex
-            with self.ws.connection() as c:
-                c.execute("BEGIN IMMEDIATE")
-                c.execute("INSERT INTO automation_v2_tasks VALUES(?,?,?,?,?,?,?,?,?)",
-                          (tid,request_key,sid,encoded(plan),digest(plan),encoded(source),"candidate",None,now()))
-                for ordinal, step in enumerate(plan["steps"]):
-                    aid = uuid.uuid4().hex if step["kind"]=="statistical" else None
-                    c.execute("INSERT INTO automation_v2_steps(task_id,step_id,ordinal,status,assistant_task_id) VALUES(?,?,?,?,?)",
-                              (tid,step["step_id"],ordinal,"pending",aid))
-                    if aid:
-                        # V2 IDs never live in assistant_plans: legacy accept/execute cannot authorize them.
-                        c.execute("INSERT INTO assistant_tasks VALUES(?,?,?,?,?)",
-                                  (aid,plan["plan_id"],ordinal,"pending",None))
-            self._event(tid,None,"candidate_created",{"plan_sha":digest(plan),"mode":"restricted_deterministic","model_calls":0})
-            self._init_control(tid)
-            return self.task(tid)
+            return self._save_candidate(request_key,sid,source,plan)
+
+    def _save_candidate(self,request_key,sid,source,plan):
+        tid = uuid.uuid4().hex
+        with self.ws.connection() as c:
+            c.execute("BEGIN IMMEDIATE")
+            c.execute("INSERT INTO automation_v2_tasks VALUES(?,?,?,?,?,?,?,?,?)",
+                      (tid,request_key,sid,encoded(plan),digest(plan),encoded(source),"candidate",None,now()))
+            for ordinal, step in enumerate(plan["steps"]):
+                aid = uuid.uuid4().hex if step["kind"]=="statistical" else None
+                c.execute("INSERT INTO automation_v2_steps(task_id,step_id,ordinal,status,assistant_task_id) VALUES(?,?,?,?,?)",
+                          (tid,step["step_id"],ordinal,"pending",aid))
+                if aid:
+                    # V2 IDs never live in assistant_plans: legacy accept/execute cannot authorize them.
+                    c.execute("INSERT INTO assistant_tasks VALUES(?,?,?,?,?)",
+                              (aid,plan["plan_id"],ordinal,"pending",None))
+        self._event(tid,None,"candidate_created",{"plan_sha":digest(plan),"mode":"restricted_deterministic","model_calls":0})
+        self._init_control(tid)
+        return self.task(tid)
+
+    def create_configurable(self,payload,**kwargs):
+        from .configurable_research import create
+        return create(self,payload,**kwargs)
+
+    def revise_configurable(self,tid,**kwargs):
+        from .configurable_research import revise
+        return revise(self,tid,**kwargs)
+
+    def _user_events_table(self,c):
+        c.execute("CREATE TABLE IF NOT EXISTS configurable_user_events(id TEXT PRIMARY KEY,task_id TEXT,upload_id TEXT,action TEXT,origin TEXT,error_class TEXT,created TEXT)")
+
+    def record_import(self,upload_id):
+        self.ws.load_upload(upload_id)
+        origin="fixed_browser_test" if os.environ.get("CAUSALOPS_EVENT_ORIGIN")=="fixed_browser_test" else "local_user"
+        event_id=uuid.uuid4().hex
+        with self.ws.connection() as c:
+            self._user_events_table(c)
+            c.execute("INSERT INTO configurable_user_events VALUES(?,NULL,?,?,?,?,?)",(event_id,upload_id,"data_imported",origin,None,now()))
+        return event_id
+
+    def user_event(self,tid,action,*,error_class=None):
+        allowed={"conditions_confirmed","plan_created","review_submitted","execution_started","task_stopped","research_completed","report_viewed","user_restore"}
+        if action not in allowed:raise DesignError("未登记的本地行为事件。")
+        t=self.task(tid)
+        origin="fixed_browser_test" if os.environ.get("CAUSALOPS_EVENT_ORIGIN")=="fixed_browser_test" else "local_user"
+        with self.ws.connection() as c:
+            self._user_events_table(c)
+            c.execute("INSERT INTO configurable_user_events VALUES(?,?,?,?,?,?,?)",(uuid.uuid4().hex,tid,t["plan"]["data"]["upload_id"],action,origin,error_class,now()))
 
     def task(self, tid):
         if not isinstance(tid,str) or not re.fullmatch(r"[a-f0-9]{32}",tid):
@@ -156,17 +189,20 @@ class BoundedCoordinator:
                     for r in c.execute("SELECT seq,step_id,event,body,created FROM automation_v2_events WHERE task_id=? ORDER BY seq",(tid,))]
 
     def _event(self,tid,step,event,body):
+        if event=="statistical_dispatch_authorized":self.user_event(tid,"execution_started")
+        if event=="step_succeeded" and step=="S05":self.user_event(tid,"research_completed")
+        if event in ("blocked","interrupted"):self.user_event(tid,"task_stopped",error_class=event)
         with self.ws.connection() as c:
             c.execute("BEGIN IMMEDIATE")
             seq=c.execute("SELECT COALESCE(MAX(seq),0)+1 FROM automation_v2_events WHERE task_id=?",(tid,)).fetchone()[0]
             c.execute("INSERT INTO automation_v2_events VALUES(?,?,?,?,?,?)",(tid,seq,step,event,encoded(body),now()))
 
     def _binding(self,t):
-        p=PlanV2.model_validate(t["plan"])
+        p=parse_plan(t["plan"])
         if digest(t["plan"])!=t["plan_sha"] or digest(t["source"])!=p.source_sha:
             raise DesignError("计划或来源指纹不一致。")
         source=t["source"]
-        if source["archive_sha256"]!=ARCHIVE_SHA or source["source_url"]!=SOURCE or source["human_source_confirmed"] is not True:
+        if not isinstance(p,ConfigurablePlan) and (source["archive_sha256"]!=ARCHIVE_SHA or source["source_url"]!=SOURCE or source["human_source_confirmed"] is not True):
             raise DesignError("不是已核验并经人工确认的公开营销来源。")
         if source["derived_data"]!=p.data or source["scope"]!=p.scope:
             raise DesignError("派生数据与纳入范围不匹配。")
@@ -175,13 +211,17 @@ class BoundedCoordinator:
         if self.s.data_binding(t["session_id"])!=p.data:
             raise DesignError("数据版本已经变化。")
         frame=self.ws.load_upload(p.data["upload_id"])
-        if set(["entity_id","assigned","visit"])-set(frame):
+        if set([p.scope["entity"],p.scope["treatment"],p.scope["outcome"]])-set(frame):
             raise DesignError("缺少必要的实体、分组或访问指标字段。")
         if _data_fingerprint(frame)!=p.data["frame_sha"]:
             raise DesignError("实际分析表与获批数据指纹不同，不能执行。")
         row=self.s.contracts.latest(t["session_id"])
         if not row or self.s.contracts.ref(t["session_id"])!=p.contract_ref:
             raise DesignError("DataContract版本已变化，须重新审核。")
+        if isinstance(p,ConfigurablePlan):
+            from .configurable_research import binding
+            binding(self,t,p)
+            return p,frame
         expected=DataContract.model_validate(contract()).model_dump(mode="json")
         if row["body"]!=expected:
             raise DesignError("指标、客户单位、随机化依据或两周窗口与受限场景不一致。")
@@ -200,17 +240,18 @@ class BoundedCoordinator:
             if t["status"]!="candidate":
                 raise DesignError("当前状态不能批准；请保留记录并建立后继任务。")
             aid=uuid.uuid4().hex
-            receipt=dict(schema_version="automation-v2-approval-1",approval_id=aid,task_id=tid,
+            receipt=dict(schema_version=approval_schema(t),approval_id=aid,task_id=tid,
                          session_id=t["session_id"],plan_id=p.plan_id,plan_sha=t["plan_sha"],
                          data=p.data,contract_ref=p.contract_ref,source_sha=p.source_sha,scope=p.scope,
                          execution_source_sha=execution_source_sha(),approved_at=now(),
                          actor="explicit_human_whole_plan_review",resource_policy=BudgetLedger.POLICY,
-                         facts={"S04":{"assignment":"randomized"}})
+                         facts=authorized_facts(t))
             with self.ws.connection() as c:
                 c.execute("BEGIN IMMEDIATE")
                 c.execute("INSERT INTO automation_v2_approvals VALUES(?,?,?,?,0)",(tid,aid,encoded(receipt),digest(receipt)))
                 c.execute("UPDATE automation_v2_tasks SET status='approved' WHERE id=?",(tid,))
             self._event(tid,None,"whole_plan_approved",{"approval_id":aid,"plan_sha":t["plan_sha"]})
+            self.user_event(tid,"review_submitted")
             return receipt
 
     def _verify(self,t):
@@ -220,11 +261,11 @@ class BoundedCoordinator:
         if not row or row[2]:
             raise DesignError("缺少有效的V2整体人工批准。")
         r=json.loads(row[0])
-        if digest(r)!=row[1] or r.get("schema_version")!="automation-v2-approval-1":
+        if digest(r)!=row[1] or r.get("schema_version")!=approval_schema(t):
             raise DesignError("V2批准收据不合法，不能使用旧版批准。")
         expected=dict(task_id=t["id"],session_id=t["session_id"],plan_id=p.plan_id,plan_sha=t["plan_sha"],
                       data=p.data,contract_ref=p.contract_ref,source_sha=p.source_sha,scope=p.scope,
-                      execution_source_sha=execution_source_sha(),resource_policy=BudgetLedger.POLICY,facts={"S04":{"assignment":"randomized"}})
+                      execution_source_sha=execution_source_sha(),resource_policy=BudgetLedger.POLICY,facts=authorized_facts(t))
         if any(r.get(k)!=v for k,v in expected.items()):
             raise DesignError("批准未绑定当前数据、配置、范围、版本或研究事实。")
         return r
@@ -268,7 +309,14 @@ class BoundedCoordinator:
             raise DesignError("统计Run的计划、步骤或运行编号不匹配。")
         actual=self.a.tools.envelope(t["plan"]["data"]["upload_id"],saved.ref,plan_id=saved.plan_id,
                                      plan_sha=saved.plan_sha,ordinal=saved.ordinal)
-        if actual!=saved or saved.data_fingerprint!=t["plan"]["data"]["frame_sha"]:
+        expected_frame_sha=t["plan"]["data"]["frame_sha"]
+        if step["step_id"]=="S04":
+            # The existing general tool canonicalizes selected group values to 0/1.
+            # Verify that exact transformation instead of comparing unlike tables.
+            from causalops.general.service import prepare,GeneralDesign
+            prepared_frame,_,_=prepare(self.ws.load_upload(t["plan"]["data"]["upload_id"]),GeneralDesign.model_validate({**expected["config"],"assignment":"randomized"}))
+            expected_frame_sha=_data_fingerprint(prepared_frame)
+        if actual!=saved or saved.data_fingerprint!=expected_frame_sha:
             raise DesignError("统计输出哈希或数据版本与原运行不一致。")
         with self.ws.connection() as c:
             row=c.execute("SELECT state,result,plan_id,ordinal FROM assistant_tasks WHERE id=?",(step["assistant_task_id"],)).fetchone()
@@ -290,28 +338,30 @@ class BoundedCoordinator:
 
     def _audit(self,t):
         p,frame=self._binding(t)
-        required=["entity_id","assigned","visit"]
+        sc=p.scope;entity,group,outcome=sc["entity"],sc["treatment"],sc["outcome"]
+        required=[entity,group,outcome]
         if frame[required].isna().any().any():
             raise DesignError("必要字段含缺失；本阶段不自动删除样本或填补。")
-        if frame.entity_id.duplicated().any():
-            raise DesignError("客户标识存在重复，不能把记录数视为独立客户数。")
-        if set(frame.assigned.unique())!={0,1}:
+        if frame[entity].duplicated().any():
+            raise DesignError("分析单位标识存在重复，不能把记录数视为独立样本数。")
+        if set(frame[group].astype(str))!=set(sc["groups"]):
             raise DesignError("两组不完整或存在未批准组别。")
-        if not frame.visit.isin([0,1]).all():
-            raise DesignError("两周访问指标必须是0/1，不能替换统计口径。")
+        if not frame[outcome].isin([0,1]).all():
+            raise DesignError("结果指标必须为已确认编码映射后的0/1。")
         from causalops.application.research_quality import audit_research
         audit=audit_research(frame,self.s.contracts.latest(t["session_id"])["body"])
-        return dict(rows=len(frame),group_counts={str(k):int(len(g)) for k,g in frame.groupby("assigned")},
-                    unique_entities=int(frame.entity_id.nunique()),missing_required=0,
-                    assignment="randomized",assignment_evidence=SOURCE,
-                    assignment_evidence_type="source_and_human_confirmed_not_inferred_from_groups",
+        return dict(rows=len(frame),group_counts={str(k):int(len(g)) for k,g in frame.groupby(group)},
+                    unique_entities=int(frame[entity].nunique()),missing_required=0,
+                    assignment=sc.get("assignment","randomized"),assignment_evidence=sc["assignment_source"],
+                    assignment_evidence_type="source_and_human_confirmed_not_inferred_from_groups" if sc.get("assignment","randomized")=="randomized" else "unknown_not_inferred_from_groups",
                     original_source=t["source"],research_audit=audit)
 
     def _gate(self,t):
         audit=self.evidence(t["id"],"S01")
         desc=self.evidence(t["id"],"S02")
         rows=desc["body"]["grouped"]
-        if len(rows)!=2 or {r["group_value"] for r in rows}!={"0","1"} or any(r["field"]!="visit" for r in rows):
+        sc=t["plan"]["scope"]
+        if len(rows)!=2 or {r["group_value"] for r in rows}!=set(sc["groups"]) or any(r["field"]!=sc["outcome"] for r in rows):
             raise DesignError("上游分组或指标不完整。")
         total=0;variance=0
         for row in rows:
@@ -322,8 +372,15 @@ class BoundedCoordinator:
             if not math.isfinite(row["mean"]) or not 0<=row["mean"]<=1 or not math.isfinite(row["std_ddof1"]):
                 raise DesignError("分组均值或变异不符合二元A/B要求。")
             total+=row["rows"];variance+=row["std_ddof1"]**2
+        if t["plan"].get("research_path")=="descriptive_binary":
+            if total!=audit["body"]["rows"]:raise DesignError("描述路径样本与上游审计不一致。")
+            return dict(decision="descriptive_only",descriptive_run_id=desc["body"]["run_id"],
+                descriptive_evidence_sha=digest(desc),audit_evidence_sha=digest(audit),sample_size=total,
+                checks=["same_plan_data_metric_window","two_groups","complete_cases_without_exclusion","same_sample_counts"],significance_used=False)
         if total<10 or total!=audit["body"]["rows"] or variance<=0:
             raise DesignError("样本总量或组内变异不满足现有A/B工具要求。")
+        if sc.get("assignment","randomized")!="randomized":
+            raise DesignError("随机分配依据未知：已保留真实描述统计，仅可解释描述性比例差；未授权A/B效果分析。请补充设计来源并创建新候选计划重新审核。")
         return dict(decision="proceed",descriptive_run_id=desc["body"]["run_id"],
                     descriptive_evidence_sha=digest(desc),audit_evidence_sha=digest(audit),
                     sample_size=total,checks=["same_plan_data_metric_window","two_groups",
@@ -376,6 +433,11 @@ class BoundedCoordinator:
         return body
 
     def _report(self,t):
+        if t["plan"].get("research_path")=="descriptive_binary":
+            from .configurable_report import descriptive_manifest
+            gate=self.evidence(t["id"],"S03")
+            if gate["body"]!=self._gate(t) or gate["body"]["decision"]!="descriptive_only":raise DesignError("描述路径门禁不一致。")
+            return descriptive_manifest(t,self.evidence(t["id"],"S02"),self.evidence(t["id"],"S01"),self._verify(t))
         from causalops.results.rate_units import rate_contrast
         desc=self.evidence(t["id"],"S02");effect=self.evidence(t["id"],"S04")
         self.evidence(t["id"],"S03")
@@ -386,7 +448,8 @@ class BoundedCoordinator:
         actual=bundle.evidence["interpretation_inputs"]["raw_group_summary"]
         groups={str(r["treatment"]):r for r in actual}
         for row in desc["body"]["grouped"]:
-            key=row["group_value"]
+            raw=row["group_value"];sc=t["plan"]["scope"]
+            key="0" if raw==sc.get("control_value","0") else "1" if raw==sc.get("treated_value","1") else "invalid"
             if key not in groups or row["rows"]!=groups[key]["n"] or not math.isclose(row["mean"],groups[key]["outcome_mean"],rel_tol=0,abs_tol=1e-10):
                 raise DesignError("两个统计Run的分组样本或均值不一致，停止整合。")
         audit=self.evidence(t["id"],"S01")
@@ -394,6 +457,9 @@ class BoundedCoordinator:
             raise DesignError("A/B样本量与审计不一致。")
         receipt=self._verify(t)
         runs=[desc["body"]["run_id"],effect["body"]["run_id"]]
+        if is_configurable(t["plan"]):
+            from .configurable_report import complete_report
+            return complete_report(t,rates,groups,bundle,record,receipt,runs)
         text=(f"研究目标：{t['plan']['objective']}\n"
               f"未发邮件组两周访问率为{rates['control_rate']:.2%}，男装邮件组为{rates['treated_rate']:.2%}。"
               f"绝对差为{rates['pp']:.2f}个百分点，原工具95%置信区间为"
