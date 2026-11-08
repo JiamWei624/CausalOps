@@ -1,0 +1,133 @@
+{
+  "version": "0.20.0b1",
+  "scope": "candidate intended public tree and all reachable Git objects; final exact commit and archives separately bound in distribution verification",
+  "automated_tree_status": "review",
+  "blockers": 0,
+  "current_review_findings": [
+    {
+      "severity": "review",
+      "code": "email_address",
+      "path": "docs/product/proactive-diagnostics/stage1-evidence/test-cases.json",
+      "line": 4300,
+      "message": "Potential personal identifier or machine-specific path requires review."
+    },
+    {
+      "severity": "review",
+      "code": "email_address",
+      "path": "docs/product/proactive-diagnostics/stage2-evidence/test-cases.json",
+      "line": 3688,
+      "message": "Potential personal identifier or machine-specific path requires review."
+    },
+    {
+      "severity": "review",
+      "code": "cn_mobile",
+      "path": "docs/product/proactive-diagnostics/stage3-evidence/engineering-results.json",
+      "line": 5605,
+      "message": "Potential personal identifier or machine-specific path requires review."
+    },
+    {
+      "severity": "review",
+      "code": "cn_mobile",
+      "path": "docs/product/proactive-diagnostics/stage3-evidence/reports.json",
+      "line": 1886,
+      "message": "Potential personal identifier or machine-specific path requires review."
+    },
+    {
+      "severity": "review",
+      "code": "email_address",
+      "path": "tests/test_providers_v070.py",
+      "line": 48,
+      "message": "Potential personal identifier or machine-specific path requires review."
+    }
+  ],
+  "manual_review": [
+    {
+      "file": "docs/product/proactive-diagnostics/stage1-evidence/test-cases.json",
+      "code": "email_address",
+      "same_as_previously_reviewed_public_line": true,
+      "line_sha256": "d82d3271ea9edd603c0c5456e5912a1a4145804c7bafab1613c70457abee6c7e"
+    },
+    {
+      "file": "docs/product/proactive-diagnostics/stage2-evidence/test-cases.json",
+      "code": "email_address",
+      "same_as_previously_reviewed_public_line": true,
+      "line_sha256": "9e28bbb2875b2cf69f6f9aaecc516237fb193785a920e2eb6b7956c74318a2f5"
+    },
+    {
+      "file": "docs/product/proactive-diagnostics/stage3-evidence/engineering-results.json",
+      "code": "cn_mobile",
+      "same_as_previously_reviewed_public_line": true,
+      "line_sha256": "b27c84f75ff6ab6cc101fa8978fb274c21b7ed6cdfd0d7420fae254e8fead9d7"
+    },
+    {
+      "file": "docs/product/proactive-diagnostics/stage3-evidence/reports.json",
+      "code": "cn_mobile",
+      "same_as_previously_reviewed_public_line": true,
+      "line_sha256": "6e0aa6277e2fadbc321d87d2ac7d6926218c5f8acd9b86360cea8d3e321d82f8"
+    },
+    {
+      "file": "tests/test_providers_v070.py",
+      "code": "email_address",
+      "same_as_previously_reviewed_public_line": true,
+      "line_sha256": "17dd043d0ae30044c607e1b11eb92656d0c7c9c6c61d0c2321e1687ee0547c06"
+    }
+  ],
+  "manual_disposition": "all five findings match already reviewed 0.19 public lines; controlled test email examples or hash-digit shape, no real user contact",
+  "history_review": {
+    "object_counts_at_application_freeze": {
+      "commit": 50,
+      "tree": 457,
+      "blob": 1432
+    },
+    "inherited_findings": [
+      {
+        "object": "294fe15c96f766010e862865eb524fb5bd947381",
+        "file": "tests/test_prepublish_audit.py",
+        "codes": [
+          "assigned_credential"
+        ],
+        "inherited_from_published_beta": true
+      },
+      {
+        "object": "2d99f5e7837b039c9888029723b1b5cabbfa5ff4",
+        "file": "tests/test_v13_transport.py",
+        "codes": [
+          "assigned_credential"
+        ],
+        "inherited_from_published_beta": true
+      },
+      {
+        "object": "76e80b8c99d27f3bdd86d17ee5d563fad186a280",
+        "file": "src/causalops/real_data.py",
+        "codes": [
+          "private_directory"
+        ],
+        "inherited_from_published_beta": true
+      }
+    ],
+    "new_findings": [],
+    "disposition": "two historical inert test literals and one private directory name already reachable from public parent; not removed from existing remote history"
+  },
+  "absolute_path_review": {
+    "matches": 89,
+    "files": 15,
+    "scope": "includes cjs, html, cmd, svg in addition to scanner text suffixes",
+    "classification": "replaceable installation/cache/workspace examples, old already-public local validation labels, generic Edge Program Files fallback; no new account/private research paths or required E-drive dependency",
+    "portable_environment_verified": true
+  },
+  "screenshot_review": {
+    "count": 8,
+    "method": "visual inspection at actual resolution",
+    "source": "public experimental or synthetic task, installed 0.20.0b1",
+    "private_paths_accounts_or_secrets_found": false,
+    "recapture": "original blank transient report screenshot retained locally; final image waits for actual report body. Plan image shows real unapproved retained-metric plan."
+  },
+  "detector_policy": "unchanged prepublish_audit.py; no broadened ignore or disabled credential detector; realistic inert credential counterexamples outside scoped test exception remain blocked",
+  "exclusions": "private papers, social-media/Weibo datasets, research databases, hidden evaluation answers, raw model sessions, participant data and unredacted local logs not imported",
+  "limits": [
+    "Pattern and visual inspection cannot prove absence of all sensitive content.",
+    "Previously public historical risks remain publicly reachable.",
+    "Automatic review findings retained with bounded manual disposition, not relabeled automatic clean."
+  ],
+  "release_gate": "manual_review_accepted_no_new_blocker; final HEAD/history/archive verification required before push authorization"
+}

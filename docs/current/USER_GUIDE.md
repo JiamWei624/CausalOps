@@ -1,5 +1,7 @@
 # 操作说明 · 0.18.0b1
 
+> 本文保留较早Beta功能说明。0.20.0b1新增的可配置研究、两条候选路径及限制，见[新版教程](CONFIGURABLE_RESEARCH_GUIDE.md)；不能据旧说明认定P3不存在或已支持通用自主研究。
+
 > 本候选新增受限Hillstrom五步工作台，见[自动化教程](AUTOMATION_GUIDE.md)。旧版单次流程继续保留；新增[显式诊断与需求草案教程](DIAGNOSTICS_GUIDE.md)。安装后请核对软件包0.18.0b1与启动地址构建指纹。
 
 [完整公共示例教程](PUBLIC_TUTORIAL.md) · [安装与故障排查](INSTALLATION.md)

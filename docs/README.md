@@ -1,4 +1,6 @@
-<!-- current: 0.19.0b1 -->
+<!-- current: 0.20.0b1 -->
+
+当前文档入口：0.20.0b1受限可配置研究候选，[完整教程](current/CONFIGURABLE_RESEARCH_GUIDE.md) · [验收](releases/configurable-research-beta/ACCEPTANCE.md) · [能力限制](releases/configurable-research-beta/LIMITATIONS.md)。尚无真人独立使用的正式验收数据。下面0.19及更早记录按原版本保留，不代表本次实测或发布状态。
 
 当前0.19.0b1研究决策记忆Beta候选：[决策记忆教程](current/DECISION_MEMORY_GUIDE.md) · [本次验收](releases/research-decision-memory-beta/ACCEPTANCE.md)。本记录对应发布准备阶段，公开状态以实际GitHub分支为准；0.18.0b1是此前公开版本。原诊断材料：[诊断教程](current/DIAGNOSTICS_GUIDE.md) · [验收与边界](releases/proactive-diagnostics-beta/ACCEPTANCE.md) · [版本管理建议](releases/proactive-diagnostics-beta/MAIN_STRATEGY.md)。旧版本报告和分母继续保留。
 
@@ -9,7 +11,7 @@
 
 - [受限自动化五步教程](current/AUTOMATION_GUIDE.md) · [本次候选验收](releases/automation-v2-beta/ACCEPTANCE.md) · [当前能力限制](releases/automation-v2-beta/LIMITATIONS.md)
 
-本文档整理的是 **0.19.0b1** 候选，发布状态以实际分支为准。请优先使用下面的当前说明，带版本号的旧文档仅记录对应阶段。
+本快照版本为 **0.20.0b1**，发布状态以实际分支为准；P3新增范围优先使用顶部教程，带旧版本号的文档只记录对应阶段。
 
 - [第二轮营销实验操作与验收](current/PHASE2_ACCEPTANCE.md) · [示例教程](current/PUBLIC_TUTORIAL.md) · [离线图文教程](current/TUTORIAL.html)
 - [项目与功能手册](current/COMPLETE_MANUAL.md) · [可打印手册](current/COMPLETE_MANUAL.html) · [安装与更新](current/INSTALLATION.md)

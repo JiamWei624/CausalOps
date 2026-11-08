@@ -1,8 +1,8 @@
-# 安装、启动与故障恢复 · 0.19.0b1
+# 安装、启动与故障恢复 · 0.20.0b1
 
-> 本候选新增受限Hillstrom五步工作台，见[自动化教程](AUTOMATION_GUIDE.md)。旧版单次流程继续保留；新增[显式诊断与需求草案教程](DIAGNOSTICS_GUIDE.md)。安装后请核对软件包0.19.0b1与启动地址构建指纹。
+> 本候选新增用户自有数据的受限研究，见[新版教程](CONFIGURABLE_RESEARCH_GUIDE.md)。原Hillstrom五步、单次研究、诊断和决定均保留。安装后核对软件包0.20.0b1与启动地址构建指纹。
 
-新增[研究决策记忆教程](DECISION_MEMORY_GUIDE.md)。本次发布准备记录时0.19.0b1尚未推送，0.18.0b1为此前公开版本。公开状态以GitHub对应分支及精确提交核对为准；不要假定PyPI或Release存在本版本。
+[研究决策记忆教程](DECISION_MEMORY_GUIDE.md)继续适用。0.20.0b1为独立Beta候选，发布状态以对应分支及精确SHA为准；不要假定PyPI或GitHub Release已经存在本版本。
 
 本文面向第一次运行 CausalOps 的使用者。先完成本地示例，再选择是否接入模型。仓库公开只代表源码可获取，不代表把本机工作区公开或提供在线多人服务。
 
@@ -15,7 +15,7 @@
 
 ## 2. 在线安装（从源码目录执行）
 
-在 GitHub 的 Code 菜单下载 ZIP 并解压，或使用 Git 克隆仓库。把项目放在数据盘。以下 E 盘只是可替换的路径示例，不要求与作者机器目录一致。
+取得本次0.20.0b1快照源码并解压；独立Beta与main不是同一版本，不能用默认main冒充此版本。把项目放在数据盘。以下 E 盘只是可替换的路径示例，不要求与作者机器目录一致。
 
 ```powershell
 New-Item -ItemType Directory -Force -Path "E:/causalops-temp", "E:/causalops-cache/pip", "E:/causalops-cache/matplotlib"
@@ -32,7 +32,7 @@ python -m venv "E:/causalops-env"
 
 不使用系统 Python 的 site-packages，不需要管理员方式运行。不确定解释器位置时，用 `where.exe python` 检查；带引号的完整解释器路径前使用 PowerShell 调用符 `&`。
 
-如已有 0.16.0 安装，更新代码后请在新源码根目录用同一虚拟环境再次执行上面的安装命令，再重启服务。第二轮首页应显示营销邮件预览与三张案例卡；本候选应显示0.19.0b1，并同时核对构建指纹。葡萄酒样本随包提供；营销案例需另取[指定公开压缩包](PHASE2_ACCEPTANCE.md)。
+如已有 0.16.0 安装，更新代码后请在新源码根目录用同一虚拟环境再次执行上面的安装命令，再重启服务。第二轮首页应显示营销邮件预览与三张案例卡；本候选应显示0.20.0b1，并同时核对构建指纹。葡萄酒样本随包提供；营销案例需另取[指定公开压缩包](PHASE2_ACCEPTANCE.md)。
 
 ## 3. 离线安装
 

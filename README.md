@@ -1,15 +1,36 @@
-<!-- release: 0.19.0b1 -->
-# CausalOps Beta
+<!-- release: 0.20.0b1 -->
+# CausalOps 0.20.0b1 受限 Beta
 
 **面向科研与业务分析的可审核、可追溯 AI 数据科学 Agent。**
 
-`0.19.0b1` · Windows x64 / Python 3.11 · 本地单用户 · 研究决策记忆受限首版候选
+`0.20.0b1` · Windows x64 / Python 3.11 · 本地单用户 · 单表双组二元可配置研究
 
-CausalOps 将研究问题、版本化数据合同、方法建议、人工审核、本地统计与运行证据连接起来。使用者可以从单表数据提出问题，审核方案后执行注册工具，并按具体运行查看报告。自动化入口只支持已核验的 Hillstrom 营销实验：一次整体审核，按固定五步推进两次真实统计计算。
+CausalOps 将研究问题、版本化数据合同、候选方案、人工审核、本地统计与运行证据连接起来。现在可导入自己的CSV/Parquet，配置双组二元指标后执行受限研究；原Hillstrom固定五步仍保留。本说明适用于该Beta快照，默认main的较早源码与独立Beta分支不同。
+
+## 新增：用户自有数据受控研究
+
+上传与预览 → 核对分析单位、组别、二元编码、单位、整表窗口与设计来源 → 模板或可选模型候选 → 正式人工审批 → 真实统计Run → 显式诊断和三层报告 → 用户研究决定。
+
+|路径|逻辑步骤与工具|边界|
+|---|---|---|
+|描述性研究|4逻辑步，descriptive一次|未知分配机制可描述；无A/B Run、因果效应或推断区间|
+|已登记随机化的双组研究|5逻辑步，descriptive和ab_test各一次|真实上游证据及批准均满足后才执行效果分析|
+
+只支持单表、两个组、二元指标及确认的独立观察单位。不自动日期切片、删样本、填补或连续值二分。更换指标、组别或窗口形成新计划并重新审核，旧报告保留；新窗口必须提供实际新范围数据。
+
+DeepSeek只可在允许路径中提出候选，不能改写研究事实、添加方法或授予执行权。Schema、字段、方法、依赖和范围由确定性程序校验，采纳后仍需正式批准。默认可不用模型；未配置或失败时可明确选择模板。合同摘要外发须逐次预览授权，凭据由用户配置，不自动发送原始行、人员标识值、文件路径或聊天。字段名/目标也可能敏感，仍需核对。
+
+历史开发验收只有2次真实DeepSeek调用、6036令牌，费用未核实；不是大规模模型能力评测。统计执行和诊断无需模型。**目前尚无真人独立使用的正式验收数据。**试用准备和固定脚本不能描述为真人完成率或效率。
+
+[新版完整教程](docs/current/CONFIGURABLE_RESEARCH_GUIDE.md) · [本次候选验收](docs/releases/configurable-research-beta/ACCEPTANCE.md) · [当前限制](docs/releases/configurable-research-beta/LIMITATIONS.md) · [P3历史摘要](docs/product/configurable-research/PUBLIC_SUMMARY.md)
+
+![本轮安装包的真实可配置研究报告](docs/releases/configurable-research-beta/assets/report.png)
+
+*图：本轮0.20.0b1安装包实际公开数据Run。每个用户任务必须真实计算，不能复制示例数值。*
 
 **当前不是通用自主研究系统。** 不支持任意自然语言目标的自动多步骤规划、通用多表研究、完整主动诊断或云端多人协作。当前诊断是用户显式触发的确定性检查，不是后台持续监控或模型自主推理。开放式方法建议和研究解释仍有已记录的准确性限制。没有真人完成率、提效或生产可靠性数据。
 
-[研究决策记忆教程](docs/current/DECISION_MEMORY_GUIDE.md) · [诊断教程](docs/current/DIAGNOSTICS_GUIDE.md) · [自动化使用教程](docs/current/AUTOMATION_GUIDE.md) · [安装](docs/current/INSTALLATION.md) · [本候选验收](docs/releases/research-decision-memory-beta/ACCEPTANCE.md) · [已知限制](docs/releases/research-decision-memory-beta/LIMITATIONS.md) · [架构](docs/current/ARCHITECTURE.md)
+[研究决策记忆教程](docs/current/DECISION_MEMORY_GUIDE.md) · [诊断教程](docs/current/DIAGNOSTICS_GUIDE.md) · [自动化使用教程](docs/current/AUTOMATION_GUIDE.md) · [安装](docs/current/INSTALLATION.md) · [历史P2验收](docs/releases/research-decision-memory-beta/ACCEPTANCE.md) · [当前限制](docs/releases/configurable-research-beta/LIMITATIONS.md) · [架构](docs/current/ARCHITECTURE.md)
 
 ![实际首页与自动化入口](docs/releases/research-decision-memory-beta/assets/home.png)
 
@@ -88,9 +109,9 @@ py -3.11 -m venv .venv
 
 ## 质量记录与能力限制
 
-P2开发版32da3fb工程回归1067项通过、固定浏览器最终4/4；这是开发版历史成绩。本候选独立安装及发布验证结果另见本次验收，不把工程通过率或固定脚本结果解释为真人效率或通用Agent准确率。
+P3开发版9dc0954工程回归1137项通过、新流程2/2、旧流程17/17；这是开发版历史成绩。本候选独立安装及发布验证结果另见本次验收，不把工程通过率或固定脚本结果解释为真人效率或通用Agent准确率。
 
-- 自动化三个阶段的工程与固定浏览器证据按版本保存；本候选的实际安装、测试数、四条自动化流程及旧流程结果见[本次验收](docs/releases/proactive-diagnostics-beta/ACCEPTANCE.md)，不能沿用旧成绩代替新测。
+- 自动化三个阶段的工程与固定浏览器证据按版本保存；本候选的实际安装、测试数、四条自动化流程及旧流程结果见[本次验收](docs/releases/configurable-research-beta/ACCEPTANCE.md)，不能沿用旧成绩代替新测。
 - Eval V2.2固定流程8/8，但最后N06自由探索3次未完整完成；固定脚本不代表自主导航或真人效率。
 - Eval V2.3最终开发集为本地9/30、DeepSeek15/30。保留集每模式实际执行13题，已确认正确0/13，另7题未执行；模型6项评分争议仍保留。不能合并成50题通用准确率。[归档汇总](docs/evaluation/v23/PUBLIC_SUMMARY.md)
 - PSM等方法有统计推断限制；高风险研究与业务决策须专业复核。部分复杂只读问题、指标与统计解释仍不可靠。两周访问率不支持推算次年净利润。
@@ -99,7 +120,7 @@ P2开发版32da3fb工程回归1067项通过、固定浏览器最终4/4；这是�
 
 Streamlit→ResearchService。单次研究走LangGraph与本地方法知识检索；受限自动化走BoundedCoordinator、PlanV2及步骤证据门禁，复用原统计工具与审批。SQLite保存任务/批准/预算/Run元数据，Parquet与结果文件保存数据和统计证据。恢复先校验所有权及既有Run，不盲目重算。[实现与边界](docs/current/ARCHITECTURE.md)
 
-模型为可选服务。连接凭据与数据外发授权分别管理；固定自动化计划不调用DeepSeek。公开源码、个人工作区和模型数据发送是不同权限。论文、私人研究和微博数据、数据库、密钥、隐藏评测答案不随快照分发。[安全](SECURITY.md) · [模型与隐私](docs/current/PROVIDERS.md)
+模型为可选服务。连接凭据与数据外发授权分别管理；原Hillstrom固定链不调用DeepSeek，可配置候选规划需要单独授权。公开源码、个人工作区和模型数据发送是不同权限。论文、私人研究和微博数据、数据库、密钥、隐藏评测答案不随快照分发。[安全](SECURITY.md) · [模型与隐私](docs/current/PROVIDERS.md)
 
 ## 完整文档
 
@@ -108,7 +129,9 @@ Streamlit→ResearchService。单次研究走LangGraph与本地方法知识检�
 |第一次运行|[安装](docs/current/INSTALLATION.md) · [自动化教程](docs/current/AUTOMATION_GUIDE.md) · [日常操作](docs/current/USER_GUIDE.md)|
 |理解结果|[方法合同](docs/METHOD_CONTRACTS.md) · [研究质量](docs/current/RESEARCH_QUALITY.md) · [运行核验](docs/current/VALIDATION.md)|
 |理解代码|[架构](docs/current/ARCHITECTURE.md) · [五步设计与历史](docs/product/automation-v2/README.md) · [完整功能手册](docs/current/COMPLETE_MANUAL.md)|
-|本次候选|[变更与范围](docs/releases/proactive-diagnostics-beta/README.md) · [验收](docs/releases/proactive-diagnostics-beta/ACCEPTANCE.md) · [限制](docs/releases/proactive-diagnostics-beta/LIMITATIONS.md)|
+|本次候选|[变更与范围](docs/releases/configurable-research-beta/CHANGELOG.md) · [验收](docs/releases/configurable-research-beta/ACCEPTANCE.md) · [限制](docs/releases/configurable-research-beta/LIMITATIONS.md)|
 |贡献与许可|[贡献](CONTRIBUTING.md) · [MIT许可](LICENSE) · [第三方许可](THIRD_PARTY_NOTICES.md) · [全部索引](docs/README.md)|
 
-未来规划包括有界自然语言规划、更完整的诊断规则与决策记忆、多表指标管理和RAG专项优化，均不作为当前能力。[版本历史](docs/HISTORY.md)
+旧完整手册覆盖较早Beta；P3新增功能以本README和新版可配置研究教程为准。
+
+未来规划包括通用自然语言自主规划、更完整的诊断规则与决策记忆、多表指标管理和RAG专项优化，均不作为当前能力。[版本历史](docs/HISTORY.md)

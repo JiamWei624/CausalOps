@@ -1,0 +1,50 @@
+[
+  {
+    "file": "home.png",
+    "sha256": "902b8d0793a1f399a65f5b41d713981e8ceb30a3cf0aa9381b40ec1f39a6c8c3",
+    "software_version": "0.20.0b1",
+    "source": "fresh installed wheel, real Streamlit fixed browser, public/synthetic data, no human participants"
+  },
+  {
+    "file": "upload.png",
+    "sha256": "0a1c8ee2a13eb8d6c40faf7c511a3a7ee579f939d296d8bb4d0b1c21b92490e9",
+    "software_version": "0.20.0b1",
+    "source": "fresh installed wheel, real Streamlit fixed browser, public/synthetic data, no human participants"
+  },
+  {
+    "file": "plan.png",
+    "sha256": "616b657a9c22d2d0df9a0a7a3875f49ae28b66b0bce262b6b9b81aa54626ed77",
+    "software_version": "0.20.0b1",
+    "source": "fresh installed wheel, real Streamlit fixed browser, public/synthetic data, no human participants"
+  },
+  {
+    "file": "report.png",
+    "sha256": "b4ad7cb090fe5111c70eaffef2847f160252221e2715541659738f289742226a",
+    "software_version": "0.20.0b1",
+    "source": "fresh installed wheel, real Streamlit fixed browser, public/synthetic data, no human participants"
+  },
+  {
+    "file": "model-off.png",
+    "sha256": "e8365c8cafc32bc9b5187f54c3a6b0612fb7598bc1b6943d821aba30494ea29a",
+    "software_version": "0.20.0b1",
+    "source": "fresh installed wheel, real Streamlit fixed browser, public/synthetic data, no human participants"
+  },
+  {
+    "file": "descriptive.png",
+    "sha256": "8c989953c35b8909e43ba416c0e53ac0025c6fedb0fa3a7cfcd4e71b55008a62",
+    "software_version": "0.20.0b1",
+    "source": "fresh installed wheel, real Streamlit fixed browser, public/synthetic data, no human participants"
+  },
+  {
+    "file": "diagnostics.png",
+    "sha256": "8bb5b8139fdb286ad44683b9789115d903c36c2fdf2892bcc32920f7f42f4c9e",
+    "software_version": "0.20.0b1",
+    "source": "fresh installed wheel, real Streamlit fixed browser, public/synthetic data, no human participants"
+  },
+  {
+    "file": "decision.png",
+    "sha256": "49a525c098f37bba9aa0b20c7fa8be8f2844bfbe681696bac9c73adc841cb539",
+    "software_version": "0.20.0b1",
+    "source": "fresh installed wheel, real Streamlit fixed browser, public/synthetic data, no human participants"
+  }
+]

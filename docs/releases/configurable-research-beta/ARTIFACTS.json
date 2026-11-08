@@ -1,0 +1,12 @@
+{
+  "version": "0.20.0b1",
+  "source_archive": "causalops-agent-0.20.0b1-source.zip",
+  "wheel": "causalops_agent-0.20.0b1-py3-none-any.whl",
+  "source_inventory": "PACKAGE_MANIFEST.json",
+  "inventory_policy": "canonical tracked Git blob bytes, cmd exports CRLF per .gitattributes; manifest excludes itself; outer SHA256SUMS covers complete source ZIP and wheel",
+  "external_final_record": "FINAL_STATE.json",
+  "external_checksums": "SHA256SUMS.txt",
+  "reproduction": "build wheel from source snapshot; install pinned Windows/Python3.11 dependencies and wheel; pip check; optional model off by default",
+  "evidence": "EVIDENCE.json contains sanitized real task/contract/plan/Run references; raw records stay local",
+  "no_self_reference": "ZIP hash and final Git SHA stored outside the hashed source tree"
+}

@@ -1,0 +1,812 @@
+{
+  "version": "0.20.0b1",
+  "branch": "beta/configurable-research-20261108",
+  "public_parent": "83d533214f8f963a3752fbd2bc2d2037bf87e0ba",
+  "application_export_commit": "007d01e42663e7fce57d3ce91d883f9512d2f34d",
+  "approved_development_source": "d14f57464af0b72598cbd801f93b67d0d44eac74",
+  "installation": {
+    "version": "0.20.0b1",
+    "installed_package_in_new_venv": true,
+    "system_site_packages": false,
+    "source_sha": "c1ea8f94e3270f263356d9d68f4f4ad6867f3c280d4ba9e2e388664a84e07b42",
+    "registered_methods": [
+      "descriptive",
+      "correlation",
+      "ols",
+      "logit",
+      "poisson",
+      "ab_test",
+      "cuped",
+      "regression_adjustment",
+      "psm",
+      "ipw",
+      "double_ml",
+      "did",
+      "aipw",
+      "iv_2sls",
+      "rd_sharp",
+      "rd_fuzzy",
+      "staggered_did"
+    ],
+    "application_resources": 198,
+    "business_resources_match_approved_P3": true,
+    "only_runtime_change": "version metadata 0.19.0b1 -> 0.20.0b1",
+    "environment_scope": "new Python3.11 Windows venv; pinned public dependencies installed from existing offline wheel cache; not another computer"
+  },
+  "tests": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "227",
+    "time": "450.051",
+    "timestamp": "2026-11-08T19:39:09.433008+08:00"
+  },
+  "test_scope": [
+    "test_configurable_research.py",
+    "test_configurable_research_ui.py",
+    "test_configurable_diagnostics.py",
+    "test_constrained_planning.py",
+    "test_constrained_planning_ui.py",
+    "test_usability_study.py",
+    "test_automation_v2_safety.py",
+    "test_automation_v2_stage2.py",
+    "test_automation_v2.py",
+    "test_diagnostics_stage1.py",
+    "test_diagnostics_stage2.py",
+    "test_research_decisions.py",
+    "test_prepublish_audit.py"
+  ],
+  "not_rerun_historical_full_regression": {
+    "product": "9dc0954",
+    "passed": 1137
+  },
+  "p3_browser_results": [
+    {
+      "task": "A",
+      "actor_type": "fixed_script",
+      "human": false,
+      "free_exploration": false,
+      "start_condition": "loaded home; new isolated workspace; no current task",
+      "started": "2026-11-08T11:39:25.403Z",
+      "understanding": "not_measured",
+      "help_requests": null,
+      "operator_interventions": 0,
+      "model_requests": 0,
+      "status": "passed",
+      "task_id": "0f9fd9aa09e64d3db5c45aed20987ccd",
+      "report_id": "1d29fb470321bf9006aed127039026a96c51f0a35e1576def77e49ba3383e8bd",
+      "source_runs": [
+        "25475858159540a28b5439c3d7036160",
+        "7f0316d1db4e4f939b2a70e9be6cad3b"
+      ],
+      "run_count": 2,
+      "plan_version": 2,
+      "unit_scope_bound": true,
+      "native_unchanged_by_diagnosis": true,
+      "ended": "2026-11-08T11:40:16.233Z",
+      "elapsed_ms": 50830,
+      "recorded_actions": 25,
+      "failed_actions": 0,
+      "page_ready_wait_ms": 19447
+    },
+    {
+      "task": "B",
+      "actor_type": "fixed_script",
+      "human": false,
+      "free_exploration": false,
+      "start_condition": "loaded home; new isolated workspace; no current task",
+      "started": "2026-11-08T11:40:27.095Z",
+      "understanding": "not_measured",
+      "help_requests": null,
+      "operator_interventions": 0,
+      "model_requests": 0,
+      "status": "passed",
+      "task_id": "54a47eb779544bfdbfffa52d46124cec",
+      "report_id": "bde12da1d687950b8e12036e54c24c1b6925fe8180763c2a61cdad07ed9d7b25",
+      "source_runs": [
+        "ee98b46e9bb045d5acc3622831fe5ef9"
+      ],
+      "run_count": 1,
+      "plan_version": 2,
+      "unit_scope_bound": true,
+      "native_unchanged_by_diagnosis": true,
+      "ended": "2026-11-08T11:41:16.053Z",
+      "elapsed_ms": 48958,
+      "recorded_actions": 26,
+      "failed_actions": 0,
+      "page_ready_wait_ms": 15329
+    },
+    {
+      "task": "C",
+      "actor_type": "fixed_script",
+      "human": false,
+      "free_exploration": false,
+      "start_condition": "same simulated session completed B report; controller only navigated back before timing",
+      "started": "2026-11-08T11:41:18.907Z",
+      "understanding": "not_measured",
+      "help_requests": null,
+      "operator_interventions": 0,
+      "model_requests": 0,
+      "status": "passed",
+      "task_id": "3239d958e46a480e9ea0f9ce456ebbc1",
+      "old_task_id": "54a47eb779544bfdbfffa52d46124cec",
+      "report_id": "e18f80bd0a9124e901dcf22938e5b8d74d805a602b53a54968f8c3c8221f929b",
+      "source_runs": [
+        "acecde61c781470db68a49d9ffdf2bb4"
+      ],
+      "old_source_runs": [
+        "ee98b46e9bb045d5acc3622831fe5ef9"
+      ],
+      "plan_version": 3,
+      "old_plan_version": 2,
+      "old_runs_preserved": true,
+      "decision_has_no_execution_authority": true,
+      "ended": "2026-11-08T11:42:12.642Z",
+      "elapsed_ms": 53735,
+      "recorded_actions": 18,
+      "failed_actions": 0,
+      "page_ready_wait_ms": 13721
+    }
+  ],
+  "raw_runner_metadata_correction": "raw first summary retains development baseline product_commit=9dc0954; actual installed version/source verified independently. Runner label now distinguishes development baseline from candidate; raw result not rewritten.",
+  "upload_formats": {
+    "A": "CSV",
+    "B": "Parquet",
+    "C": "same B table, retained metric revision"
+  },
+  "legacy_browser": {
+    "legacy-auto01": {
+      "results": [
+        {
+          "case": "A-normal",
+          "status": "passed",
+          "model_requests": null,
+          "model_calls": 0,
+          "operator_interventions": 0
+        },
+        {
+          "case": "B-insufficient",
+          "status": "passed",
+          "model_requests": null,
+          "model_calls": 0,
+          "operator_interventions": 0
+        },
+        {
+          "case": "C-pause-cancel",
+          "status": "passed",
+          "model_requests": null,
+          "model_calls": 0,
+          "operator_interventions": 0
+        },
+        {
+          "case": "C-uncertain",
+          "status": "passed",
+          "model_requests": null,
+          "model_calls": 0,
+          "operator_interventions": 0
+        },
+        {
+          "case": "legacy-single",
+          "status": "passed",
+          "model_requests": null,
+          "model_calls": 0,
+          "operator_interventions": 0
+        }
+      ]
+    },
+    "legacy-diag01": {
+      "results": [
+        {
+          "case": "A-complete",
+          "status": "passed",
+          "model_requests": 0,
+          "model_calls": null,
+          "operator_interventions": null
+        },
+        {
+          "case": "B-unknown-design",
+          "status": "passed",
+          "model_requests": 0,
+          "model_calls": null,
+          "operator_interventions": null
+        },
+        {
+          "case": "C-foreign",
+          "status": "passed",
+          "model_requests": 0,
+          "model_calls": null,
+          "operator_interventions": null
+        },
+        {
+          "case": "C-metric",
+          "status": "passed",
+          "model_requests": 0,
+          "model_calls": null,
+          "operator_interventions": null
+        },
+        {
+          "case": "C-unit",
+          "status": "passed",
+          "model_requests": 0,
+          "model_calls": null,
+          "operator_interventions": null
+        },
+        {
+          "case": "C-window",
+          "status": "passed",
+          "model_requests": 0,
+          "model_calls": null,
+          "operator_interventions": null
+        },
+        {
+          "case": "C-hash",
+          "status": "passed",
+          "model_requests": 0,
+          "model_calls": null,
+          "operator_interventions": null
+        },
+        {
+          "case": "switch-consistency",
+          "status": "passed",
+          "model_requests": 0,
+          "model_calls": null,
+          "operator_interventions": null
+        }
+      ],
+      "samples": 2271,
+      "visible_identity_mismatches": 0,
+      "native_records_unchanged": true
+    },
+    "legacy-memory01": {
+      "results": [
+        {
+          "case": "A-record-refresh",
+          "status": "passed",
+          "model_requests": 0,
+          "model_calls": null,
+          "operator_interventions": null
+        },
+        {
+          "case": "B-same-problem",
+          "status": "passed",
+          "model_requests": 0,
+          "model_calls": null,
+          "operator_interventions": null
+        },
+        {
+          "case": "C-changed-evidence",
+          "status": "passed",
+          "model_requests": 0,
+          "model_calls": null,
+          "operator_interventions": null
+        },
+        {
+          "case": "D-safety-revisions",
+          "status": "passed",
+          "model_requests": 0,
+          "model_calls": null,
+          "operator_interventions": null
+        }
+      ],
+      "statistical_history_unchanged": true,
+      "old_reports_preserved": true
+    }
+  },
+  "native_case_evidence": [
+    {
+      "case": "A",
+      "task_id": "0f9fd9aa09e64d3db5c45aed20987ccd",
+      "session_id": "d46528de9a9a4c53a65cde9f01769fd5",
+      "plan_id": "e292ed1f0a0e4991bfad596ad7ecfaf7",
+      "plan_version": 2,
+      "plan_sha": "8cc8b9373dddc5f0febc5fb3c316108d91ed356a4ead06417ba0974911038ce2",
+      "data_ref": {
+        "upload_id": "19430777fd01b7844205f062652dcf7306c126e01971d8fa29380aede2c5f31e",
+        "frame_sha": "93fb299c62c37a1e19395fe9bd9eaec681b194ab1e48f976c24007df0233a05e",
+        "parquet_sha": "5e8be8b303221e27457dfe4da5395a242b48f101f1c2e45fccb2b9750cf4c277"
+      },
+      "contract_ref": {
+        "id": "e323958b8fec4084b3683267df41ec98",
+        "version": 1,
+        "sha": "20f4805dd31e9e88b649278100fb1a63aa4ddbacdc1d850ad8449ae78d419ccb",
+        "data_sha": "93fb299c62c37a1e19395fe9bd9eaec681b194ab1e48f976c24007df0233a05e"
+      },
+      "approval_id": "7bc7d754634c452a8c00affe55abbf56",
+      "scope": {
+        "analysis_unit": "一名银行主管对一份档案的一次推荐",
+        "entity": "__causalops_record_id",
+        "outcome": "decision",
+        "metric": "晋升推荐比例",
+        "unit": "概率",
+        "window": "1972管理研修实验的一次推荐",
+        "treatment": "gender",
+        "groups": {
+          "female": "女性标记档案",
+          "male": "男性标记档案"
+        },
+        "control_value": "female",
+        "treated_value": "male",
+        "inclusion": "全部已上传记录；不自动筛选、删样本或填补",
+        "missing_policy": "stop",
+        "assignment_source": "https://openintro-ims.netlify.app/foundations-randomization",
+        "assignment": "randomized",
+        "record_grain": "每位主管一次判断，无原始人员ID，仅以确认的记录粒度分析。",
+        "coding": {
+          "not promoted": 0,
+          "promoted": 1
+        },
+        "display_unit": "概率"
+      },
+      "source_runs": [
+        "25475858159540a28b5439c3d7036160",
+        "7f0316d1db4e4f939b2a70e9be6cad3b"
+      ],
+      "grouped": [
+        {
+          "group_value": "male",
+          "field": "decision",
+          "rows": 24,
+          "finite_n": 24,
+          "mean": 0.875,
+          "median": 1,
+          "std_ddof1": 0.3378319623460881
+        },
+        {
+          "group_value": "female",
+          "field": "decision",
+          "rows": 24,
+          "finite_n": 24,
+          "mean": 0.5833333333333334,
+          "median": 1,
+          "std_ddof1": 0.5036101551853349
+        }
+      ],
+      "gate": {
+        "decision": "proceed",
+        "descriptive_run_id": "25475858159540a28b5439c3d7036160",
+        "descriptive_evidence_sha": "b01534c799a3518c25af0745af9757aa39e097dea1fe90131f8e454912afc82b",
+        "audit_evidence_sha": "9d5ff64f94acc92ad8b74820fe2ad309df4741fda650d6b00cf84d17a359de32",
+        "sample_size": 48,
+        "checks": [
+          "same_plan_data_metric_window",
+          "two_groups",
+          "complete_cases_without_exclusion",
+          "same_sample_counts",
+          "engine_minimum_sample_and_variation"
+        ],
+        "significance_used": false
+      },
+      "manifest": {
+        "status": "complete",
+        "objective": "比较档案性别标记对本次晋升推荐比例的影响，报告不确定性与证据限制。",
+        "scope": {
+          "analysis_unit": "一名银行主管对一份档案的一次推荐",
+          "entity": "__causalops_record_id",
+          "outcome": "decision",
+          "metric": "晋升推荐比例",
+          "unit": "概率",
+          "window": "1972管理研修实验的一次推荐",
+          "treatment": "gender",
+          "groups": {
+            "female": "女性标记档案",
+            "male": "男性标记档案"
+          },
+          "control_value": "female",
+          "treated_value": "male",
+          "inclusion": "全部已上传记录；不自动筛选、删样本或填补",
+          "missing_policy": "stop",
+          "assignment_source": "https://openintro-ims.netlify.app/foundations-randomization",
+          "assignment": "randomized",
+          "record_grain": "每位主管一次判断，无原始人员ID，仅以确认的记录粒度分析。",
+          "coding": {
+            "not promoted": 0,
+            "promoted": 1
+          },
+          "display_unit": "概率"
+        },
+        "source_runs": [
+          "25475858159540a28b5439c3d7036160",
+          "7f0316d1db4e4f939b2a70e9be6cad3b"
+        ],
+        "sample_size": 48,
+        "group_summary": [
+          {
+            "treatment": 0,
+            "n": 24,
+            "outcome_mean": 0.5833333333333334
+          },
+          {
+            "treatment": 1,
+            "n": 24,
+            "outcome_mean": 0.875
+          }
+        ],
+        "effect": {
+          "estimand": "risk_difference",
+          "outcome": "decision",
+          "raw_unit": "probability",
+          "raw": 0.29166666666666663,
+          "control_rate": 0.5833333333333334,
+          "treated_rate": 0.875,
+          "pp": 29.166666666666664,
+          "ci_pp": [
+            4.904536377189303,
+            53.42879695614402
+          ],
+          "relative_pct": 49.99999999999999,
+          "formulas": {
+            "pp": "100 * raw",
+            "ci_pp": "100 * each raw interval bound",
+            "relative_pct": "100 * raw / control_rate (positive control_rate only)"
+          }
+        },
+        "standard_error": 0.12378637902794572,
+        "method": "ab_test",
+        "interval_method": "independent-group mean difference; normal approximation 1.96",
+        "design_source": "https://openintro-ims.netlify.app/foundations-randomization",
+        "approval_id": "7bc7d754634c452a8c00affe55abbf56",
+        "plan_version": 2,
+        "domain_revision_id": "revision_06c7f7d70a2e4cb7a3a8a27d50bb82fa",
+        "model_calls": 0,
+        "text": "研究目标：比较档案性别标记对本次晋升推荐比例的影响，报告不确定性与证据限制。\n女性标记档案：n=24，晋升推荐比例为58.33%；男性标记档案：n=24，87.50%。绝对差（后者减前者）29.1667个百分点，原工具95%区间[4.9045, 53.4288]个百分点。\n分析单位：一名银行主管对一份档案的一次推荐；窗口：1972管理研修实验的一次推荐；每位主管一次判断，无原始人员ID，仅以确认的记录粒度分析。。分配机制依据：https://openintro-ims.netlify.app/foundations-randomization；使用者核对说明：OpenIntro设计资料说明48位主管随机收到除性别标记外相同的档案，每人作一次推荐，不是实际员工晋升。。方法：已注册ab_test，独立组均值差和1.96正态近似区间；小样本或稀少事件的近似可能不充分，不代表精确检验。结论仅支持已登记对象、分配机制和观察窗口中的二元概率差。未验证无干扰、外部代表性及全部识别假设，不支持其他指标、长期收益或任意人群的结论。独立记录及研究设计由用户确认；程序只核对声明、结构和来源一致性，不证明随机分配真实发生。技术记录键依据用户确认的记录粒度生成，不是额外的身份核验。\n描述统计Run：25475858159540a28b5439c3d7036160；A/B Run：7f0316d1db4e4f939b2a70e9be6cad3b；计划v2；批准7bc7d754634c452a8c00affe55abbf56。"
+      },
+      "diagnostic_report_id": "1d29fb470321bf9006aed127039026a96c51f0a35e1576def77e49ba3383e8bd",
+      "assessment_id": "ff7b148e4d7e3128a097239a9d8c91311576449de615625fc385a1769c88bc43",
+      "rule_statuses": {
+        "PD-01": "verified",
+        "PD-02": "verified",
+        "PD-06": "verified",
+        "PD-07": "verified",
+        "PD-09": "verified",
+        "PD-14": "verified"
+      },
+      "budget_model_calls": 0
+    },
+    {
+      "case": "B",
+      "task_id": "54a47eb779544bfdbfffa52d46124cec",
+      "session_id": "dd5d3b808d7443bdae16b223a7ff7f29",
+      "plan_id": "62afa155a3c9462b9e0e29947333d4bd",
+      "plan_version": 2,
+      "plan_sha": "16055746eca0f771b7e7134acbc474eb4166b3db9cbfb9bcf5268a55a906e343",
+      "data_ref": {
+        "upload_id": "741d2a6a99dbbf272b47f827146e16351f84fe5a63fb39f97efa4a327d015f82",
+        "frame_sha": "3c1f3981374b4172d61310e483096539ed3916bf0934b6cd12cbbefab7e2ded0",
+        "parquet_sha": "53b64acf57381447749811662ac154cafe2bb60953ab72110d805c8d1cbdf804"
+      },
+      "contract_ref": {
+        "id": "cab2f4b99a784e9a94e242607e9e6998",
+        "version": 1,
+        "sha": "cce48b4f215866527836b5f054a98ce8086985f323a06a3ccde27ab9ba8f0f6c",
+        "data_sha": "3c1f3981374b4172d61310e483096539ed3916bf0934b6cd12cbbefab7e2ded0"
+      },
+      "approval_id": "c10d31253b7a45249fe39cf4c5aa43d7",
+      "scope": {
+        "analysis_unit": "独立的虚构产品试用者",
+        "entity": "subject",
+        "outcome": "completed",
+        "metric": "完成比例",
+        "unit": "概率",
+        "window": "合成观察期一",
+        "treatment": "arm",
+        "groups": {
+          "standard": "标准方案",
+          "variant": "新方案"
+        },
+        "control_value": "standard",
+        "treated_value": "variant",
+        "inclusion": "全部已上传记录；不自动筛选、删样本或填补",
+        "missing_policy": "stop",
+        "assignment_source": "",
+        "assignment": "unknown",
+        "record_grain": "每名虚构试用者一条记录，纳入本表全部记录。",
+        "coding": {
+          "no": 0,
+          "yes": 1
+        },
+        "display_unit": "概率"
+      },
+      "source_runs": [
+        "ee98b46e9bb045d5acc3622831fe5ef9"
+      ],
+      "grouped": [
+        {
+          "group_value": "standard",
+          "field": "completed",
+          "rows": 12,
+          "finite_n": 12,
+          "mean": 0.5,
+          "median": 0.5,
+          "std_ddof1": 0.5222329678670935
+        },
+        {
+          "group_value": "variant",
+          "field": "completed",
+          "rows": 12,
+          "finite_n": 12,
+          "mean": 0.75,
+          "median": 1,
+          "std_ddof1": 0.45226701686664544
+        }
+      ],
+      "gate": {
+        "decision": "descriptive_only",
+        "descriptive_run_id": "ee98b46e9bb045d5acc3622831fe5ef9",
+        "descriptive_evidence_sha": "a537d8c666099c48f469130ff0599ec742437bd870044f66794ae673d485bace",
+        "audit_evidence_sha": "82b186c29d242a34297871b16fce11fee5891885eb76e1b586d0dfa9e425b558",
+        "sample_size": 24,
+        "checks": [
+          "same_plan_data_metric_window",
+          "two_groups",
+          "complete_cases_without_exclusion",
+          "same_sample_counts"
+        ],
+        "significance_used": false
+      },
+      "manifest": {
+        "status": "descriptive_complete",
+        "objective": "比较本期两组完成比例，说明分配依据未知与结果限制。",
+        "scope": {
+          "analysis_unit": "独立的虚构产品试用者",
+          "entity": "subject",
+          "outcome": "completed",
+          "metric": "完成比例",
+          "unit": "概率",
+          "window": "合成观察期一",
+          "treatment": "arm",
+          "groups": {
+            "standard": "标准方案",
+            "variant": "新方案"
+          },
+          "control_value": "standard",
+          "treated_value": "variant",
+          "inclusion": "全部已上传记录；不自动筛选、删样本或填补",
+          "missing_policy": "stop",
+          "assignment_source": "",
+          "assignment": "unknown",
+          "record_grain": "每名虚构试用者一条记录，纳入本表全部记录。",
+          "coding": {
+            "no": 0,
+            "yes": 1
+          },
+          "display_unit": "概率"
+        },
+        "source_runs": [
+          "ee98b46e9bb045d5acc3622831fe5ef9"
+        ],
+        "sample_size": 24,
+        "method": "descriptive",
+        "descriptive": {
+          "schema": "saved-group-proportions-v1",
+          "source_run_id": "ee98b46e9bb045d5acc3622831fe5ef9",
+          "method": "descriptive",
+          "sample_size": 24,
+          "groups": [
+            {
+              "treatment": 0,
+              "group_value": "standard",
+              "label": "标准方案",
+              "n": 12,
+              "proportion": 0.5
+            },
+            {
+              "treatment": 1,
+              "group_value": "variant",
+              "label": "新方案",
+              "n": 12,
+              "proportion": 0.75
+            }
+          ],
+          "difference_pp": 25,
+          "difference_kind": "descriptive_not_causal_effect",
+          "interval": null
+        },
+        "design_source": "",
+        "approval_id": "c10d31253b7a45249fe39cf4c5aa43d7",
+        "plan_version": 2,
+        "model_calls": 0,
+        "text": "研究目标：比较本期两组完成比例，说明分配依据未知与结果限制。\n标准方案：n=12，实际比例50.00%；新方案：n=12，实际比例75.00%。描述性比例差（后者减前者）25.0000个百分点。分析单位：独立的虚构产品试用者；观察窗口：合成观察期一。本计划仅执行描述统计和证据核验，没有执行A/B，没有因果效应估计或区间；不能据此认定因果关系。随机分配依据未知，请补充设计来源并重新审核新研究范围。\n描述统计Run：ee98b46e9bb045d5acc3622831fe5ef9；计划v2；原批准：c10d31253b7a45249fe39cf4c5aa43d7。"
+      },
+      "diagnostic_report_id": "bde12da1d687950b8e12036e54c24c1b6925fe8180763c2a61cdad07ed9d7b25",
+      "assessment_id": "d4b71e825d725c4cd3aa10f08602c2b6a714e99943d3fc4ac47413a1737a8e66",
+      "rule_statuses": {
+        "PD-01": "verified",
+        "PD-02": "unknown",
+        "PD-06": "verified",
+        "PD-07": "not_applicable",
+        "PD-09": "verified",
+        "PD-14": "verified"
+      },
+      "budget_model_calls": 0
+    },
+    {
+      "case": "C",
+      "task_id": "3239d958e46a480e9ea0f9ce456ebbc1",
+      "session_id": "a179e4b029494c19818fc2291c30d144",
+      "plan_id": "24bf7ee2075c425c8f0fab5d595b4a67",
+      "plan_version": 3,
+      "plan_sha": "7740245e7e35ee0582f48a8c965f3c1ac27deefa6eb494b79e55561fca4ff393",
+      "data_ref": {
+        "upload_id": "c388bbf00567de2a0bda592a87a33d982812f21d0e8ace71ab05932087107c15",
+        "frame_sha": "8c308e6b2f91d6df011fd1a434d035c031267948975b52eb4bc98101945a461d",
+        "parquet_sha": "a2924eb72519dc02c17f453377cc4b3060ddc7c53a0712984789b2075786aa61"
+      },
+      "contract_ref": {
+        "id": "aae0a200122942c8a1576f813ab90d39",
+        "version": 1,
+        "sha": "314c5c2e4d4fce883317cddb5a7a47e73183c82f942845f0d8a9972d00ece74f",
+        "data_sha": "8c308e6b2f91d6df011fd1a434d035c031267948975b52eb4bc98101945a461d"
+      },
+      "approval_id": "67b1b95617f343ef82badcfe182fa550",
+      "scope": {
+        "analysis_unit": "独立的虚构产品试用者",
+        "entity": "subject",
+        "outcome": "retained",
+        "metric": "留存比例",
+        "unit": "概率",
+        "window": "合成观察期一",
+        "treatment": "arm",
+        "groups": {
+          "standard": "标准方案",
+          "variant": "新方案"
+        },
+        "control_value": "standard",
+        "treated_value": "variant",
+        "inclusion": "全部已上传记录；不自动筛选、删样本或填补",
+        "missing_policy": "stop",
+        "assignment_source": "",
+        "assignment": "unknown",
+        "record_grain": "每名虚构试用者一条记录，纳入本表全部记录。",
+        "coding": {
+          "no": 0,
+          "yes": 1
+        },
+        "display_unit": "概率"
+      },
+      "source_runs": [
+        "acecde61c781470db68a49d9ffdf2bb4"
+      ],
+      "grouped": [
+        {
+          "group_value": "standard",
+          "field": "retained",
+          "rows": 12,
+          "finite_n": 12,
+          "mean": 0.3333333333333333,
+          "median": 0,
+          "std_ddof1": 0.49236596391733095
+        },
+        {
+          "group_value": "variant",
+          "field": "retained",
+          "rows": 12,
+          "finite_n": 12,
+          "mean": 0.5,
+          "median": 0.5,
+          "std_ddof1": 0.5222329678670935
+        }
+      ],
+      "gate": {
+        "decision": "descriptive_only",
+        "descriptive_run_id": "acecde61c781470db68a49d9ffdf2bb4",
+        "descriptive_evidence_sha": "7f422ee24c4c5681f311f3df9520fbd5578ff666151327b48a320c09074d4ae0",
+        "audit_evidence_sha": "c702c883718fa5de1e4efd04f573aaffb5c0c8786152adaf013332d823e0a958",
+        "sample_size": 24,
+        "checks": [
+          "same_plan_data_metric_window",
+          "two_groups",
+          "complete_cases_without_exclusion",
+          "same_sample_counts"
+        ],
+        "significance_used": false
+      },
+      "manifest": {
+        "status": "descriptive_complete",
+        "objective": "比较同一观察期两组留存比例，保留未知分配机制及描述性限制。",
+        "scope": {
+          "analysis_unit": "独立的虚构产品试用者",
+          "entity": "subject",
+          "outcome": "retained",
+          "metric": "留存比例",
+          "unit": "概率",
+          "window": "合成观察期一",
+          "treatment": "arm",
+          "groups": {
+            "standard": "标准方案",
+            "variant": "新方案"
+          },
+          "control_value": "standard",
+          "treated_value": "variant",
+          "inclusion": "全部已上传记录；不自动筛选、删样本或填补",
+          "missing_policy": "stop",
+          "assignment_source": "",
+          "assignment": "unknown",
+          "record_grain": "每名虚构试用者一条记录，纳入本表全部记录。",
+          "coding": {
+            "no": 0,
+            "yes": 1
+          },
+          "display_unit": "概率"
+        },
+        "source_runs": [
+          "acecde61c781470db68a49d9ffdf2bb4"
+        ],
+        "sample_size": 24,
+        "method": "descriptive",
+        "descriptive": {
+          "schema": "saved-group-proportions-v1",
+          "source_run_id": "acecde61c781470db68a49d9ffdf2bb4",
+          "method": "descriptive",
+          "sample_size": 24,
+          "groups": [
+            {
+              "treatment": 0,
+              "group_value": "standard",
+              "label": "标准方案",
+              "n": 12,
+              "proportion": 0.3333333333333333
+            },
+            {
+              "treatment": 1,
+              "group_value": "variant",
+              "label": "新方案",
+              "n": 12,
+              "proportion": 0.5
+            }
+          ],
+          "difference_pp": 16.666666666666668,
+          "difference_kind": "descriptive_not_causal_effect",
+          "interval": null
+        },
+        "design_source": "",
+        "approval_id": "67b1b95617f343ef82badcfe182fa550",
+        "plan_version": 3,
+        "model_calls": 0,
+        "text": "研究目标：比较同一观察期两组留存比例，保留未知分配机制及描述性限制。\n标准方案：n=12，实际比例33.33%；新方案：n=12，实际比例50.00%。描述性比例差（后者减前者）16.6667个百分点。分析单位：独立的虚构产品试用者；观察窗口：合成观察期一。本计划仅执行描述统计和证据核验，没有执行A/B，没有因果效应估计或区间；不能据此认定因果关系。随机分配依据未知，请补充设计来源并重新审核新研究范围。\n描述统计Run：acecde61c781470db68a49d9ffdf2bb4；计划v3；原批准：67b1b95617f343ef82badcfe182fa550。"
+      },
+      "diagnostic_report_id": "e18f80bd0a9124e901dcf22938e5b8d74d805a602b53a54968f8c3c8221f929b",
+      "assessment_id": "de4d03368d503426f0b28fa0e418b4b25fd8ba3592ebcaa4e26e588c656c39ef",
+      "rule_statuses": {
+        "PD-01": "verified",
+        "PD-02": "unknown",
+        "PD-06": "verified",
+        "PD-07": "not_applicable",
+        "PD-09": "verified",
+        "PD-14": "verified"
+      },
+      "budget_model_calls": 0,
+      "decisions": [
+        {
+          "decision_id": "a384fd521f66a9887fb4faf215c66867210d049ef4b3bfc24bc60c252513fa72",
+          "report_id": "e18f80bd0a9124e901dcf22938e5b8d74d805a602b53a54968f8c3c8221f929b",
+          "decision_type": "deferred",
+          "execution_authorized": false
+        }
+      ]
+    }
+  ],
+  "this_release_official_model_requests": 0,
+  "historical_official_model": {
+    "physical_requests": 2,
+    "input_tokens": 4881,
+    "output_tokens": 1155,
+    "total_tokens": 6036,
+    "cost": "unverified",
+    "source": "P3 stage2 frozen receipts; not this release invocation"
+  },
+  "human_validation": {
+    "participants": 0,
+    "completion_rate": null,
+    "status": "not_executed"
+  },
+  "startup": {
+    "version": "0.20.0b1",
+    "health": 200,
+    "launcher_entry": "python -m causalops.launch --no-browser",
+    "home_and_configurable_entry_visible": true,
+    "diagnostics_entry_visible": true,
+    "installed_package": true,
+    "model_calls": 0
+  }
+}
