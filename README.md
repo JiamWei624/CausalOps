@@ -4,13 +4,13 @@
 <!-- latest-public-beta:start -->
 ## 最新公开 Beta 版本
 
-**[CausalOps 0.19.0b1 · 最新公开 Beta](https://github.com/JiamWei624/CausalOps/tree/beta/research-decision-memory-20261107)**
+**[CausalOps 0.20.0b1 · 最新公开 Beta](https://github.com/JiamWei624/CausalOps/tree/beta/configurable-research-20261108)**
 
-最新 Beta 包含受控数据科学研究流程、固定 Hillstrom 五步自动化、显式触发的确定性证据诊断和三层研究报告，以及用户主动记录的研究决策记忆。研究决策记忆只做同任务、证据可核对的确定性关联，不提供通用语义记忆或自主执行。
+最新 Beta 新增 CSV/Parquet 单表双组二元研究、字段与研究合同配置、受限描述／A/B 两条路径；保留固定 Hillstrom 五步自动化、六项确定性证据诊断、三层报告及同任务研究决定。规划可用确定性模板或可选 DeepSeek 候选；模型外发须显式授权，候选经过确定性校验，采纳后仍需正式人工批准，模型建议没有统计执行权限。
 
-[版本 README](https://github.com/JiamWei624/CausalOps/blob/beta/research-decision-memory-20261107/README.md) · [安装说明](https://github.com/JiamWei624/CausalOps/blob/beta/research-decision-memory-20261107/docs/current/INSTALLATION.md) · [自动化教程](https://github.com/JiamWei624/CausalOps/blob/beta/research-decision-memory-20261107/docs/current/AUTOMATION_GUIDE.md) · [诊断教程](https://github.com/JiamWei624/CausalOps/blob/beta/research-decision-memory-20261107/docs/current/DIAGNOSTICS_GUIDE.md) · [研究决策记忆教程](https://github.com/JiamWei624/CausalOps/blob/beta/research-decision-memory-20261107/docs/current/DECISION_MEMORY_GUIDE.md) · [已知限制](https://github.com/JiamWei624/CausalOps/blob/beta/research-decision-memory-20261107/docs/releases/research-decision-memory-beta/LIMITATIONS.md)
+[版本 README](https://github.com/JiamWei624/CausalOps/blob/beta/configurable-research-20261108/README.md) · [安装说明](https://github.com/JiamWei624/CausalOps/blob/beta/configurable-research-20261108/docs/current/INSTALLATION.md) · [可配置研究教程](https://github.com/JiamWei624/CausalOps/blob/beta/configurable-research-20261108/docs/current/CONFIGURABLE_RESEARCH_GUIDE.md) · [自动化教程](https://github.com/JiamWei624/CausalOps/blob/beta/configurable-research-20261108/docs/current/AUTOMATION_GUIDE.md) · [诊断教程](https://github.com/JiamWei624/CausalOps/blob/beta/configurable-research-20261108/docs/current/DIAGNOSTICS_GUIDE.md) · [研究决策记忆教程](https://github.com/JiamWei624/CausalOps/blob/beta/configurable-research-20261108/docs/current/DECISION_MEMORY_GUIDE.md) · [已知限制](https://github.com/JiamWei624/CausalOps/blob/beta/configurable-research-20261108/docs/releases/configurable-research-beta/LIMITATIONS.md)
 
-**本页其余内容及 main 源码仍对应 0.16.0，与最新 Beta 分支不同。** 请从上述 Beta 分支获取新版源码，勿把 main 当作新版安装来源。Beta 主要用于本地单用户；不支持通用自主研究，工程验收不代表真人可用性或通用研究可靠性已经验证。
+**本页其余内容及 main 源码仍对应 0.16.0，与最新 Beta 分支不同。** 请从上述 Beta 分支获取新版源码，勿把 main 当作新版安装来源。Beta 主要用于本地单用户，仅支持单表双组二元及受限方法；不支持通用自主规划、通用多表研究或跨任务语义记忆。真人独立使用验证尚未完成，工程与自动浏览器测试不代表真人效率或通用研究可靠性。
 
 <!-- latest-public-beta:end -->
 
