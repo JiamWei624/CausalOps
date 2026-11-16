@@ -41,7 +41,7 @@ export function ChatComposer({
         <div className="composer-context">
           <span>
             <i className="local-dot" />
-            本地确定性回复{metric ? " · " + metric : ""}
+            {hasData ? "当前研究 · " + metric : "尚未选择研究"}
           </span>
           <div>
             {hasData && (

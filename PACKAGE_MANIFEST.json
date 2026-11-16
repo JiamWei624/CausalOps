@@ -2346,13 +2346,18 @@
   },
   {
     "file": "docs/releases/react-workspace-beta/ACCEPTANCE.md",
-    "bytes": 6323,
-    "sha256": "e6f38dc0e3b22e738433a13357ef3448c4bde07618dbff92f14ec964f898fbba"
+    "bytes": 6533,
+    "sha256": "6fec6f55ea9b18e12f59db1a33a296a8358e6c61692c686de8558ba85bdf787f"
   },
   {
     "file": "docs/releases/react-workspace-beta/CHANGELOG.md",
     "bytes": 1236,
     "sha256": "ccabe56cd8d4c32839b0291f84c367e3599b1b7bbe8dbfdef0beb739581ddcb6"
+  },
+  {
+    "file": "docs/releases/react-workspace-beta/COPY_REVISION.md",
+    "bytes": 3026,
+    "sha256": "bc20a93cc4e3c117505a49c926ecee9c4bb3da5c1351f9652cf56599d6df3a27"
   },
   {
     "file": "docs/releases/react-workspace-beta/COVERAGE.md",
@@ -2371,23 +2376,28 @@
   },
   {
     "file": "docs/releases/react-workspace-beta/assets/PROVENANCE.json",
-    "bytes": 4211,
-    "sha256": "3bb06ce3dedf07d82bf4a3479a29cc2c9b966d5a0d9621cc0995cc6beab19b25"
+    "bytes": 5136,
+    "sha256": "aaa5392d1eb1051d1447efdff97cafce951b0b1567a88f6a153d5c3c43cd2932"
+  },
+  {
+    "file": "docs/releases/react-workspace-beta/assets/basis.png",
+    "bytes": 102936,
+    "sha256": "8814ac08a27c7f6d75d3e5d29912d28a92d162203aaadea4695eb896eebf5814"
   },
   {
     "file": "docs/releases/react-workspace-beta/assets/candidate.png",
-    "bytes": 55000,
-    "sha256": "13ecfc9e0a96592f1aa301856f9144fe043920175ce826d9e09e76e13713fd31"
+    "bytes": 53189,
+    "sha256": "c210dbfa3c43590bdb474b7a6aaddce8a32a86992a07e12ccf27771f16caaf84"
   },
   {
     "file": "docs/releases/react-workspace-beta/assets/chat-1180.png",
-    "bytes": 74006,
-    "sha256": "2a6152fe2cd1dc31073f5704c69cff7ca7778f92222b19e3b20efd12519f1240"
+    "bytes": 77944,
+    "sha256": "ec142cdbc9d6cbf1db50a64267d2915c0fac3e916d8f726ce9c82eea43507e19"
   },
   {
     "file": "docs/releases/react-workspace-beta/assets/chat-390.png",
-    "bytes": 46851,
-    "sha256": "56f525bfc7a83ae952d2f0210b4de4960092a9350e27874d71c3d933c66bc4cb"
+    "bytes": 47021,
+    "sha256": "cecfce014aa0344e1eef920b79dbba6a590022d35c957d0320ed76fcefa9b3d6"
   },
   {
     "file": "docs/releases/react-workspace-beta/assets/contract.png",
@@ -2411,13 +2421,13 @@
   },
   {
     "file": "docs/releases/react-workspace-beta/assets/home.png",
-    "bytes": 60414,
-    "sha256": "524a3fe247b80975714512a79cb58dfb5250786452996c6391b067570f1c2f9b"
+    "bytes": 58298,
+    "sha256": "49d4409e0f20eaf17f59609eae58dc489a31ad86a6ab7d148bbeb1ee56ee0ac7"
   },
   {
     "file": "docs/releases/react-workspace-beta/assets/long-chat.png",
-    "bytes": 94420,
-    "sha256": "9037906e8a650e12b032f3d78656ed42a7cb50bfbe8c572344cb99953f34956a"
+    "bytes": 91085,
+    "sha256": "80e36eb45dd54fab96946c52d2a6fcc50ef88ecef9a90b148f26a89478825aff"
   },
   {
     "file": "docs/releases/react-workspace-beta/assets/panel-390.png",
@@ -2436,8 +2446,8 @@
   },
   {
     "file": "docs/releases/react-workspace-beta/assets/result.png",
-    "bytes": 87760,
-    "sha256": "bb0a23dda450fe7405c9c8dbeef298fa1c3c3740c8c7038587b9c5881d66b8b3"
+    "bytes": 97707,
+    "sha256": "44739ab38b314d86c42e9e609b7a699430917669d05181fbcb2b457e2df06afa"
   },
   {
     "file": "docs/releases/react-workspace-beta/assets/review.png",
@@ -2451,8 +2461,8 @@
   },
   {
     "file": "docs/releases/react-workspace-beta/assets/workspace-1440.png",
-    "bytes": 123153,
-    "sha256": "d4fbf91b0c0cebeaa6e71c2968a5498cab0822f1823511a54d0bd66eb46a61d9"
+    "bytes": 128056,
+    "sha256": "7ea0833b7558aba625723e85f15480d9b3b1d3a166f4db830f5185815135c89a"
   },
   {
     "file": "docs/releases/research-decision-memory-beta/ACCEPTANCE.md",
@@ -2711,8 +2721,8 @@
   },
   {
     "file": "frontend/src/App.tsx",
-    "bytes": 8873,
-    "sha256": "462f1cafe554b9367015f1c41320aba9ca2e13d98d938686dda0de02f008d197"
+    "bytes": 8901,
+    "sha256": "ab2ace669523f14b230caeff72e720d20bcdfd1ebdbb5d718a66cdb6a64e3d8f"
   },
   {
     "file": "frontend/src/api.ts",
@@ -2727,12 +2737,12 @@
   {
     "file": "frontend/src/components/CandidatePlanView.tsx",
     "bytes": 10497,
-    "sha256": "f85f470ae3bf94b42b11d8a8f015a90fb0c77d4a07c70cc18ea1c39a94515d7f"
+    "sha256": "9be700bb99d77feaff77f26723283cb06ba0f48e828133d500230a4dacfffa82"
   },
   {
     "file": "frontend/src/components/ChatComposer.tsx",
-    "bytes": 4131,
-    "sha256": "572ea742b406a0bc930c967763d63aae5191f25c3bd5ec27106adc22260ece1f"
+    "bytes": 4141,
+    "sha256": "66133a41d92768e603c82afa8b25347f6f815d995fc5016edc3514f3463c7c26"
   },
   {
     "file": "frontend/src/components/ChatSidebar.tsx",
@@ -2756,8 +2766,8 @@
   },
   {
     "file": "frontend/src/components/MessageRenderer.tsx",
-    "bytes": 3244,
-    "sha256": "68aad507561d8096cb4b6976aef2ce5d2dfc1447071dc96e70e66d22f779627c"
+    "bytes": 3819,
+    "sha256": "ae6ee90a152ba6422ee0c92c313c3c92e3b079dea12818983fac2fa770717a4a"
   },
   {
     "file": "frontend/src/components/ReportReader.tsx",
@@ -2788,6 +2798,11 @@
     "file": "frontend/src/components/insights.test.tsx",
     "bytes": 2139,
     "sha256": "c45fa6865762524ad0342b90864ad8c0b984ac64e85bba10469609b86f26d264"
+  },
+  {
+    "file": "frontend/src/components/researchCopy.test.tsx",
+    "bytes": 4129,
+    "sha256": "22e4c9f72b4de340e38a7a898bba4ebae3ed194d0bbb0cb268d059f67edcf5db"
   },
   {
     "file": "frontend/src/components/ui.tsx",
@@ -4325,19 +4340,19 @@
     "sha256": "6aa4ae15913510ba96222a85e794c7372cf3cc4ea026fc2227262be1dd249654"
   },
   {
-    "file": "src/causalops/web_assets/assets/index-CmQ1v_5G.js",
-    "bytes": 469852,
-    "sha256": "6e41fd77d85c7e3d1062c619eb5f14163f9f745eca721bead117a91cf8d4889f"
+    "file": "src/causalops/web_assets/assets/index-DkeKC_He.js",
+    "bytes": 470211,
+    "sha256": "dbf7940986554b3dcb058aed8a0fb50f6bea7e72279f6acb301a5843c8119295"
   },
   {
     "file": "src/causalops/web_assets/build-manifest.json",
     "bytes": 605,
-    "sha256": "305006bb64d8e8941b483557f26e2a074c7f9155bcc48699b1d41b6e026416de"
+    "sha256": "2e89597f091978d1562f7312e2b8ea547e36c7046b31ecc1d3f5b13c8c001226"
   },
   {
     "file": "src/causalops/web_assets/index.html",
     "bytes": 693,
-    "sha256": "a2af6a20668b0025f2ce8becfaabc7815187910861e273166c2e048da8442ab7"
+    "sha256": "e3fd95b1506786d1cb98beb478d4978024d75e9196462a44a7baaa603d5a3815"
   },
   {
     "file": "src/causalops/web_bundle.py",

@@ -14,6 +14,19 @@ function answerLayout(text: string, scope?: string) {
       .replaceAll("**", ""),
   };
 }
+function hasSavedResult(m: Message) {
+  const a = m.answer, ref = m.source_ref;
+  const boundRuns = ref?.run_ids;
+  const report = a?.scope === "verified_automation_report" &&
+    typeof ref?.report_sha === "string" && /^[a-f0-9]{64}$/i.test(ref.report_sha);
+  const runFacts = ["selected_run", "explicit_comparison"].includes(a?.scope || "") &&
+    !!a?.facts?.length;
+  // The API already verifies sources; this only labels replies that reference them.
+  return !!(m.available && !m.error && m.status === "completed" && m.binding_id &&
+    m.subject_id && ref?.subject_id === m.subject_id && Array.isArray(boundRuns) &&
+    a?.run_ids.length && a.run_ids.every(id => boundRuns.includes(id)) &&
+    (report || runFacts));
+}
 export function MessageRenderer({
   m,
   currentSubject,
@@ -69,12 +82,7 @@ export function MessageRenderer({
         )}
         <details className="source">
           <summary>
-            回答依据{" "}
-            <span>
-              {a?.source?.includes("模型") && !a.source.includes("未调用")
-                ? "已保存服务回复"
-                : "本地确定性路径"}
-            </span>
+            {hasSavedResult(m) ? "依据：已保存研究结果" : "回答依据"}
           </summary>
           <p>{a?.source || "消息状态记录"}</p>
           <p className="small">

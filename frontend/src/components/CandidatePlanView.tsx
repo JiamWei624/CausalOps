@@ -49,7 +49,7 @@ export function CandidatePlanView({
           ← 返回对话
         </button>
         <span>候选研究方案</span>
-        <small>确定性路径 · 模型调用关闭</small>
+        <small>研究模板 · 未使用外部模型</small>
       </header>
       <div className="candidate-reading">
         <p className="eyebrow">RESEARCH PROPOSAL</p>

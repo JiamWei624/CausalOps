@@ -195,7 +195,7 @@ export function App() {
               ? "研究后台执行中；可查看步骤、暂停或取消。"
               : w.feedback
           }
-          metric={metric}
+          metric={study ? metric || study.title : ""}
           onBind={w.openBinding}
           hasChat={!!w.chatId}
           onConfigure={w.openConfigure}

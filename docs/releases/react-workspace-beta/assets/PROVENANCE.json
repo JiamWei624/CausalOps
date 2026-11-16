@@ -1,17 +1,19 @@
 [
   {
     "file": "home.png",
-    "sha256": "524a3fe247b80975714512a79cb58dfb5250786452996c6391b067570f1c2f9b",
-    "origin": "installed 0.21.0b1 wheel, actual browser, public/synthetic data",
+    "sha256": "49d4409e0f20eaf17f59609eae58dc489a31ad86a6ab7d148bbeb1ee56ee0ac7",
+    "origin": "installed 0.21.0b1 wheel, research-context copy revision, actual browser",
     "human_participant": false,
-    "qa_session_filter": true
+    "qa_session_filter": true,
+    "revision_base": "24db6847d90f9919905e9574ec153796a52742c0"
   },
   {
     "file": "long-chat.png",
-    "sha256": "9037906e8a650e12b032f3d78656ed42a7cb50bfbe8c572344cb99953f34956a",
-    "origin": "installed 0.21.0b1 wheel, actual browser, public/synthetic data",
+    "sha256": "80e36eb45dd54fab96946c52d2a6fcc50ef88ecef9a90b148f26a89478825aff",
+    "origin": "installed 0.21.0b1 wheel, research-context copy revision, actual browser",
     "human_participant": false,
-    "qa_session_filter": true
+    "qa_session_filter": true,
+    "revision_base": "24db6847d90f9919905e9574ec153796a52742c0"
   },
   {
     "file": "contract.png",
@@ -22,10 +24,11 @@
   },
   {
     "file": "candidate.png",
-    "sha256": "13ecfc9e0a96592f1aa301856f9144fe043920175ce826d9e09e76e13713fd31",
-    "origin": "installed 0.21.0b1 wheel, actual browser, public/synthetic data",
+    "sha256": "c210dbfa3c43590bdb474b7a6aaddce8a32a86992a07e12ccf27771f16caaf84",
+    "origin": "installed 0.21.0b1 wheel, research-context copy revision, actual browser",
     "human_participant": false,
-    "qa_session_filter": true
+    "qa_session_filter": true,
+    "revision_base": "24db6847d90f9919905e9574ec153796a52742c0"
   },
   {
     "file": "review.png",
@@ -71,17 +74,19 @@
   },
   {
     "file": "chat-1180.png",
-    "sha256": "2a6152fe2cd1dc31073f5704c69cff7ca7778f92222b19e3b20efd12519f1240",
-    "origin": "installed 0.21.0b1 wheel, actual browser, public/synthetic data",
+    "sha256": "ec142cdbc9d6cbf1db50a64267d2915c0fac3e916d8f726ce9c82eea43507e19",
+    "origin": "installed 0.21.0b1 wheel, research-context copy revision, actual browser",
     "human_participant": false,
-    "qa_session_filter": true
+    "qa_session_filter": true,
+    "revision_base": "24db6847d90f9919905e9574ec153796a52742c0"
   },
   {
     "file": "chat-390.png",
-    "sha256": "56f525bfc7a83ae952d2f0210b4de4960092a9350e27874d71c3d933c66bc4cb",
-    "origin": "installed 0.21.0b1 wheel, actual browser, public/synthetic data",
+    "sha256": "cecfce014aa0344e1eef920b79dbba6a590022d35c957d0320ed76fcefa9b3d6",
+    "origin": "installed 0.21.0b1 wheel, research-context copy revision, actual browser",
     "human_participant": false,
-    "qa_session_filter": true
+    "qa_session_filter": true,
+    "revision_base": "24db6847d90f9919905e9574ec153796a52742c0"
   },
   {
     "file": "report-390.png",
@@ -93,22 +98,33 @@
   {
     "file": "panel-390.png",
     "sha256": "d8e7195f721a3ec5cf7add3d3859d95c2051342b97c789ef1739a1f43f0ae135",
-    "origin": "installed 0.21.0b1 wheel, actual browser, public/synthetic data",
+    "origin": "installed 0.21.0b1 wheel, research-context copy revision, actual browser",
     "human_participant": false,
-    "qa_session_filter": true
+    "qa_session_filter": true,
+    "revision_base": "24db6847d90f9919905e9574ec153796a52742c0"
   },
   {
     "file": "result.png",
-    "sha256": "bb0a23dda450fe7405c9c8dbeef298fa1c3c3740c8c7038587b9c5881d66b8b3",
-    "origin": "installed 0.21.0b1 wheel, actual browser, public/synthetic data",
+    "sha256": "44739ab38b314d86c42e9e609b7a699430917669d05181fbcb2b457e2df06afa",
+    "origin": "installed 0.21.0b1 wheel, research-context copy revision, actual browser",
     "human_participant": false,
-    "qa_session_filter": true
+    "qa_session_filter": true,
+    "revision_base": "24db6847d90f9919905e9574ec153796a52742c0"
   },
   {
     "file": "workspace-1440.png",
-    "sha256": "d4fbf91b0c0cebeaa6e71c2968a5498cab0822f1823511a54d0bd66eb46a61d9",
-    "origin": "installed 0.21.0b1 wheel, actual browser, public/synthetic data",
+    "sha256": "7ea0833b7558aba625723e85f15480d9b3b1d3a166f4db830f5185815135c89a",
+    "origin": "installed 0.21.0b1 wheel, research-context copy revision, actual browser",
     "human_participant": false,
-    "qa_session_filter": true
+    "qa_session_filter": true,
+    "revision_base": "24db6847d90f9919905e9574ec153796a52742c0"
+  },
+  {
+    "file": "basis.png",
+    "sha256": "8814ac08a27c7f6d75d3e5d29912d28a92d162203aaadea4695eb896eebf5814",
+    "origin": "installed 0.21.0b1 wheel, research-context copy revision, actual browser",
+    "human_participant": false,
+    "qa_session_filter": true,
+    "revision_base": "24db6847d90f9919905e9574ec153796a52742c0"
   }
 ]
