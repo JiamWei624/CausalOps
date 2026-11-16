@@ -11,12 +11,17 @@ def editor(co,*,previous=None):
     prior=previous['plan']['configuration'] if previous else {}
     st.subheader('使用自己的数据开展研究' if not previous else '创建修订候选 · 重新审核')
     st.caption('受限单表、恰好两个组、一个二元指标。仅编译已注册五步链，不生成代码；默认不调用模型，可选候选规划须单独授权。预览不修改正式计划；新范围必须重新审核。')
-    upload=st.file_uploader('上传单表 CSV 或 Parquet'+('（留空沿用原始数据）' if previous else ''),type=['csv','parquet'],key='cfg_upload_'+(previous['id'] if previous else 'new'))
+    from causalops.ui.chat_bridge import registered_file,publish
+    registered=registered_file() if not previous else None
+    upload=None if registered else st.file_uploader('上传单表 CSV 或 Parquet'+('（留空沿用原始数据）' if previous else ''),type=['csv','parquet'],key='cfg_upload_'+(previous['id'] if previous else 'new'))
     try:
-        if upload:
-            if upload.size>20_000_000:raise DesignError('文件超过20 MB，本地受限流程暂不接受。')
-            payload=upload.getvalue();name=upload.name;uid=co.ws.ingest(payload,name);frame=co.ws.load_upload(uid)
+        if upload or registered:
+            payload,name=registered if registered else (upload.getvalue(),upload.name)
+            if len(payload)>20_000_000:raise DesignError('文件超过20 MB，本地受限流程暂不接受。')
+            uid=co.ws.ingest(payload,name);frame=co.ws.load_upload(uid)
+            if registered:st.info('使用在本会话明确发送并登记的数据。下列合同仍需逐项确认，不自动沿用研究事实。')
             filekey=hashlib.sha256(payload).hexdigest()[:12]
+            if registered:filekey+='_'+st.query_params['chat_flow'][:8]
             import_key='config_import_'+(previous['id'] if previous else 'new')+'_'+filekey
             if import_key not in st.session_state:st.session_state[import_key]=co.record_import(uid)
         elif previous:
@@ -71,7 +76,10 @@ def editor(co,*,previous=None):
             request=st.session_state.setdefault(prefix+'request',uuid.uuid4().hex)
             if previous:task=co.revise_configurable(previous['id'],configuration=cfg,request_id=request,human_confirmed=confirmed,payload=payload,name=name,stage2=True)
             else:task=co.create_configurable(payload,name=name,configuration=cfg,request_id=request,human_confirmed=confirmed,stage2=True,import_event_id=st.session_state[import_key])
-            st.query_params['automation']=task['id'];st.query_params.pop('config_edit',None);st.rerun()
+            publish(task['id'])
+            st.query_params['automation']=task['id'];st.query_params.pop('config_edit',None)
+            if st.query_params.get('route')=='configure':st.query_params['route']='review'
+            st.rerun()
     except (ValueError,OSError) as exc:
         st.error(str(exc) if isinstance(exc,ValueError) else '文件读取失败，尚未创建可执行计划。请核对 CSV/Parquet 格式。')
         st.caption('原有研究与历史运行保留；合同确认不是执行批准。')

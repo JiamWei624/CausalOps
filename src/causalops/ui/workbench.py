@@ -4,6 +4,7 @@ import os,json,hashlib,uuid,traceback
 from pathlib import Path
 from datetime import datetime,timezone
 import streamlit as st
+from html import escape
 from causalops.ui.showcase_support import ROOT,ROUTES,checked_route,source_fingerprint,safe_error,read_real_run
 from causalops.ui.showcase_widgets import style,show_conclusion
 from causalops.metadata.presentation_zh import diagnostic_rows_zh,diagnostics_for_display
@@ -15,6 +16,49 @@ OUT=workspace_root()/'system'
 
 def navigate(route):
     st.session_state['showcase_route']=route;st.query_params['route']=route
+    if route in ('evidence','decisions') and st.query_params.get('automation'):
+        tid=st.query_params['automation']
+        if st.query_params.get('diagnostic_task')!=tid:
+            st.query_params.pop('diagnostic_report',None)
+        st.query_params.update(diagnostic_mode='post_run',diagnostic_task=tid)
+
+
+def open_study(tid,route='results'):
+    st.query_params['automation']=tid
+    st.query_params.pop('config_edit',None)
+    navigate(route)
+
+
+def select_study(key):
+    tid=st.session_state[key]
+    from causalops.application.research_service import ResearchService
+    from causalops.assistant.service import AssistantWorkspace
+    from causalops.ui.workspace_navigation import study_catalog
+    valid={r['id'] for r in study_catalog(ResearchService(AssistantWorkspace()).automation_v2())}
+    # A stale serialized selectbox label is not a task ID or an authorization.
+    if tid and tid not in valid:
+        st.session_state['_study_selection_error']='研究列表正在更新，本次选择未通过任务身份核验；保留原选择，请重新选择。'
+        return
+    if tid:st.query_params['automation']=tid
+    else:st.query_params.pop('automation',None)
+    st.query_params.pop('config_edit',None)
+    for name in ('diagnostic_report','diagnostic_task'):
+        st.query_params.pop(name,None)
+    if st.query_params.get('route') in ('evidence','decisions') and tid:
+        st.query_params.update(diagnostic_task=tid,diagnostic_mode='post_run')
+
+
+def start_configurable():
+    st.session_state['automation_data_source']='使用自己的数据开展研究'
+    st.query_params.pop('automation',None)
+    st.query_params.pop('config_edit',None)
+    navigate('configure')
+
+
+def start_public():
+    st.session_state['automation_data_source']='公开 Hillstrom 营销实验'
+    st.query_params.pop('automation',None)
+    navigate('configure')
 
 def new_import():
     st.query_params.pop('assistant',None)
@@ -131,35 +175,49 @@ def render_history():
 
 
 def home():
-    from causalops.ui.marketing_case import preview as marketing_preview
-    with st.container(key='home_grid'):
-        intro, preview = st.columns([1.163, 1], gap='medium')
-        with intro:
-            st.html('<div class="co-hero"><div class="co-kicker">数据分析与研究设计</div><h1>AI 辅助数据分析<br>与因果推断</h1><p>提出研究问题，核对分析方案。统计工具在本地完成计算，结果与研究依据保存在同一任务中。</p></div>')
-            with st.form('home_prompt', border=False):
-                entry, send = st.columns([8,1], vertical_alignment='bottom', gap='small')
-                entry.text_input('研究问题',placeholder='例如：营销邮件是否提高了两周访问率？',key='home_question',label_visibility='collapsed')
-                send.form_submit_button('→',help='保留问题并进入数据导入',on_click=_start_question)
-            with st.container(horizontal=True,key='home_actions'):
-                st.button('导入分析数据', type='primary', on_click=_upload_blank)
-                st.button('查看公开案例', on_click=navigate, args=('examples',))
-            st.caption('本地分析无需模型密钥。统计执行前需审核研究方案。')
-        with preview:
-            marketing_preview()
-    with st.container(border=True):
-        st.subheader("受限自动化研究")
-        st.write("公开 Hillstrom 营销实验：核对固定五步计划，整体审核一次，自动执行两次统计并整合证据报告。支持暂停、核查恢复和取消。")
-        st.caption("已核验案例或用户配置的单表双组二元研究；模型自主规划关闭。")
-        st.button("启动自动化研究",on_click=navigate,args=('automation',),type='primary')
-    def own_data():
-        st.session_state["automation_data_source"]="使用自己的数据开展研究"
-        navigate("automation")
-    st.button("使用自己的数据开展研究",on_click=own_data)
-    st.button("查看研究证据与诊断",on_click=navigate,args=("evidence",))
-    render_examples()
-    from causalops.ui.model_setup import render_model_setup
-    with st.expander('模型连接与隐私设置'):
-        render_model_setup()
+    from causalops.application.research_service import ResearchService
+    from causalops.assistant.service import AssistantWorkspace
+    from causalops.ui.workspace_navigation import study_catalog
+    from causalops.ui.design_system import badge
+    from causalops.application.automation_results import STATES
+    co=ResearchService(AssistantWorkspace()).automation_v2()
+    rows=study_catalog(co)
+    st.html('<header class="co-welcome"><div class="co-kicker">可审核、可追溯的 AI 数据科学工作台</div><h1>让每一项研究，都有据可查</h1><p>确认数据口径，审核完整方案，再阅读有来源、有边界的研究结论。</p></header>')
+    own,example=st.columns(2,gap='medium')
+    with own.container(key='panel_start_data'):
+        st.subheader('从自己的数据开始')
+        st.write('导入 CSV / Parquet，确认分析单位、两个比较组、二元指标和研究依据。')
+        st.button('使用自己的数据开展研究',type='primary',on_click=start_configurable)
+        st.caption('预览不修改正式指标；候选仍需正式审核。')
+    with example.container(key='panel_start_example'):
+        st.subheader('体验公开营销实验')
+        st.write('核对 Hillstrom 公开来源，审核固定五步计划，查看两个真实统计运行及整体报告。')
+        st.button('启动自动化研究',on_click=start_public)
+        st.caption('受限场景；不代表任意自然语言目标都能自动执行。')
+    st.html('<div class="flow"><span>确认数据口径</span><span>→</span><span>审核完整计划</span><span>→</span><span>执行获批步骤</span><span>→</span><span>查看结果与证据</span></div>')
+    st.subheader('最近研究任务',anchor=False)
+    if not rows:
+        st.info('当前工作区还没有研究任务。从自己的数据开始，或体验公开营销实验。不会自动创建研究或统计运行。')
+    for row in rows[:6]:
+        with st.container(key='recent_'+row['id']):
+            left,right=st.columns([5,1],vertical_alignment='center')
+            left.html('<div class="co-task-row"><strong>'+escape(row['title'])+'</strong><p>'+escape(row['metric'])+' · '+escape(row['window'])+' · 计划 v'+str(row['version'])+' '+badge(STATES.get(row['status'],row['status']),row['status'])+'</p></div>')
+            right.button('查看研究',key='recent_open_'+row['id'],on_click=open_study,args=(row['id'],'results'),width='stretch')
+    pending=[r for r in rows if r['status'] not in ('completed','cancelled')]
+    with st.expander('待处理研究事项'+(' · '+str(len(pending))+' 项' if pending else ' · 暂无')):
+        if not pending:st.caption('没有待处理事项。查看历史报告不会重新执行统计。')
+        for row in pending:
+            st.write(row['label'])
+            st.button('继续处理',key='pending_'+row['id'],on_click=open_study,args=(row['id'],'review' if row['status']=='candidate' else 'execution'))
+    with st.expander('原单次研究与其他入口'):
+        st.write('保留自然语言研究、原数据导入、公开示例、17项专业统计方法、历史记录与模型隐私设置。可配置自动化只开放受限方法，不自动开放全部工具。')
+        a,b,c=st.columns(3)
+        a.button('导入分析数据',on_click=_upload_blank)
+        b.button('查看公开案例',on_click=navigate,args=('examples',))
+        c.button('查看研究证据与诊断',on_click=navigate,args=('evidence',))
+        with st.form('home_prompt',border=False):
+            st.text_input('研究问题',placeholder='已有明确研究问题？进入原单次研究继续。',key='home_question')
+            st.form_submit_button('保留问题并进入单次研究',on_click=_start_question)
     if os.environ.get('CAUSALOPS_ENABLE_PRIVATE_EXAMPLES')=='1':
         st.button('打开本地研究回看',on_click=navigate,args=('weibo',))
 
@@ -239,8 +297,6 @@ def main():
     st.set_page_config(page_title='CausalOps · 数据分析与研究工作台',page_icon='◈',layout='wide');style()
     from causalops import __version__
     current_build=source_fingerprint()[:12]
-    from causalops.ui.visual_layout import shell_style
-    shell_style()
     requested_build=st.query_params.get('build')
     requested_release=st.query_params.get('release')
     if (requested_build and requested_build!=current_build) or (requested_release and requested_release!=__version__):
@@ -253,21 +309,60 @@ def main():
     initial=requested_route if requested_route in allowed_routes else 'home'
     if requested_route not in allowed_routes:st.info('此历史入口不属于默认发行版，已返回首页。可载入公共示例或导入自己的数据。')
     route = initial
-    navigation=[('home','首页','home'), ('assistant','我的研究','assignment'), ('automation','自动化研究','account_tree'), ('evidence','研究证据诊断','fact_check'), ('examples','分析示例','view_column'), ('analysis','专业分析','functions'), ('history','研究记录','list'), ('settings','模型与隐私','settings'), ('guide','使用说明','help'), ('status','系统状态','monitor_heart')]
+    if route in ('home','chat_report'):
+        from causalops.ui.chat_workspace import render
+        render(focused=route=='chat_report')
+        return
+    from causalops.ui.workspace_navigation import MAIN_NAV,AUX_NAV,study_catalog,resolve_study
+    from causalops.application.research_service import ResearchService
+    from causalops.assistant.service import AssistantWorkspace
+    from causalops.ui.design_system import brand_html
+    navigation=MAIN_NAV+AUX_NAV
+    co=ResearchService(AssistantWorkspace()).automation_v2()
+    catalog=study_catalog(co)
+    selected=st.query_params.get('automation','')
+    selected_view=None
+    selection_error=None
+    try:selected_view=resolve_study(co,selected)
+    except ValueError:selection_error='所选研究无法在当前工作区核验，未使用其他任务替代。'
     with st.sidebar:
-        st.html('<div class="co-brand"><span class="co-logo">◇</span>CausalOps</div><div class="co-navcap">研究空间</div>')
-        for dest,label,icon in navigation:
-            if dest=='settings':
-                st.html('<div class="co-navcap">帮助与设置</div>')
-            st.button(label, icon=':material/'+icon+':',key='nav_'+dest, type='primary' if route==dest else 'secondary',
-                      on_click=navigate, args=(dest,), width='stretch')
+        st.html(brand_html())
+        from causalops.ui.chat_bridge import return_to_chat
+        st.button('返回研究对话',key='back_to_chat',on_click=return_to_chat,width='stretch')
+        st.html('<div class="co-navcap">研究空间</div>')
+        for dest,label,icon in MAIN_NAV:
+            st.button(label,icon=':material/'+icon+':',key='nav_'+dest,type='primary' if route==dest else 'secondary',on_click=navigate,args=(dest,),width='stretch')
+        st.html('<div class="co-navcap">当前自动化研究</div>')
+        options=['']+[r['id'] for r in catalog]
+        # Dynamic execution status must not change an option's serialized identity.
+        labels={r['id']:r['selector_label'] for r in catalog}
+        key='workspace_study_'+selected
+        st.selectbox('当前研究',options,index=options.index(selected) if selected in options else 0,format_func=lambda x:labels.get(x,'未选择研究任务'),key=key,on_change=select_study,args=(key,))
+        if st.session_state.get('_study_selection_error'):
+            st.warning(st.session_state.pop('_study_selection_error'))
+        with st.expander('工具与更多入口'):
+            for dest,label,icon in AUX_NAV:
+                st.button(label,icon=':material/'+icon+':',key='nav_'+dest,type='primary' if route==dest else 'secondary',on_click=navigate,args=(dest,),width='stretch')
         from causalops.ui.model_setup import current_connection,memory
         config,key=current_connection()
-        mode='已配置模型' if config and key and not memory().get('local_only') else '本地模式'
-        st.html('<div class="co-status"><b>● '+mode+'</b><small>研究数据保存在本地<br>模型连接为可选能力</small></div>')
-    titles={'home':('欢迎使用 CausalOps','数据分析与研究工作台'),'assistant':('研究工作台','数据与研究任务'),'analysis':('专业分析','方法与研究设计'),'history':('研究记录','本地工作区'),'settings':('模型与隐私','连接与发送许可')}
+        mode='已配置可选模型' if config and key and not memory().get('local_only') else '本地确定性路径'
+        st.html('<div class="co-status">● '+mode+'<small>单用户 Beta · 数据保存在本地<br>预览 ≠ 计划 ≠ 批准 ≠ 执行</small></div>')
+    try:
+        from causalops.ui.chat_bridge import notice
+        notice()
+    except (ValueError,RuntimeError,OSError) as exc:
+        st.error(str(exc));return
+    titles={'home':('工作空间','数据分析与研究工作台'),'assistant':('研究工作台','数据与研究任务'),'analysis':('专业分析','方法与研究设计'),'history':('研究记录','本地工作区'),'settings':('模型与隐私','连接与发送许可')}
     title,sub=titles.get(route,ROUTES[route])
     st.html(f'<div class="co-top"><strong>{title}</strong><small>{sub}</small><span class="co-pill" title="构建 {current_build}">本地单用户预览版 · {__version__}</span></div>')
+    if selected_view:
+        task=selected_view['task'];p=task['plan'];sc=p['scope']
+        st.html('<div class="co-research-context" data-context-task="'+escape(task['id'])+'"><strong>当前自动化研究：'+escape(sc['metric'])+'</strong> · '+escape(sc['window'])+' · '+escape(sc['analysis_unit'])+'<span class="co-identity">任务 '+escape(task['id'][:8])+' · 计划 v'+str(p['version'])+' · 研究身份与报告正文分别按同一任务核验</span></div>')
+    elif selection_error:st.error(selection_error)
+    diagnostic_selection_conflict=False
+    if route in ('evidence','decisions') and selected_view and st.query_params.get('diagnostic_task'):
+        expected=selected if st.query_params.get('diagnostic_mode')=='post_run' else selected_view['task']['session_id']
+        diagnostic_selection_conflict=st.query_params['diagnostic_task']!=expected
     with st.container(key='phone_nav'):
         with st.popover('☰',help='打开工作台导航'):
             for dest,label,icon in navigation:
@@ -276,13 +371,17 @@ def main():
         if route=='assistant':
             from causalops.ui.assistant_app import render_assistant
             render_assistant()
-        elif route=='home':home()
-        elif route=='evidence':
-            from causalops.ui.diagnostics_app import render
-            render()
-        elif route=='automation':
+        elif route=='legacy_home':home()
+        elif route in ('evidence','decisions'):
+            if diagnostic_selection_conflict:
+                st.error('当前研究与诊断来源选择不一致，暂不展示报告或决定。请从当前研究重新进入证据诊断；没有使用其他报告填补。')
+                st.button('按当前研究查看诊断',on_click=navigate,args=(route,))
+            else:
+                from causalops.ui.diagnostics_app import render
+                render(focus='decisions' if route=='decisions' else None)
+        elif route in ('automation','configure','review','execution','results'):
             from causalops.ui.automation_app import render
-            render()
+            render(section=route if route!='automation' else 'all')
         elif route=='settings':
             from causalops.ui.model_setup import render_model_setup
             st.title('模型连接与数据权限',anchor=False)

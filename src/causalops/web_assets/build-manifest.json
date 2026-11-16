@@ -1,0 +1,21 @@
+{
+  "version": "0.21.0b1",
+  "frontend_lock_sha256": "9718db98db84d11f66cf19a910454b79f1642daf74c55513b570bcd5214045dd",
+  "files": [
+    {
+      "path": "assets/index-0lZhOLWJ.css",
+      "sha256": "6aa4ae15913510ba96222a85e794c7372cf3cc4ea026fc2227262be1dd249654",
+      "bytes": 34806
+    },
+    {
+      "path": "assets/index-CmQ1v_5G.js",
+      "sha256": "6e41fd77d85c7e3d1062c619eb5f14163f9f745eca721bead117a91cf8d4889f",
+      "bytes": 469852
+    },
+    {
+      "path": "index.html",
+      "sha256": "a2af6a20668b0025f2ce8becfaabc7815187910861e273166c2e048da8442ab7",
+      "bytes": 693
+    }
+  ]
+}

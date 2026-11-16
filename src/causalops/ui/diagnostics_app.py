@@ -103,28 +103,28 @@ def report_html(view):
     return "".join(parts)
 
 CSS="""<style>
-.co-diagnostic-snapshot{color:#234144;font:15px/1.75 "Microsoft YaHei",sans-serif}
-.co-diagnostic-snapshot header{padding:20px;border:1px solid #cbded9;border-left:4px solid #167568;border-radius:8px;background:#f7faf9}
-.co-diagnostic-snapshot h2{font-size:22px;color:#155f58;margin:0 0 14px}
-.co-diagnostic-snapshot h3{font-size:18px;color:#284c48;margin:0 0 12px}
-.co-diagnostic-snapshot section{border:1px solid #dce6e3;border-radius:8px;background:white;padding:22px;margin:18px 0}
-.co-diagnostic-snapshot .diag-identity{font-size:12px;overflow-wrap:anywhere;color:#5c7474;margin:12px 0}
-.diag-selection{color:#657a7b;font-size:13px}
-.co-diagnostic-snapshot .diag-note{font-size:12px;color:#657a7b}
+.co-diagnostic-snapshot{color:#24272d;font:15px/1.75 "Microsoft YaHei",sans-serif}
+.co-diagnostic-snapshot header{padding:20px;border:1px solid #e0e3e8;border-left:4px solid #536278;border-radius:8px;background:#fafbfc}
+.co-diagnostic-snapshot h2{font-size:22px;color:#303842;margin:0 0 14px}
+.co-diagnostic-snapshot h3{font-size:18px;color:#303842;margin:0 0 12px}
+.co-diagnostic-snapshot section{border:1px solid #e1e4e9;border-radius:8px;background:white;padding:22px;margin:18px 0}
+.co-diagnostic-snapshot .diag-identity{font-size:12px;overflow-wrap:anywhere;color:#68717d;margin:12px 0}
+.diag-selection{color:#68717d;font-size:13px}
+.co-diagnostic-snapshot .diag-note{font-size:12px;color:#68717d}
 .co-diagnostic-snapshot .diag-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:20px 0}
-.co-diagnostic-snapshot .diag-metrics small{display:block;color:#617b78}
-.co-diagnostic-snapshot .diag-metrics strong{display:block;font-size:22px;color:#146c62}
+.co-diagnostic-snapshot .diag-metrics small{display:block;color:#68717d}
+.co-diagnostic-snapshot .diag-metrics strong{display:block;font-size:22px;color:#303842}
 .co-diagnostic-snapshot .diag-block{border-left:4px solid #a54b42;background:#fff4f1;padding:14px;margin:16px 0}
-.co-diagnostic-snapshot .diag-info{padding:13px;background:#f1f6f4;border:1px solid #d9e7e1;border-radius:5px;margin:12px 0}
+.co-diagnostic-snapshot .diag-info{padding:13px;background:#f5f6f8;border:1px solid #e1e4e9;border-radius:5px;margin:12px 0}
 .co-diagnostic-snapshot table{width:100%;border-collapse:collapse;font-size:13px}
-.co-diagnostic-snapshot th,.co-diagnostic-snapshot td{border-bottom:1px solid #dce6e2;padding:12px;text-align:left;vertical-align:top}
-.co-diagnostic-snapshot th{background:#f2f7f5}.co-diagnostic-snapshot code{overflow-wrap:anywhere}
+.co-diagnostic-snapshot th,.co-diagnostic-snapshot td{border-bottom:1px solid #e1e4e9;padding:12px;text-align:left;vertical-align:top}
+.co-diagnostic-snapshot th{background:#f5f6f8}.co-diagnostic-snapshot code{overflow-wrap:anywhere}
 .co-diagnostic-snapshot .diag-scope{display:grid;grid-template-columns:1fr 1fr;gap:9px 24px}
-.co-diagnostic-snapshot .diag-scope div{display:grid;grid-template-columns:90px 1fr;border-bottom:1px solid #edf1ef;padding:6px}
-.co-diagnostic-snapshot dt{color:#667b79}.co-diagnostic-snapshot dd{margin:0;overflow-wrap:anywhere}
+.co-diagnostic-snapshot .diag-scope div{display:grid;grid-template-columns:90px 1fr;border-bottom:1px solid #eceef1;padding:6px}
+.co-diagnostic-snapshot dt{color:#68717d}.co-diagnostic-snapshot dd{margin:0;overflow-wrap:anywhere}
 .co-diagnostic-snapshot .diag-risks{padding-left:20px}.co-diagnostic-snapshot .diag-risks li{padding:8px 0}
-.co-diagnostic-snapshot .diag-risks p{margin:3px 0}.co-diagnostic-snapshot a{color:#146d64}
-.co-diagnostic-snapshot .diag-action{padding:14px;border:1px solid #d8e4df;border-radius:6px;margin:12px 0}
+.co-diagnostic-snapshot .diag-risks p{margin:3px 0}.co-diagnostic-snapshot a{color:#536278}
+.co-diagnostic-snapshot .diag-action{padding:14px;border:1px solid #e1e4e9;border-radius:6px;margin:12px 0}
 [data-stale="true"] .co-diagnostic-snapshot{visibility:hidden}
 [data-stale="true"] [class*="st-key-diagnostic_snapshot_"],[data-stale="true"][class*="st-key-diagnostic_snapshot_"]{visibility:hidden;pointer-events:none}
 @media(max-width:700px){.co-diagnostic-snapshot .diag-metrics,.co-diagnostic-snapshot .diag-scope{grid-template-columns:1fr 1fr}.co-diagnostic-snapshot section{padding:14px}.co-diagnostic-snapshot table{display:block;overflow:auto}.co-diagnostic-snapshot .diag-scope div{display:block}}
@@ -186,9 +186,9 @@ def _forms(w,mode,subject,view):
                 st.download_button("导出研究需求草案",d.model_dump_json(indent=2).encode("utf8"),
                     file_name="CausalOps_研究需求草案.json",mime="application/json",key="diag_export_draft_"+d.draft_id)
 
-def render():
+def render(focus=None):
     st.html(CSS)
-    st.title("研究证据诊断",anchor=False)
+    st.title("研究决定" if focus=="decisions" else "研究证据诊断",anchor=False)
     st.caption("显式触发、本地只读核验、模型解释关闭。历史诊断与研究计划、批准和统计运行分别保存。")
     # Stable sibling slots: clear the prior report before selection/URL changes.
     # A source check or widget rerun can never label old body text with a new task.
@@ -257,10 +257,11 @@ def render():
         return
     with output.container():
         with st.container(key="diagnostic_snapshot_"+report_id):
-            st.html(report_html(view))
+            if focus!="decisions":st.html(report_html(view))
+            else:st.caption("所选诊断报告："+report_id+"；任务："+selected+"。历史决定绑定此报告，不具有执行权限。")
             from causalops.ui.decision_memory import render_memory
             render_memory(w,mode,selected,view)
-            _forms(w,mode,selected,view)
+            if focus!="decisions":_forms(w,mode,selected,view)
             st.download_button("导出诊断报告快照",view.report.model_dump_json(indent=2).encode("utf8"),
                 file_name="CausalOps_诊断报告快照.json",mime="application/json",key="diag_export_"+report_id)
             st.caption("导出为生成时点的原始快照；过期快照不能作为当前结论或新执行授权。")

@@ -1,0 +1,2 @@
+recursive-include src/causalops/web_assets *
+include requirements-windows-py311.lock.txt

@@ -1,0 +1,114 @@
+[
+  {
+    "file": "home.png",
+    "sha256": "524a3fe247b80975714512a79cb58dfb5250786452996c6391b067570f1c2f9b",
+    "origin": "installed 0.21.0b1 wheel, actual browser, public/synthetic data",
+    "human_participant": false,
+    "qa_session_filter": true
+  },
+  {
+    "file": "long-chat.png",
+    "sha256": "9037906e8a650e12b032f3d78656ed42a7cb50bfbe8c572344cb99953f34956a",
+    "origin": "installed 0.21.0b1 wheel, actual browser, public/synthetic data",
+    "human_participant": false,
+    "qa_session_filter": true
+  },
+  {
+    "file": "contract.png",
+    "sha256": "b47ba8b2050f172c5dead5f8ce7175b3641fe2eaae23a35febcb9d21b19e5c65",
+    "origin": "installed 0.21.0b1 wheel, actual browser, public/synthetic data",
+    "human_participant": false,
+    "qa_session_filter": true
+  },
+  {
+    "file": "candidate.png",
+    "sha256": "13ecfc9e0a96592f1aa301856f9144fe043920175ce826d9e09e76e13713fd31",
+    "origin": "installed 0.21.0b1 wheel, actual browser, public/synthetic data",
+    "human_participant": false,
+    "qa_session_filter": true
+  },
+  {
+    "file": "review.png",
+    "sha256": "8f8ac9537960bfb98e95e83cff35af83e807c04b78f40803987e5d696794d370",
+    "origin": "installed 0.21.0b1 wheel, actual browser, public/synthetic data",
+    "human_participant": false,
+    "qa_session_filter": true
+  },
+  {
+    "file": "execution.png",
+    "sha256": "2cc0b0d60621e54a17d65fd530c8a9e8fb754813667b410fc6c0c4fd01c65e82",
+    "origin": "installed 0.21.0b1 wheel, actual browser, public/synthetic data",
+    "human_participant": false,
+    "qa_session_filter": true
+  },
+  {
+    "file": "report.png",
+    "sha256": "27da36eb0e68a32584e263fa1bc5ac9a751fe3ec0f4ce4cb2bcd996b4bda8f35",
+    "origin": "installed 0.21.0b1 wheel, actual browser, public/synthetic data",
+    "human_participant": false,
+    "qa_session_filter": true
+  },
+  {
+    "file": "diagnosis.png",
+    "sha256": "e2a2d3e3d0a5015845728548b8371baa390b017cdf65a0f49bdf86972990f87d",
+    "origin": "installed 0.21.0b1 wheel, actual browser, public/synthetic data",
+    "human_participant": false,
+    "qa_session_filter": true
+  },
+  {
+    "file": "decision.png",
+    "sha256": "1e2afd78d48b867086de2533d1963bcc0e03e9843726305fe55673110f4d4bd0",
+    "origin": "installed 0.21.0b1 wheel, actual browser, public/synthetic data",
+    "human_participant": false,
+    "qa_session_filter": true
+  },
+  {
+    "file": "streamlit-same-study.png",
+    "sha256": "08c72747af6efe46a1b9bf71de5dcf660a39e3fc1aca86dfe0fcf43bb017113d",
+    "origin": "installed 0.21.0b1 wheel, actual browser, public/synthetic data",
+    "human_participant": false,
+    "qa_session_filter": true
+  },
+  {
+    "file": "chat-1180.png",
+    "sha256": "2a6152fe2cd1dc31073f5704c69cff7ca7778f92222b19e3b20efd12519f1240",
+    "origin": "installed 0.21.0b1 wheel, actual browser, public/synthetic data",
+    "human_participant": false,
+    "qa_session_filter": true
+  },
+  {
+    "file": "chat-390.png",
+    "sha256": "56f525bfc7a83ae952d2f0210b4de4960092a9350e27874d71c3d933c66bc4cb",
+    "origin": "installed 0.21.0b1 wheel, actual browser, public/synthetic data",
+    "human_participant": false,
+    "qa_session_filter": true
+  },
+  {
+    "file": "report-390.png",
+    "sha256": "f6dbb27aa25754a5b8d754e28b304ec1fa1d1333daf12970058804c1fd821419",
+    "origin": "installed 0.21.0b1 wheel, actual browser, public/synthetic data",
+    "human_participant": false,
+    "qa_session_filter": true
+  },
+  {
+    "file": "panel-390.png",
+    "sha256": "d8e7195f721a3ec5cf7add3d3859d95c2051342b97c789ef1739a1f43f0ae135",
+    "origin": "installed 0.21.0b1 wheel, actual browser, public/synthetic data",
+    "human_participant": false,
+    "qa_session_filter": true
+  },
+  {
+    "file": "result.png",
+    "sha256": "bb0a23dda450fe7405c9c8dbeef298fa1c3c3740c8c7038587b9c5881d66b8b3",
+    "origin": "installed 0.21.0b1 wheel, actual browser, public/synthetic data",
+    "human_participant": false,
+    "qa_session_filter": true
+  },
+  {
+    "file": "workspace-1440.png",
+    "sha256": "d4fbf91b0c0cebeaa6e71c2968a5498cab0822f1823511a54d0bd66eb46a61d9",
+    "origin": "installed 0.21.0b1 wheel, actual browser, public/synthetic data",
+    "human_participant": false,
+    "qa_session_filter": true
+  }
+]

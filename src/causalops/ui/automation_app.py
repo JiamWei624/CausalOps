@@ -6,7 +6,8 @@ from pathlib import Path
 import streamlit as st
 from causalops.application.research_service import ResearchService
 from causalops.application.background import AutomationJobs
-from causalops.application.automation_results import snapshot,report_html,export_json,STATES
+from causalops.application.automation_results import snapshot,export_json,STATES
+from causalops.ui.report_view import render_report as report_html
 from causalops.assistant.service import AssistantWorkspace
 from causalops.general.service import DesignError
 from causalops.application.configurable_research import is_configurable,ConfigurablePlan2,parse_plan
@@ -15,7 +16,8 @@ from causalops.sample_data.hillstrom import SOURCE,DOWNLOAD,QUESTION
 def _open(tid=""):
     if tid:st.query_params["automation"]=tid
     else:st.query_params.pop("automation",None)
-    st.query_params["route"]="automation"
+    current=st.query_params.get("route","automation")
+    st.query_params["route"]=("review" if tid and current in ("configure","review") else current if tid and current in ("execution","results") else "configure" if current in ("configure","review","execution","results") else "automation")
 
 def _new():
     _open()
@@ -53,6 +55,8 @@ def _create(co):
                 data=upload.getvalue()
             request=st.session_state.setdefault("automation_create_key",uuid.uuid4().hex)
             task=co.create_hillstrom(data,request_id=request,source_confirmed=checked)
+            from causalops.ui.chat_bridge import publish
+            publish(task['id'])
             _open(task["id"]);st.rerun()
         except (ValueError,OSError) as exc:
             st.error(str(exc) if isinstance(exc,ValueError) else "公开数据读取失败，请重新选择原始压缩包。")
@@ -117,7 +121,9 @@ def _plan(view):
             try:
                 co=ResearchService(AssistantWorkspace()).automation_v2()
                 co.approve(t["id"],expected_plan_sha=t["plan_sha"],human_confirmed=confirm)
-                AutomationJobs(co.s).submit_task(t["id"]);st.rerun()
+                AutomationJobs(co.s).submit_task(t["id"])
+                if st.query_params.get("route") in ("review","configure"):st.query_params["route"]="execution"
+                st.rerun()
             except (ValueError,RuntimeError) as exc:st.error(str(exc) if isinstance(exc,DesignError) else "未能启动，请核对任务状态，已保存的批准不会被页面刷新重复创建。")
         st.caption("普通聊天中的同意不授予执行权限。审核后自动推进，无需逐步批准。")
 
@@ -169,7 +175,11 @@ def _live(tid):
     if t["status"] in ("blocked","paused","interrupted"):
         st.info("保留已保存步骤和原Run。核查上游证据、批准与数据后再恢复；数据或范围改变需要创建新的待审任务。没有绕过门禁的执行入口。")
     _budget(view)
-    st.subheader("整体研究报告" if view["report"] else "部分完成与保留结果")
+    _report(view,co)
+
+
+def _report(view,co):
+    t=view['task'];tid=t['id']
     # Title, metric, both Run IDs and conclusion are one evidence-bound HTML block.
     html=report_html(view);st.html(html)
     seen="auto_report_viewed_"+tid
@@ -180,27 +190,49 @@ def _live(tid):
     b.download_button("导出步骤与运行证据",export_json(view),file_name="CausalOps_自动化运行证据.json",mime="application/json",key="auto_evidence_"+tid)
     with st.expander("执行事件与复现记录"):
         st.json(view["events"])
+    if view['report']:
+        from causalops.ui.diagnostics_app import open_diagnostics
+        st.subheader('证据诊断与研究决定',anchor=False)
+        st.caption('显式检查六项已实现规则，或读取已有诊断报告。建议、草案和研究决定没有统计执行权限。')
+        a,b=st.columns(2)
+        a.button('查看本报告的证据诊断',on_click=open_diagnostics,args=('post_run',tid),key='report_diagnosis_'+tid)
+        def decisions():
+            if st.query_params.get('diagnostic_task')!=tid:st.query_params.pop('diagnostic_report',None)
+            st.query_params.update(route='decisions',automation=tid,diagnostic_mode='post_run',diagnostic_task=tid)
+        b.button('查看本研究的决定历史',on_click=decisions,key='report_decisions_'+tid)
 
-def render():
+
+def render(section="all"):
     # Streamlit retains dimmed stale DOM while a different task rerenders.
     # Hide only stale automation report bodies until their bound identity is current.
     st.html('<style>[data-stale="true"] .co-automation-report{visibility:hidden;}</style>')
-    st.caption("切换任务时等待当前报告载入；过期报告会暂时隐藏，报告中的任务与运行来源应与当前任务一致。")
-    st.title("自动化研究",anchor=False)
+    if section=="all":st.caption("切换任务时等待当前报告载入；过期报告会暂时隐藏，报告中的任务与运行来源应与当前任务一致。")
+    st.title({"configure":"数据与研究配置","review":"方案审核","execution":"研究执行"}.get(section,"自动化研究"),anchor=False) if section!="results" else None
     co=ResearchService(AssistantWorkspace()).automation_v2()
     with co.ws.connection() as c:ids=[r[0] for r in c.execute("SELECT id FROM automation_v2_tasks ORDER BY created DESC,id DESC")]
     selected=st.query_params.get("automation","")
     if selected and selected not in ids:
-        st.warning("所选自动化任务不存在于当前工作区，请从已有任务中选择。");selected=""
+        st.error("所选自动化任务不存在于当前工作区，未使用其他任务替代。请在侧栏明确选择任务。");return
     def label(tid):
         if not tid:return "创建新的公开营销研究"
         t=co.task(tid)
         sc=t["plan"]["scope"]
         return sc["metric"]+" · "+" / ".join(sc["groups"].values())+" · "+sc["window"]+" · "+STATES.get(t["status"],t["status"])+" · "+tid[:8]
-    choice=st.selectbox("自动化任务与历史报告",[""]+ids,index=([""]+ids).index(selected),format_func=label,key="auto_history_"+selected)
-    if choice!=selected:
-        _open(choice);st.rerun()
-    st.button("创建新的自动化研究",on_click=_new)
+    if section=='all':
+        choice=st.selectbox("自动化任务与历史报告",[""]+ids,index=([""]+ids).index(selected),format_func=label,key="auto_history_"+selected)
+        if choice!=selected:
+            _open(choice);st.rerun()
+    if section in ('all','configure'):
+        st.button("创建新的自动化研究",on_click=_new)
+    if section=='results':
+        if not selected:
+            st.info('请在侧栏选择研究任务。没有 Run 的任务不显示虚构统计结果，也不自动打开其他研究。')
+            return
+        try:view=snapshot(co,selected)
+        except (ValueError,RuntimeError):
+            st.error('当前研究报告未通过来源核验，未使用其他成功报告替代。');return
+        _report(view,co)
+        return
     if selected:
         from causalops.ui.diagnostics_app import open_diagnostics
         task=co.task(selected)
@@ -216,6 +248,22 @@ def render():
                 return
         else:st.button("查看当前研究的证据诊断",on_click=open_diagnostics,args=("post_run",selected),key="auto_diag_"+selected)
         st.button("检查当前数据的研究条件",on_click=open_diagnostics,args=("preflight",task["session_id"]),key="auto_prediag_"+selected)
+    if section=='configure' and selected:
+        st.info('当前任务的正式方案与历史结果保留。修改条件需要创建新候选并重新审核；数据预览不改写正式指标。')
+        return
+    if section=='review' and selected:
+        view=snapshot(co,selected)
+        if task['status'] not in ('candidate','paused'):
+            st.subheader('当前正式研究计划')
+            st.write(task['plan']['objective'])
+            st.caption('计划 v'+str(task['plan']['version'])+' · '+STATES.get(task['status'],task['status'])+'。批准后不在此原地改写。')
+            for spec in task['plan']['steps']:
+                with st.expander(spec['step_id']+' · '+spec['purpose'] if 'purpose' in spec else spec['step_id']):st.json(spec)
+            st.info('此方案已进入执行或终止状态。请在“研究执行”查看真实进度，在“研究结果”查看已保存报告。')
+            return
+    if section in ('review','execution') and not selected:
+        st.info('请在侧栏选择已有研究，或在“数据与研究配置”创建候选计划。尚未批准的计划不能执行。')
+        return
     if selected:
         jobs=AutomationJobs(co.s)
         watching=any(j["status"] in ("queued","running") for j in jobs.reconcile(selected))

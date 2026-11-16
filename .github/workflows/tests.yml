@@ -8,7 +8,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: python -m pip install -r requirements-runtime-win-py311.txt
+      - run: python -m pip install -r requirements-windows-py311.lock.txt
       - run: python -m pip install --no-deps .
       - name: Download verified public Hillstrom fixture
         shell: pwsh

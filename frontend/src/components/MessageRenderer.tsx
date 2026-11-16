@@ -1,0 +1,100 @@
+import type { Message } from "../api";
+import { Markdown } from "./ui";
+function answerLayout(text: string, scope?: string) {
+  if (scope !== "verified_automation_report") return { lead: null, body: text };
+  const parts = text.split("\n\n");
+  const index = parts.findIndex((x) =>
+    /^(绝对差|描述性差异)（/.test(x.replaceAll("**", "")),
+  );
+  return {
+    lead: index < 0 ? null : parts[index].replaceAll("**", ""),
+    body: parts
+      .filter((_, i) => i !== index)
+      .join("\n\n")
+      .replaceAll("**", ""),
+  };
+}
+export function MessageRenderer({
+  m,
+  currentSubject,
+}: {
+  m: Message;
+  currentSubject: string | undefined;
+}) {
+  const a = m.answer,
+    layout = answerLayout(a?.text || "", a?.scope);
+  return (
+    <section
+      className="turn"
+      data-turn-id={m.id}
+      data-bound-task={m.subject_id || ""}
+    >
+      <div className="user-row">
+        <div className="user-bubble">{m.question}</div>
+      </div>
+      <article className="assistant-message">
+        {m.binding_id && m.subject_id !== currentSubject && (
+          <p className="historical">发送时的历史研究 · 本轮来源保留</p>
+        )}
+        {!m.binding_id && currentSubject && (
+          <p className="historical">此条消息发送时尚未关联研究</p>
+        )}
+        {!m.available ? (
+          <p className="error" role="alert">
+            {m.error}
+          </p>
+        ) : m.status === "running" ? (
+          <p className="muted">此轮仍在保存或等待核查，未自动重发。</p>
+        ) : m.status === "interrupted" ? (
+          <p className="error">此轮已中断，请核对来源后再决定是否重新提问。</p>
+        ) : (
+          <>
+            {layout.lead && <p className="result-lead">{layout.lead}</p>}
+            <div className="prose">
+              <Markdown text={layout.body} />
+            </div>
+            {!!a?.facts?.length && a.scope !== "verified_automation_report" && (
+              <div className="fact-list">
+                {a.facts.map((f) => (
+                  <p key={f.id}>
+                    {f.text}：
+                    {typeof f.value === "object"
+                      ? JSON.stringify(f.value)
+                      : String(f.value)}
+                  </p>
+                ))}
+              </div>
+            )}
+          </>
+        )}
+        <details className="source">
+          <summary>
+            回答依据{" "}
+            <span>
+              {a?.source?.includes("模型") && !a.source.includes("未调用")
+                ? "已保存服务回复"
+                : "本地确定性路径"}
+            </span>
+          </summary>
+          <p>{a?.source || "消息状态记录"}</p>
+          <p className="small">
+            聊天不是批准；原回复及每轮绑定保持保存时的版本。
+          </p>
+          <pre>
+            {JSON.stringify(
+              {
+                message: m.id,
+                binding: m.binding_id,
+                research: m.subject_id,
+                run_ids: a?.run_ids || [],
+                source: m.source_ref,
+              },
+              null,
+              2,
+            )}
+          </pre>
+        </details>
+      </article>
+    </section>
+  );
+}

@@ -254,6 +254,10 @@ class BoundedCoordinator:
             self.user_event(tid,"review_submitted")
             return receipt
 
+    def approval(self,tid):
+        """Read the existing verified receipt; does not mint execution rights."""
+        return self._verify(self.task(tid))
+
     def _verify(self,t):
         p,_=self._binding(t)
         with self.ws.connection() as c:

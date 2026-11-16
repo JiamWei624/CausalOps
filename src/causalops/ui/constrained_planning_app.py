@@ -22,7 +22,9 @@ def render(co,t):
         ck=st.checkbox('我选择确定性模板回退，不恢复或增加模型请求',key='planning_fallback_ack_'+tid)
         if st.button('转为确定性模板新候选',disabled=not ck,key='planning_fallback_'+tid):
             try:
-                newer=svc.fallback(tid,human_confirmed=ck);st.query_params['automation']=newer['id'];st.rerun()
+                newer=svc.fallback(tid,human_confirmed=ck)
+                from causalops.ui.chat_bridge import publish
+                publish(newer['id']);st.query_params['automation']=newer['id'];st.rerun()
             except (ValueError,RuntimeError) as exc:st.error(str(exc))
         return False
     mode=st.radio('计划生成方式',['使用受限研究模板','使用模型辅助生成候选计划'],key='planning_mode_'+tid)
@@ -63,7 +65,9 @@ def render(co,t):
             st.json(r['candidate'])
             if st.button('采纳候选并生成正式待审计划',key='planning_adopt_'+tid+'_'+cid):
                 try:
-                    newer=svc.adopt(tid,cid,human_confirmed=True);st.query_params['automation']=newer['id'];st.rerun()
+                    newer=svc.adopt(tid,cid,human_confirmed=True)
+                    from causalops.ui.chat_bridge import publish
+                    publish(newer['id']);st.query_params['automation']=newer['id'];st.rerun()
                 except (ValueError,RuntimeError) as exc:st.error(str(exc))
         with st.expander('候选原始响应与确定性校验记录'):st.json(r)
     return mode=='使用受限研究模板'

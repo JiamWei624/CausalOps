@@ -7,22 +7,8 @@ from causalops.results.interpretation import business_sections
 from causalops.ui.showcase_support import overview_numbers,conclusion_figures
 
 def style():
-    st.markdown("""<style>
-    .block-container{max-width:1240px;padding-top:4.5rem;padding-bottom:3rem}
-    h1{font-size:2rem!important;font-weight:650!important;letter-spacing:0;line-height:1.45!important} h2,h3{letter-spacing:0;line-height:1.55!important} [data-testid=stMarkdownContainer] p{line-height:1.8}
-    .eyebrow{font-size:.78rem;letter-spacing:.13em;color:#527a78;font-weight:700}
-    .hero-note{font-size:1.25rem;line-height:1.5;max-width:52rem;color:#304e57;margin-bottom:8px}
-    [data-testid=stMainBlockContainer]{overflow-wrap:anywhere}
-    [data-testid=stSidebar] button{min-height:40px}
-    .flow{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 24px}
-    .flow span{border:1px solid #b8cdcb;padding:8px 14px;border-radius:5px;font-size:.88rem}
-    .flow .active{background:#176b65;color:white;border-color:#176b65}
-    .source-pill{font-size:.82rem;color:#527a78;margin:6px 0 14px}
-    div[data-testid=stMetric]{padding:14px;border:1px solid #d8e2df;border-radius:6px}
-    div[data-testid=stMetricValue]{font-size:1.85rem}
-    div[data-testid=stVerticalBlockBorderWrapper]{border-radius:6px}
-    @media(max-width:700px){.block-container{padding:1rem}div[data-testid=stMetricValue]{font-size:1.4rem}}
-    </style>""",unsafe_allow_html=True)
+    from causalops.ui.design_system import apply_theme
+    apply_theme()
 
 def flow(existing:bool):
     st.markdown('<div class="flow"><span>① 明确问题</span><span>② 审核设计</span><span class="'+('' if existing else 'active')+'">③ 执行分析</span><span class="'+('active' if existing else '')+'">④ 查阅结果</span></div>',unsafe_allow_html=True)

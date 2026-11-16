@@ -8,6 +8,13 @@ from causalops.results.interpretation import interpret_run
 
 ROOT=Path(__file__).resolve().parents[3]
 ROUTES={
+ 'chat_report':('完整研究报告','当前会话的已核验研究报告'),
+ 'legacy_home':('研究入口总览','保留的任务式工作空间'),
+ 'configure':('数据与研究配置','确认数据、字段与研究范围。'),
+ 'review':('方案审核','核对完整计划，正式批准当前范围。'),
+ 'execution':('研究执行','查看获批任务的真实进度与安全控制。'),
+ 'results':('研究结果','结论、研究限制和原始运行证据。'),
+ 'decisions':('研究决定','用户决定、原因与关联证据；无执行权限。'),
  'home':('首页与模型连接','首次使用引导、连接模型并开始分析。'),
  'assistant':('分析工作台','上传、对话、方法检索、受控执行与证据解释。'),
  'analysis':('专业分析','上传自己的表、确认研究设计、执行并恢复分析。'),

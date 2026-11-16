@@ -31,6 +31,8 @@ build/
 dist/
 *.egg-info/
 .venv*/
+node_modules/
+frontend/.vite/
 
 # Machine-local host connections; generate per installation
 .codex/

@@ -1,3 +1,5 @@
+> 0.21.0b1默认React入口及新版教程见[REACT_WORKSPACE_GUIDE.md](REACT_WORKSPACE_GUIDE.md)。本文保留历史Streamlit完整功能说明。
+
 # CausalOps 项目介绍与功能手册
 
 > 本文保留较早Beta功能说明。0.20.0b1新增的可配置研究、两条候选路径及限制，见[新版教程](CONFIGURABLE_RESEARCH_GUIDE.md)；不能据旧说明认定P3不存在或已支持通用自主研究。

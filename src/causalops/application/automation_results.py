@@ -8,6 +8,8 @@ from causalops.general.service import DesignError
 from .configurable_research import is_configurable
 
 NAMES={"S01":"数据与设计审计","S02":"分组描述统计","S03":"上游证据核验","S04":"A/B 效果分析","S05":"报告整合"}
+class SnapshotUpdating(DesignError):
+    """A concurrent publication prevented a coherent read; not evidence damage."""
 STATES={"candidate":"待整体审核","approved":"已批准，等待执行","pending":"未执行","running":"执行中","succeeded":"已完成","completed":"已完成","blocked":"安全阻断","interrupted":"结果需要核查","paused":"已暂停","pause_requested":"已请求暂停，将在安全边界停止","cancel_requested":"已请求取消，将在安全边界停止","cancelled":"已取消","queued":"排队中"}
 
 def _reason(exc):
@@ -55,7 +57,7 @@ def snapshot(co,tid):
             risks.append(dict(rule="unverified_assumptions",level="解释限制",detail="未验证无干扰、外部代表性和全部识别假设。仅支持登记对象、指标和窗口；原工具采用正态近似区间。"))
         return dict(task=task,steps=steps,evidence=evidence,report=evidence.get("S05",{}).get("body") if not errors else None,
                     risks=risks,binding_error=binding_error,errors=errors,budget=co.budget(tid),events=co.events(tid))
-    raise DesignError("任务状态正在更新，请稍后刷新；暂不展示可能混合的报告。")
+    raise SnapshotUpdating("任务状态正在更新，请稍后刷新；暂不展示可能混合的报告。")
 
 def report_html(view):
     if is_configurable(view["task"]["plan"]):

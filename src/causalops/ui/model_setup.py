@@ -103,7 +103,7 @@ def task_model(a,sid):
     if local:st.caption('运行模式：本地统计分析；当前任务的模型许可仍保留，但后续请求不发送给模型。')
     else:st.caption('模型：'+PRESETS[cfg.provider]['label']+' / '+cfg.model+' · '+('本任务已授权' if authorized else '本任务尚未授权') if cfg and key else '运行模式：本地统计分析')
     def open_settings():
-        st.session_state['showcase_route']='home';st.query_params['route']='home'
+        st.session_state['showcase_route']='settings';st.query_params['route']='settings'
     with st.expander('模型连接与数据发送许可',expanded=bool(cfg and key and not authorized)):
         st.button('管理模型连接',key='task_model_settings',on_click=open_settings)
         if cfg and key:
