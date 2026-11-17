@@ -31,8 +31,8 @@
   },
   {
     "file": "README.md",
-    "bytes": 6076,
-    "sha256": "109d2f2aa846e440f0370d648e3330fd5da3d1849cfcb9e2901c421b413555fe"
+    "bytes": 6536,
+    "sha256": "2d192aca0025e244789cfefc770b32cf5bd803df68a17db6dc59b9bb33ab9c66"
   },
   {
     "file": "SECURITY.md",
@@ -47,7 +47,7 @@
   {
     "file": "application-wheel.json",
     "bytes": 164,
-    "sha256": "5c83cad33375eafd0dcfcb6ca91605e1f1f9333493e40ba08d47e16c12023318"
+    "sha256": "dac9d0664b1da45e7d6e558c440467922d753a5c84baddb881fea9be8a713bfa"
   },
   {
     "file": "docs/ARCHITECTURE.md",
@@ -596,8 +596,8 @@
   },
   {
     "file": "docs/current/INSTALLATION.md",
-    "bytes": 4538,
-    "sha256": "9faf73dc27028463248c0fbb35c8ec59e0ffc3f85e432ef1d9b1e4fe5b3aee6d"
+    "bytes": 5565,
+    "sha256": "fe96ec02ed25326be341b3461aea4054064d97fc09c052070ebee563c80636e1"
   },
   {
     "file": "docs/current/PHASE2_ACCEPTANCE.md",
@@ -622,7 +622,7 @@
   {
     "file": "docs/current/REACT_WORKSPACE_GUIDE.md",
     "bytes": 5999,
-    "sha256": "ddee9a0943fca6ec8dd462742c20ceee75e4cb3c1afb05d99ff604fcd0f0a9ac"
+    "sha256": "60e782d743b3992a9159e67320544eb04df99cacccf344e7eb88cea2e5167231"
   },
   {
     "file": "docs/current/REAL_DATA_EXPERIENCE.md",
@@ -770,37 +770,37 @@
     "sha256": "fa141c1cbc06b2149702a326b839704243ab0da7215a7136d83d5aad2cb55c37"
   },
   {
-    "file": "docs/evaluation/prestable/代码审查.md",
+    "file": "\"docs/evaluation/prestable/\\344\\273\\243\\347\\240\\201\\345\\256\\241\\346\\237\\245.md\"",
     "bytes": 6907,
     "sha256": "e9400103b16469b960c4233957d2c3895fa7d31e70043d1fd629c718212da1cf"
   },
   {
-    "file": "docs/evaluation/prestable/分层汇总_服务验收.md",
+    "file": "\"docs/evaluation/prestable/\\345\\210\\206\\345\\261\\202\\346\\261\\207\\346\\200\\273_\\346\\234\\215\\345\\212\\241\\351\\252\\214\\346\\224\\266.md\"",
     "bytes": 4584,
     "sha256": "701f4c6826d7c57fe5f0204e88cf4d55bc080de3217a0154ea254c0834e7506e"
   },
   {
-    "file": "docs/evaluation/prestable/分层汇总_浏览器与接口.md",
+    "file": "\"docs/evaluation/prestable/\\345\\210\\206\\345\\261\\202\\346\\261\\207\\346\\200\\273_\\346\\265\\217\\350\\247\\210\\345\\231\\250\\344\\270\\216\\346\\216\\245\\345\\217\\243.md\"",
     "bytes": 2143,
     "sha256": "4a118800cc8063f5c580deaa00f8cbd4f099a7056d85226bd9144ddeb150382c"
   },
   {
-    "file": "docs/evaluation/prestable/十二题独立评测.md",
+    "file": "\"docs/evaluation/prestable/\\345\\215\\201\\344\\272\\214\\351\\242\\230\\347\\213\\254\\347\\253\\213\\350\\257\\204\\346\\265\\213.md\"",
     "bytes": 5491,
     "sha256": "fed09f625053c3dae908b366c8864f3ebf3f268139b7b59751902ca10d98138d"
   },
   {
-    "file": "docs/evaluation/prestable/浏览器验收.md",
+    "file": "\"docs/evaluation/prestable/\\346\\265\\217\\350\\247\\210\\345\\231\\250\\351\\252\\214\\346\\224\\266.md\"",
     "bytes": 3121,
     "sha256": "67398761397a19e4bf1f0a5a3858dbf5baf3c480bae4bd48d08b7b56d998e4f8"
   },
   {
-    "file": "docs/evaluation/prestable/稳定版前审查与验收.md",
+    "file": "\"docs/evaluation/prestable/\\347\\250\\263\\345\\256\\232\\347\\211\\210\\345\\211\\215\\345\\256\\241\\346\\237\\245\\344\\270\\216\\351\\252\\214\\346\\224\\266.md\"",
     "bytes": 9166,
     "sha256": "ea5e92d8300bbdd567e0b90b5e3f2ea89a1732b0579952432a02a7881d01c3bd"
   },
   {
-    "file": "docs/evaluation/prestable/量纲与分层汇总专项验收.md",
+    "file": "\"docs/evaluation/prestable/\\351\\207\\217\\347\\272\\262\\344\\270\\216\\345\\210\\206\\345\\261\\202\\346\\261\\207\\346\\200\\273\\344\\270\\223\\351\\241\\271\\351\\252\\214\\346\\224\\266.md\"",
     "bytes": 11888,
     "sha256": "e9b4ffea3e3fffc01d8816e5e8e2edf8bc574f23244945af08ccb661c68a88cd"
   },
@@ -1375,37 +1375,37 @@
     "sha256": "561d004192d46824fd5bdf8da3eae5a43eda8917008c96e1757c206a9c545b74"
   },
   {
-    "file": "docs/product/draft-v1/00_材料核查与证据索引.md",
+    "file": "\"docs/product/draft-v1/00_\\346\\235\\220\\346\\226\\231\\346\\240\\270\\346\\237\\245\\344\\270\\216\\350\\257\\201\\346\\215\\256\\347\\264\\242\\345\\274\\225.md\"",
     "bytes": 9662,
     "sha256": "4d194fbaefbafe3b32e2a585f85b50128d966822e063521c3f302836a5f6ffcc"
   },
   {
-    "file": "docs/product/draft-v1/01_产品定位与需求分析.md",
+    "file": "\"docs/product/draft-v1/01_\\344\\272\\247\\345\\223\\201\\345\\256\\232\\344\\275\\215\\344\\270\\216\\351\\234\\200\\346\\261\\202\\345\\210\\206\\346\\236\\220.md\"",
     "bytes": 9497,
     "sha256": "c3623cb83819586a9f379bf0f6c1244db1918a21d06500949f325b062864337a"
   },
   {
-    "file": "docs/product/draft-v1/02_Beta总体PRD.md",
+    "file": "\"docs/product/draft-v1/02_Beta\\346\\200\\273\\344\\275\\223PRD.md\"",
     "bytes": 14505,
     "sha256": "8838e08d16c43c857ea18938c6d7d4369f9e0ae4bbefb5e12f6d5084fa737766"
   },
   {
-    "file": "docs/product/draft-v1/03_N06指标变更专项方案.md",
+    "file": "\"docs/product/draft-v1/03_N06\\346\\214\\207\\346\\240\\207\\345\\217\\230\\346\\233\\264\\344\\270\\223\\351\\241\\271\\346\\226\\271\\346\\241\\210.md\"",
     "bytes": 12845,
     "sha256": "a7bc40a9a6421bc2fbab4b060e16b5d58d0bddc05e4c83547f46a80f2aa15997"
   },
   {
-    "file": "docs/product/draft-v1/04_产品指标体系与版本路线图.md",
+    "file": "\"docs/product/draft-v1/04_\\344\\272\\247\\345\\223\\201\\346\\214\\207\\346\\240\\207\\344\\275\\223\\347\\263\\273\\344\\270\\216\\347\\211\\210\\346\\234\\254\\350\\267\\257\\347\\272\\277\\345\\233\\276.md\"",
     "bytes": 14953,
     "sha256": "a92c92097da2487921df61a5cbbb62051b1153b5e62b4cc8482efdc8798b1715"
   },
   {
-    "file": "docs/product/draft-v1/05_负责人决策与作品集结构.md",
+    "file": "\"docs/product/draft-v1/05_\\350\\264\\237\\350\\264\\243\\344\\272\\272\\345\\206\\263\\347\\255\\226\\344\\270\\216\\344\\275\\234\\345\\223\\201\\351\\233\\206\\347\\273\\223\\346\\236\\204.md\"",
     "bytes": 7234,
     "sha256": "e76d4433643933ae7560d2c7d8bf48fd18b8d5e798b224c253de878967c171e1"
   },
   {
-    "file": "docs/product/draft-v1/06_自动化方向需求概要.md",
+    "file": "\"docs/product/draft-v1/06_\\350\\207\\252\\345\\212\\250\\345\\214\\226\\346\\226\\271\\345\\220\\221\\351\\234\\200\\346\\261\\202\\346\\246\\202\\350\\246\\201.md\"",
     "bytes": 5939,
     "sha256": "75d9df33c1f788d36c1211752471a39f21803b123c3c6fcee822c317d1da8140"
   },
@@ -1600,17 +1600,17 @@
     "sha256": "423b53e0f3861cb9ec60a33a5d65dc48a4de46bc439f3fd7d4cbb518101528d9"
   },
   {
-    "file": "docs/product/proactive-diagnostics/previews/A-证据完整.png",
+    "file": "\"docs/product/proactive-diagnostics/previews/A-\\350\\257\\201\\346\\215\\256\\345\\256\\214\\346\\225\\264.png\"",
     "bytes": 152255,
     "sha256": "16872a8f20229f00fce8fb2818fac5a360729c4582608824bbf0d1b79d219ae6"
   },
   {
-    "file": "docs/product/proactive-diagnostics/previews/B-设计依据不足.png",
+    "file": "\"docs/product/proactive-diagnostics/previews/B-\\350\\256\\276\\350\\256\\241\\344\\276\\235\\346\\215\\256\\344\\270\\215\\350\\266\\263.png\"",
     "bytes": 140785,
     "sha256": "686f01c7bfe9c8b29e7f8684f5877ff742bb0e87b355472c09978186e9f775d2"
   },
   {
-    "file": "docs/product/proactive-diagnostics/previews/C-引用冲突.png",
+    "file": "\"docs/product/proactive-diagnostics/previews/C-\\345\\274\\225\\347\\224\\250\\345\\206\\262\\347\\252\\201.png\"",
     "bytes": 150352,
     "sha256": "101ae0c54101a6a92a620016ec646431e9767a32638ee7633f1a4d4c631be23f"
   },
@@ -1620,22 +1620,22 @@
     "sha256": "c3fc812e3b4a9060680c16fe0203ad8255b23bef9b3f59237243326e982350c8"
   },
   {
-    "file": "docs/product/proactive-diagnostics/previews/查看依据.png",
+    "file": "\"docs/product/proactive-diagnostics/previews/\\346\\237\\245\\347\\234\\213\\344\\276\\235\\346\\215\\256.png\"",
     "bytes": 155381,
     "sha256": "2a6a2ccab074f596d9795999b516b17fca2b37cf0df0fecc57628fc1d70f5d23"
   },
   {
-    "file": "docs/product/proactive-diagnostics/previews/登记补充事项.png",
+    "file": "\"docs/product/proactive-diagnostics/previews/\\347\\231\\273\\350\\256\\260\\350\\241\\245\\345\\205\\205\\344\\272\\213\\351\\241\\271.png\"",
     "bytes": 149921,
     "sha256": "3f0347449415b99cc035501aed15dd46bf1f61c6afc37bec044f3c1ecdedd988"
   },
   {
-    "file": "docs/product/proactive-diagnostics/previews/窄屏设计.png",
+    "file": "\"docs/product/proactive-diagnostics/previews/\\347\\252\\204\\345\\261\\217\\350\\256\\276\\350\\256\\241.png\"",
     "bytes": 128289,
     "sha256": "f296d4a18f3896deece16debf1b4bc3acbb4be4c1c4b74476305ddb34bc8c6f2"
   },
   {
-    "file": "docs/product/proactive-diagnostics/previews/证据流设计.png",
+    "file": "\"docs/product/proactive-diagnostics/previews/\\350\\257\\201\\346\\215\\256\\346\\265\\201\\350\\256\\276\\350\\256\\241.png\"",
     "bytes": 54203,
     "sha256": "bcf7761614eef760ce4c0a9260c20e0a1409b076f23cdda7022504147368e777"
   },
@@ -2345,6 +2345,46 @@
     "sha256": "b22bf108d59a98ddb82a490a08a19e990537311aed6a6ab1cd9754519bad1242"
   },
   {
+    "file": "docs/releases/react-workspace-021b2/ACCEPTANCE.md",
+    "bytes": 2525,
+    "sha256": "f3e690100c50f26b89445e5ab3b925e061f68cab8d7d8f46b05af01433a84138"
+  },
+  {
+    "file": "docs/releases/react-workspace-021b2/RELEASE_NOTES.md",
+    "bytes": 2190,
+    "sha256": "f87a33903d48fb3d8c38e1e1954f44dee047f6686fd780718570d8b891de356b"
+  },
+  {
+    "file": "docs/releases/react-workspace-021b2/assets/P1-T1-stale-panel-recovery.png",
+    "bytes": 135272,
+    "sha256": "875b4e2c9e9a05b200c268dab2f4d26490aca0f5a52784981ae1ab954b7dfad4"
+  },
+  {
+    "file": "docs/releases/react-workspace-021b2/assets/PROVENANCE.json",
+    "bytes": 1622,
+    "sha256": "4dbe072c708c554af69c07d4c89cf96ff4387b0b36b2e4dd04603d8e72124330"
+  },
+  {
+    "file": "docs/releases/react-workspace-021b2/assets/b2-upgrade-descriptive-report.png",
+    "bytes": 109217,
+    "sha256": "fc5a7da1f6d62301f48821eb48a3120beb12d05317227256f43ce75aeeb63d22"
+  },
+  {
+    "file": "docs/releases/react-workspace-021b2/assets/b2-upgrade-experiment-decisions.png",
+    "bytes": 98300,
+    "sha256": "5ddbf1a21552c6be05e5df33e1dd8a09267cf8e5f48f8450d70a1b071d76c134"
+  },
+  {
+    "file": "docs/releases/react-workspace-021b2/assets/b2-upgrade-experiment-panel.png",
+    "bytes": 116374,
+    "sha256": "e5d5a79d1218d10fe4b55e73f9a62b5e27a5fec3f14943b1002276efc7b2cd49"
+  },
+  {
+    "file": "docs/releases/react-workspace-021b2/assets/b2-upgrade-experiment-rechecked.png",
+    "bytes": 103426,
+    "sha256": "d833844aab2187ac8dc5a739cb2049bbd677d75c55c51a5407cd6d5054bb6bde"
+  },
+  {
     "file": "docs/releases/react-workspace-beta/ACCEPTANCE.md",
     "bytes": 6533,
     "sha256": "6fec6f55ea9b18e12f59db1a33a296a8358e6c61692c686de8558ba85bdf787f"
@@ -2565,17 +2605,17 @@
     "sha256": "2612752dc60263e8b6ba290ab96f97b65a8248329db2011b503bee7afcab9ffc"
   },
   {
-    "file": "docs/stage/全量回归记录.txt",
+    "file": "\"docs/stage/\\345\\205\\250\\351\\207\\217\\345\\233\\236\\345\\275\\222\\350\\256\\260\\345\\275\\225.txt\"",
     "bytes": 1003,
     "sha256": "83586830e4b4917d4638734ca581c687839bd923df3ac8a02d93a641fd8555a1"
   },
   {
-    "file": "docs/stage/技术与成果总结.md",
+    "file": "\"docs/stage/\\346\\212\\200\\346\\234\\257\\344\\270\\216\\346\\210\\220\\346\\236\\234\\346\\200\\273\\347\\273\\223.md\"",
     "bytes": 6123,
     "sha256": "90ef5d0f27c53dafed6ed4a75ec015a8c776381fa48e066e91ca0dea1b463876"
   },
   {
-    "file": "docs/stage/验收与整合.md",
+    "file": "\"docs/stage/\\351\\252\\214\\346\\224\\266\\344\\270\\216\\346\\225\\264\\345\\220\\210.md\"",
     "bytes": 10310,
     "sha256": "5875628664fc0af03e6f2bf53f9c96864cea10b9223ac606bbb70785bdaa7bba"
   },
@@ -2712,12 +2752,12 @@
   {
     "file": "frontend/package-lock.json",
     "bytes": 112347,
-    "sha256": "9718db98db84d11f66cf19a910454b79f1642daf74c55513b570bcd5214045dd"
+    "sha256": "7c05ad392fdd453d6d1b9021b4804a2ee720e506efd568af8be59c0fe2073fb8"
   },
   {
     "file": "frontend/package.json",
     "bytes": 604,
-    "sha256": "9348563acef4c121c5c9da144dd4dfd54845aa40b45bae3b77999c43443d683d"
+    "sha256": "afb96f3ffd4ac0b112aa3e91d2fa5f38f1d0fb478f64a2250608a45e5a014b59"
   },
   {
     "file": "frontend/src/App.tsx",
@@ -2726,8 +2766,8 @@
   },
   {
     "file": "frontend/src/api.ts",
-    "bytes": 9730,
-    "sha256": "53ae0debad1e8051a234f20d9e51a83bdeb56b64109c94a394afc9d3b8b16b72"
+    "bytes": 9881,
+    "sha256": "3325d1857d43725ffac0ff5a3299b68c41a9a2ec89b5ebab517329c69815ff3a"
   },
   {
     "file": "frontend/src/components/AppShell.tsx",
@@ -2736,13 +2776,13 @@
   },
   {
     "file": "frontend/src/components/CandidatePlanView.tsx",
-    "bytes": 10497,
-    "sha256": "9be700bb99d77feaff77f26723283cb06ba0f48e828133d500230a4dacfffa82"
+    "bytes": 10582,
+    "sha256": "0285343628044f039540ab4f2cb7fbd9937012d4ee8b3b1495e8d6ceacc6b4cb"
   },
   {
     "file": "frontend/src/components/ChatComposer.tsx",
-    "bytes": 4141,
-    "sha256": "66133a41d92768e603c82afa8b25347f6f815d995fc5016edc3514f3463c7c26"
+    "bytes": 4264,
+    "sha256": "82608bee9ba363a41eddcc7a10e51b6bdf53f350eea2b58dc5470b836bfd4514"
   },
   {
     "file": "frontend/src/components/ChatSidebar.tsx",
@@ -2781,8 +2821,8 @@
   },
   {
     "file": "frontend/src/components/StudyContextPanel.tsx",
-    "bytes": 7071,
-    "sha256": "1efb77e3a8ebf2158f1524c5c39733ad15c33478a0613471eccc9705c2c5ea0d"
+    "bytes": 7381,
+    "sha256": "431df2049c1fc6c44f0f7d3addf1f8d4f8e765a7c20fe3c6f634ca0e63e5fe77"
   },
   {
     "file": "frontend/src/components/contracts.test.tsx",
@@ -2805,9 +2845,24 @@
     "sha256": "22e4c9f72b4de340e38a7a898bba4ebae3ed194d0bbb0cb268d059f67edcf5db"
   },
   {
+    "file": "frontend/src/components/trustedDelivery.test.tsx",
+    "bytes": 1499,
+    "sha256": "f474df0fa2115753983ba8f9340e686184c22fc3ab2cb08e264f4539ad854db7"
+  },
+  {
     "file": "frontend/src/components/ui.tsx",
     "bytes": 2883,
     "sha256": "659b61e75189e0bec4fb5459703505790824b5791f340b6b3e568582e5b4cacf"
+  },
+  {
+    "file": "frontend/src/components/upgradeDelivery.test.tsx",
+    "bytes": 1129,
+    "sha256": "b6c0bb22bd05aac07395860b3b8a1a18e6ac2762553708db7a9ca6fdd78d793c"
+  },
+  {
+    "file": "frontend/src/hooks/controlReceipt.test.ts",
+    "bytes": 1141,
+    "sha256": "92d7ccc5daca2d2038dae7e87e747657f1a781b10906846e410202f077a7b951"
   },
   {
     "file": "frontend/src/hooks/polling.test.ts",
@@ -2826,8 +2881,8 @@
   },
   {
     "file": "frontend/src/hooks/useResearch.ts",
-    "bytes": 7339,
-    "sha256": "410d033212ad6b89a5cc4015532bf8633ee2074a943be640d168ab30cfd3d354"
+    "bytes": 8778,
+    "sha256": "a042cf49b904b57d2260031e1003ddab9a58cc3905800157274e82d71802b8df"
   },
   {
     "file": "frontend/src/hooks/useWorkspace.ts",
@@ -2867,7 +2922,7 @@
   {
     "file": "pyproject.toml",
     "bytes": 1701,
-    "sha256": "57c492305aaec263321352b09506322edb3a246b62dc3b80b5d8d115d8a7193f"
+    "sha256": "7d3dfac7c7a3dca7afe846164a0cddaedec19db3586265432e6a010f52fbf056"
   },
   {
     "file": "requirements-runtime-win-py311.txt",
@@ -3272,7 +3327,7 @@
   {
     "file": "src/causalops/__init__.py",
     "bytes": 66,
-    "sha256": "5f2aac5ff2266f31b02395598a0ea051b2135602be99da1dba4007db3f0ba26e"
+    "sha256": "2ebac8534d37f943bafc33d37f8c1424455f28dcbc28e4d597e2febe74c1dce9"
   },
   {
     "file": "src/causalops/advanced/__init__.py",
@@ -3321,8 +3376,8 @@
   },
   {
     "file": "src/causalops/application/automation_answer.py",
-    "bytes": 6814,
-    "sha256": "3b440a3f5889b4993d863302b77ef72e8af5327529e8dfab8d38d585a7580d99"
+    "bytes": 7784,
+    "sha256": "f13c8af9cdf3de70580d49d38886ed564310345093fecb842c3359ec5712bdc5"
   },
   {
     "file": "src/causalops/application/automation_budget.py",
@@ -3341,8 +3396,8 @@
   },
   {
     "file": "src/causalops/application/automation_results.py",
-    "bytes": 9303,
-    "sha256": "910b466347a4c7cea64bbc81645e7d42f1b8ab384e63099e5e886e08d0cb749d"
+    "bytes": 9300,
+    "sha256": "542a3ccba5049f23425c54cce0d153c54bb323019475e276ea30deb11d310182"
   },
   {
     "file": "src/causalops/application/background.py",
@@ -3356,8 +3411,8 @@
   },
   {
     "file": "src/causalops/application/chat_sessions.py",
-    "bytes": 21302,
-    "sha256": "598ad9f005eb1e25c993cedc61e5aac61f96f5dfde1f385e7413975ceb37c6e5"
+    "bytes": 21510,
+    "sha256": "c4f547bcb0c7bbf3c1dfdd526df424c63bf526eae5ca060b24dfefc408e11704"
   },
   {
     "file": "src/causalops/application/chat_workflow.py",
@@ -3495,6 +3550,11 @@
     "sha256": "fa8f3a6504b821ee11648d99ddad88dd98584db3c3761c27688583ec1a13a957"
   },
   {
+    "file": "src/causalops/application/report_methods.py",
+    "bytes": 1665,
+    "sha256": "9f1e284772f2b6720762c9cf2c53600ecd917569caec21f907019ede29ed73e8"
+  },
+  {
     "file": "src/causalops/application/report_scope.py",
     "bytes": 8137,
     "sha256": "c5cdee708bf8df18307cb1425055764b4bc490ca0f1fb7d6d7b15b753b72949f"
@@ -3531,8 +3591,8 @@
   },
   {
     "file": "src/causalops/application/research_setup.py",
-    "bytes": 13579,
-    "sha256": "a51afd7900edc64c4a67de00f56c9534bae0845a889f97b9d6f458e1e1649122"
+    "bytes": 14639,
+    "sha256": "a358afd06f99f477ff7d2f7b3f8bfb4bf8a6ec844707c8aaab8e06d048c199cb"
   },
   {
     "file": "src/causalops/application/run_context.py",
@@ -3896,8 +3956,8 @@
   },
   {
     "file": "src/causalops/general/service.py",
-    "bytes": 19746,
-    "sha256": "87ad6c9cc68d668a8565a142cad5986c10195f1d4771b7feb050c612e697c222"
+    "bytes": 20588,
+    "sha256": "2aeea2fd1a909863eb8c6bec8a229b0b50610fc2e4251ccc585fb52fae31f00a"
   },
   {
     "file": "src/causalops/help/__init__.py",
@@ -4041,8 +4101,8 @@
   },
   {
     "file": "src/causalops/react_api.py",
-    "bytes": 25609,
-    "sha256": "b2809e7de3ba1b814d1426fe5303d37b17f662e28c1317110d3e485d6c6d5d03"
+    "bytes": 26131,
+    "sha256": "56fbaec0b8b5a08474a93c4c3e9b1b9eb3d4573ce07944199e0e48900a27f0a8"
   },
   {
     "file": "src/causalops/real_data.py",
@@ -4340,19 +4400,19 @@
     "sha256": "6aa4ae15913510ba96222a85e794c7372cf3cc4ea026fc2227262be1dd249654"
   },
   {
-    "file": "src/causalops/web_assets/assets/index-DkeKC_He.js",
-    "bytes": 470211,
-    "sha256": "dbf7940986554b3dcb058aed8a0fb50f6bea7e72279f6acb301a5843c8119295"
+    "file": "src/causalops/web_assets/assets/index-BAR2n2cD.js",
+    "bytes": 471183,
+    "sha256": "dbe4560cc82ad041b99cdbabc4e92667ea64e83737afdf1a5c9841e08fbbfa7d"
   },
   {
     "file": "src/causalops/web_assets/build-manifest.json",
     "bytes": 605,
-    "sha256": "2e89597f091978d1562f7312e2b8ea547e36c7046b31ecc1d3f5b13c8c001226"
+    "sha256": "d95b9e6916ab7c37d4aa3ae841967f561dc17935f96184a73f29c5dab68f375d"
   },
   {
     "file": "src/causalops/web_assets/index.html",
     "bytes": 693,
-    "sha256": "e3fd95b1506786d1cb98beb478d4978024d75e9196462a44a7baaa603d5a3815"
+    "sha256": "aa42f01e14e7418bfdabe02a560972a333700eee4c76c8820bb856d5c857c5e6"
   },
   {
     "file": "src/causalops/web_bundle.py",
@@ -4502,7 +4562,7 @@
   {
     "file": "tests/test_default_workspace_release.py",
     "bytes": 3515,
-    "sha256": "1dcba7daf30a6e8d38abd33b75872dfe8b4caa5feebf10007916b721415b7efe"
+    "sha256": "dc6b45a19ff228cc1f6eebe457b5f6627e1bfe6f86ba0f753ac59ed80ae02656"
   },
   {
     "file": "tests/test_design_review.py",
@@ -4745,6 +4805,11 @@
     "sha256": "2a7ff7d96638a70dbf9f712f1b06662955bf10c78f4ed929a7db0c53a3995584"
   },
   {
+    "file": "tests/test_react_upgrade_delivery.py",
+    "bytes": 2215,
+    "sha256": "c44d10994c5998a2d67a865aaea2495a90495fdbcbb9dc8b97b02fcbdb1471a6"
+  },
+  {
     "file": "tests/test_real_model_authorization.py",
     "bytes": 1128,
     "sha256": "6053d61d19e7bd5fee0cfa5106ad95efb1b39a516aa74e1d806236b59de5f381"
@@ -4813,6 +4878,11 @@
     "file": "tests/test_task_evaluation.py",
     "bytes": 6712,
     "sha256": "dab063d9b0f0d8957021bcde6cdd22e1978882260c60a11f256eab5b5f18c46e"
+  },
+  {
+    "file": "tests/test_trusted_delivery_021.py",
+    "bytes": 8451,
+    "sha256": "d28d082a22d284bd849d1507f07cf7fd874071878814d101c602587a1da407f6"
   },
   {
     "file": "tests/test_ugc_followup_metric.py",
@@ -4890,17 +4960,13 @@
     "sha256": "1c582ff72debfeedf5e4a4c6bc1c4129740b99c6f0a3951aa446c7bc1f4d55c5"
   },
   {
-    "file": "启动LangGraph工作台.cmd",
-    "bytes": 533,
-    "sha256": "3e25278c2b28a369d2e5b94610d4025eb882786b25373aa7d55ce43da5ae311e",
-    "git_blob_sha256": "993d7d8fd78fd93d5765f1ca9c581294391f87d2cd2691c05aed534b5f113476",
-    "export_line_endings": "CRLF per .gitattributes"
+    "file": "\"\\345\\220\\257\\345\\212\\250LangGraph\\345\\267\\245\\344\\275\\234\\345\\217\\260.cmd\"",
+    "bytes": 517,
+    "sha256": "993d7d8fd78fd93d5765f1ca9c581294391f87d2cd2691c05aed534b5f113476"
   },
   {
-    "file": "启动作品集.cmd",
-    "bytes": 533,
-    "sha256": "3e25278c2b28a369d2e5b94610d4025eb882786b25373aa7d55ce43da5ae311e",
-    "git_blob_sha256": "993d7d8fd78fd93d5765f1ca9c581294391f87d2cd2691c05aed534b5f113476",
-    "export_line_endings": "CRLF per .gitattributes"
+    "file": "\"\\345\\220\\257\\345\\212\\250\\344\\275\\234\\345\\223\\201\\351\\233\\206.cmd\"",
+    "bytes": 517,
+    "sha256": "993d7d8fd78fd93d5765f1ca9c581294391f87d2cd2691c05aed534b5f113476"
   }
 ]

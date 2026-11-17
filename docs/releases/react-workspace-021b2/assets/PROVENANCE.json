@@ -1,0 +1,52 @@
+[
+  {
+    "file": "b2-upgrade-experiment-panel.png",
+    "sha256": "e5d5a79d1218d10fe4b55e73f9a62b5e27a5fec3f14943b1002276efc7b2cd49",
+    "origin": "Actual installed 0.21.0b2 React browser, public NSW or synthetic QA data",
+    "viewport": {
+      "width": 1440,
+      "height": 1000
+    },
+    "simulated_user": true
+  },
+  {
+    "file": "b2-upgrade-experiment-rechecked.png",
+    "sha256": "d833844aab2187ac8dc5a739cb2049bbd677d75c55c51a5407cd6d5054bb6bde",
+    "origin": "Actual installed 0.21.0b2 React browser, public NSW or synthetic QA data",
+    "viewport": {
+      "width": 1440,
+      "height": 1000
+    },
+    "simulated_user": true
+  },
+  {
+    "file": "b2-upgrade-experiment-decisions.png",
+    "sha256": "5ddbf1a21552c6be05e5df33e1dd8a09267cf8e5f48f8450d70a1b071d76c134",
+    "origin": "Actual installed 0.21.0b2 React browser, public NSW or synthetic QA data",
+    "viewport": {
+      "width": 1440,
+      "height": 1000
+    },
+    "simulated_user": true
+  },
+  {
+    "file": "b2-upgrade-descriptive-report.png",
+    "sha256": "fc5a7da1f6d62301f48821eb48a3120beb12d05317227256f43ce75aeeb63d22",
+    "origin": "Actual installed 0.21.0b2 React browser, public NSW or synthetic QA data",
+    "viewport": {
+      "width": 1440,
+      "height": 1000
+    },
+    "simulated_user": true
+  },
+  {
+    "file": "P1-T1-stale-panel-recovery.png",
+    "sha256": "875b4e2c9e9a05b200c268dab2f4d26490aca0f5a52784981ae1ab954b7dfad4",
+    "origin": "Actual installed 0.21.0b2 React browser, public NSW or synthetic QA data",
+    "viewport": {
+      "width": 1440,
+      "height": 1000
+    },
+    "simulated_user": true
+  }
+]

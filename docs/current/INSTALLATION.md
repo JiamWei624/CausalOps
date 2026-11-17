@@ -1,4 +1,4 @@
-# CausalOps 0.21.0b1 · Windows安装与启动
+# CausalOps 0.21.0b2 · Windows安装与启动
 
 本说明适用于Windows x64、Python 3.11和本地单用户。React是默认受限研究工作台；Streamlit完整兼容入口同时启动，使用同一个工作区。发行包包含前端，无需Node.js。开发人员修改前端时才需要Node与npm。
 
@@ -9,7 +9,7 @@
 ```powershell
 py -3.11 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements-windows-py311.lock.txt
-.\.venv\Scripts\python.exe -m pip install --no-deps .\causalops_agent-0.21.0b1-py3-none-any.whl
+.\.venv\Scripts\python.exe -m pip install --no-deps .\causalops_agent-0.21.0b2-py3-none-any.whl
 .\.venv\Scripts\python.exe -m pip check
 ```
 
@@ -44,7 +44,7 @@ causalops-workbench --workspace .\causalops-workspace --no-browser
 
 ## 4. 从清洁源码包安装
 
-解压`causalops-agent-0.21.0b1-source.zip`并进入项目目录。源码包也包含已构建资源，因此下面不需要Node：
+解压`causalops-agent-0.21.0b2-source.zip`并进入项目目录。源码包也包含已构建资源，因此下面不需要Node：
 
 ```powershell
 py -3.11 -m venv .venv
@@ -63,3 +63,13 @@ py -3.11 -m venv .venv
 默认关闭模型与外部追踪。React当前只用本地确定性回复；Streamlit模型连接、授权与专业入口保留。无论默认UI如何变化，模型建议、研究诊断和用户决定都不产生统计执行权限。
 
 下一步：[React完整使用教程](REACT_WORKSPACE_GUIDE.md)；[能力与兼容入口](../releases/react-workspace-beta/COVERAGE.md)。
+
+## 6. 从0.21.0b1原地升级至0.21.0b2
+
+1. 完成或暂停研究，停止b1启动器，备份整个工作区。不要让两个版本同时写入。
+2. 在原Python环境执行 `python -m pip install --no-deps --upgrade .\causalops_agent-0.21.0b2-py3-none-any.whl`，然后执行 `python -m pip check`。
+3. 以原来的 `--workspace` 路径启动，不移动数据库或重写Run路径。
+4. 原报告、Run、旧诊断及研究决定/修订历史保留。旧批准不自动取得新源码执行权限。
+5. 若面板明确提示“研究诊断需要重新核验，原有报告和历史记录已保留。”，点击“重新检查研究证据”进入诊断，再显式提交同名检查。此操作生成新诊断版本，不重新计算统计，也不覆盖旧报告和决定。
+
+真正的数据、来源哈希或任务归属错误仍会拒绝读取，不能当作普通诊断过期绕过。React附件最多20MB、100000行、200列；读取器另保留50MB字节与256MB解码内存限制，不自动截断或抽样。

@@ -58,6 +58,12 @@ export function StudyContextPanel({
       ) : (
         <>
           <h2>{cfg?.objective || study.title}</h2>
+          {artifacts?.diagnostic_status === "recheck_required" && (
+            <section className="source-stale" role="status">
+              <p>{artifacts.diagnostic_message}</p>
+              {onInsights && <button onClick={onInsights}>重新检查研究证据</button>}
+            </section>
+          )}
           <dl className="context-facts">
             <dt>目标指标</dt>
             <dd>{metric || "待确认"}</dd>

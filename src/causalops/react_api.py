@@ -434,13 +434,19 @@ def create_app(service=None,*,origin='http://127.0.0.1:8790',static_dir=None,str
         from causalops.application.diagnostics.workbench import DiagnosticWorkbench
         from causalops.application.diagnostics.decisions import ResearchDecisionService
         w=DiagnosticWorkbench(s);mode='post_run' if m['domain']=='automation_v2' else 'preflight';subject=m['subject_id'];history=w.history(mode,subject)
-        diagnostic=None
+        diagnostic=None;diagnostic_status='none';diagnostic_message=None
         if history:
             view=w.load(mode,subject,history[0]['id'])
-            if not view.source_current:raise HTTPException(409,'source_conflict')
-            diagnostic=view.report.model_dump(mode='json')
+            # Native research and immutable diagnostic identity have already
+            # passed their original checks. A stale diagnostic is not a current
+            # finding and must not invalidate the separately verified Run.
+            if view.source_current:
+                diagnostic=view.report.model_dump(mode='json');diagnostic_status='current'
+            else:
+                diagnostic_status='recheck_required'
+                diagnostic_message='研究诊断需要重新核验，原有报告和历史记录已保留。'
         decisions=[dict(decision=x.decision.model_dump(mode='json') if x.origin_verified else None,origin_verified=x.origin_verified,error=x.origin_error,superseded_by=x.superseded_by) for x in ResearchDecisionService(w).history(mode,subject)]
-        return dict(diagnostic=diagnostic,decisions=decisions)
+        return dict(diagnostic=diagnostic,decisions=decisions,diagnostic_status=diagnostic_status,diagnostic_message=diagnostic_message)
 
     if static_dir:
         root=Path(static_dir).resolve()

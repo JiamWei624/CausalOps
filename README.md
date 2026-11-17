@@ -1,9 +1,15 @@
-<!-- release: 0.21.0b1 -->
-# CausalOps 0.21.0b1 受限 Beta 候选
+<!-- release: 0.21.0b2 -->
+# CausalOps 0.21.0b2 可信交付维护候选
 
 **可审核、可追溯的 AI 数据科学研究工作台。React 默认入口，Streamlit 完整兼容入口。**
 
 Windows x64 · Python 3.11 · 本地单用户 · 单表双组二元受控研究。本文对应本地候选；是否正式公开以经过授权的Beta分支与完整SHA为准，main源码与独立Beta可能不同。
+
+0.21.0b1为已公开Beta；0.21.0b2为本地维护候选，尚未公开推送。修复报告方法说明、采纳状态、聊天估计方法和控制竞态回执，明确100000行上传限制。旧诊断升级后可能需要显式重新核验，历史统计结果与研究决定保留。
+
+[维护版说明与升级](docs/releases/react-workspace-021b2/RELEASE_NOTES.md)
+
+以下工作台总览沿用b1真实截图；本版升级截图见维护说明。
 
 ![真实React工作台](docs/releases/react-workspace-beta/assets/workspace-1440.png)
 
@@ -18,7 +24,7 @@ Windows x64 · Python 3.11 · 本地单用户 · 单表双组二元受控研究�
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements-windows-py311.lock.txt
-.\.venv\Scripts\python.exe -m pip install --no-deps .\causalops_agent-0.21.0b1-py3-none-any.whl
+.\.venv\Scripts\python.exe -m pip install --no-deps .\causalops_agent-0.21.0b2-py3-none-any.whl
 .\.venv\Scripts\python.exe -m pip check
 .\.venv\Scripts\causalops-workbench.exe --workspace .\causalops-workspace
 ```
@@ -37,7 +43,7 @@ causalops-workbench --workspace .\causalops-workspace --diagnose
 
 不要同时把不同版本的源码与安装包混入一个运行环境。升级保留历史只读记录；旧源码批准不自动获得新版执行权限。升级前请等待或暂停研究并停止原服务。
 
-[完整安装说明](docs/current/INSTALLATION.md) · [React完整使用教程](docs/current/REACT_WORKSPACE_GUIDE.md) · [覆盖矩阵](docs/releases/react-workspace-beta/COVERAGE.md) · [候选验收](docs/releases/react-workspace-beta/ACCEPTANCE.md) · [限制与安全](docs/releases/react-workspace-beta/SECURITY_AND_LIMITS.md)
+[完整安装说明](docs/current/INSTALLATION.md) · [React完整使用教程](docs/current/REACT_WORKSPACE_GUIDE.md) · [覆盖矩阵](docs/releases/react-workspace-beta/COVERAGE.md) · [候选验收](docs/releases/react-workspace-021b2/ACCEPTANCE.md) · [限制与安全](docs/releases/react-workspace-beta/SECURITY_AND_LIMITS.md)
 
 ## 实际能力
 

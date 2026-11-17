@@ -1,6 +1,6 @@
 {
-  "version": "0.21.0b1",
-  "frontend_lock_sha256": "9718db98db84d11f66cf19a910454b79f1642daf74c55513b570bcd5214045dd",
+  "version": "0.21.0b2",
+  "frontend_lock_sha256": "fde0d6953b31371f884a57fc2c24db5894076d2ddcd9dac0fbd403ffd22f810a",
   "files": [
     {
       "path": "assets/index-0lZhOLWJ.css",
@@ -8,13 +8,13 @@
       "bytes": 34806
     },
     {
-      "path": "assets/index-Dqj8OtW-.js",
-      "sha256": "676244029d49b766edde65087a9b8f5258d5bccc857f75c75ffe7b24bf0b8625",
-      "bytes": 470948
+      "path": "assets/index-BAR2n2cD.js",
+      "sha256": "dbe4560cc82ad041b99cdbabc4e92667ea64e83737afdf1a5c9841e08fbbfa7d",
+      "bytes": 471183
     },
     {
       "path": "index.html",
-      "sha256": "e9da8f231201592b89f3483bcae5e5c411f95aea8be189c5089788d12415eb25",
+      "sha256": "aa42f01e14e7418bfdabe02a560972a333700eee4c76c8820bb856d5c857c5e6",
       "bytes": 693
     }
   ]

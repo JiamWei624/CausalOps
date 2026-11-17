@@ -9,11 +9,11 @@ def assets(tmp_path):
  for name,text in [('index.html','<html>release</html>'),('assets/main.js','console.log(1)'),('assets/main.css','body{}')]:
   (root/name).write_text(text,encoding='utf8')
  rows=[{'path':p.relative_to(root).as_posix(),'sha256':hashlib.sha256(p.read_bytes()).hexdigest()}for p in root.rglob('*')if p.is_file()]
- (root/'build-manifest.json').write_text(json.dumps({'version':'0.21.0b1','files':rows}),encoding='utf8');return root
+ (root/'build-manifest.json').write_text(json.dumps({'version':'0.21.0b2','files':rows}),encoding='utf8');return root
 
 def test_missing_or_changed_bundle_fails_closed(tmp_path):
  with pytest.raises(RuntimeError):bundle.verify_bundle(tmp_path)
- root=assets(tmp_path);assert bundle.verify_bundle(root)['version']=='0.21.0b1'
+ root=assets(tmp_path);assert bundle.verify_bundle(root)['version']=='0.21.0b2'
  (root/'assets/main.js').write_text('changed')
  with pytest.raises(RuntimeError):bundle.verify_bundle(root)
 
@@ -34,11 +34,11 @@ def test_ports_are_distinct_and_home_is_explicit(tmp_path):
  with pytest.raises(SystemExit):launch.configuration(['--port','8840','--streamlit-port','8840'])
 
 def test_health_identity_requires_entire_pair(tmp_path):
- data={'instance':'a','workspace':bundle.workspace_identity(tmp_path),'version':'0.21.0b1','frontend_sha':'b','ready':True}
- assert launch.match_health(data,instance='a',home=tmp_path,version='0.21.0b1',frontend_sha='b')
+ data={'instance':'a','workspace':bundle.workspace_identity(tmp_path),'version':'0.21.0b2','frontend_sha':'b','ready':True}
+ assert launch.match_health(data,instance='a',home=tmp_path,version='0.21.0b2',frontend_sha='b')
  for key in ('instance','workspace','version','frontend_sha','ready'):
   changed={**data,key:'other'}
-  assert not launch.match_health(changed,instance='a',home=tmp_path,version='0.21.0b1',frontend_sha='b')
+  assert not launch.match_health(changed,instance='a',home=tmp_path,version='0.21.0b2',frontend_sha='b')
 
 def test_health_api_does_not_grant_authority(tmp_path,monkeypatch):
  from fastapi.testclient import TestClient

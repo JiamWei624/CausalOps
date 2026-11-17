@@ -107,6 +107,8 @@ export type Finding = {
   result: unknown;
 };
 export type Artifacts = {
+  diagnostic_status?: "none" | "current" | "recheck_required";
+  diagnostic_message?: string | null;
   diagnostic: null | {
     report_id: string;
     version: number;
