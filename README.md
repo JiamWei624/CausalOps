@@ -4,11 +4,11 @@
 <!-- latest-public-beta:start -->
 ## 最新公开 Beta 版本
 
-**[CausalOps 0.21.0b1 · 最新公开 Beta](https://github.com/JiamWei624/CausalOps/tree/beta/react-workspace-20261116)**
+**[CausalOps 0.21.0b2 · 最新公开 Beta](https://github.com/JiamWei624/CausalOps/tree/beta/react-workspace-0.21.0b2-20261117)**
 
-最新 Beta 默认使用 React 对话研究工作台，保留共享同一研究服务与工作区的 Streamlit 完整兼容入口。支持 CSV/Parquet 单表双组二元研究、合同与候选配置、正式人工审核、独立统计执行、报告、六项确定性证据诊断与研究决定；其余八项诊断规则未实现。专业统计方法、需求草案及受约束模型候选仍由 Streamlit 提供。候选采纳、正式批准与执行保持分离，聊天和研究决定没有统计执行权限；模型外发仍需显式授权。
+本维护版修复研究报告方法说明、聊天估计方法与候选采纳状态，改善运行控制回执和上传错误提示；升级保留原有研究结果、诊断与研究决定历史，必要时显式重新核验。React 继续作为默认对话工作台，Streamlit 保留共享同一研究服务与工作区的完整专业入口。研究能力范围未扩大：仍为 CSV/Parquet 单表双组二元受限研究、六项确定性诊断，其余八项未实现；专业方法、需求草案及受约束模型候选仍通过 Streamlit 使用。正式批准与独立执行保持分离，聊天和研究决定没有统计执行权限；模型外发仍需显式授权。
 
-[版本 README](https://github.com/JiamWei624/CausalOps/blob/beta/react-workspace-20261116/README.md) · [安装说明](https://github.com/JiamWei624/CausalOps/blob/beta/react-workspace-20261116/docs/current/INSTALLATION.md) · [React 工作台教程](https://github.com/JiamWei624/CausalOps/blob/beta/react-workspace-20261116/docs/current/REACT_WORKSPACE_GUIDE.md) · [自动化教程](https://github.com/JiamWei624/CausalOps/blob/beta/react-workspace-20261116/docs/current/AUTOMATION_GUIDE.md) · [诊断教程](https://github.com/JiamWei624/CausalOps/blob/beta/react-workspace-20261116/docs/current/DIAGNOSTICS_GUIDE.md) · [研究决策记忆教程](https://github.com/JiamWei624/CausalOps/blob/beta/react-workspace-20261116/docs/current/DECISION_MEMORY_GUIDE.md) · [已知限制](https://github.com/JiamWei624/CausalOps/blob/beta/react-workspace-20261116/docs/releases/react-workspace-beta/SECURITY_AND_LIMITS.md)
+[版本 README](https://github.com/JiamWei624/CausalOps/blob/beta/react-workspace-0.21.0b2-20261117/README.md) · [安装说明](https://github.com/JiamWei624/CausalOps/blob/beta/react-workspace-0.21.0b2-20261117/docs/current/INSTALLATION.md) · [React 工作台教程](https://github.com/JiamWei624/CausalOps/blob/beta/react-workspace-0.21.0b2-20261117/docs/current/REACT_WORKSPACE_GUIDE.md) · [自动化教程](https://github.com/JiamWei624/CausalOps/blob/beta/react-workspace-0.21.0b2-20261117/docs/current/AUTOMATION_GUIDE.md) · [诊断教程](https://github.com/JiamWei624/CausalOps/blob/beta/react-workspace-0.21.0b2-20261117/docs/current/DIAGNOSTICS_GUIDE.md) · [研究决策记忆教程](https://github.com/JiamWei624/CausalOps/blob/beta/react-workspace-0.21.0b2-20261117/docs/current/DECISION_MEMORY_GUIDE.md) · [已知限制](https://github.com/JiamWei624/CausalOps/blob/beta/react-workspace-0.21.0b2-20261117/docs/releases/react-workspace-beta/SECURITY_AND_LIMITS.md) · [维护与升级说明](https://github.com/JiamWei624/CausalOps/blob/beta/react-workspace-0.21.0b2-20261117/docs/releases/react-workspace-021b2/RELEASE_NOTES.md)
 
 **本页其余内容及 main 源码仍对应 0.16.0，与最新 Beta 分支不同。** 请从上述 Beta 分支获取新版源码，勿把 main 当作新版安装来源。Beta 主要用于本地单用户，仅支持单表双组二元及受限方法；不支持通用自主规划、通用多表研究或跨任务语义记忆。真人独立使用验证尚未完成，工程与自动浏览器测试不代表真人效率或通用研究可靠性。
 
