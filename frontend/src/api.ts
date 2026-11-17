@@ -181,6 +181,7 @@ export type SetupCandidate = {
   task_id: string;
   plan_sha: string;
   source_current: boolean;
+  source_state?: 'current' | 'adopted' | 'stale';
   source_error: string | null;
   candidate: {
     id: string;

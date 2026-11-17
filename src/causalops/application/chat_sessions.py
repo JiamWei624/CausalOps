@@ -4,7 +4,7 @@ import json,re,uuid,sqlite3,os
 from typing import Literal
 from pydantic import BaseModel,ConfigDict
 from causalops.assistant.service import digest,now,check_question
-from causalops.general.service import DesignError
+from causalops.general.service import DesignError,TableLimitError
 
 class ChatSession(BaseModel):
     model_config=ConfigDict(frozen=True,extra='forbid')
@@ -222,6 +222,8 @@ class ChatService:
             sid=self.s.create_task(payload=payload,name=name,title=name)
             b=self.bind(chat_id,'assistant',sid)
             return self._finish(row,'completed',dict(**self._policy('imported','附件已通过既有读取器导入，并关联为独立数据任务。DataContract 仍需在原研究入口明确确认；未生成计划、批准或统计 Run。'),imported_binding_id=b.id))
+        except TableLimitError as exc:
+            return self._finish(row,'blocked',self._policy('import_'+exc.code,str(exc)+' 未登记为新的研究绑定，当前历史研究不变。'))
         except (ValueError,RuntimeError,OSError):return self._finish(row,'blocked',self._policy('import_rejected','附件未通过既有文件校验，未将其登记为新的研究绑定。请核对类型、编码、分隔符和必要字段后替换文件；当前历史研究不变。'))
     def messages(self,chat_id):
         self.session(chat_id)

@@ -153,12 +153,24 @@ class ResearchSetup:
 
     def candidate(self,cid,identifier):
         r=self._get(cid,identifier,'candidate');cfg=self._get(cid,r['configuration_ref'],'contract');candidate=self.planning.get(r['task_id'],r['candidate_id']);task=self.co.task(r['task_id'])
-        current=True;reason=None
+        current=True;reason=None;state='current'
         try:
-            self._configuration_current(cid,cfg);payload=self.planning.payload(r['task_id'])
-            if task['plan_sha']!=r['plan_sha'] or candidate['binding']!=payload['input_versions']:raise SetupError('候选计划或输入范围已经变化。')
-        except (ValueError,RuntimeError,OSError):current=False;reason='候选来源、数据或合同版本已变化；保留历史但不能采纳。'
-        return dict(**r,candidate=candidate,source_current=current,source_error=reason,contract_ref=cfg['contract_ref'],data=cfg['data'])
+            self._configuration_current(cid,cfg)
+            adoption=next((a for a in reversed(self._records(cid,'adoption')) if a['candidate_ref']==r['id']),None)
+            if adoption:
+                successor=self.co.task(adoption['task_id']);ref=successor['plan'].get('candidate_ref') or {}
+                if (successor['plan_sha']!=adoption['plan_sha'] or successor['plan']['configuration']!=cfg['configuration']
+                    or ref.get('id')!=r['candidate_id'] or ref.get('task_id')!=r['task_id'] or task['plan_sha']!=r['plan_sha']):
+                    raise SetupError('采纳记录与正式方案来源不一致。')
+                self.planning.verify_reference(successor,ref)
+                # The original candidate is consumed, not adoptable again. The
+                # checked successor is read-only; no approval is created here.
+                current=False;state='adopted'
+            else:
+                payload=self.planning.payload(r['task_id'])
+                if task['plan_sha']!=r['plan_sha'] or candidate['binding']!=payload['input_versions']:raise SetupError('候选计划或输入范围已经变化。')
+        except (ValueError,RuntimeError,OSError):current=False;state='stale';reason='候选来源、数据或合同版本已变化；保留历史但不能采纳。'
+        return dict(**r,candidate=candidate,source_current=current,source_state=state,source_error=reason,contract_ref=cfg['contract_ref'],data=cfg['data'])
 
     def adopt(self,cid,candidate_ref,*,expected_binding_id,human_confirmed,request_key):
         if human_confirmed is not True:raise SetupError('请显式采纳候选；采纳后仍需要正式人工审批。')
@@ -168,7 +180,7 @@ class ResearchSetup:
             old=self._old(cid,'adoption',request_key,request)
             if old:return old
             r=self.candidate(cid,candidate_ref);cfg=self._get(cid,r['configuration_ref'],'contract')
-            if not r['source_current']:raise SetupError(r['source_error'])
+            if not r['source_current']:raise SetupError('此候选已转为待审方案，不能重复采纳；请进入正式审核。' if r['source_state']=='adopted' else r['source_error'])
             current=self._source(cid);m=current['metadata']
             recovering=(m['domain']=='automation_v2' and (current['view']['task']['plan'].get('candidate_ref') or {}).get('id')==r['candidate_id'])
             if not recovering:

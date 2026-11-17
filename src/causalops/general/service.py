@@ -18,6 +18,12 @@ from causalops.ui.controller import run_versioned_workflow,run_versioned_associa
 
 METHODS={'ab_test':'A/B随机实验','cuped':'CUPED随机实验','regression_adjustment':'观察性关联回归','psm':'倾向得分匹配PSM','ipw':'逆概率加权IPW','double_ml':'双重机器学习DML','did':'日级面板DID','aipw':'交叉拟合AIPW（IRM-ATE）'}
 class DesignError(ValueError):pass
+
+class TableLimitError(DesignError):
+    """Safe reader boundary message, with no filename, path or raw data."""
+    def __init__(self,code,message):
+        super().__init__(message);self.code=code
+
 class GeneralDesign(BaseModel):
     model_config=ConfigDict(extra='forbid')
     question:str=Field(min_length=8,max_length=1000)
@@ -60,7 +66,7 @@ def detect_csv_separator(text):
     raise DesignError('无法唯一识别CSV分隔符，请在文件设置中明确选择逗号、分号或制表符；未修改原文件。')
 
 def read_table(payload:bytes,name:str,encoding='utf-8-sig',separator=',',max_rows=100000)->pd.DataFrame:
-    if len(payload)>50*1024*1024:raise DesignError('文件超过50MB。本版请在本地先准备分析表。')
+    if len(payload)>50*1024*1024:raise TableLimitError('file_limit','文件超过50MB读取上限，请在本地准备分析表后再上传。')
     suffix=Path(name).suffix.lower()
     if suffix=='.csv':
         if encoding not in ('utf-8-sig','gb18030') or separator not in ('auto',',',';','\t'):raise DesignError('CSV编码或分隔符不受支持。')
@@ -72,12 +78,14 @@ def read_table(payload:bytes,name:str,encoding='utf-8-sig',separator=',',max_row
         frame=pd.read_csv(io.StringIO(text),sep=separator,nrows=max_rows+1)
     elif suffix in ('.parquet','.pq'):
         import pyarrow.parquet as pq
-        if pq.ParquetFile(io.BytesIO(payload)).metadata.num_rows>max_rows:raise DesignError('本版交互上传最多100,000行，请先准备分析队列。')
+        if pq.ParquetFile(io.BytesIO(payload)).metadata.num_rows>max_rows:raise TableLimitError('row_limit',f'本版交互上传最多{max_rows:,}行。请按研究目标在本地准备范围明确的分析表，保留纳入规则和数据来源后再上传；系统未删样本或填补。')
         frame=pd.read_parquet(io.BytesIO(payload))
     else:raise DesignError('仅支持CSV和Parquet；不执行脚本、Excel宏或Pickle。')
-    if frame.empty or len(frame)>max_rows or len(frame.columns)>200:raise DesignError('数据为空或超过100,000行/200列的首版限制。')
+    if frame.empty:raise DesignError('数据为空，请提供包含表头和记录的分析表。')
+    if len(frame)>max_rows:raise TableLimitError('row_limit',f'本版交互上传最多{max_rows:,}行。请按研究目标在本地准备范围明确的分析表，保留纳入规则和数据来源后再上传；系统未删样本或填补。')
+    if len(frame.columns)>200:raise TableLimitError('column_limit','本版交互上传最多200列。请在本地准备必要研究字段，保留字段口径；系统未删样本或填补。')
     if not all(isinstance(x,str) and x.strip() for x in frame.columns) or len(set(frame.columns))!=len(frame.columns):raise DesignError('必须使用非空、不重复的字符串列名。')
-    if frame.memory_usage(deep=True).sum()>256*1024*1024:raise DesignError('解码后的表超过256MB，请缩小分析队列。')
+    if frame.memory_usage(deep=True).sum()>256*1024*1024:raise TableLimitError('memory_limit','解码后的表超过256MB内存上限。请在本地准备范围明确的分析表；系统未删样本或填补。')
     for c in frame.select_dtypes(include=['object']).columns:
         if frame[c].dropna().map(lambda x:isinstance(x,(dict,list,tuple,set,np.ndarray))).any():raise DesignError('本版不支持嵌套对象列。')
     return frame.reset_index(drop=True)

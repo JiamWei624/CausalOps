@@ -54,7 +54,8 @@ def snapshot(co,tid):
             if "S01" in evidence:
                 risks.append(dict(rule="audit_structure",level="程序检查已通过",detail=f"已核对{evidence['S01']['body']['rows']}条记录、用户登记的分析单位、两组及二元编码；不证明全部研究假设。"))
                 risks.append(dict(rule="source_confirmation",level="用户已确认" if sc["assignment"]=="randomized" else "证据未知",detail="分配机制依据用户登记的设计来源核对；两组标签不构成随机化证明。"))
-            risks.append(dict(rule="unverified_assumptions",level="解释限制",detail="未验证无干扰、外部代表性和全部识别假设。仅支持登记对象、指标和窗口；原工具采用正态近似区间。"))
+            from .report_methods import method_limitations
+            risks.append(dict(rule="unverified_assumptions",level="解释限制",detail=method_limitations(evidence.get("S05",{}).get("body") if not errors else None)))
         return dict(task=task,steps=steps,evidence=evidence,report=evidence.get("S05",{}).get("body") if not errors else None,
                     risks=risks,binding_error=binding_error,errors=errors,budget=co.budget(tid),events=co.events(tid))
     raise SnapshotUpdating("任务状态正在更新，请稍后刷新；暂不展示可能混合的报告。")

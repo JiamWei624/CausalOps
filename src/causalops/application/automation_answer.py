@@ -27,6 +27,7 @@ def requested_fields(question,scope):
         'interval':r'置信|区间|不确定性|\bci\b|\binterval\b',
         'limitations':r'限制|局限|结论|设计|随机|证据|适用|\blimits?\b',
         'relative':r'相对(?:增长|增幅|变化)|\brelative\b',
+        'method':r'方法|估计器|\bmethods?\b|\bestimat(?:or|ion)\b',
     }
     fields={k for k,v in patterns.items() if re.search(v,question,re.I)}
     if not fields:fields={'groups','samples','difference','interval','limitations'}
@@ -38,7 +39,7 @@ def requested_fields(question,scope):
         if item not in current and item not in ('样本量','差异','置信区间','比例','研究限制'):
             unknown.add(item)
     for token in re.findall(r'\b[A-Za-z_][A-Za-z_0-9]*\b',question):
-        if token.lower() not in {'ci','ab','a','b','run','id','sample','sample_size','rate','rates','difference','interval','relative','limits','limit'} and token not in current:
+        if token.lower() not in {'ci','ab','a','b','run','id','sample','sample_size','rate','rates','difference','interval','relative','limits','limit','method','methods','estimator','estimation'} and token not in current:
             unknown.add(token)
     for term in ('长期利润','利润','ROI','收益','收入','成本','销售额','留存率','购买率','访问率','转化率','客单价'):
         if term.lower() in question.lower() and not any(term.lower() in x.lower() for x in current):unknown.add(term)
@@ -55,6 +56,8 @@ def answer(a,sid,view,question):
     check_run_mentions(question,r['source_runs'])
     catalog=facts(view);fields,unknown=requested_fields(question,sc);coverage={};lines=[]
     f=r.get('effect');d=r.get('descriptive');numeric=fields&{'groups','samples','difference','interval','relative'}
+    from .report_methods import saved_methods
+    methods=saved_methods(r)
     if unknown:
         coverage['requested_metric']='unsupported'
         lines.append('当前报告**未计算**所问的其他指标（'+ '、'.join(unknown)+'），不能用'+sc['metric']+'替代，也不会借用其他研究的数值。新的研究指标需要重新配置与审核。')
@@ -74,8 +77,17 @@ def answer(a,sid,view,question):
         coverage['difference']='available'
     if 'interval' in fields:
         if f and f.get('ci_pp') is not None:
-            low,high=f['ci_pp'];lines.append(f'**原工具95%区间**：**[{low:.4f}, {high:.4f}] 个百分点**（正态近似）。');coverage['interval']='available'
+            low,high=f['ci_pp'];lines.append(f'**原工具95%区间**：**[{low:.4f}, {high:.4f}] 个百分点**。');coverage['interval']='available'
         else:lines.append('**区间未执行**：本研究只有描述统计，没有A/B因果效应或推断区间。');coverage['interval']='not_executed'
+    if 'method' in fields:
+        if methods['estimator']:
+            lines.append(('效应估计方法：' if f else '统计方法：')+methods['estimator']+'。');coverage['method']='available'
+        else:lines.append('效应估计方法未提供可识别的保存元数据，不推测方法名称。');coverage['method']='unavailable'
+    if fields&{'method','interval'}:
+        if methods['interval']:
+            lines.append('区间估计方法：'+methods['interval']+'。');coverage['interval_method']='available' if methods['interval_executed'] else 'not_executed'
+        elif f and f.get('ci_pp') is not None:
+            lines.append('区间估计方法未提供可识别的保存元数据；以上仅引用原工具已保存区间。');coverage['interval_method']='unavailable'
     if 'relative' in fields:
         if f and f.get('relative_pct') is not None:lines.append(f"已保存的相对变化为 **{f['relative_pct']:.4f}%**，与百分点差的分母和单位不同。");coverage['relative']='available'
         else:lines.append('当前报告未保存可引用的相对变化，不从聊天追加计算。');coverage['relative']='unavailable'

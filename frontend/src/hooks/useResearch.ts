@@ -9,6 +9,10 @@ import {
   type ResearchAction,
 } from "../api";
 export function shouldPollResearch(v:ResearchView|null){return !!v&&(v.active||['running','pause_requested','cancel_requested'].includes(v.task.status)||(v.task.status==='approved'&&v.jobs.length>0));}
+export function completedControlNotice(action:ResearchAction, expected:{id:string;plan_sha:string}, fresh:ResearchView|null, confirmedRejection:boolean){
+  if (!confirmedRejection || !['pause','cancel'].includes(action) || !fresh || fresh.task.status!=='completed' || fresh.task.id!==expected.id || fresh.task.plan_sha!==expected.plan_sha) return null;
+  return action==='pause'?'研究已完成，本次暂停请求未生效。':'研究已完成，本次取消请求未生效；已保存结果保持不变。';
+}
 export function useResearch(
   chat: Chat | null,
   chatId: string | null,
@@ -31,15 +35,14 @@ export function useResearch(
   refresh.current = onRefresh;
   reject.current = onSourceError;
   const task = chat?.study?.domain === "automation_v2" ? chat.study.id : null;
-  async function load(id: string, version: number) {
+  async function load(id: string, version: number, outcomeRead = false) {
     const sequence = ++readSequence.current;
     const v = await request<ResearchView>("/chats/" + id + "/research");
-    if (
-      active.current !== id ||
-      epoch.current !== version ||
-      sequence !== readSequence.current
-    )
-      return null;
+    if (active.current !== id || epoch.current !== version) return null;
+    // A newer poll may own rendering while this verified read is in flight.
+    // Its same-context result can still establish a rejected control's outcome;
+    // it must not overwrite the newer UI snapshot.
+    if (sequence !== readSequence.current) return outcomeRead ? v : null;
     setResearch(v);
     setResearchError("");
     if (v.task.status === "completed") {
@@ -166,8 +169,21 @@ export function useResearch(
         setCompletion(null);
         setResearchError((e as Error).message);
         setResearchNotice("操作未确认完成；先刷新核查，未自动重发。");
-        reject.current(e, id);
-        try {await refresh.current(id);} catch(readError) {setResearch(null);reject.current(readError,id);}
+        const stale = reject.current(e, id);
+        try {
+          if (!stale && ['pause','cancel'].includes(action) && e instanceof ApiError && ['setup_rejected','domain_rejected'].includes(e.code)) {
+            // Read the same verified task after a confirmed rejection. This is
+            // not a replay of the write, nor inference from an error string.
+            const fresh=await load(id,version,true);
+            const notice=completedControlNotice(action,research.task,fresh,true);
+            if (notice && active.current===id && epoch.current===version) {
+              pending.current=null;
+              setResearchError('');
+              setResearchNotice(notice);
+            }
+          }
+          await refresh.current(id);
+        } catch(readError) {setResearch(null);reject.current(readError,id);}
       }
     } finally {
       requestRunning.current = false;

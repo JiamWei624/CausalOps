@@ -57,7 +57,7 @@ export function CandidatePlanView({
           <h1>
             {adopted
               ? pending
-                ? "已采纳，等待正式审核。"
+                ? "已转为待审方案。"
                 : "已采纳的正式研究方案。"
               : "先核对方案，再决定采纳。"}
           </h1>
@@ -154,7 +154,7 @@ export function CandidatePlanView({
                 <dd>{cfg?.unit} · 差异以百分点展示</dd>
               </div>
             </dl>
-            {!r?.source_current && (
+            {!r?.source_current && r?.source_state !== 'adopted' && (
               <div className="form-error" role="alert">
                 {r?.source_error} 当前不能采纳这份历史候选。
               </div>
@@ -209,7 +209,7 @@ export function CandidatePlanView({
             {adopted ? (
               <div className="adopted-summary">
                 <p>
-                  <strong>采纳记录已保存。</strong>
+                  <strong>此候选已转为待审方案，不能重复采纳。</strong>
                   {pending
                     ? "尚未产生 Approval 或统计 Run。"
                     : "当前研究：" +
@@ -218,7 +218,7 @@ export function CandidatePlanView({
                       (study?.run_ids.length || 0) +
                       " 个真实 Run。"}
                 </p>
-                {onReview ? (
+                {onReview && r?.source_state !== 'stale' ? (
                   <button className="primary" onClick={onReview}>
                     {pending ? "进入正式人工审核" : "查看研究执行状态"}
                   </button>

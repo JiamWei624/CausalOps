@@ -126,7 +126,7 @@ export function ChatComposer({
             >
               <Icon name="plus" size={20} />
             </button>
-            <span>CSV / Parquet · 仅在本机处理</span>
+            <span title="React附件上限20MB；交互读取最多100,000行、200列，解码后不超过256MB。不会自动删样本。">CSV / Parquet · 仅在本机处理</span>
             <button
               className="send-button"
               type="submit"
