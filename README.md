@@ -4,11 +4,11 @@
 <!-- latest-public-beta:start -->
 ## 最新公开 Beta 版本
 
-**[CausalOps 0.20.0b1 · 最新公开 Beta](https://github.com/JiamWei624/CausalOps/tree/beta/configurable-research-20261108)**
+**[CausalOps 0.21.0b1 · 最新公开 Beta](https://github.com/JiamWei624/CausalOps/tree/beta/react-workspace-20261116)**
 
-最新 Beta 新增 CSV/Parquet 单表双组二元研究、字段与研究合同配置、受限描述／A/B 两条路径；保留固定 Hillstrom 五步自动化、六项确定性证据诊断、三层报告及同任务研究决定。规划可用确定性模板或可选 DeepSeek 候选；模型外发须显式授权，候选经过确定性校验，采纳后仍需正式人工批准，模型建议没有统计执行权限。
+最新 Beta 默认使用 React 对话研究工作台，保留共享同一研究服务与工作区的 Streamlit 完整兼容入口。支持 CSV/Parquet 单表双组二元研究、合同与候选配置、正式人工审核、独立统计执行、报告、六项确定性证据诊断与研究决定；其余八项诊断规则未实现。专业统计方法、需求草案及受约束模型候选仍由 Streamlit 提供。候选采纳、正式批准与执行保持分离，聊天和研究决定没有统计执行权限；模型外发仍需显式授权。
 
-[版本 README](https://github.com/JiamWei624/CausalOps/blob/beta/configurable-research-20261108/README.md) · [安装说明](https://github.com/JiamWei624/CausalOps/blob/beta/configurable-research-20261108/docs/current/INSTALLATION.md) · [可配置研究教程](https://github.com/JiamWei624/CausalOps/blob/beta/configurable-research-20261108/docs/current/CONFIGURABLE_RESEARCH_GUIDE.md) · [自动化教程](https://github.com/JiamWei624/CausalOps/blob/beta/configurable-research-20261108/docs/current/AUTOMATION_GUIDE.md) · [诊断教程](https://github.com/JiamWei624/CausalOps/blob/beta/configurable-research-20261108/docs/current/DIAGNOSTICS_GUIDE.md) · [研究决策记忆教程](https://github.com/JiamWei624/CausalOps/blob/beta/configurable-research-20261108/docs/current/DECISION_MEMORY_GUIDE.md) · [已知限制](https://github.com/JiamWei624/CausalOps/blob/beta/configurable-research-20261108/docs/releases/configurable-research-beta/LIMITATIONS.md)
+[版本 README](https://github.com/JiamWei624/CausalOps/blob/beta/react-workspace-20261116/README.md) · [安装说明](https://github.com/JiamWei624/CausalOps/blob/beta/react-workspace-20261116/docs/current/INSTALLATION.md) · [React 工作台教程](https://github.com/JiamWei624/CausalOps/blob/beta/react-workspace-20261116/docs/current/REACT_WORKSPACE_GUIDE.md) · [自动化教程](https://github.com/JiamWei624/CausalOps/blob/beta/react-workspace-20261116/docs/current/AUTOMATION_GUIDE.md) · [诊断教程](https://github.com/JiamWei624/CausalOps/blob/beta/react-workspace-20261116/docs/current/DIAGNOSTICS_GUIDE.md) · [研究决策记忆教程](https://github.com/JiamWei624/CausalOps/blob/beta/react-workspace-20261116/docs/current/DECISION_MEMORY_GUIDE.md) · [已知限制](https://github.com/JiamWei624/CausalOps/blob/beta/react-workspace-20261116/docs/releases/react-workspace-beta/SECURITY_AND_LIMITS.md)
 
 **本页其余内容及 main 源码仍对应 0.16.0，与最新 Beta 分支不同。** 请从上述 Beta 分支获取新版源码，勿把 main 当作新版安装来源。Beta 主要用于本地单用户，仅支持单表双组二元及受限方法；不支持通用自主规划、通用多表研究或跨任务语义记忆。真人独立使用验证尚未完成，工程与自动浏览器测试不代表真人效率或通用研究可靠性。
 
